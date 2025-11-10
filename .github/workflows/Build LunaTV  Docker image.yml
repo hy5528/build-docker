@@ -57,10 +57,10 @@ jobs:
       - name: Clone Overleaf Gitlab Repo
         run: |
           git clone https://github.com/SzeMeng76/LunaTV.git app
-    - name: Load onecloud
-      run: |
-        mv target/linux/amlogic ./app
-        chmod -Rf 755 openwrt/target/linux/amlogic
+     - name: Load onecloud
+       run: |
+         mv mopidy app
+         chmod -Rf 755 app
           
       - name: 构建并推送 Docker 镜像
         uses: docker/build-push-action@v5
