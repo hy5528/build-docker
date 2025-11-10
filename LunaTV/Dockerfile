@@ -3,8 +3,6 @@ FROM --platform=$BUILDPLATFORM node:20-alpine AS deps
 
 # 启用 corepack 并激活 pnpm（Node20 默认提供 corepack）
 RUN corepack enable && corepack prepare pnpm@latest --activate
-RUN cd ./
-RUN git clone --depth=1 --branch=main https://github.com/SzeMeng76/LunaTV.git app
 
 WORKDIR /app
 
@@ -14,7 +12,9 @@ COPY package.json pnpm-lock.yaml ./
 
 # 清理任何潜在的缓存并安装所有依赖
 RUN pnpm store prune && pnpm install --frozen-lockfile --no-optional
-
+WORKDIR /
+RUN git clone --depth=1 --branch=main https://github.com/SzeMeng76/LunaTV.git app
+RUN cd /app
 # ---- 第 2 阶段：构建项目 ----
 FROM --platform=$BUILDPLATFORM node:20-alpine AS builder
 RUN corepack enable && corepack prepare pnpm@latest --activate
