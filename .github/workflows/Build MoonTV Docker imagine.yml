@@ -47,7 +47,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@v5
         with:
-          images: ghcr.io/hy5528/moontv
+          images: ghcr.io/hy5528/moontv66
           tags: |
             type=raw,value=latest
       - name: Clone Overleaf Gitlab Repo
