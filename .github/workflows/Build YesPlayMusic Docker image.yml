@@ -44,7 +44,7 @@ jobs:
       - name: "Copy userpatches to build folder"
         shell: bash
         run: |
-          rsync -av SPlayer/. ./app
+          rsync -av YesPlayMusic/. ./app
 
       - name: Build and push
         uses: docker/build-push-action@v6
