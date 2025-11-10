@@ -1,5 +1,5 @@
 # Use Python 3.10 as the base image
-FROM --platform=$BUILDPLATFORM python:3.10-slim
+FROM --platform=$BUILDPLATFORM python:3.10-slim-bookworm
 
 WORKDIR /DOTSERMODZ
 
