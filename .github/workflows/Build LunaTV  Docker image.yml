@@ -26,8 +26,7 @@ jobs:
       packages: write
 
       
-    steps:
-          
+    steps:      
       - name: 检出代码
         uses: actions/checkout@v4
 
