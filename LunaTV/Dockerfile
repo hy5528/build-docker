@@ -4,10 +4,11 @@ FROM --platform=$BUILDPLATFORM node:20-alpine AS deps
 # 启用 corepack 并激活 pnpm（Node20 默认提供 corepack）
 RUN corepack enable && corepack prepare pnpm@latest --activate
 
-WORKDIR /app
-RUN git clone https://github.com/SzeMeng76/LunaTV.git
+RUN git clone https://github.com/SzeMeng76/LunaTV.git app
 
 WORKDIR /app
+
+
 # 仅复制依赖清单，提高构建缓存利用率
 COPY package.json pnpm-lock.yaml ./
 
