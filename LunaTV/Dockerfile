@@ -7,7 +7,7 @@ RUN corepack enable && corepack prepare pnpm@latest --activate
 WORKDIR /
 RUN mkdir -p /app
 RUN cd /app
-RUN git clone https://github.com/SzeMeng76/LunaTV.git app
+RUN git clone https://github.com/SzeMeng76/LunaTV.git
 
 WORKDIR /app
 
