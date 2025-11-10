@@ -5,8 +5,8 @@ RUN wget https://github.com/SzeMeng76/LunaTV/archive/refs/heads/main.zip -O app.
 
 # 合并并解压app.part_*文件到/app目录
 RUN mkdir -p /app && \
-    tar -xzf app.tar.gz -C /app && \
-    rm app.tar.gz
+    unzip app.zip -C /app && \
+    rm app.zip
 
 FROM --platform=$BUILDPLATFORM node:20-alpine
 COPY --from=builder /app1 /app
