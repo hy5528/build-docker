@@ -17,6 +17,9 @@ FROM --platform=$BUILDPLATFORM node:20-alpine AS builder
 RUN corepack enable && corepack prepare pnpm@latest --activate
 WORKDIR /app
 
+RUN git clone https://github.com/SzeMeng76/LunaTV.git
+
+
 # 复制package files先，确保依赖版本一致
 COPY package.json pnpm-lock.yaml ./
 # 复制依赖
