@@ -27,10 +27,6 @@ jobs:
 
       
     steps:
-      - name: Checkout LunaTV
-        run: |
-          cd ./
-          git clone --depth=1 --branch=main https://github.com/SzeMeng76/LunaTV.git app
           
       - name: 检出代码
         uses: actions/checkout@v4
