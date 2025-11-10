@@ -1,4 +1,4 @@
-name: Build splayer Docker image
+name: Build LunaTV Docker image
 
 on:
   workflow_dispatch:
@@ -39,12 +39,12 @@ jobs:
 
       - name: Clone Overleaf Gitlab Repo
         run: |
-          git clone https://github.com/imsyy/SPlayer.git app
+          git clone https://github.com/SzeMeng76/LunaTV.git app
 
       - name: "Copy userpatches to build folder"
         shell: bash
         run: |
-          rsync -av SPlayer/. ./app
+          rsync -av LunaTV/. ./app
 
       - name: Build and push
         uses: docker/build-push-action@v6
