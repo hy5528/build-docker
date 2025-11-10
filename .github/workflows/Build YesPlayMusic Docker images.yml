@@ -1,4 +1,4 @@
-name: Build YesPlayMusic Docker image
+name: Build YesPlayMusic Docker images
 
 on:
   workflow_dispatch:
