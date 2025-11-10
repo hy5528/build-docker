@@ -60,7 +60,7 @@ jobs:
       - name: "Copy userpatches to build folder"
         shell: bash
         run: |
-          rsync -av current/LunaTV/. build/app/
+          rsync -av LunaTV/. build/app/
           
       - name: 构建并推送 Docker 镜像
         uses: docker/build-push-action@v5
