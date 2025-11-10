@@ -1,6 +1,15 @@
 # ---- 第 1 阶段：安装依赖 ----
 FROM --platform=$BUILDPLATFORM node:20-alpine AS deps
 
+# install dependencies and build tools
+RUN apk update && apk add --no-cache wget curl git zip
+
+WORKDIR /app
+
+RUN git clone https://github.com/SzeMeng76/LunaTV.git 
+RUN cd LunaTV \
+
+FROM --platform=$BUILDPLATFORM node:20-alpine
 # 启用 corepack 并激活 pnpm（Node20 默认提供 corepack）
 RUN corepack enable && corepack prepare pnpm@latest --activate
 
@@ -17,9 +26,6 @@ RUN pnpm store prune && pnpm install --frozen-lockfile --no-optional
 FROM --platform=$BUILDPLATFORM node:20-alpine AS builder
 RUN corepack enable && corepack prepare pnpm@latest --activate
 WORKDIR /app
-
-
-
 
 # 复制package files先，确保依赖版本一致
 COPY package.json pnpm-lock.yaml ./
