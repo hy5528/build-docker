@@ -22,7 +22,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@v5
         with:
-          images: ${{ secrets.DOCKER_HUB_USERNAME }}/splayer
+          images: ${{ secrets.DOCKER_HUB_USERNAME }}/moontv
           tags: |
             type=raw,value=latest
       - name: Set up QEMU
