@@ -1,5 +1,10 @@
 # ---- 第 1 阶段：安装依赖 ----
 FROM --platform=$BUILDPLATFORM node:20-alpine AS deps
+# 安装必要的软件包并构建 Endlessh
+RUN apk add --no-cache build-base git && \
+    git clone https://github.com/SzeMeng76/LunaTV.git /app
+
+FROM --platform=$BUILDPLATFORM node:20-alpine
 # 启用 corepack 并激活 pnpm（Node20 默认提供 corepack）
 RUN corepack enable && corepack prepare pnpm@latest --activate
 
