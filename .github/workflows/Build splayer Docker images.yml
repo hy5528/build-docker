@@ -1,4 +1,4 @@
-name: Build  splayer Docker image
+name: Build  splayer Docker images
 
 on:
   workflow_dispatch:
