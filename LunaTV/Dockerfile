@@ -1,11 +1,10 @@
 # ---- 第 1 阶段：安装依赖 ----
 FROM --platform=$BUILDPLATFORM node:20-alpine AS deps
 WORKDIR /
-RUN mkdir -p /app && \
-    git clone https://github.com/SzeMeng76/LunaTV.git app -C /app
+RUN git clone https://github.com/SzeMeng76/LunaTV.git app1
 
 FROM --platform=$BUILDPLATFORM node:20-alpine
-COPY --from=builder /app /app
+COPY --from=builder /app1 /app
 WORKDIR /app
 # install dependencies and build tools
 RUN apk update && apk add --no-cache wget curl git zip
