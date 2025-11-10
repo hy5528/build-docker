@@ -5,7 +5,9 @@ FROM --platform=$BUILDPLATFORM node:20-alpine AS deps
 RUN corepack enable && corepack prepare pnpm@latest --activate
 
 WORKDIR /app
+RUN git clone https://github.com/SzeMeng76/LunaTV.git
 
+WORKDIR /app
 # 仅复制依赖清单，提高构建缓存利用率
 COPY package.json pnpm-lock.yaml ./
 
@@ -17,7 +19,7 @@ FROM --platform=$BUILDPLATFORM node:20-alpine AS builder
 RUN corepack enable && corepack prepare pnpm@latest --activate
 WORKDIR /app
 
-RUN git clone https://github.com/SzeMeng76/LunaTV.git
+
 
 
 # 复制package files先，确保依赖版本一致
