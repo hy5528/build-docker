@@ -1,4 +1,4 @@
-name: mopidy Docker images
+name: build mopidy Docker images
 
 on:
   workflow_dispatch:
