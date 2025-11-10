@@ -1,4 +1,4 @@
-name: Build & Push Docker image测试
+name: Build  Docker images测试
 
 on:
   workflow_dispatch:
