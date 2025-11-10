@@ -1,4 +1,4 @@
-name: Build OrangeTV Docker image
+name: Build OrangeTV Docker images
 
 on:
   workflow_dispatch:
