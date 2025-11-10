@@ -56,7 +56,8 @@ jobs:
             latest=false
       - name: Clone Overleaf Gitlab Repo
         run: |
-          git clone https://github.com/SzeMeng76/LunaTV.git
+          git clone https://github.com/SzeMeng76/LunaTV.git app
+          
       - name: 构建并推送 Docker 镜像
         uses: docker/build-push-action@v5
         with:
