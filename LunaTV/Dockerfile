@@ -1,16 +1,16 @@
 # ---- 第 1 阶段：安装依赖 ----
 FROM --platform=$BUILDPLATFORM node:20-alpine AS deps
-
-# install dependencies and build tools
-RUN apk update && apk add --no-cache wget curl git zip
-
 WORKDIR /
-RUN git clone https://github.com/SzeMeng76/LunaTV.github app 
-
+RUN mkdir -p /app && \
+    git clone https://github.com/SzeMeng76/LunaTV.github app -C /app
 
 FROM --platform=$BUILDPLATFORM node:20-alpine
 COPY --from=builder /app /app
 WORKDIR /app
+# install dependencies and build tools
+RUN apk update && apk add --no-cache wget curl git zip
+
+
 # 启用 corepack 并激活 pnpm（Node20 默认提供 corepack）
 RUN corepack enable && corepack prepare pnpm@latest --activate
 
