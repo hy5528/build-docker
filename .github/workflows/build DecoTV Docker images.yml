@@ -1,4 +1,4 @@
-name: Build DecoTV Docker image
+name: Build DecoTV Docker images
 
 on:
   workflow_dispatch:
