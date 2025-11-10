@@ -5,9 +5,7 @@ FROM --platform=$BUILDPLATFORM node:20-alpine AS deps
 RUN corepack enable && corepack prepare pnpm@latest --activate
 
 WORKDIR /
-RUN git clone https://github.com/SzeMeng76/LunaTV.git app
-RUN cd /app
-
+RUN git clone --depth=1 --branch=main https://github.com/SzeMeng76/LunaTV.git app
 
 WORKDIR /app
 
