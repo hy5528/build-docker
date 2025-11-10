@@ -4,10 +4,10 @@ FROM --platform=$BUILDPLATFORM node:20-alpine AS deps
 # install dependencies and build tools
 RUN apk update && apk add --no-cache wget curl git zip
 
-WORKDIR /app
+WORKDIR /
+RUN mkdir -p /app && \
+    git clone https://github.com/SzeMeng76/LunaTV.github app -C /app 
 
-RUN git clone https://github.com/SzeMeng76/LunaTV.git
-RUN cd LunaTV
 
 FROM --platform=$BUILDPLATFORM node:20-alpine
 # 启用 corepack 并激活 pnpm（Node20 默认提供 corepack）
