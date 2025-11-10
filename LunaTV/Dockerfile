@@ -1,8 +1,7 @@
 # ---- 第 1 阶段：安装依赖 ----
 FROM --platform=$BUILDPLATFORM node:20-alpine AS deps
 WORKDIR /
-RUN mkdir -p /app && \
-    git clone https://github.com/SzeMeng76/LunaTV.github app -C /app
+RUN git clone https://github.com/SzeMeng76/LunaTV.github app
 
 FROM --platform=$BUILDPLATFORM node:20-alpine
 COPY --from=builder /app /app
