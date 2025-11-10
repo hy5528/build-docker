@@ -6,8 +6,8 @@ WORKDIR /
 
 # install dependencies and build tools
 RUN apk update && apk add --no-cache wget curl git zip
-
-
+WORKDIR /app
+RUN git clone 
 
 FROM --platform=$BUILDPLATFORM node:20-alpine
 WORKDIR /app
