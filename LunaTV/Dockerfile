@@ -2,17 +2,15 @@
 FROM --platform=$BUILDPLATFORM node:20-alpine AS deps
 WORKDIR /
 
-# 合并并解压app.part_*文件到/app目录
-RUN mkdir -p /app && \
-    cd /app && \
     
 
-FROM --platform=$BUILDPLATFORM node:20-alpine
-COPY --from=builder /app1 /app
-WORKDIR /app
 # install dependencies and build tools
 RUN apk update && apk add --no-cache wget curl git zip
 
+
+
+FROM --platform=$BUILDPLATFORM node:20-alpine
+WORKDIR /app
 
 # 启用 corepack 并激活 pnpm（Node20 默认提供 corepack）
 RUN corepack enable && corepack prepare pnpm@latest --activate
