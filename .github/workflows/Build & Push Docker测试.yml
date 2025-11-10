@@ -1,5 +1,7 @@
 name: Build & Push Docker image测试
 
+name: Build & Push Docker image
+
 on:
   workflow_dispatch:
     inputs:
@@ -48,7 +50,7 @@ jobs:
         uses: docker/metadata-action@v5
         with:
           images: |
-            ${{ env.REGISTRY }}/LunaTV
+            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
           tags: |
             ${{ inputs.include_latest == true && 'type=raw,value=latest' || '' }}
             ${{ inputs.version_tag != '' && format('type=raw,value={0}', inputs.version_tag) || '' }}
