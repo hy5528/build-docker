@@ -1,4 +1,4 @@
-name: Build MoonTV Docker image
+name: Build MoonTV Docker images
 
 on:
   workflow_dispatch:
