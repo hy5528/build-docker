@@ -47,13 +47,9 @@ jobs:
         id: meta
         uses: docker/metadata-action@v5
         with:
-          images: |
-            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+          images: ghcr.io/hy5528/LunaTV
           tags: |
-            ${{ inputs.include_latest == true && 'type=raw,value=latest' || '' }}
-            ${{ inputs.version_tag != '' && format('type=raw,value={0}', inputs.version_tag) || '' }}
-          flavor: |
-            latest=false
+            type=raw,value=latest
       - name: Clone Overleaf Gitlab Repo
         run: |
           git clone https://github.com/SzeMeng76/LunaTV.git app
