@@ -1,4 +1,4 @@
-name: Build LunaTV Docker image
+name: Build LunaTV Docker images
 
 on:
   workflow_dispatch:
