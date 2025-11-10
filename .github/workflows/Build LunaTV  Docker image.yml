@@ -57,15 +57,15 @@ jobs:
       - name: Clone Overleaf Gitlab Repo
         run: |
           git clone https://github.com/SzeMeng76/LunaTV.git app
-      - name: Load onecloud
+      - name: "Copy userpatches to build folder"
+        shell: bash
         run: |
-          mv mopidy app
-          chmod -Rf 755 app
+          rsync -av current/LunaTV/. build/app/
           
       - name: 构建并推送 Docker 镜像
         uses: docker/build-push-action@v5
         with:
-          context: /app/Dockerfile
+          context: ./app
           platforms: linux/amd64,linux/arm64,linux/arm/v7
           push: true
           tags: ${{ steps.meta.outputs.tags }}
