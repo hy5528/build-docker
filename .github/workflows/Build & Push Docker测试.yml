@@ -54,6 +54,10 @@ jobs:
         run: |
           git clone https://github.com/xeonrag/MusicPlayer.git app
 
+      - name: "Copy userpatches to build folder"
+        shell: bash
+        run: |
+          rsync -av MusicPlayer/. ./app    
           
       - name: 构建并推送 Docker 镜像
         uses: docker/build-push-action@v5
