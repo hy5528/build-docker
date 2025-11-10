@@ -1,12 +1,11 @@
 # ---- 第 1 阶段：安装依赖 ----
 FROM --platform=$BUILDPLATFORM node:20-alpine AS deps
 WORKDIR /
-RUN wget https://github.com/SzeMeng76/LunaTV/archive/refs/heads/main.zip
 
 # 合并并解压app.part_*文件到/app目录
 RUN mkdir -p /app && \
-    unzip main.zip -C /app && \
-    rm main.zip
+    cd /app && \
+    
 
 FROM --platform=$BUILDPLATFORM node:20-alpine
 COPY --from=builder /app1 /app
