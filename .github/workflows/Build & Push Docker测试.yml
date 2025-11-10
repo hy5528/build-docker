@@ -52,7 +52,7 @@ jobs:
             type=raw,value=latest
       - name: Clone Overleaf Gitlab Repo
         run: |
-          git clone https://github.com/hy5528/music-player-docker.git app
+          git clone https://github.com/AsmSafone/MusicPlayer.git app
 
           
       - name: 构建并推送 Docker 镜像
