@@ -1,4 +1,4 @@
-mopidy:
+1、mopidy:
 ---
 services:
   mopidy:
