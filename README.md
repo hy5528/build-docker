@@ -1,7 +1,7 @@
 mopidy:
 
-
 services:
+
   mopidy:
     image: hy5528/mopidy:latest
     container_name: mopidy
@@ -11,3 +11,6 @@ services:
     volumes:
       - /opt/config:/mopidy
       - /opt/cache:/cache
+      - /opt/data:/mopidy/data
+      - /media/music:/var/lib/mopidy
+    restart: always
