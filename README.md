@@ -1,10 +1,8 @@
 mopidy
 
 services:
-
   mopidy:
-    image: hy5528/mopidy:latest
-    
+    image: hy5528/mopidy:latest 
     container_name: mopidy 
     
     ports:
