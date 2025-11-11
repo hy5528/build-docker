@@ -48,8 +48,6 @@ EXPOSE 6680
 EXPOSE 5555/udp
 
 ADD ./start.sh /start.sh
-RUN set -ex \
- && chown mopidy:audio -R /start.sh 
 
 ENTRYPOINT ["dumb-init", "--"]
 CMD ["/start.sh"]
