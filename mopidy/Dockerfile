@@ -54,7 +54,6 @@ USER $DOCKER_USER:$DOCKER_GROUP
 EXPOSE 6600
 EXPOSE 6680
 EXPOSE 5555/udp
-
-ENTRYPOINT ["mopidy"]
+CMD ["/usr/bin/mopidy"]
 HEALTHCHECK --interval=60s --timeout=5s --retries=3 \
     CMD curl --connect-timeout 5 --silent --show-error --fail http://localhost:6680/ || exit 1
