@@ -48,17 +48,6 @@ ENV DOCKER_GROUP=audio
 ENV HOME=/var/lib/mopidy
 ENV XDG_MUSIC_DIR=/media
 
-# Create user, set permissions and create necessary directories
-RUN set -ex \
-    # Create the group only if it does not already exist
-    && (getent group $DOCKER_GROUP || groupadd -r $DOCKER_GROUP) \
-    # Create the user
-    && useradd -r -ms /bin/bash -g $DOCKER_GROUP -d $HOME $DOCKER_USER \
-    # Add user to supplementary groups
-    && usermod -aG audio,sudo,pulse-access $DOCKER_USE
-
-    
-
 # Switch to the non-root user
 USER $DOCKER_USER:$DOCKER_GROUP 
 
