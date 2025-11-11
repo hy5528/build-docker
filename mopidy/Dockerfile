@@ -40,7 +40,8 @@ RUN curl -L -o gst-plugin-spotify_${GST_PLUGIN_SPOTIFY_VERSION_FILE}_${ARCH}.deb
 
 RUN sh -c 'echo "mopidy ALL=NOPASSWD: /usr/local/lib/python3.11/dist-packages/mopidy_iris/system.sh" >> /etc/sudoers'
 
-USER mopidy
+# Switch to the non-root user
+USER $DOCKER_USER:$DOCKER_GROUP
 
 EXPOSE 6600
 EXPOSE 6680
