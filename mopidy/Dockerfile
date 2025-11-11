@@ -46,7 +46,7 @@ EXPOSE 6600
 EXPOSE 6680
 EXPOSE 5555/udp
 
-COPY --chmod=755 ./start.sh /start.sh
+ADD --chmod=755 ./start.sh /start.sh
 
 ENTRYPOINT ["dumb-init", "--"]
 CMD ["/start.sh"]
