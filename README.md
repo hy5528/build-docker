@@ -1,4 +1,5 @@
 mopidy
+
 services:
 
   mopidy:
