@@ -49,9 +49,7 @@ EXPOSE 5555/udp
 
 ADD ./start.sh /start.sh
 RUN set -ex \
- && usermod -G audio,sudo mopidy \
- && chown mopidy:audio -R $HOME /start.sh \
- && chmod go+rwx -R $HOME /start.sh
+ && chown mopidy:audio -R /start.sh 
 
 ENTRYPOINT ["dumb-init", "--"]
 CMD ["/start.sh"]
