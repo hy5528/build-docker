@@ -48,7 +48,7 @@ EXPOSE 6680
 EXPOSE 5555/udp
 
 ADD ./start.sh /start.sh
-run chown mopidy:root /start.sh
+run chown mopidy:mopidy /start.sh
 
 ENTRYPOINT ["dumb-init", "--"]
 CMD ["/start.sh"]
