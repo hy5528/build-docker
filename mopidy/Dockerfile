@@ -1,4 +1,4 @@
-9FROM debian:12-slim
+FROM debian:11-slim
 LABEL Author="Rogger Fabri"
 
 ARG ARCH=amd64
