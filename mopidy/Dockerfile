@@ -40,20 +40,16 @@ RUN curl -L -o gst-plugin-spotify_${GST_PLUGIN_SPOTIFY_VERSION_FILE}_${ARCH}.deb
 
 RUN sh -c 'echo "mopidy ALL=NOPASSWD: /usr/local/lib/python3.11/dist-packages/mopidy_iris/system.sh" >> /etc/sudoers'
 
-# Define user and group to run mopidy
-ENV DOCKER_USER=mopidy
-ENV DOCKER_GROUP=audio
-
-# Set environment variables for Home and local music directory
-ENV HOME=/var/lib/mopidy
-ENV XDG_MUSIC_DIR=/media
-
-# Switch to the non-root user
-USER $DOCKER_USER:$DOCKER_GROUP 
+USER mopidy
 
 EXPOSE 6600
 EXPOSE 6680
 EXPOSE 5555/udp
+
+ADD ./start.sh /start.sh
+
+ENTRYPOINT ["dumb-init", "--"]
 CMD ["/usr/bin/mopidy"]
+
 HEALTHCHECK --interval=60s --timeout=5s --retries=3 \
     CMD curl --connect-timeout 5 --silent --show-error --fail http://localhost:6680/ || exit 1
