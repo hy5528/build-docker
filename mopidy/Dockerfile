@@ -40,8 +40,27 @@ RUN curl -L -o gst-plugin-spotify_${GST_PLUGIN_SPOTIFY_VERSION_FILE}_${ARCH}.deb
 
 RUN sh -c 'echo "mopidy ALL=NOPASSWD: /usr/local/lib/python3.11/dist-packages/mopidy_iris/system.sh" >> /etc/sudoers'
 
+# Define user and group to run mopidy
+ENV DOCKER_USER=mopidy
+ENV DOCKER_GROUP=audio
+
+# Set environment variables for Home and local music directory
+ENV HOME=/var/lib/mopidy
+ENV XDG_MUSIC_DIR=/media
+
+# Create user, set permissions and create necessary directories
+RUN set -ex \
+    # Create the group only if it does not already exist
+    && (getent group $DOCKER_GROUP || groupadd -r $DOCKER_GROUP) \
+    # Create the user
+    && useradd -r -ms /bin/bash -g $DOCKER_GROUP -d $HOME $DOCKER_USER \
+    # Add user to supplementary groups
+    && usermod -aG audio,sudo,pulse-access $DOCKER_USE
+
+    
+
 # Switch to the non-root user
-USER mopidy
+USER $DOCKER_USER:$DOCKER_GROUP 
 
 EXPOSE 6600
 EXPOSE 6680
