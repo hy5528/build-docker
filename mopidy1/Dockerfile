@@ -1,22 +1,20 @@
-ARG BUILD_FROM
-ARG ARCH
+FROM debian:12-slim
+LABEL Author="Rogger Fabri"
 
-FROM $BUILD_FROM
-ARG ARCH
+ARG ARCH=amd64
+ARG GST_PLUGIN_SPOTIFY_VERSION_PATH=0.14.0-alpha.1-1
+ARG GST_PLUGIN_SPOTIFY_VERSION_FILE=0.14.0.alpha.1-1
 
-RUN apt-get update \
- && apt-get install -y wget \
-                       gstreamer1.0-alsa \
-                       gstreamer1.0-plugins-good \
-                       gstreamer1.0-plugins-ugly \
-                       gstreamer1.0-plugins-bad \
-                       python3-gst-1.0 \
-                       python3-lxml \
-                       python3-pip \
-                       python3-setuptools \
-                       python3-wheel \
-                       libasound2-dev \
- && rm -rf /var/lib/apt/lists/*
+ENV DEBIAN_FRONTEND=noninteractive
+ENV PIP_NO_CACHE_DIR=1
+
+RUN apt update && apt upgrade -y \
+ && apt install -y \
+    curl \
+    dumb-init \
+    mopidy \
+    python3-pip \
+    sudo \
 
 RUN wget -O gst-plugin-spotify.deb https://github.com/kingosticks/gst-plugins-rs-build/releases/download/gst-plugin-spotify_0.14.0-alpha.1-1/gst-plugin-spotify_0.14.0.alpha.1-1_${ARCH}.deb \
  && dpkg -i gst-plugin-spotify.deb
