@@ -1,4 +1,4 @@
-FROM debian:12-slim
+9FROM debian:11-slim
 LABEL Author="Rogger Fabri"
 
 ARG ARCH=amd64
@@ -51,8 +51,8 @@ ADD ./start.sh /start.sh
 
 
 ENTRYPOINT ["dumb-init", "--"]
-CMD ["mopidy", "--config", "/mopidy/mopidy.conf"]
-# CMD ["/start.sh"]
+＃ CMD ["mopidy", "--config", "/mopidy/mopidy.conf"]
+CMD ["/start.sh"]
 
 HEALTHCHECK --interval=60s --timeout=5s --retries=3 \
     CMD curl --connect-timeout 5 --silent --show-error --fail http://localhost:6680/ || exit 1
