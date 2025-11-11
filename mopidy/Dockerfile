@@ -41,13 +41,17 @@ RUN curl -L -o gst-plugin-spotify_${GST_PLUGIN_SPOTIFY_VERSION_FILE}_${ARCH}.deb
 RUN sh -c 'echo "mopidy ALL=NOPASSWD: /usr/local/lib/python3.11/dist-packages/mopidy_iris/system.sh" >> /etc/sudoers'
 
 # Switch to the non-root user
-USER root
+USER mopidy
 
 EXPOSE 6600
 EXPOSE 6680
 EXPOSE 5555/udp
 
 ADD ./start.sh /start.sh
+RUN set -ex \
+ && usermod -G audio,sudo mopidy \
+ && chown mopidy:audio -R $HOME /start.sh \
+ && chmod go+rwx -R $HOME /start.sh
 
 ENTRYPOINT ["dumb-init", "--"]
 CMD ["/start.sh"]
