@@ -55,11 +55,13 @@ jobs:
           git clone https://github.com/hy5528/docker-mopidy.git app
       - name: Create builder
         run: |
+          cd /app
           docker buildx create --name builder --driver=docker-container --driver-opt=image=moby/buildkit:master --use
           docker buildx inspect --bootstrap builde
           
       - name: 构建并推送 Docker 镜像
         run: |
+          cd /app
           VERSION=${{ github.ref_name }} docker buildx bake --push
       - name: 输出镜像信息
         run: |
