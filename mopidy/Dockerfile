@@ -15,9 +15,9 @@ RUN wget -q -O /etc/apt/keyrings/mopidy-archive-keyring.gpg https://apt.mopidy.c
 
 RUN apt update && apt upgrade -y \
  && apt install -y \
+    mopidy \
     curl \
     dumb-init \
-    mopidy \
     python3-pip \
     sudo \
  && mkdir -p ~/.config/pip && printf "[global]\nbreak-system-packages = true\n" | tee ~/.config/pip/pip.conf \
