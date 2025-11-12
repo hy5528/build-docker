@@ -46,7 +46,7 @@ RUN curl -L -o gst-plugin-spotify_${GST_PLUGIN_SPOTIFY_VERSION_FILE}_${ARCH}.deb
 RUN sh -c 'echo "mopidy ALL=NOPASSWD: /usr/local/lib/python3.11/dist-packages/mopidy_iris/system.sh" >> /etc/sudoers'
 
 USER mopidy
-VOLUME ["/config", "/var/lib/mopidy/local", "/media"]
+VOLUME [ "/var/lib/mopidy/local"]
 EXPOSE 6600
 EXPOSE 6680
 EXPOSE 5555/udp
