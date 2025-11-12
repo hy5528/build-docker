@@ -53,18 +53,14 @@ jobs:
       - name: Clone Overleaf Gitlab Repo
         run: |
           git clone https://github.com/hy5528/docker-mopidy.git app
-
+      - name: Create builder
+        run: |
+          docker buildx create --name builder --driver=docker-container --driver-opt=image=moby/buildkit:master --use
+          docker buildx inspect --bootstrap builde
+          
       - name: 构建并推送 Docker 镜像
-        uses: docker/build-push-action@v5
-        with:
-          context: ./app
-          platforms: linux/amd64,linux/arm64,linux/arm/v7
-          push: true
-          tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
-
+        run: |
+          VERSION=${{ github.ref_name }} docker buildx bake --push
       - name: 输出镜像信息
         run: |
           echo "### 🐳 Docker镜像构建成功！" >> $GITHUB_STEP_SUMMARY
