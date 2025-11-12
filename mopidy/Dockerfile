@@ -17,7 +17,7 @@ RUN apt update && apt upgrade -y \
  && apt install -y \
     curl \
     dumb-init \
-    mopidy3.4.2 \
+    mopidy \
     python3-pip \
     sudo \
  && mkdir -p ~/.config/pip && printf "[global]\nbreak-system-packages = true\n" | tee ~/.config/pip/pip.conf \
