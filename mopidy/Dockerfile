@@ -1,4 +1,4 @@
-FROM --platform=$BUILDPLATFORM debian:12-slim
+FROM debian:12-slim
 LABEL Author="Rogger Fabri"
 
 ARG ARCH=amd64
