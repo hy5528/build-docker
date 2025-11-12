@@ -47,12 +47,12 @@ jobs:
         id: meta
         uses: docker/metadata-action@v5
         with:
-          images: ghcr.io/hy5528/splayer68
+          images: ghcr.io/hy5528/mopidy68
           tags: |
             type=raw,value=latest
       - name: Clone Overleaf Gitlab Repo
         run: |
-          git clone https://github.com/hy5528/SPlayer.git app
+          git clone https://github.com/hy5528/docker-mopidy.git app
 
       - name: 构建并推送 Docker 镜像
         uses: docker/build-push-action@v5
