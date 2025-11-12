@@ -12,7 +12,6 @@ RUN apt-get update
 RUN apt-get install -y wget
 RUN mkdir -p /etc/apt/keyrings
 RUN wget -q -O /etc/apt/keyrings/mopidy-archive-keyring.gpg https://apt.mopidy.com/mopidy.gpg
-RUN apt-get update
 
 RUN apt update && apt upgrade -y \
  && apt install -y \
