@@ -13,7 +13,7 @@ COPY . .
 
 # add .env.example to .env
 RUN [ ! -e ".env" ] && cp .env.example .env || true
-RUN cd app
+RUN cd /app
 RUN npm run build
 
 # nginx
