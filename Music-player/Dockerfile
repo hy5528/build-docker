@@ -33,4 +33,6 @@ ENV NODE_TLS_REJECT_UNAUTHORIZED=0
 
 ENTRYPOINT ["/163-entrypoint.sh"]
 
-CMD ["npx", "NeteaseCloudMusicApi"]
+EXPOSE 80 443 3000
+
+ENTRYPOINT ["./docker-entrypoint.sh"]
