@@ -1,9 +1,11 @@
 FROM  debian:12-slim
 LABEL Author="hy5528"
 
-ARG ARCH=amd64
-ARG GST_PLUGIN_SPOTIFY_VERSION_PATH=0.15.0.alpha.1-3
-ARG GST_PLUGIN_SPOTIFY_VERSION_FILE=0.15.0.alpha.1-3
+ARG BUILD_DATE
+ARG VERSION
+ARG MOPIDY_RELEASE
+
+LABEL build_version="version:- ${VERSION} Build-date:- ${BUILD_DATE}"
 
 ENV DEBIAN_FRONTEND=noninteractive
 ENV PIP_NO_CACHE_DIR=1
@@ -11,10 +13,27 @@ ENV PIP_NO_CACHE_DIR=1
 RUN apt update && apt upgrade -y \
  && apt install -y \
     mopidy \
-    curl \
-    dumb-init \
-    python3-pip \
+   alsa-utils \
+    build-base \
+    cairo \
+    cairo-dev \
+    dbus \
+    dbus-dev \
+    gobject-introspection \
+    gobject-introspection-dev \
+    gstreamer \
+    gstreamer-dev \
+    gst-plugins-base \
+    gst-plugins-good \
+    gst-plugins-ugly \
+    gst-vaapi \
+    libxml2 \
+    python3 \
+    python3-dev \
+    py3-pip \
+    py3-virtualenv \
     sudo \
+  && mkdir -p ~/.config/pip && printf "[global]\nbreak-system-packages = true\n" | tee ~/.config/pip/pip.conf \
  && pip install \
     Mopidy-Iris \
     Mopidy-Local \
