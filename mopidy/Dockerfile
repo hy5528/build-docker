@@ -13,7 +13,7 @@ ENV PIP_NO_CACHE_DIR=1
 RUN apt update && apt upgrade -y \
  && apt install -y \
     mopidy \
-   alsa-utils \
+    alsa-utils \
     build-base \
     cairo \
     cairo-dev \
