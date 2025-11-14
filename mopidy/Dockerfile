@@ -6,7 +6,7 @@ ARG VERSION
 ARG MOPIDY_RELEASE
 
 LABEL build_version="version:- ${VERSION} Build-date:- ${BUILD_DATE}"
-LABEL maintainer="sweisgerber"
+LABEL maintainer="hy5528"
 #
 # Alpine Mopidy install along with some extensions #################################################
 #
