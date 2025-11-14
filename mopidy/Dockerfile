@@ -10,28 +10,15 @@ ENV PIP_NO_CACHE_DIR=1
 
 RUN apt update && apt upgrade -y \
  && apt install -y \
-    mopidy \
     alsa-utils \
-    build-base \
-    cairo \
-    cairo-dev \
-    dbus \
-    dbus-dev \
-    gobject-introspection \
-    gobject-introspection-dev \
     gstreamer \
     gstreamer-dev \
-    gst-plugins-base \
-    gst-plugins-good \
-    gst-plugins-ugly \
-    gst-vaapi \
-    libxml2 \
-    python3 \
-    python3-dev \
-    py3-pip \
-    py3-virtualenv \
+    curl \
+    dumb-init \
+    mopidy \
+    python3-pip \
     sudo \
-  && mkdir -p ~/.config/pip && printf "[global]\nbreak-system-packages = true\n" | tee ~/.config/pip/pip.conf \
+ && mkdir -p ~/.config/pip && printf "[global]\nbreak-system-packages = true\n" | tee ~/.config/pip/pip.conf \
  && pip install \
     Mopidy-Iris \
     Mopidy-Local \
