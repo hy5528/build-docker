@@ -8,7 +8,7 @@ RUN apk update && apk add --no-cache wget curl git zip
 
 WORKDIR /app
 
-RUN git clone --recurse-submodules https://github.com/OKSHIJIAN/Vue-mmPlayer.git
+RUN git clone --recurse-submodules https://github.com/Dos7t3r/Vue-mmPlayer.git
 
 RUN cd Vue-mmPlayer \
 	&& echo 'VUE_APP_BASE_API_URL = /api' > .env \
