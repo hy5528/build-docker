@@ -31,7 +31,6 @@ RUN apk add --no-cache npm python3 youtube-dl \
 
 ENV NODE_TLS_REJECT_UNAUTHORIZED=0
 
-ENTRYPOINT ["/163-entrypoint.sh"]
 
 EXPOSE 80 443 3000
 
