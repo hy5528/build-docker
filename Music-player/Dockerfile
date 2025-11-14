@@ -1,36 +1,46 @@
-# build
-FROM --platform=$BUILDPLATFORM node:20-alpine AS builder
+FROM --platform=$BUILDPLATFORM node:18-alpine as mmPlayer_builder
 
-RUN apk update && apk add --no-cache git
+# Maintainer
+LABEL maintainer="Crazyrico Open Source Software <crazyrico@qq.com>"
+
+# install dependencies and build tools
+RUN apk update && apk add --no-cache wget curl git zip
 
 WORKDIR /app
 
-COPY package*.json ./
+RUN git clone --recurse-submodules https://github.com/Dos7t3r/Vue-mmPlayer.git
 
-RUN npm install
+RUN cd Vue-mmPlayer \
+	&& echo 'VUE_APP_BASE_API_URL = /api' > .env \
+	&& npm install  \
+	&& npm run build \
+        && zip -r dist.zip dist
 
-COPY . .
 
-# add .env.example to .env
-RUN [ ! -e ".env" ] && cp .env.example .env || true
-RUN cd /app
-RUN npm run build
+FROM node:18-alpine
 
-# nginx
-FROM nginx:1.27-alpine-slim AS app
+RUN apk update && apk add --no-cache bash wget curl git nginx unzip
 
-COPY --from=builder /app/nginx.conf /etc/nginx/conf.d/default.conf
+WORKDIR /app
 
-COPY --from=builder /app/163-entrypoint.sh /163-entrypoint.sh
+COPY --from=mmPlayer_builder /app/Vue-mmPlayer/dist.zip ./
+RUN unzip dist.zip && rm -rf dist.zip
 
-RUN apk add --no-cache npm python3 youtube-dl \
-    && npm install -g @unblockneteasemusic/server NeteaseCloudMusicApi \
-    && wget https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp -O /usr/local/bin/yt-dlp \
-    && chmod +x /usr/local/bin/yt-dlp \
-    && chmod +x /163-entrypoint.sh
+ADD default.conf /etc/nginx/http.d/
 
-ENV NODE_TLS_REJECT_UNAUTHORIZED=0
+RUN cd /app && git clone https://github.com/lu2009/NeteaseCloudMusicAPI.git NeteaseCloudMusicApi
 
+RUN cd NeteaseCloudMusicApi \
+	&& npm config set registry "https://registry.npmmirror.com/" \
+	&& npm install -g npm husky \
+	&& npm install --production
+
+WORKDIR /app/NeteaseCloudMusicApi
+
+ADD docker-entrypoint.sh ./
+ADD check.sh ./
+
+RUN chmod +x /app/NeteaseCloudMusicApi/*.sh
 
 EXPOSE 80 443 3000
 
