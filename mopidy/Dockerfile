@@ -11,8 +11,6 @@ ENV PIP_NO_CACHE_DIR=1
 RUN apt update && apt upgrade -y \
  && apt install -y \
     alsa-utils \
-    gstreamer \
-    gstreamer-dev \
     curl \
     dumb-init \
     mopidy \
