@@ -10,7 +10,7 @@ LABEL maintainer="sweisgerber"
 #
 # Alpine Mopidy install along with some extensions #################################################
 #
-&& mkdir -p ~/.config/pip && printf "[global]\nbreak-system-packages = true\n" | tee ~/.config/pip/pip.conf \
+ && mkdir -p ~/.config/pip && printf "[global]\nbreak-system-packages = true\n" | tee ~/.config/pip/pip.conf \
  && pip install \
     alsa-utils \
     build-base \
