@@ -10,12 +10,8 @@ LABEL maintainer="sweisgerber"
 #
 # Alpine Mopidy install along with some extensions #################################################
 #
-RUN set -ex \
-  echo "**** setup apk testing mirror ****" \
-  && echo "@testing https://nl.alpinelinux.org/alpine/edge/testing/" >> /etc/apk/repositories \
-  && cat /etc/apk/repositories \
-  && echo "**** install runtime packages ****" \
-  && apk add --no-cache -U --upgrade \
+&& mkdir -p ~/.config/pip && printf "[global]\nbreak-system-packages = true\n" | tee ~/.config/pip/pip.conf \
+ && pip install \
     alsa-utils \
     build-base \
     cairo \
