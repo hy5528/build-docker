@@ -36,8 +36,10 @@ RUN set -ex \
     py3-pip \
     py3-virtualenv \
     sudo
- && mkdir -p ~/.config/pip && printf "[global]\nbreak-system-packages = true\n" | tee ~/.config/pip/pip.conf \
- && pip install \
+RUN python3 -m venv /lsiopy \
+ && pip install -U --no-cache-dir pip wheel setuptools \
+ && echo "**** install mopidy extensions ****" \
+ && pip install --no-cache-dir --upgrade \
     Mopidy-Iris \
     Mopidy-Local \
     Mopidy-Mobile \
@@ -45,11 +47,18 @@ RUN set -ex \
     Mopidy-Scrobbler \
     Mopidy-Spotify==5.0.0a3 \
     Mopidy-TuneIn \
- && apt purge --auto-remove -y \
-    gcc \
- && apt clean \
- && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* ~/.cache /root/.cache
-
+    Mopidy==${MOPIDY_RELEASE} \
+    PyGObject \
+    dbus-python \
+    pip \
+    pycairo \
+    pykka \
+    requests \
+    tornado \
+  && echo "**** cleanup ****" \
+  && rm -rf \
+    /tmp/*
+# copy defaults & s6-overlay stuff
 RUN curl -L -o gst-plugin-spotify_${GST_PLUGIN_SPOTIFY_VERSION_FILE}_${ARCH}.deb https://github.com/kingosticks/gst-plugins-rs-build/releases/download/gst-plugin-spotify_${GST_PLUGIN_SPOTIFY_VERSION_PATH}/gst-plugin-spotify_${GST_PLUGIN_SPOTIFY_VERSION_FILE}_${ARCH}.deb \
  && dpkg -i gst-plugin-spotify_${GST_PLUGIN_SPOTIFY_VERSION_FILE}_${ARCH}.deb \
   ; apt update && apt -f install -y \
