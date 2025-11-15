@@ -30,11 +30,9 @@ LABEL maintainer="sweisgerber"
     python3-dev \
     py3-pip \
     py3-virtualenv \
-    sudo
-RUN python3 -m venv /lsiopy \
- && pip install -U --no-cache-dir pip wheel setuptools \
- && echo "**** install mopidy extensions ****" \
- && pip install --no-cache-dir --upgrade \
+    sudo \
+ && mkdir -p ~/.config/pip && printf "[global]\nbreak-system-packages = true\n" | tee ~/.config/pip/pip.conf \
+ && pip install \
     Mopidy-Mobile \
     Mopidy-Iris \
     Mopidy-Jellyfin \
