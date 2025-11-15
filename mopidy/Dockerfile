@@ -38,7 +38,6 @@ RUN curl -L -o gst-plugin-spotify_${GST_PLUGIN_SPOTIFY_VERSION_FILE}_${ARCH}.deb
  && dpkg -i libshout3_2.4.1-2_${ARCH}.deb \
   ; apt update && apt -f install -y \
  && rm libshout3_2.4.1-2_${ARCH}.deb
-RUN apt-get install -y gstreamer1.0-plugins-bad
 RUN sh -c 'echo "mopidy ALL=NOPASSWD: /usr/local/lib/python3.11/dist-packages/mopidy_iris/system.sh" >> /etc/sudoers'
 
 USER mopidy
