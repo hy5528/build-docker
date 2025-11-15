@@ -1,21 +1,41 @@
-FROM  debian:12-slim
-LABEL Author="hy5528"
+FROM ghcr.io/linuxserver/baseimage-alpine:edge
 
-ARG ARCH=amd64
-ARG GST_PLUGIN_SPOTIFY_VERSION_PATH=0.14.0-alpha.1-1
-ARG GST_PLUGIN_SPOTIFY_VERSION_FILE=0.14.0.alpha.1-1
+# set version label
+ARG BUILD_DATE
+ARG VERSION
+ARG MOPIDY_RELEASE
 
-ENV DEBIAN_FRONTEND=noninteractive
-ENV PIP_NO_CACHE_DIR=1
-
-RUN apt update && apt upgrade -y \
- && apt install -y \
+LABEL build_version="version:- ${VERSION} Build-date:- ${BUILD_DATE}"
+LABEL maintainer="hy5528"
+#
+# Alpine Mopidy install along with some extensions #################################################
+#
+RUN set -ex \
+  echo "**** setup apk testing mirror ****" \
+  && echo "@testing https://nl.alpinelinux.org/alpine/edge/testing/" >> /etc/apk/repositories \
+  && cat /etc/apk/repositories \
+  && echo "**** install runtime packages ****" \
+  && apk add --no-cache -U --upgrade \
     alsa-utils \
-    curl \
-    dumb-init \
-    mopidy \
-    python3-pip \
-    sudo \
+    build-base \
+    cairo \
+    cairo-dev \
+    dbus \
+    dbus-dev \
+    gobject-introspection \
+    gobject-introspection-dev \
+    gstreamer \
+    gstreamer-dev \
+    gst-plugins-base \
+    gst-plugins-good \
+    gst-plugins-ugly \
+    gst-vaapi \
+    libxml2 \
+    python3 \
+    python3-dev \
+    py3-pip \
+    py3-virtualenv \
+    sudo
  && mkdir -p ~/.config/pip && printf "[global]\nbreak-system-packages = true\n" | tee ~/.config/pip/pip.conf \
  && pip install \
     Mopidy-Iris \
