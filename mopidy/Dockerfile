@@ -6,7 +6,7 @@ ARG VERSION
 ARG MOPIDY_RELEASE
 
 LABEL build_version="version:- ${VERSION} Build-date:- ${BUILD_DATE}"
-LABEL maintainer="hy5528"
+LABEL maintainer="sweisgerber"
 #
 # Alpine Mopidy install along with some extensions #################################################
 #
@@ -40,13 +40,16 @@ RUN python3 -m venv /lsiopy \
  && pip install -U --no-cache-dir pip wheel setuptools \
  && echo "**** install mopidy extensions ****" \
  && pip install --no-cache-dir --upgrade \
-    Mopidy-Iris \
-    Mopidy-Local \
     Mopidy-Mobile \
+    Mopidy-Iris \
+    Mopidy-Jellyfin \
+    Mopidy-Local \
     Mopidy-MPD \
+    Mopidy-Podcast \
     Mopidy-Scrobbler \
-    Mopidy-Spotify==5.0.0a3 \
+    Mopidy-Tidal \
     Mopidy-TuneIn \
+    Mopidy-YTMusic \
     Mopidy==${MOPIDY_RELEASE} \
     PyGObject \
     dbus-python \
