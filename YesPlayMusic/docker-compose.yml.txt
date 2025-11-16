@@ -11,7 +11,7 @@ services:
     ports:
       - 80:80
     restart: always
-environment:
+    environment:
       # 所有变量都不是必填项
       # 网易云服务端 IP, 可在宿主机通过 ping music.163.com 获得
       - NETEASE_SERVER_IP=220.197.30.65
