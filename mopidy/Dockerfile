@@ -1,7 +1,6 @@
 FROM  debian:12-slim
 LABEL Author="hy5528"
 
-ARG MOPIDY_RELEASE
 ARG ARCH=amd64
 ARG GST_PLUGIN_SPOTIFY_VERSION_PATH=0.14.0-alpha.1-1
 ARG GST_PLUGIN_SPOTIFY_VERSION_FILE=0.14.0.alpha.1-1
@@ -14,7 +13,7 @@ RUN apt update && apt upgrade -y \
     alsa-utils \
     curl \
     dumb-init \
-    Mopidy==${MOPIDY_RELEASE} \
+    Mopidy==RELEASE \
     python3-pip \
     sudo \
  && mkdir -p ~/.config/pip && printf "[global]\nbreak-system-packages = true\n" | tee ~/.config/pip/pip.conf \
