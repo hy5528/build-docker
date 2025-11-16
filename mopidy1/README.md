@@ -12,7 +12,7 @@ services:
       - 6680:6680
       - 8989:8989
     volumes:
-      - ./config:/config
-      - ./cache:/cache
-      - ./data:/data
+      - /opt/config:/config
+      - /opt/cache:/cache
+      - /opt/data:/data
     restart: always
