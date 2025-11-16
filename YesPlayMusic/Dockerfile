@@ -23,4 +23,4 @@ RUN chmod +x /docker-entrypoint.sh
 EXPOSE 80 3000
 ENV NODE_TLS_REJECT_UNAUTHORIZED=0
 ENTRYPOINT ["/docker-entrypoint.sh"]
-CMD ["sh", "-c", "nginx && exec npx @neteasecloudmusicapienhanced/api"]
+CMD ["npx","sh", "-c", "nginx && exec npx @neteasecloudmusicapienhanced/api"]
