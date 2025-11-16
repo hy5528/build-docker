@@ -15,13 +15,7 @@ services:
       - UnblockNeteaseMusic
     environment:
       - NODE_TLS_REJECT_UNAUTHORIZED=0
-      # 网易云服务端 IP, 可在宿主机通过 ping music.163.com 获得
-      - NETEASE_SERVER_IP=220.197.30.65
-      # UnblockNeteaseMusic 使用的音源, 支持列表见 https://github.com/UnblockNeteaseMusic/server?tab=readme-ov-file#%E9%9F%B3%E6%BA%90%E6%B8%85%E5%8D%95
-      - UNBLOCK_SOURCES=kugou kuwo bilibili
-      # 可添加 UnblockNeteaseMusic 支持的任何环境变量, 支持列表见 https://github.com/UnblockNeteaseMusic/server?tab=readme-ov-file#%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F
-      - ENABLE_FLAC=false
-      
+    
     networks:
       my_network:
 
@@ -41,6 +35,7 @@ services:
       - SELECT_MAX_BR=true
       - LOG_LEVEL=info
       - SEARCH_ALBUM=true
+      - ENABLE_FLAC=false
     networks:
       my_network:
         aliases:
