@@ -1,7 +1,4 @@
-ARG BUILD_FROM
-ARG ARCH
-
-FROM $BUILD_FROM
+FROM  debian:12-slim
 ARG ARCH
 
 RUN apt-get update \
