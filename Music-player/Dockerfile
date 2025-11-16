@@ -35,7 +35,7 @@ RUN cd NeteaseCloudMusicApi \
 	&& npm install -g npm husky \
 	&& npm install --production
 	&& wget https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp -O /usr/local/bin/yt-dlp \
-    && chmod +x /usr/local/bin/yt-dlp \
+    && chmod +x /usr/local/bin/yt-dlp 
 
 WORKDIR /app/NeteaseCloudMusicApi
 
