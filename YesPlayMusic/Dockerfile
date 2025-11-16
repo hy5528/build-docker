@@ -17,7 +17,10 @@ RUN apk add --no-cache nginx && npm i -g @neteasecloudmusicapienhanced/api
 
 COPY --from=build /app/docker/nginx.conf.example /etc/nginx/http.d/default.conf
 COPY --from=build /app/dist /usr/share/nginx/html
+COPY --from=builder /app/docker-entrypoint.sh /docker-entrypoint.sh
 
 EXPOSE 80 3000
+
+ENTRYPOINT ["/docker-entrypoint.sh"]
 
 CMD ["sh", "-c", "nginx && exec npx @neteasecloudmusicapienhanced/api"]
