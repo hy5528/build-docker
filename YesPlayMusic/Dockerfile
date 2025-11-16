@@ -21,6 +21,5 @@ COPY --from=build /app/dist /usr/share/nginx/html
 COPY --from=build /app/docker-entrypoint.sh /docker-entrypoint.sh
 RUN chmod +x /docker-entrypoint.sh
 EXPOSE 80 3000
-ENV NODE_TLS_REJECT_UNAUTHORIZED=0
 ENTRYPOINT ["/docker-entrypoint.sh"]
 CMD ["npx","sh", "-c", "nginx && exec npx @neteasecloudmusicapienhanced/api"]
