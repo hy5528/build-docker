@@ -28,4 +28,5 @@ COPY --from=build /app/docker-entrypoint.sh /docker-entrypoint.sh
 RUN chmod +x /docker-entrypoint.sh
 ENV NODE_TLS_REJECT_UNAUTHORIZED=0
 ENTRYPOINT ["/docker-entrypoint.sh"]
+
 CMD ["sh", "-c", "nginx && exec npx @neteaseapireborn/api@latest"]
