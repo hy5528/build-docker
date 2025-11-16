@@ -52,7 +52,7 @@ jobs:
             type=raw,value=latest
       - name: Clone Overleaf Gitlab Repo
         run: |
-          git clone https://github.com/junlongzzz/YesPlayMusic.git app
+          git clone https://github.com/qier222/YesPlayMusic.git app
 
       - name: "Copy userpatches to build folder"
         shell: bash
@@ -74,7 +74,7 @@ jobs:
         run: |
           echo "### 🐳 Docker镜像构建成功！" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
-          echo "**镜像标签：**" >> $GITHUB_STEP_SUMMARY
+          echo "**镜像标签：**" >> $GITHUB_STEP_SUMMAR
           echo '```' >> $GITHUB_STEP_SUMMARY
           echo "${{ steps.meta.outputs.tags }}" >> $GITHUB_STEP_SUMMARY
           echo '```' >> $GITHUB_STEP_SUMMARY
