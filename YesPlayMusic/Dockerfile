@@ -11,7 +11,7 @@ RUN apk add --no-cache python3 make g++ git \
     && yarn build
 
 # app
-FROM node:22-alpine AS app
+FROM nginx:1.27-alpine-slim AS app
 
 RUN apk add --no-cache nginx && npm i -g @neteasecloudmusicapienhanced/api
 
