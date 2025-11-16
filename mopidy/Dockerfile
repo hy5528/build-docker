@@ -13,7 +13,7 @@ RUN apt update && apt upgrade -y \
     alsa-utils \
     curl \
     dumb-init \
-    Mopidy==v4.0.0a4 \
+    Mopidy \
     python3-pip \
     sudo \
  && mkdir -p ~/.config/pip && printf "[global]\nbreak-system-packages = true\n" | tee ~/.config/pip/pip.conf \
