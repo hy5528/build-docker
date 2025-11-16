@@ -23,7 +23,6 @@ RUN python3 -m pip install --target /opt/mopidy-venv --upgrade Mopidy-Tidal
 RUN python3 -m pip install --target /opt/mopidy-venv --upgrade Mopidy-Local
 RUN python3 -m pip install --target /opt/mopidy-venv --upgrade Mopidy-Scrobbler
 RUN python3 -m pip install --target /opt/mopidy-venv --upgrade Mopidy-MPD
-RUN python3 -m pip install --target /opt/mopidy-venv --upgrade mopidy-jellyfin
 RUN python3 -m pip install --target /opt/mopidy-venv --upgrade Mopidy-Mobile
 
 RUN apt-get install -y gstreamer1.0-plugins-bad
