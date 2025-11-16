@@ -1,8 +1,5 @@
 FROM debian:12-slim
-ARG ARCH=amd64
-
-
-ENV DEBIAN_FRONTEND=noninteractive
+ARG ARCH
 
 RUN apt-get update \
  && apt-get install -y curl \
