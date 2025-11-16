@@ -1,5 +1,11 @@
-FROM debian:12-slim
-ARG ARCH
+FROM  debian:12-slim
+LABEL Author="hy5528"
+
+ARG ARCH=amd64
+ARG GST_PLUGIN_SPOTIFY_VERSION_PATH=0.14.0-alpha.1-1
+ARG GST_PLUGIN_SPOTIFY_VERSION_FILE=0.14.0.alpha.1-1
+
+ENV DEBIAN_FRONTEND=noninteractive
 
 RUN apt-get update \
  && apt-get install -y curl \
