@@ -1,6 +1,6 @@
 services:
   mopidy:
-    image: ghcr.nju.edu.cnhy5528/mopidy
+    image: ghcr.nju.edu.cn/hy5528/mopidy66:latest
     container_name: mopidy
     user: "1000:29"
     devices:
