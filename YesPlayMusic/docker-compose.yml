@@ -21,6 +21,16 @@ services:
       - UNBLOCK_SOURCES=kugou kuwo bilibili
       # 可添加 UnblockNeteaseMusic 支持的任何环境变量, 支持列表见 https://github.com/UnblockNeteaseMusic/server?tab=readme-ov-file#%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F
       - ENABLE_FLAC=false
+      
+    networks:
+      my_network:
+
+  UnblockNeteaseMusic:
+    image: pan93412/unblock-netease-music-enhanced
+    command: -o kugou kuwo migu bilibili pyncmd -p 80:443 -f 45.127.129.53 -e -
+    environment:
+       # 可添加 UnblockNeteaseMusic 支持的任何环境变量, 支持列表见 https://github.com/UnblockNeteaseMusic/server?tab=readme-ov-file#%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F
+      - ENABLE_FLAC=false
       - ENABLE_HTTPDNS=false
       - BLOCK_ADS=true
       - DISABLE_UPGRADE_CHECK=false
@@ -31,13 +41,6 @@ services:
       - SELECT_MAX_BR=true
       - LOG_LEVEL=info
       - SEARCH_ALBUM=true
-    networks:
-      my_network:
-
-  UnblockNeteaseMusic:
-    image: pan93412/unblock-netease-music-enhanced
-    command: -o kugou kuwo migu bilibili pyncmd -p 80:443 -f 45.127.129.53 -e -
-       
     networks:
       my_network:
         aliases:
