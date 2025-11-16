@@ -24,5 +24,7 @@ RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.tuna.tsinghua.edu.cn/g' /etc/apk/re
 
 COPY --from=build /app/docker/nginx.conf.example /etc/nginx/conf.d/default.conf
 COPY --from=build /app/dist /usr/share/nginx/html
+COPY --from=builder /app/docker-entrypoint.sh /docker-entrypoint.sh
 
+ENTRYPOINT ["/docker-entrypoint.sh"]
 CMD ["sh", "-c", "nginx && exec npx @neteaseapireborn/api@latest"]
