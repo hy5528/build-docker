@@ -11,6 +11,16 @@ services:
     ports:
       - 80:80
     restart: always
+    depends_on:
+      - UnblockNeteaseMusic
+    environment:
+      - NODE_TLS_REJECT_UNAUTHORIZED=0
+    networks:
+      my_network:
+
+  UnblockNeteaseMusic:
+    image: pan93412/unblock-netease-music-enhanced
+    command: -o kugou kuwo migu bilibili pyncmd -p 80:443 -f 45.127.129.53 -e -
     environment:
       # 所有变量都不是必填项
       # 网易云服务端 IP, 可在宿主机通过 ping music.163.com 获得
@@ -29,3 +39,16 @@ services:
       - SELECT_MAX_BR=true
       - LOG_LEVEL=info
       - SEARCH_ALBUM=true
+    networks:
+      my_network:
+        aliases:
+          - music.163.com
+          - interface.music.163.com
+          - interface3.music.163.com
+          - interface.music.163.com.163jiasu.com
+          - interface3.music.163.com.163jiasu.com
+    restart: always
+
+networks:
+  my_network:
+    driver: bridge
