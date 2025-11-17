@@ -1,7 +1,4 @@
-ARG BUILD_FROM
-ARG ARCH=amd64
-
-FROM ${BUILD_FROM:-debian:12-slim} AS base
+FROM --platform=$BUILDPLATFORM debian:12-slim AS base
 ARG ARCH=amd64
 
 ARG GST_PLUGIN_SPOTIFY_VERSION_PATH=0.15.0.alpha.1-3
