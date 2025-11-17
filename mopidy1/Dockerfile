@@ -21,7 +21,7 @@ RUN apt-get update \
 RUN wget -O gst-plugin-spotify.deb https://github.com/kingosticks/gst-plugins-rs-build/releases/download/gst-plugin-spotify_0.15.0-alpha.1-3/gst-plugin-spotify_0.15.0.alpha.1-3_${ARCH}.deb \
  && dpkg -i gst-plugin-spotify.deb
 
-COPY --from=build /app/requirements.txt /requirements.txt
+ADD --chmod=755 /app/requirements.txt /requirements.txt
 
 # RUN pip3 install -r requirements.txt \
 RUN pip3 install --break-system-packages -r requirements.txt \
