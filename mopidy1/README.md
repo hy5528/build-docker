@@ -7,7 +7,6 @@ services:
       - /dev/snd:/dev/snd
     environment:
       - AUDIO_OUTPUT=alsasink device=hw:1,0
-      - RESTORE_STATE=yes
     ports:
       - 6680:6680
       - 8989:8989
