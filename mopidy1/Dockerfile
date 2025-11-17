@@ -19,7 +19,6 @@ ENV PIP_NO_CACHE_DIR=1
                        python3-pip \
                        python3-setuptools \
                        python3-wheel \
-                       libasound2-dev \
  && apt purge --auto-remove -y \
     gcc \
  && apt clean \
