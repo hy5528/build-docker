@@ -37,6 +37,8 @@ VOLUME ["/root/.cache/mopidy", "/root/.local/share/mopidy", "/root/music"]
 
 ENV TZ=Europe/London
 
+RUN sh -c 'echo "mopidy ALL=NOPASSWD: /usr/local/lib/python3.11/dist-packages/mopidy_iris/system.sh" >> /etc/sudoers'
+
 EXPOSE 6600 6680
 
 ENTRYPOINT ["mopidy"]
