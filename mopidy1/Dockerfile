@@ -1,8 +1,8 @@
 ARG BUILD_FROM
-ARG ARCH
+ARG ARCH=amd64
 
-FROM $BUILD_FROM
-ARG ARCH
+FROM ${BUILD_FROM:-ubuntu:noble} AS base
+ARG ARCH=amd64
 
 RUN apt-get update \
  && apt-get install -y wget \
