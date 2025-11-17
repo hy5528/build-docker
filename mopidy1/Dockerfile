@@ -1,4 +1,4 @@
-FROM debian:12-slim AS base
+FROM --platform=$BUILDPLATFORM debian:12-slim AS base
 
 RUN apt-get update
 RUN apt-get install -y wget
