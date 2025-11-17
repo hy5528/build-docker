@@ -14,7 +14,7 @@ ENV LC_ALL="en_US.UTF-8"
 
 RUN  apt install -y cmake alsa-utils gstreamer1.0-plugins-bad \
      libcairo2-dev libjpeg-dev libgif-dev libgirepository1.0-dev libcairo2-dev \
-     python3-gst-1.0 python3-tornado python3-pkg-resources python3-pykka python3-requests python3-pip
+     python3-gst-1.0 python3-pkg-resources python3-pip
 RUN  pip install Mopidy Mopidy-Mobile Mopidy-MusicBox-Webclient Mopidy-MPD  Mopidy-Local Mopidy-Iris && \
      apt-get purge -y libcairo2-dev libjpeg-dev libgif-dev python3-pip cmake
 
