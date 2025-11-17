@@ -25,4 +25,4 @@ RUN mkdir -p /mopidy/config && mkdir -p /mopidy/data/playlists && mkdir -p /mopi
 
 EXPOSE 6600 6680
 
-CMD ["mopidy", "--config", "/mopidy/config/mopidy.conf", "-o", "audio/output=\"$AUDIO_OUTPUT\"", "$MOPIDY_PARAMS"]`
+CMD ["mopidy"]
