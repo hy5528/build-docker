@@ -5,7 +5,7 @@ ARG GST_PLUGIN_SPOTIFY_VERSION_PATH=0.14.0-alpha.1-1
 ARG GST_PLUGIN_SPOTIFY_VERSION_FILE=0.14.0.alpha.1-1
 RUN apt-get update
 
-RUN apt-get install -y 
+RUN apt-get install -y curl
 RUN apt-get install -y mopidy
 RUN apt-get install -y python3-pip
 
