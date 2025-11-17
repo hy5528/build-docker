@@ -51,12 +51,7 @@ LABEL source="https://github.com/GioF71/mopidy-docker"
 
 RUN mkdir -p /app/bin
 
-VOLUME /config
-VOLUME /cache
-VOLUME /data
-VOLUME /music
-
-ENV USER_MODE=""
+ENV USER_MODE="root"
 ENV PUID=""
 ENV PGID=""
 ENV AUDIO_GID=""
