@@ -21,7 +21,6 @@ ENV PATH="/opt/mopidy-venv/bin:$PATH"
 RUN python3 -m pip install --target /opt/mopidy-venv --upgrade Mopidy-Iris
 RUN python3 -m pip install --target /opt/mopidy-venv --upgrade Mopidy-Tidal
 RUN python3 -m pip install --target /opt/mopidy-venv --upgrade Mopidy-Local
-RUN python3 -m pip install --target /opt/mopidy-venv --upgrade Mopidy-Scrobbler
 RUN python3 -m pip install --target /opt/mopidy-venv --upgrade Mopidy-MPD
 RUN python3 -m pip install --target /opt/mopidy-venv --upgrade Mopidy-Mobile
 
