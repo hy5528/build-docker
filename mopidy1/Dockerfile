@@ -1,4 +1,6 @@
-FROM --platform=$BUILDPLATFORM ubuntu:noble AS base
+ARG BASE_IMAGE
+FROM ${BASE_IMAGE:-ubuntu:noble} AS base
+
 
 RUN apt-get update
 RUN apt-get install -y wget
