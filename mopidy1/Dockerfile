@@ -21,6 +21,15 @@ RUN python3 -m pip install --target /opt/mopidy-venv --upgrade Mopidy-Local
 RUN python3 -m pip install --target /opt/mopidy-venv --upgrade Mopidy-MPD
 RUN python3 -m pip install --target /opt/mopidy-venv --upgrade Mopidy-Mobile
 
+RUN curl -L -o gst-plugin-spotify_${GST_PLUGIN_SPOTIFY_VERSION_FILE}_${ARCH}.deb https://github.com/kingosticks/gst-plugins-rs-build/releases/download/gst-plugin-spotify_${GST_PLUGIN_SPOTIFY_VERSION_PATH}/gst-plugin-spotify_${GST_PLUGIN_SPOTIFY_VERSION_FILE}_${ARCH}.deb \
+ && dpkg -i gst-plugin-spotify_${GST_PLUGIN_SPOTIFY_VERSION_FILE}_${ARCH}.deb \
+  ; apt update && apt -f install -y \
+ && rm gst-plugin-spotify_${GST_PLUGIN_SPOTIFY_VERSION_FILE}_${ARCH}.deb \
+ && curl -L -o libshout3_2.4.1-2_${ARCH}.deb http://ftp.de.debian.org/debian/pool/main/libs/libshout/libshout3_2.4.1-2_${ARCH}.deb \
+ && dpkg -i libshout3_2.4.1-2_${ARCH}.deb \
+  ; apt update && apt -f install -y \
+ && rm libshout3_2.4.1-2_${ARCH}.deb
+
 RUN apt-get install -y gstreamer1.0-plugins-bad
 
 RUN mkdir -p /build
