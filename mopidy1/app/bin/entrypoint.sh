@@ -15,7 +15,7 @@ fi
 DEFAULT_UID=1000
 DEFAULT_GID=1000
 
-DEFAULT_USER_NAME=root
+DEFAULT_USER_NAME=mopidy-user
 DEFAULT_GROUP_NAME=mopidy-group
 DEFAULT_HOME_DIR=/home/$DEFAULT_USER_NAME
 
@@ -293,4 +293,181 @@ fi
 
 if [[ $ENABLE_SCROBBLER -eq 1 ]]; then
     if [[ -n "${SCROBBLER_USERNAME}" ]] && [[ -n "${SCROBBLER_PASSWORD}" ]]; then
-        echo "[scrobbler]" > $CONF
+        echo "[scrobbler]" > $CONFIG_DIR/scrobbler.conf
+        echo "enabled = true" >> $CONFIG_DIR/scrobbler.conf
+        echo "username = ${SCROBBLER_USERNAME}" >> $CONFIG_DIR/scrobbler.conf
+        echo "password = ${SCROBBLER_PASSWORD}" >> $CONFIG_DIR/scrobbler.conf
+    else
+        echo "No credentials for the scrobbler plugin"
+    fi
+else
+    echo "[scrobbler]" > $CONFIG_DIR/scrobbler.conf
+    echo "enabled = false" >> $CONFIG_DIR/scrobbler.conf
+fi
+
+ENABLE_FILE=0
+if [[ -z "${FILE_ENABLED}" ]]; then
+    ENABLE_FILE=0
+else
+    if [[ "${FILE_ENABLED^^}" == "YES" ]] || [[ "${FILE_ENABLED^^}" == "Y" ]]; then
+        ENABLE_FILE=1
+    elif [[ "${FILE_ENABLED^^}" != "NO" ]] && [[ "${FILE_ENABLED^^}" != "N" ]]; then
+        echo "Invalid FILE_ENABLED=[$FILE_ENABLED]"
+        exit 1
+    fi
+fi
+
+if [[ $ENABLE_FILE -eq 1 ]]; then
+    echo "[file]" > $CONFIG_DIR/file.conf
+    echo "enabled = true" >> $CONFIG_DIR/file.conf
+    echo "media_dirs = /music" >> $CONFIG_DIR/file.conf
+else
+    echo "[file]" > $CONFIG_DIR/file.conf
+    echo "enabled = false" >> $CONFIG_DIR/file.conf
+fi
+
+ENABLE_LOCAL=0
+if [[ -z "${LOCAL_ENABLED}" ]]; then
+    ENABLE_LOCAL=0
+else
+    if [[ "${LOCAL_ENABLED^^}" == "YES" ]] || [[ "${LOCAL_ENABLED^^}" == "Y" ]]; then
+        ENABLE_LOCAL=1
+    elif [[ "${LOCAL_ENABLED^^}" != "NO" ]] && [[ "${LOCAL_ENABLED^^}" != "N" ]]; then
+        echo "Invalid LOCAL_ENABLED=[$LOCAL_ENABLED]"
+        exit 1
+    fi
+fi
+
+if [[ $ENABLE_LOCAL -eq 1 ]]; then
+    echo "[local]" > $CONFIG_DIR/local.conf
+    echo "enabled = true" >> $CONFIG_DIR/local.conf
+    
+    # media_dir
+    if [[ -n "${LOCAL_MEDIA_DIR}" ]]; then
+        echo "media_dir = ${LOCAL_MEDIA_DIR}" >> $CONFIG_DIR/local.conf
+    else
+        echo "media_dir = /music" >> $CONFIG_DIR/local.conf
+    fi
+    
+    # max_search_results
+    if [[ -n "${LOCAL_MAX_SEARCH_RESULTS}" ]]; then
+        echo "max_search_results = ${LOCAL_MAX_SEARCH_RESULTS}" >> $CONFIG_DIR/local.conf
+    fi
+    
+    # scan_timeout
+    if [[ -n "${LOCAL_SCAN_TIMEOUT}" ]]; then
+        echo "scan_timeout = ${LOCAL_SCAN_TIMEOUT}" >> $CONFIG_DIR/local.conf
+    fi
+    
+    # scan_follow_symlinks
+    if [[ "${LOCAL_SCAN_FOLLOW_SYMLINKS^^}" == "YES" ]] || [[ "${LOCAL_SCAN_FOLLOW_SYMLINKS^^}" == "Y" ]]; then
+        echo "scan_follow_symlinks = true" >> $CONFIG_DIR/local.conf
+    fi
+    
+    # scan_flush_threshold
+    if [[ -n "${LOCAL_SCAN_FLUSH_THRESHOLD}" ]]; then
+        echo "scan_flush_threshold = ${LOCAL_SCAN_FLUSH_THRESHOLD}" >> $CONFIG_DIR/local.conf
+    fi
+    
+    # included_file_extensions
+    if [[ -n "${LOCAL_INCLUDED_FILE_EXTENSIONS}" ]]; then
+        echo "included_file_extensions = ${LOCAL_INCLUDED_FILE_EXTENSIONS}" >> $CONFIG_DIR/local.conf
+    fi
+    
+    # excluded_file_extensions
+    if [[ -n "${LOCAL_EXCLUDED_FILE_EXTENSIONS}" ]]; then
+        echo "excluded_file_extensions = ${LOCAL_EXCLUDED_FILE_EXTENSIONS}" >> $CONFIG_DIR/local.conf
+    fi
+    
+    # directories
+    if [[ -n "${LOCAL_DIRECTORIES}" ]]; then
+        echo "directories = ${LOCAL_DIRECTORIES}" >> $CONFIG_DIR/local.conf
+    fi
+    
+    # timeout
+    if [[ -n "${LOCAL_TIMEOUT}" ]]; then
+        echo "timeout = ${LOCAL_TIMEOUT}" >> $CONFIG_DIR/local.conf
+    fi
+    
+    # use_artist_sortname
+    if [[ "${LOCAL_USE_ARTIST_SORTNAME^^}" == "YES" ]] || [[ "${LOCAL_USE_ARTIST_SORTNAME^^}" == "Y" ]]; then
+        echo "use_artist_sortname = true" >> $CONFIG_DIR/local.conf
+    fi
+    
+    # album_art_files
+    if [[ -n "${LOCAL_ALBUM_ART_FILES}" ]]; then
+        echo "album_art_files = ${LOCAL_ALBUM_ART_FILES}" >> $CONFIG_DIR/local.conf
+    fi
+else
+    echo "[local]" > $CONFIG_DIR/local.conf
+    echo "enabled = false" >> $CONFIG_DIR/local.conf
+fi
+
+ENABLE_MPD=0
+if [[ -z "${MPD_ENABLED}" ]]; then
+    ENABLE_MPD=0
+else
+    if [[ "${MPD_ENABLED^^}" == "YES" ]] || [[ "${MPD_ENABLED^^}" == "Y" ]]; then
+        ENABLE_MPD=1
+    elif [[ "${MPD_ENABLED^^}" != "NO" ]] && [[ "${MPD_ENABLED^^}" != "N" ]]; then
+        echo "Invalid MPD_ENABLED=[$MPD_ENABLED]"
+        exit 1
+    fi
+fi
+
+if [[ $ENABLE_MPD -eq 1 ]]; then
+    echo "[mpd]" > $CONFIG_DIR/mpd.conf
+    echo "enabled = true" >> $CONFIG_DIR/mpd.conf
+    echo "hostname = 0.0.0.0" >> $CONFIG_DIR/mpd.conf
+else
+    echo "[mpd]" > $CONFIG_DIR/mpd.conf
+    echo "enabled = false" >> $CONFIG_DIR/mpd.conf
+fi
+
+ENABLE_MOBILE=0
+if [[ -z "${MOBILE_ENABLED}" ]]; then
+    ENABLE_MOBILE=0
+else
+    if [[ "${MOBILE_ENABLED^^}" == "YES" ]] || [[ "${MOBILE_ENABLED^^}" == "Y" ]]; then
+        ENABLE_MOBILE=1
+    elif [[ "${MOBILE_ENABLED^^}" != "NO" ]] && [[ "${MOBILE_ENABLED^^}" != "N" ]]; then
+        echo "Invalid MOBILE_ENABLED=[$MOBILE_ENABLED]"
+        exit 1
+    fi
+fi
+
+if [[ $ENABLE_MOBILE -eq 1 ]]; then
+    echo "[mobile]" > $CONFIG_DIR/mobile.conf
+    echo "enabled = true" >> $CONFIG_DIR/mobile.conf
+    if [[ -n "${MOBILE_TITLE}" ]]; then
+        echo "title = ${MOBILE_TITLE}" >> $CONFIG_DIR/mobile.conf
+    fi
+    if [[ -n "${MOBILE_WS_URL}" ]]; then
+        echo "ws_url = ${MOBILE_WS_URL}" >> $CONFIG_DIR/mobile.conf
+    fi
+else
+    echo "[mobile]" > $CONFIG_DIR/mobile.conf
+    echo "enabled = false" >> $CONFIG_DIR/mobile.conf
+fi
+
+
+echo "COMMAND_LINE=[${COMMAND_LINE}]"
+
+echo "Configuration: "
+CONFIG_COMMAND_LINE="mopidy --config $CONFIG_DIR config"
+eval $CONFIG_COMMAND_LINE
+
+echo "CMD_LINE=[$CMD_LINE]"
+if [[ $current_user_id -eq 0 ]]; then
+    echo "Container running as root"
+    if [[ $USE_USER_MODE == "Y" ]]; then
+        echo "User mode enabled"
+        su - $USER_NAME -c "$COMMAND_LINE"
+    else
+        echo "user mode not enabled"
+        eval "$COMMAND_LINE"
+    fi
+else
+    echo "Container running as ${current_user_id}"
+    eval "$COMMAND_LINE"
+fi
