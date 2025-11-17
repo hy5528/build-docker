@@ -1,10 +1,8 @@
 FROM --platform=$BUILDPLATFORM debian:12-slim AS base
 
-RUN apt-get update
-RUN apt-get install -y wget
-RUN mkdir -p /etc/apt/keyrings
-RUN wget -q -O /etc/apt/keyrings/mopidy-archive-keyring.gpg https://apt.mopidy.com/mopidy.gpg
-RUN wget -q -O /etc/apt/sources.list.d/mopidy.list https://apt.mopidy.com/bullseye.list
+ARG ARCH=amd64
+ARG GST_PLUGIN_SPOTIFY_VERSION_PATH=0.14.0-alpha.1-1
+ARG GST_PLUGIN_SPOTIFY_VERSION_FILE=0.14.0.alpha.1-1
 RUN apt-get update
 
 RUN apt-get install -y mopidy
