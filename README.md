@@ -4,22 +4,27 @@ mopidy:
 ---
 services:
   mopidy:
-    image: hy5528/mopidy:latest
+    image: giof71/mopidy
     container_name: mopidy
+    user: "1000:29"
+    devices:
+      - /dev/snd:/dev/snd
     ports:
       - 6680:6680
-      - 6600:6600
+      - 8989:8989
     volumes:
-      - /opt/config:/mopidy
-      - /opt/cache:/cache
-      - /opt/data:/mopidy/data
+      - ./config:/config
+      - ./cache:/cache
+      - ./data:/data
       - /media/music:/var/lib/mopidy
     restart: always
 
+---
 splayer
 ---
 docker run -d --name SPlayer --restart=always -p 25884:25884 ghcr.io/hy5528/splayer66:latest
 
+---
 yesplaymusic
 ---
 docker run -d --name yesplaymusic --restart=always -p 5300:80 ghcr.io/hy5528/yesplaymusic66:latest
