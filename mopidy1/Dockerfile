@@ -16,7 +16,7 @@ RUN apt-get update \
  && rm -rf /var/lib/apt/lists/*
 
 RUN sudo wget -O gst-plugin-spotify.deb https://github.com/kingosticks/gst-plugins-rs-build/releases/download/gst-plugin-spotify_0.15.0.alpha.1-3/gst-plugin-spotify_0.15.0.alpha.1-3_amd64.deb \
- && dpkg -i gst-plugin-spotify.deb
+ && dpkg -i gst-plugin-spotify_0.15.0.alpha.1-3_amd64.deb
 
 COPY requirements.txt requirements.txt
 
