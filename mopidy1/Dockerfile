@@ -7,6 +7,7 @@ ARG ARCH=amd64
 RUN apt-get update \
  && apt-get install -y wget \
                        alsa-utils \
+                       gstreamer1.0-plugins-bad \
                        python3-gst-1.0 \
                        python3-lxml \
                        python3-pip \
