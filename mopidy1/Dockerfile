@@ -1,4 +1,4 @@
-FROM debian:12-slim AS base
+FROM debian:12-slim
 ARG ARCH=amd64
 
 ARG GST_PLUGIN_SPOTIFY_VERSION_PATH=0.15.0.alpha.1-3
@@ -20,7 +20,7 @@ RUN curl -L -o gst-plugin-spotify_${GST_PLUGIN_SPOTIFY_VERSION_FILE}_${ARCH}.deb
   ; apt update && apt -f install -y \
  && rm gst-plugin-spotify_${GST_PLUGIN_SPOTIFY_VERSION_FILE}_${ARCH}.deb \
 
-COPY requirements.txt requirements.txt
+COPY --from=build /app/requirements.txt /requirements.txt
 
 # RUN pip3 install -r requirements.txt \
 RUN pip3 install --break-system-packages -r requirements.txt \
