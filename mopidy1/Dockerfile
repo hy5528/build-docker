@@ -12,7 +12,7 @@ RUN  apt-get update && \
 
 ENV LC_ALL="en_US.UTF-8"
 
-RUN  apt install -y cmake gstreamer1.0-pulseaudio gstreamer1.0-plugins-base gstreamer1.0-plugins-good gstreamer1.0-plugins-bad gir1.2-gst-plugins-base-1.0 gir1.2-gstreamer-1.0 \
+RUN  apt install -y cmake alsa-utils gstreamer1.0-plugins-base \
      libcairo2-dev libjpeg-dev libgif-dev libgirepository1.0-dev libcairo2-dev \
      python3-gst-1.0 python3-tornado python3-pkg-resources python3-pykka python3-requests python3-pip
 RUN  pip install Mopidy Mopidy-Mobile Mopidy-MusicBox-Webclient Mopidy-MPD  Mopidy-Local Mopidy-Iris && \
