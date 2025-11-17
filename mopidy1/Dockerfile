@@ -9,7 +9,7 @@ ENV DEBIAN_FRONTEND=noninteractive
 ENV PIP_NO_CACHE_DIR=1
 
  RUN apt-get update \
- && apt-get install -y wget \
+ && apt-get install -y curl \
                        gstreamer1.0-alsa \
                        gstreamer1.0-plugins-good \
                        gstreamer1.0-plugins-ugly \
