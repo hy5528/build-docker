@@ -1,41 +1,28 @@
-FROM --platform=$BUILDPLATFORM debian:12-slim AS base
-ARG ARCH=amd64
+FROM python:slim-trixie
 
-ARG GST_PLUGIN_SPOTIFY_VERSION_PATH=0.15.0.alpha.1-3
-ARG GST_PLUGIN_SPOTIFY_VERSION_FILE=0.15.0.alpha.1-3
+ENV DEBIAN_FRONTEND="noninteractive"
 
-RUN apt-get update \
- && apt-get install -y curl \
-                       alsa-utils \
-                       gstreamer1.0-plugins-bad \
-                       python3-pip \
-                       dumb-init \
- && apt purge --auto-remove -y \
-    gcc \
- && apt clean \
- && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* ~/.cache /root/.cache
+RUN  apt-get update && \
+     apt-get install -y wget apt-transport-https apt-utils ca-certificates locales && \
+     apt-get update && \
+     echo "en_US.UTF-8 UTF-8" > /etc/locale.gen && \
+     locale-gen en_US.UTF-8 && \
+     dpkg-reconfigure locales && \
+     /usr/sbin/update-locale LANG=en_US.UTF-8
 
-RUN curl -L -o gst-plugin-spotify_${GST_PLUGIN_SPOTIFY_VERSION_FILE}_${ARCH}.deb https://github.com/kingosticks/gst-plugins-rs-build/releases/download/gst-plugin-spotify_${GST_PLUGIN_SPOTIFY_VERSION_PATH}/gst-plugin-spotify_${GST_PLUGIN_SPOTIFY_VERSION_FILE}_${ARCH}.deb \
- && dpkg -i gst-plugin-spotify_${GST_PLUGIN_SPOTIFY_VERSION_FILE}_${ARCH}.deb \
-  ; apt update && apt -f install -y \
- && rm gst-plugin-spotify_${GST_PLUGIN_SPOTIFY_VERSION_FILE}_${ARCH}.deb 
+ENV LC_ALL="en_US.UTF-8"
 
-ADD --chmod=755 ./requirements.txt /requirements.txt
+RUN  apt install -y cmake gstreamer1.0-pulseaudio gstreamer1.0-plugins-base gstreamer1.0-plugins-good gstreamer1.0-plugins-bad gir1.2-gst-plugins-base-1.0 gir1.2-gstreamer-1.0 \
+     libcairo2-dev libjpeg-dev libgif-dev libgirepository1.0-dev libcairo2-dev \
+     python3-gst-1.0 python3-tornado python3-pkg-resources python3-pykka python3-requests python3-pip
+RUN  pip install Mopidy Mopidy-Mobile Mopidy-MusicBox-Webclient Mopidy-MPD  Mopidy-Local Mopidy-Iris && \
+     apt-get purge -y libcairo2-dev libjpeg-dev libgif-dev python3-pip cmake
 
-# RUN pip3 install -r requirements.txt \
-RUN pip3 install --break-system-packages -r requirements.txt \
- && rm -rf ~/.cache/pip
+RUN  apt-get autoremove -y && \
+     apt-get autoclean -y
 
-RUN update-ca-certificates --fresh
-
-RUN mkdir /root/music
-
-VOLUME ["/root/.cache/mopidy", "/root/.local/share/mopidy", "/root/music"]
-
-ENV TZ=Europe/London
-
-RUN sh -c 'echo "mopidy ALL=NOPASSWD: /usr/local/lib/python3.11/dist-packages/mopidy_iris/system.sh" >> /etc/sudoers'
+RUN mkdir -p /mopidy/config && mkdir -p /mopidy/data/playlists && mkdir -p /mopidy/cache && mkdir -p /mopidy/cache && mkdir -p /mopidy/media
 
 EXPOSE 6600 6680
 
-ENTRYPOINT ["mopidy"]
+CMD ["mopidy", "--config", "/mopidy/config/mopidy.conf", "-o", "audio/output=\"$AUDIO_OUTPUT\"", "$MOPIDY_PARAMS"]`
