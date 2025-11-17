@@ -1,8 +1,8 @@
 ARG BUILD_FROM
-ARG ARCH
+ARG ARCH=amd64
 
-FROM $BUILD_FROM
-ARG ARCH
+FROM ${BUILD_FROM:-debian:12-slim} AS base
+ARG ARCH=amd64
 
 RUN apt-get update \
  && apt-get install -y wget \
@@ -18,7 +18,7 @@ RUN apt-get update \
                        libasound2-dev \
  && rm -rf /var/lib/apt/lists/*
 
-RUN wget -O gst-plugin-spotify.deb https://github.com/kingosticks/gst-plugins-rs-build/releases/download/gst-plugin-spotify_0.14.0-alpha.1-1/gst-plugin-spotify_0.14.0.alpha.1-1_${ARCH}.deb \
+RUN wget -O gst-plugin-spotify.deb https://github.com/kingosticks/gst-plugins-rs-build/releases/download/gst-plugin-spotify_0.15.0-alpha.1-3/gst-plugin-spotify_0.15.0.alpha.1-3_${ARCH}.deb \
  && dpkg -i gst-plugin-spotify.deb
 
 COPY --from=build /app/requirements.txt /requirements.txt
