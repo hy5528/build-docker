@@ -4,19 +4,19 @@ mopidy:
 ---
 services:
   mopidy:
-    image: giof71/mopidy
+    image: ghcr.nju.edu.cn/hy5528/mopidy66:latest
     container_name: mopidy
     user: "1000:29"
     devices:
       - /dev/snd:/dev/snd
     ports:
       - 6680:6680
-      - 8989:8989
+      - 6600:6600
     volumes:
-      - ./config:/config
-      - ./cache:/cache
-      - ./data:/data
-      - /media/music:/var/lib/mopidy
+      - /opt/config:/root/.config/mopidy
+      - ./cache:/root/.cache
+      - ./local:/root/.local
+      - /media/music:/root/music:ro
     restart: always
 
 ---
