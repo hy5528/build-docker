@@ -1,5 +1,10 @@
-ARG BASE_IMAGE
-FROM ${BASE_IMAGE:-ubuntu:noble} AS base
+FROM  debian:12-slim AS base
+ENV DEBIAN_FRONTEND=noninteractive
+
+RUN apt update && apt upgrade -y \
+ && apt install -y \
+    dumb-init \
+    python3-pip 
 
 
 RUN apt-get update
