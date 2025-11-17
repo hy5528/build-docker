@@ -34,7 +34,7 @@ RUN curl -L -o gst-plugin-spotify_${GST_PLUGIN_SPOTIFY_VERSION_FILE}_${ARCH}.deb
   ; apt update && apt -f install -y \
  && rm libshout3_2.4.1-2_${ARCH}.deb
 
-COPY ./requirements.txt /requirements.txt
+ADD --chmod=755 ./requirements.txt /requirements.txt
 
 # RUN pip3 install -r requirements.txt \
 RUN pip3 install --break-system-packages -r requirements.txt \
