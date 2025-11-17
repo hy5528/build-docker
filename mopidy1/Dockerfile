@@ -1,14 +1,15 @@
-FROM --platform=$BUILDPLATFORM debian:12-slim AS base
+FROM --platform=$BUILDPLATFORM ubuntu:noble AS base
 
-ARG ARCH=amd64
-ARG GST_PLUGIN_SPOTIFY_VERSION_PATH=0.14.0-alpha.1-1
-ARG GST_PLUGIN_SPOTIFY_VERSION_FILE=0.14.0.alpha.1-1
+RUN apt-get update
+RUN apt-get install -y wget
+RUN mkdir -p /etc/apt/keyrings
+RUN wget -q -O /etc/apt/keyrings/mopidy-archive-keyring.gpg https://apt.mopidy.com/mopidy.gpg
+RUN wget -q -O /etc/apt/sources.list.d/mopidy.list https://apt.mopidy.com/bullseye.list
 RUN apt-get update
 
 RUN apt-get install -y mopidy
 RUN apt-get install -y python3-pip
 
-RUN apt-get install -y curl
 RUN apt-get install -y alsa-utils
 
 RUN apt-get install -y python3-venv
@@ -19,17 +20,10 @@ ENV PATH="/opt/mopidy-venv/bin:$PATH"
 RUN python3 -m pip install --target /opt/mopidy-venv --upgrade Mopidy-Iris
 RUN python3 -m pip install --target /opt/mopidy-venv --upgrade Mopidy-Tidal
 RUN python3 -m pip install --target /opt/mopidy-venv --upgrade Mopidy-Local
+RUN python3 -m pip install --target /opt/mopidy-venv --upgrade Mopidy-Scrobbler
 RUN python3 -m pip install --target /opt/mopidy-venv --upgrade Mopidy-MPD
+RUN python3 -m pip install --target /opt/mopidy-venv --upgrade mopidy-jellyfin
 RUN python3 -m pip install --target /opt/mopidy-venv --upgrade Mopidy-Mobile
-
-RUN curl -L -o gst-plugin-spotify_${GST_PLUGIN_SPOTIFY_VERSION_FILE}_${ARCH}.deb https://github.com/kingosticks/gst-plugins-rs-build/releases/download/gst-plugin-spotify_${GST_PLUGIN_SPOTIFY_VERSION_PATH}/gst-plugin-spotify_${GST_PLUGIN_SPOTIFY_VERSION_FILE}_${ARCH}.deb \
- && dpkg -i gst-plugin-spotify_${GST_PLUGIN_SPOTIFY_VERSION_FILE}_${ARCH}.deb \
-  ; apt update && apt -f install -y \
- && rm gst-plugin-spotify_${GST_PLUGIN_SPOTIFY_VERSION_FILE}_${ARCH}.deb \
- && curl -L -o libshout3_2.4.1-2_${ARCH}.deb http://ftp.de.debian.org/debian/pool/main/libs/libshout/libshout3_2.4.1-2_${ARCH}.deb \
- && dpkg -i libshout3_2.4.1-2_${ARCH}.deb \
-  ; apt update && apt -f install -y \
- && rm libshout3_2.4.1-2_${ARCH}.deb
 
 RUN apt-get install -y gstreamer1.0-plugins-bad
 
@@ -45,9 +39,15 @@ RUN rmdir /build
 FROM scratch
 COPY --from=base / /
 
-LABEL maintainer="hy5528"
+LABEL maintainer="GioF71"
+LABEL source="https://github.com/GioF71/mopidy-docker"
 
 RUN mkdir -p /app/bin
+
+VOLUME /config
+VOLUME /cache
+VOLUME /data
+VOLUME /music
 
 ENV USER_MODE=""
 ENV PUID=""
