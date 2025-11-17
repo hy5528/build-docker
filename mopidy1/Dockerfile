@@ -1,28 +1,37 @@
-FROM python:slim-trixie
+FROM amd64/debian:12-slim
+ARG ARCH: amd64
 
-ENV DEBIAN_FRONTEND="noninteractive"
+RUN apt-get update \
+ && apt-get install -y wget \
+                       gstreamer1.0-alsa \
+                       gstreamer1.0-plugins-good \
+                       gstreamer1.0-plugins-ugly \
+                       gstreamer1.0-plugins-bad \
+                       python3-gst-1.0 \
+                       python3-lxml \
+                       python3-pip \
+                       python3-setuptools \
+                       python3-wheel \
+                       libasound2-dev \
+ && rm -rf /var/lib/apt/lists/*
 
-RUN  apt-get update && \
-     apt-get install -y wget apt-transport-https apt-utils ca-certificates locales && \
-     apt-get update && \
-     echo "en_US.UTF-8 UTF-8" > /etc/locale.gen && \
-     locale-gen en_US.UTF-8 && \
-     dpkg-reconfigure locales && \
-     /usr/sbin/update-locale LANG=en_US.UTF-8
+RUN wget -O gst-plugin-spotify.deb https://github.com/kingosticks/gst-plugins-rs-build/releases/download/gst-plugin-spotify_0.14.0-alpha.1-1/gst-plugin-spotify_0.14.0.alpha.1-1_${ARCH}.deb \
+ && dpkg -i gst-plugin-spotify.deb
 
-ENV LC_ALL="en_US.UTF-8"
+COPY requirements.txt requirements.txt
 
-RUN  apt install -y cmake alsa-utils gstreamer1.0-plugins-bad \
-     libcairo2-dev libjpeg-dev libgif-dev libgirepository1.0-dev libcairo2-dev \
-     python3-gst-1.0 python3-pkg-resources python3-pip
-RUN  pip install Mopidy Mopidy-Mobile Mopidy-MusicBox-Webclient Mopidy-MPD  Mopidy-Local Mopidy-Iris && \
-     apt-get purge -y libcairo2-dev libjpeg-dev libgif-dev python3-pip cmake
+# RUN pip3 install -r requirements.txt \
+RUN pip3 install --break-system-packages -r requirements.txt \
+ && rm -rf ~/.cache/pip
 
-RUN  apt-get autoremove -y && \
-     apt-get autoclean -y
+RUN update-ca-certificates --fresh
 
-RUN mkdir -p /mopidy/config && mkdir -p /mopidy/data/playlists && mkdir -p /mopidy/cache && mkdir -p /mopidy/cache && mkdir -p /mopidy/media
+RUN mkdir /root/music
+
+VOLUME ["/root/.cache/mopidy", "/root/.local/share/mopidy", "/root/music"]
+
+ENV TZ=Europe/London
 
 EXPOSE 6600 6680
 
-CMD ["mopidy"]
+ENTRYPOINT ["mopidy"]
