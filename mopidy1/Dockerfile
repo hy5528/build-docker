@@ -11,12 +11,8 @@ RUN apt-get update \
  && apt-get install -y curl \
                        alsa-utils \
                        gstreamer1.0-plugins-bad \
-                       python3-gst-1.0 \
-                       python3-lxml \
                        python3-pip \
-                       python3-setuptools \
-                       python3-wheel \
-                       libasound2-dev \
+                       dumb-init \
  && apt purge --auto-remove -y \
     gcc \
  && apt clean \
