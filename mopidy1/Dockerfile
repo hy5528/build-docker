@@ -14,7 +14,10 @@ RUN apt-get update \
                        python3-setuptools \
                        python3-wheel \
                        libasound2-dev \
- && rm -rf /var/lib/apt/lists/*
+ && apt purge --auto-remove -y \
+    gcc \
+ && apt clean \
+ && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* ~/.cache /root/.cache
 
 RUN wget -O gst-plugin-spotify.deb https://github.com/kingosticks/gst-plugins-rs-build/releases/download/gst-plugin-spotify_0.15.0-alpha.1-3/gst-plugin-spotify_0.15.0.alpha.1-3_${ARCH}.deb \
  && dpkg -i gst-plugin-spotify.deb
