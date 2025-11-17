@@ -1,4 +1,4 @@
-FROM amd64/debian:12-slim
+FROM docker.io/amd64/debian:12-slim
 ARG ARCH: amd64
 
 RUN apt-get update \
