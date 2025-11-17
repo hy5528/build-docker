@@ -1,15 +1,12 @@
-ARG BUILD_FROM
+FROM debian:12-slim AS base
 ARG ARCH=amd64
 
-FROM ${BUILD_FROM:-ubuntu:noble} AS base
-ARG ARCH=amd64
+ARG GST_PLUGIN_SPOTIFY_VERSION_PATH=0.15.0.alpha.1-3
+ARG GST_PLUGIN_SPOTIFY_VERSION_FILE=0.15.0.alpha.1-3
 
 RUN apt-get update \
- && apt-get install -y wget \
-                       gstreamer1.0-alsa \
-                       gstreamer1.0-plugins-good \
-                       gstreamer1.0-plugins-ugly \
-                       gstreamer1.0-plugins-bad \
+ && apt-get install -y curl \
+                       alsa-utils \
                        python3-gst-1.0 \
                        python3-lxml \
                        python3-pip \
@@ -18,8 +15,10 @@ RUN apt-get update \
                        libasound2-dev \
  && rm -rf /var/lib/apt/lists/*
 
-RUN wget -O gst-plugin-spotify.deb https://github.com/kingosticks/gst-plugins-rs-build/releases/download/gst-plugin-spotify_0.14.0-alpha.1-1/gst-plugin-spotify_0.14.0.alpha.1-1_${ARCH}.deb \
- && dpkg -i gst-plugin-spotify.deb
+RUN curl -L -o gst-plugin-spotify_${GST_PLUGIN_SPOTIFY_VERSION_FILE}_${ARCH}.deb https://github.com/kingosticks/gst-plugins-rs-build/releases/download/gst-plugin-spotify_${GST_PLUGIN_SPOTIFY_VERSION_PATH}/gst-plugin-spotify_${GST_PLUGIN_SPOTIFY_VERSION_FILE}_${ARCH}.deb \
+ && dpkg -i gst-plugin-spotify_${GST_PLUGIN_SPOTIFY_VERSION_FILE}_${ARCH}.deb \
+  ; apt update && apt -f install -y \
+ && rm gst-plugin-spotify_${GST_PLUGIN_SPOTIFY_VERSION_FILE}_${ARCH}.deb \
 
 COPY requirements.txt requirements.txt
 
