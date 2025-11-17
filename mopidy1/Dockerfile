@@ -49,11 +49,6 @@ LABEL maintainer="hy5528"
 
 RUN mkdir -p /app/bin
 
-VOLUME /config
-VOLUME /cache
-VOLUME /data
-VOLUME /music
-
 ENV USER_MODE=""
 ENV PUID=""
 ENV PGID=""
