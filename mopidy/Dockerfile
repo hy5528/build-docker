@@ -14,13 +14,6 @@ RUN apt update && apt upgrade -y \
     dumb-init \
     python3-pip \
     sudo \
- && mkdir -p ~/.config/pip && printf "[global]\nbreak-system-packages = true\n" | tee ~/.config/pip/pip.conf \
- && pip install \
-    Mopidy==3.4.2 \
-    Mopidy-Iris \
-    Mopidy-Local \
-    Mopidy-Mobile \
-    Mopidy-MPD \
  && apt purge --auto-remove -y \
     gcc \
  && apt clean \
@@ -34,6 +27,19 @@ RUN curl -L -o gst-plugin-spotify_${GST_PLUGIN_SPOTIFY_VERSION_FILE}_${ARCH}.deb
  && dpkg -i libshout3_2.4.1-2_${ARCH}.deb \
   ; apt update && apt -f install -y \
  && rm libshout3_2.4.1-2_${ARCH}.deb
+
+ RUN mkdir -p ~/.config/pip && printf "[global]\nbreak-system-packages = true\n" | tee ~/.config/pip/pip.conf \
+ && pip install \
+    Mopidy==3.4.2 \
+    Mopidy-Iris \
+    Mopidy-Local \
+    Mopidy-Mobile \
+    Mopidy-MPD \
+ && apt purge --auto-remove -y \
+    gcc \
+ && apt clean \
+ && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* ~/.cache /root/.cache
+
 
 RUN sh -c 'echo "mopidy ALL=NOPASSWD: /usr/local/lib/python3.11/dist-packages/mopidy_iris/system.sh" >> /etc/sudoers'
 
