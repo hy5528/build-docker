@@ -1,104 +1,55 @@
-FROM phusion/baseimage:noble-1.0.2 AS base
+FROM debian:12-slim
+LABEL Author="Rogger Fabri"
 
-RUN apt-get update
-RUN apt-get install -y wget
-RUN mkdir -p /etc/apt/keyrings
-RUN wget -q -O /etc/apt/keyrings/mopidy-archive-keyring.gpg https://apt.mopidy.com/mopidy.gpg
-RUN wget -q -O /etc/apt/sources.list.d/mopidy.list https://apt.mopidy.com/bullseye.list
-RUN apt-get update
+ARG ARCH=amd64
+ARG GST_PLUGIN_SPOTIFY_VERSION_PATH=0.14.0-alpha.1-1
+ARG GST_PLUGIN_SPOTIFY_VERSION_FILE=0.14.0.alpha.1-1
 
-RUN apt-get install -y mopidy
-RUN apt-get install -y python3-pip
+ENV DEBIAN_FRONTEND=noninteractive
+ENV PIP_NO_CACHE_DIR=1
 
-RUN apt-get install -y alsa-utils
+RUN apt update && apt upgrade -y \
+ && apt install -y \
+    curl \
+    dumb-init \
+    mopidy \
+    python3-pip \
+    sudo \
+ && mkdir -p ~/.config/pip && printf "[global]\nbreak-system-packages = true\n" | tee ~/.config/pip/pip.conf \
+ && pip install \
+    Mopidy-Iris \
+    Mopidy-Local \
+    Mopidy-Mobile \
+    Mopidy-MPD \
+    Mopidy-Scrobbler \
+    Mopidy-Spotify==5.0.0a3 \
+    Mopidy-TuneIn \
+ && apt purge --auto-remove -y \
+    gcc \
+ && apt clean \
+ && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* ~/.cache /root/.cache
 
-RUN apt-get install -y python3-venv
-RUN python3 -m venv /opt/mopidy-venv
-ENV PATH="/opt/mopidy-venv/bin:$PATH"
+RUN curl -L -o gst-plugin-spotify_${GST_PLUGIN_SPOTIFY_VERSION_FILE}_${ARCH}.deb https://github.com/kingosticks/gst-plugins-rs-build/releases/download/gst-plugin-spotify_${GST_PLUGIN_SPOTIFY_VERSION_PATH}/gst-plugin-spotify_${GST_PLUGIN_SPOTIFY_VERSION_FILE}_${ARCH}.deb \
+ && dpkg -i gst-plugin-spotify_${GST_PLUGIN_SPOTIFY_VERSION_FILE}_${ARCH}.deb \
+  ; apt update && apt -f install -y \
+ && rm gst-plugin-spotify_${GST_PLUGIN_SPOTIFY_VERSION_FILE}_${ARCH}.deb \
+ && curl -L -o libshout3_2.4.1-2_${ARCH}.deb http://ftp.de.debian.org/debian/pool/main/libs/libshout/libshout3_2.4.1-2_${ARCH}.deb \
+ && dpkg -i libshout3_2.4.1-2_${ARCH}.deb \
+  ; apt update && apt -f install -y \
+ && rm libshout3_2.4.1-2_${ARCH}.deb
 
-# extensions
-RUN python3 -m pip install --target /opt/mopidy-venv --upgrade Mopidy-Iris
-RUN python3 -m pip install --target /opt/mopidy-venv --upgrade Mopidy-Tidal
-RUN python3 -m pip install --target /opt/mopidy-venv --upgrade Mopidy-Local
-RUN python3 -m pip install --target /opt/mopidy-venv --upgrade Mopidy-MPD
-RUN python3 -m pip install --target /opt/mopidy-venv --upgrade Mopidy-Mobile
+RUN sh -c 'echo "mopidy ALL=NOPASSWD: /usr/local/lib/python3.11/dist-packages/mopidy_iris/system.sh" >> /etc/sudoers'
 
-RUN apt-get install -y gstreamer1.0-plugins-bad
+USER mopidy
 
-RUN mkdir -p /build
+EXPOSE 6600
+EXPOSE 6680
+EXPOSE 5555/udp
 
-COPY build/cleanup.sh /build
-RUN chmod u+x /build/cleanup.sh
-RUN /build/cleanup.sh
-RUN rm /build/cleanup.sh
+ADD ./start.sh /start.sh
 
-RUN rmdir /build
+ENTRYPOINT ["dumb-init", "--"]
+CMD ["/start.sh"]
 
-FROM scratch
-COPY --from=base / /
-
-LABEL maintainer="Ghy5528"
-
-RUN mkdir -p /app/bin
-
-VOLUME /config
-VOLUME /cache
-VOLUME /data
-VOLUME /music
-
-ENV USER_MODE=""
-ENV PUID=""
-ENV PGID=""
-ENV AUDIO_GID=""
-
-ENV RESTORE_STATE=""
-
-ENV AUDIO_OUTPUT=""
-
-ENV SCROBBLER_ENABLED=""
-ENV SCROBBLER_USERNAME=""
-ENV SCROBBLER_PASSWORD=""
-
-ENV TIDAL_ENABLED=""
-ENV TIDAL_QUALITY=""
-ENV TIDAL_LOGIN_SERVER_PORT=""
-ENV TIDAL_LOGIN_METHOD=""
-ENV TIDAL_AUTH_METHOD=""
-ENV TIDAL_PLAYLIST_CACHE_REFRESH_SECS=""
-ENV TIDAL_LAZY=""
-
-ENV JELLYFIN_ENABLED=""
-ENV JELLYFIN_HOSTNAME=""
-ENV JELLYFIN_USERNAME=""
-ENV JELLYFIN_PASSWORD=""
-ENV JELLYFIN_LIBRARIES=""
-
-ENV FILE_ENABLED="yes"
-ENV LOCAL_ENABLED="yes"
-ENV LOCAL_MEDIA_DIR="yes"
-ENV LOCAL_MAX_SEARCH_RESULTS=""
-ENV LOCAL_SCAN_TIMEOUT=""
-ENV LOCAL_SCAN_FOLLOW_SYMLINKS=""
-ENV LOCAL_SCAN_FLUSH_THRESHOLD=""
-ENV LOCAL_INCLUDED_FILE_EXTENSIONS=""
-ENV LOCAL_EXCLUDED_FILE_EXTENSIONS=""
-ENV LOCAL_DIRECTORIES=""
-ENV LOCAL_TIMEOUT=""
-ENV LOCAL_USE_ARTIST_SORTNAME=""
-ENV LOCAL_ALBUM_ART_FILES=""
-
-ENV MPD_ENABLED=""
-
-ENV MOBILE_ENABLED="yes"
-ENV MOBILE_TITLE=""
-ENV MOBILE_WS_URL=""
-
-ENV LOG_LEVEL=""
-
-ENV PYTHONPATH="/opt/mopidy-venv"
-ENV PATH="/opt/mopidy-venv/bin:$PATH"
-
-COPY app/bin/entrypoint.sh /app/bin/
-RUN chmod +x /app/bin/entrypoint.sh
-
-ENTRYPOINT ["/app/bin/entrypoint.sh"]
+HEALTHCHECK --interval=60s --timeout=5s --retries=3 \
+    CMD curl --connect-timeout 5 --silent --show-error --fail http://localhost:6680/ || exit 1
