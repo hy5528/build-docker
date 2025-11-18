@@ -10,7 +10,6 @@ ENV PIP_NO_CACHE_DIR=1
 
 RUN apt update && apt upgrade -y \
  && apt install -y \
-    alsa-utils \
     curl \
     dumb-init \
     mopidy \
