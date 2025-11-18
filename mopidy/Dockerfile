@@ -1,5 +1,5 @@
 FROM debian:12-slim
-LABEL Author="Rogger Fabri"
+LABEL Author="hy5528"
 
 ARG ARCH=amd64
 ARG GST_PLUGIN_SPOTIFY_VERSION_PATH=0.14.0-alpha.1-1
