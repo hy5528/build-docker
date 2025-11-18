@@ -33,8 +33,7 @@ RUN curl -L -o gst-plugin-spotify_${GST_PLUGIN_SPOTIFY_VERSION_FILE}_${ARCH}.deb
 ADD --chmod=755 ./requirements.txt /requirements.txt
 
 # RUN pip3 install -r requirements.txt \
-RUN mkdir -p ~/.config/pip && printf "[global]\nbreak-system-packages = true\n" | tee ~/.config/pip/pip.conf \
- && pip install --break-system-packages -r requirements.txt \
+RUN pip install --break-system-packages -r requirements.txt \
  && rm -rf ~/.cache/pip \
  && apt purge --auto-remove -y \
     gcc \
