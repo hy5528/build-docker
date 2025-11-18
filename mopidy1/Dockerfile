@@ -1,4 +1,4 @@
-FROM  phusion/baseimage:noble-1.0.2 AS base
+FROM  debian:12-slim AS base
 LABEL Author="hy5528"
 
 ARG ARCH=amd64
