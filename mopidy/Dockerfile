@@ -1,4 +1,4 @@
-FROM debian:12-slim AS base
+FROM phusion/baseimage:noble-1.0.2 AS base
 
 RUN apt-get update
 RUN apt-get install -y wget
