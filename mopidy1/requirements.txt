@@ -2,10 +2,10 @@
 Mopidy==3.4.2
 
 # https://github.com/jaedb/Iris/releases
-Mopidy-Iris==3.69.3
+Mopidy-Iris==3.70.0
 
 # https://github.com/tkem/mopidy-mobile/tags
-Mopidy-Mobile==1.10.0
+Mopidy-Mobile==1.11.0
 
 # https://github.com/mopidy/mopidy-mpd/releases
 Mopidy-MPD==3.3.0
@@ -14,4 +14,4 @@ Mopidy-MPD==3.3.0
 Mopidy-Spotify==5.0.0a3
 
 # https://github.com/mopidy/mopidy-local/releases
-Mopidy-Local==3.2.1
+Mopidy-Local==3.3.0
