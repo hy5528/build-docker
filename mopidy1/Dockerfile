@@ -19,6 +19,7 @@ ENV PIP_NO_CACHE_DIR=1
                        python3-pip \
                        python3-setuptools \
                        python3-wheel \
+                       libasound2-dev \
  && apt purge --auto-remove -y \
     gcc \
  && apt clean \
@@ -27,11 +28,7 @@ ENV PIP_NO_CACHE_DIR=1
 RUN curl -L -o gst-plugin-spotify_${GST_PLUGIN_SPOTIFY_VERSION_FILE}_${ARCH}.deb https://github.com/kingosticks/gst-plugins-rs-build/releases/download/gst-plugin-spotify_${GST_PLUGIN_SPOTIFY_VERSION_PATH}/gst-plugin-spotify_${GST_PLUGIN_SPOTIFY_VERSION_FILE}_${ARCH}.deb \
  && dpkg -i gst-plugin-spotify_${GST_PLUGIN_SPOTIFY_VERSION_FILE}_${ARCH}.deb \
   ; apt update && apt -f install -y \
- && rm gst-plugin-spotify_${GST_PLUGIN_SPOTIFY_VERSION_FILE}_${ARCH}.deb \
- && curl -L -o libshout3_2.4.1-2_${ARCH}.deb http://ftp.de.debian.org/debian/pool/main/libs/libshout/libshout3_2.4.1-2_${ARCH}.deb \
- && dpkg -i libshout3_2.4.1-2_${ARCH}.deb \
-  ; apt update && apt -f install -y \
- && rm libshout3_2.4.1-2_${ARCH}.deb
+ && rm gst-plugin-spotify_${GST_PLUGIN_SPOTIFY_VERSION_FILE}_${ARCH}.deb 
 
 ADD --chmod=755 ./requirements.txt /requirements.txt
 
@@ -41,10 +38,9 @@ RUN pip3 install --break-system-packages -r requirements.txt \
 
 RUN update-ca-certificates --fresh
 
-VOLUME /config
-VOLUME /cache
-VOLUME /data
-VOLUME /music
+RUN mkdir /root/music
+
+VOLUME ["/root/.cache/mopidy", "/root/.local/share/mopidy", "/root/music"]
 
 ENV TZ=Europe/London
 
