@@ -9,9 +9,11 @@ ENV DEBIAN_FRONTEND=noninteractive
 ENV PIP_NO_CACHE_DIR=1
 
 RUN apt-get update
+RUN apt-get install -y wget
 RUN mkdir -p /etc/apt/keyrings
 RUN wget -q -O /etc/apt/keyrings/mopidy-archive-keyring.gpg https://apt.mopidy.com/mopidy.gpg
 RUN wget -q -O /etc/apt/sources.list.d/mopidy.list https://apt.mopidy.com/bullseye.list
+
 RUN apt update && apt upgrade -y \
  && apt install -y \
     curl \
