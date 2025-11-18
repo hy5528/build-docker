@@ -42,12 +42,11 @@ jobs:
       - name: Build and push
         uses: docker/build-push-action@v5
         with:
-          context: .
+          context: "${{ github.server_url }}/${{ github.repository }}.git#${{ github.ref }}:mopidy"
           platforms: linux/amd64,linux/arm64,linux/arm/v7
           push: ${{ github.event_name != 'pull_request' }}
           tags: |
-            hzexe/moontv:${{ env.TODAY }}
-            hzexe/moontv:latest
+            hy5528/mopidy:latest
 
       - name: Create GitHub Release
         if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/')
@@ -57,5 +56,4 @@ jobs:
           name: Release ${{ github.ref }}
           body: |
             Docker image built and pushed to Docker Hub:
-            - hzexe/moontv:${{ env.TODAY }}
-            - hzexe/moontv:latest
+            hy5528/mopidy:latest
