@@ -1,5 +1,4 @@
-sARG BASE_IMAGE
-FROM ${BASE_IMAGE:-ubuntu:noble} AS base
+FROM debian:12-slim AS base
 
 RUN apt-get update
 RUN apt-get install -y wget
