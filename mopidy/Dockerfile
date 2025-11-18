@@ -1,4 +1,4 @@
-ARG BASE_IMAGE
+sARG BASE_IMAGE
 FROM ${BASE_IMAGE:-ubuntu:noble} AS base
 
 RUN apt-get update
@@ -21,9 +21,7 @@ ENV PATH="/opt/mopidy-venv/bin:$PATH"
 RUN python3 -m pip install --target /opt/mopidy-venv --upgrade Mopidy-Iris
 RUN python3 -m pip install --target /opt/mopidy-venv --upgrade Mopidy-Tidal
 RUN python3 -m pip install --target /opt/mopidy-venv --upgrade Mopidy-Local
-RUN python3 -m pip install --target /opt/mopidy-venv --upgrade Mopidy-Scrobbler
 RUN python3 -m pip install --target /opt/mopidy-venv --upgrade Mopidy-MPD
-RUN python3 -m pip install --target /opt/mopidy-venv --upgrade mopidy-jellyfin
 RUN python3 -m pip install --target /opt/mopidy-venv --upgrade Mopidy-Mobile
 
 RUN apt-get install -y gstreamer1.0-plugins-bad
@@ -40,8 +38,7 @@ RUN rmdir /build
 FROM scratch
 COPY --from=base / /
 
-LABEL maintainer="GioF71"
-LABEL source="https://github.com/GioF71/mopidy-docker"
+LABEL maintainer="Ghy5528"
 
 RUN mkdir -p /app/bin
 
@@ -77,9 +74,9 @@ ENV JELLYFIN_USERNAME=""
 ENV JELLYFIN_PASSWORD=""
 ENV JELLYFIN_LIBRARIES=""
 
-ENV FILE_ENABLED=""
-ENV LOCAL_ENABLED=""
-ENV LOCAL_MEDIA_DIR=""
+ENV FILE_ENABLED="yes"
+ENV LOCAL_ENABLED="yes"
+ENV LOCAL_MEDIA_DIR="yes"
 ENV LOCAL_MAX_SEARCH_RESULTS=""
 ENV LOCAL_SCAN_TIMEOUT=""
 ENV LOCAL_SCAN_FOLLOW_SYMLINKS=""
@@ -93,7 +90,7 @@ ENV LOCAL_ALBUM_ART_FILES=""
 
 ENV MPD_ENABLED=""
 
-ENV MOBILE_ENABLED=""
+ENV MOBILE_ENABLED="yes"
 ENV MOBILE_TITLE=""
 ENV MOBILE_WS_URL=""
 
