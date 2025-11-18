@@ -39,9 +39,6 @@ RUN pip3 install --break-system-packages -r requirements.txt \
 
 RUN update-ca-certificates --fresh
 
-RUN mkdir /root/music
-
-VOLUME ["/root/music"]
 
 ENV TZ=Europe/London
 
