@@ -10,12 +10,6 @@ Mopidy-Mobile==1.10.0
 # https://github.com/mopidy/mopidy-mpd/releases
 Mopidy-MPD==3.3.0
 
-# https://github.com/tkem/mopidy-podcast/tags
-Mopidy-Podcast==3.0.1
-
-# https://github.com/mopidy/mopidy-scrobbler/releases
-Mopidy-Scrobbler==2.0.1
-
 # https://github.com/mopidy/mopidy-spotify/releases
 Mopidy-Spotify==5.0.0a3
 
