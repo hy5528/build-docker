@@ -40,7 +40,7 @@ RUN update-ca-certificates --fresh
 
 RUN mkdir /root/music
 
-VOLUME ["/root/.cache/mopidy", "/root/.local/share/mopidy", "/root/music"]
+VOLUME ["/root/music"]
 
 ENV TZ=Europe/London
 
