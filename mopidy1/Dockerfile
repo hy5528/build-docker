@@ -38,6 +38,10 @@ RUN pip3 install --break-system-packages -r requirements.txt \
 
 RUN update-ca-certificates --fresh
 
+VOLUME /config
+VOLUME /cache
+VOLUME /data
+VOLUME /music
 
 ENV TZ=Europe/London
 
