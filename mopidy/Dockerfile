@@ -1,8 +1,5 @@
-FROM alpine:3
+FROM --platform=$BUILDPLATFORM golang:alpine AS builder
 
-ARG VERSION
-
-RUN set -ex 
 RUN apk add --no-cache mopidy
 RUN apk add --no-cache Mopidy-Iris
 
