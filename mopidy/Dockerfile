@@ -5,10 +5,11 @@ ARG VERSION
 RUN apk update && \
     apk add python3 py3-pip
 
-RUN pip3 install mopidy
+RUN apk add --no-cache mopidy
 
-RUN pip3 install Mopidy-Iris
+RUN flatpak install flathub io.github.orontee.Argos
 
+RUN flatpak run io.github.orontee.Argos
 
 
 
