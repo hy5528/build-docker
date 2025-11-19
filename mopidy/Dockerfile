@@ -43,8 +43,6 @@ RUN mkdir -p ~/.config/pip && printf "[global]\nbreak-system-packages = true\n" 
  && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* ~/.cache /root/.cache
 
 
-RUN sh -c 'echo "mopidy ALL=NOPASSWD: /usr/local/lib/python3.11/dist-packages/mopidy_iris/system.sh" >> /etc/sudoers'
-
 USER mopidy
 
 EXPOSE 6600
