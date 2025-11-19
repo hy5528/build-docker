@@ -20,6 +20,13 @@ ENV PIP_NO_CACHE_DIR=1
                        python3-setuptools \
                        python3-wheel \
                        libasound2-dev \
+ && mkdir -p ~/.config/pip && printf "[global]\nbreak-system-packages = true\n" | tee ~/.config/pip/pip.conf \
+ && pip install \
+    Mopidy==3.4.2 \
+    Mopidy-Iris \
+    Mopidy-Local \
+    Mopidy-Mobile \
+    Mopidy-MPD \
  && apt purge --auto-remove -y \
     gcc \
  && apt clean \
@@ -30,15 +37,7 @@ RUN curl -L -o gst-plugin-spotify_${GST_PLUGIN_SPOTIFY_VERSION_FILE}_${ARCH}.deb
   ; apt update && apt -f install -y \
  && rm gst-plugin-spotify_${GST_PLUGIN_SPOTIFY_VERSION_FILE}_${ARCH}.deb 
 
-ADD --chmod=755 ./requirements.txt /requirements.txt
 
-# RUN pip3 install -r requirements.txt \
-RUN pip install --break-system-packages -r requirements.txt \
- && rm -rf ~/.cache/pip \
- && apt purge --auto-remove -y \
-    gcc \
- && apt clean \
- && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* ~/.cache /root/.cache
 
 RUN update-ca-certificates --fresh
 
