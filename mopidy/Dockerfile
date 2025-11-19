@@ -16,8 +16,8 @@ ENV PIP_NO_CACHE_DIR=1
                        gstreamer1.0-plugins-ugly \
                        gstreamer1.0-plugins-bad \
                        libgirepository1.0-dev \
-                       libcairo2-dev \
                        gcc \
+                       libcairo2-dev \               
                        python3-gst-1.0 \
                        python3-lxml \
                        python3-pip \
