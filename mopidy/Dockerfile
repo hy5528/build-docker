@@ -3,12 +3,8 @@ FROM alpine:3
 ARG VERSION
 
 RUN set -xe && \
-    apk add --no-cache \
-        mopidy \
-        Mopidy-Iris \
-        Mopidy-Loca \
-        Mopidy-MPD \
-        Mopidy-Mobile 
+    apk add --no-cache mopidy 
+        mopidy 
 
 EXPOSE 6600 6680
 
