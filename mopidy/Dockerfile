@@ -8,9 +8,8 @@ ARG GST_PLUGIN_SPOTIFY_VERSION_FILE=0.15.0.alpha.1-3
 ENV DEBIAN_FRONTEND=noninteractive
 ENV PIP_NO_CACHE_DIR=1
 
- RUN apt-get update 
- ADD --chmod=755 ./requirements.txt /requirements.txt
- RUN apt-get install -y curl \
+ RUN apt-get update \
+ && apt-get install -y curl \
                        gstreamer1.0-alsa \
                        gstreamer1.0-plugins-good \
                        gstreamer1.0-plugins-ugly \
@@ -21,7 +20,6 @@ ENV PIP_NO_CACHE_DIR=1
                        python3-setuptools \
                        python3-wheel \
                        libasound2-dev \
- && pip install --break-system-packages -r requirements.txt \
  && apt purge --auto-remove -y \
     gcc \
  && apt clean \
@@ -31,6 +29,16 @@ RUN curl -L -o gst-plugin-spotify_${GST_PLUGIN_SPOTIFY_VERSION_FILE}_${ARCH}.deb
  && dpkg -i gst-plugin-spotify_${GST_PLUGIN_SPOTIFY_VERSION_FILE}_${ARCH}.deb \
   ; apt update && apt -f install -y \
  && rm gst-plugin-spotify_${GST_PLUGIN_SPOTIFY_VERSION_FILE}_${ARCH}.deb 
+
+ADD --chmod=755 ./requirements.txt /requirements.txt
+
+# RUN pip3 install -r requirements.txt \
+RUN pip install --break-system-packages -r requirements.txt \
+ && rm -rf ~/.cache/pip \
+ && apt purge --auto-remove -y \
+    gcc \
+ && apt clean \
+ && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* ~/.cache /root/.cache
 
 RUN update-ca-certificates --fresh
 
