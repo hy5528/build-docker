@@ -10,7 +10,7 @@ ENV PIP_NO_CACHE_DIR=1
 
  RUN apt-get update \
  && apt-get install -y curl \
-                       gstreamer1.0-alsa \
+                       alsa-utils  \
                        gstreamer1.0-plugins-bad \
                        python3-gst-1.0 \
                        python3-lxml \
