@@ -10,14 +10,16 @@ ENV PIP_NO_CACHE_DIR=1
 
  RUN apt-get update \
  && apt-get install -y curl \
-                       dumb-init \
+                       gstreamer1.0-alsa \
+                       gstreamer1.0-plugins-good \
+                       gstreamer1.0-plugins-ugly \
+                       gstreamer1.0-plugins-bad \
                        python3-gst-1.0 \
                        python3-lxml \
                        python3-pip \
                        python3-setuptools \
                        python3-wheel \
                        libasound2-dev \
-                       sudo \
  && apt purge --auto-remove -y \
     gcc \
  && apt clean \
@@ -28,26 +30,21 @@ RUN curl -L -o gst-plugin-spotify_${GST_PLUGIN_SPOTIFY_VERSION_FILE}_${ARCH}.deb
   ; apt update && apt -f install -y \
  && rm gst-plugin-spotify_${GST_PLUGIN_SPOTIFY_VERSION_FILE}_${ARCH}.deb 
 
-RUN mkdir -p ~/.config/pip && printf "[global]\nbreak-system-packages = true\n" | tee ~/.config/pip/pip.conf \
- && pip install \
-    Mopidy==3.4.2 \
-    Mopidy-Iris \
-    Mopidy-Local \
-    Mopidy-Mobile \
-    Mopidy-MPD \
+ADD --chmod=755 ./requirements.txt /requirements.txt
+
+# RUN pip3 install -r requirements.txt \
+RUN pip install --break-system-packages -r requirements.txt \
+ && rm -rf ~/.cache/pip \
  && apt purge --auto-remove -y \
     gcc \
  && apt clean \
  && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* ~/.cache /root/.cache
 
-EXPOSE 6600
-EXPOSE 6680
-EXPOSE 5555/udp
+RUN update-ca-certificates --fresh
 
-ADD --chmod=755 ./start.sh /start.sh
 
-ENTRYPOINT ["dumb-init", "--"]
-CMD ["/start.sh"]
+ENV TZ=Asia/Shanghai
 
-HEALTHCHECK --interval=60s --timeout=5s --retries=3 \
-    CMD curl --connect-timeout 5 --silent --show-error --fail http://localhost:6680/ || exit 1
+EXPOSE 6600 6680
+
+ENTRYPOINT ["mopidy"]
