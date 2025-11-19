@@ -10,16 +10,14 @@ ENV PIP_NO_CACHE_DIR=1
 
  RUN apt-get update \
  && apt-get install -y curl \
-                       gstreamer1.0-alsa \
-                       gstreamer1.0-plugins-good \
-                       gstreamer1.0-plugins-ugly \
-                       gstreamer1.0-plugins-bad \
+                       dumb-init \
                        python3-gst-1.0 \
                        python3-lxml \
                        python3-pip \
                        python3-setuptools \
                        python3-wheel \
                        libasound2-dev \
+                       sudo \
  && apt purge --auto-remove -y \
     gcc \
  && apt clean \
