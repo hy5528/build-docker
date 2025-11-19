@@ -15,7 +15,7 @@ ENV PIP_NO_CACHE_DIR=1
                        gstreamer1.0-plugins-ugly \
                        gstreamer1.0-plugins-bad \
                        python3-gst-1.0 \
-                       gcc \
+                   
                        python3-lxml \
                        python3-pip \
                        python3-setuptools \
