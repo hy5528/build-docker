@@ -2,8 +2,9 @@ FROM alpine:3
 
 ARG VERSION
 
-RUN apk update && \
-    apk add flatpak 
+RUN apk update 
+RUN set -ex && \
+    apk add --no-cacheapk add flatpak 
 RUN flatpak remote-add --user --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo 
 RUN flatpak --user install -y flathub io.github.orontee.Argos 
 
