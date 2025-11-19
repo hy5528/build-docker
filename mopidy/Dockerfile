@@ -1,10 +1,12 @@
 FROM --platform=$BUILDPLATFORM golang:alpine AS builder
 
-RUN apk add --no-cache python3 py3-pip mopidy 
-RUN git clone https://github.com/jaedb/Iris.git && \
-    cd Iris && \
-    pip install -e . && \
-    ``` ‌:ml-citation{ref="2,3" data="citationList"}
+RUN apk update && \
+    apk add python3 py3-pip
+
+RUN pip3 install mopidy
+
+RUN pip3 install Mopidy-Iris
+
 
 
 
