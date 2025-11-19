@@ -1,5 +1,7 @@
 FROM alpine:3
 
+ARG VERSION
+
 RUN apk update && \
     apk add python3 py3-pip
 
