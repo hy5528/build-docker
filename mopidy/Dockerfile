@@ -4,9 +4,9 @@ ARG VERSION
 
 RUN apk update && \
     apk add flatpak && \
-    $ flatpak remote-add --user --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo && \
-    $ flatpak install flathub io.github.orontee.Argos && \
-    $ flatpak run io.github.orontee.Argos 
+    flatpak remote-add --user --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo && \
+    flatpak install flathub io.github.orontee.Argos && \
+    flatpak run io.github.orontee.Argos 
 RUN apk add --no-cache mopidy
 
 
