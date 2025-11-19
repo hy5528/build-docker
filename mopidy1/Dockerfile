@@ -43,7 +43,7 @@ RUN pip install --break-system-packages -r requirements.txt \
 RUN update-ca-certificates --fresh
 
 
-ENV TZ=Europe/London
+ENV TZ=Asia/Shanghai
 
 EXPOSE 6600 6680
 
