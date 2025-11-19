@@ -7,7 +7,6 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     gcc \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
-COPY ./pyproject.toml .
 RUN pip install --no-cache-dir setuptools>=66 setuptools-scm>=7.1 build
 
 RUN python -m build --wheel --no-isolation
