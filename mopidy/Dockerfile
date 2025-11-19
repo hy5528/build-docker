@@ -3,7 +3,8 @@ FROM alpine:3
 ARG VERSION
 
 RUN apk update && \
-    apk add python3 py3-pip flatpak
+    apk add flatpak && \
+    $ flatpak remote-add --user --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
 
 RUN apk add --no-cache mopidy
 
