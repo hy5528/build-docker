@@ -7,9 +7,10 @@ RUN apk update && \
 
 RUN apk add --no-cache mopidy
 
-RUN flatpak install flathub io.github.orontee.Argos
+RUN flatpak install flathub io.github.varlad77.Argos
 
-RUN flatpak run io.github.orontee.Argos
+
+RUN flatpak run io.github.varlad77.Argos
 
 
 
