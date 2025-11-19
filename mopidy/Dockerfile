@@ -1,25 +1,25 @@
-FROM debian:12-slim
+FROM  debian:12-slim AS base
 LABEL Author="hy5528"
 
 ARG ARCH=amd64
-ARG GST_PLUGIN_SPOTIFY_VERSION_PATH=0.14.0-alpha.1-1
-ARG GST_PLUGIN_SPOTIFY_VERSION_FILE=0.14.0.alpha.1-1
+ARG GST_PLUGIN_SPOTIFY_VERSION_PATH=0.15.0.alpha.1-3
+ARG GST_PLUGIN_SPOTIFY_VERSION_FILE=0.15.0.alpha.1-3
 
 ENV DEBIAN_FRONTEND=noninteractive
 ENV PIP_NO_CACHE_DIR=1
 
-RUN apt-get update
-RUN apt-get install -y wget
-RUN mkdir -p /etc/apt/keyrings
-RUN wget -q -O /etc/apt/keyrings/mopidy-archive-keyring.gpg https://apt.mopidy.com/mopidy.gpg
-RUN wget -q -O /etc/apt/sources.list.d/mopidy.list https://apt.mopidy.com/bullseye.list
-
-RUN apt update && apt upgrade -y \
- && apt install -y \
-    curl \
-    dumb-init \
-    python3-pip \
-    sudo \
+ RUN apt-get update \
+ && apt-get install -y curl \
+                       gstreamer1.0-alsa \
+                       gstreamer1.0-plugins-good \
+                       gstreamer1.0-plugins-ugly \
+                       gstreamer1.0-plugins-bad \
+                       python3-gst-1.0 \
+                       python3-lxml \
+                       python3-pip \
+                       python3-setuptools \
+                       python3-wheel \
+                       libasound2-dev \
  && apt purge --auto-remove -y \
     gcc \
  && apt clean \
@@ -28,14 +28,9 @@ RUN apt update && apt upgrade -y \
 RUN curl -L -o gst-plugin-spotify_${GST_PLUGIN_SPOTIFY_VERSION_FILE}_${ARCH}.deb https://github.com/kingosticks/gst-plugins-rs-build/releases/download/gst-plugin-spotify_${GST_PLUGIN_SPOTIFY_VERSION_PATH}/gst-plugin-spotify_${GST_PLUGIN_SPOTIFY_VERSION_FILE}_${ARCH}.deb \
  && dpkg -i gst-plugin-spotify_${GST_PLUGIN_SPOTIFY_VERSION_FILE}_${ARCH}.deb \
   ; apt update && apt -f install -y \
- && rm gst-plugin-spotify_${GST_PLUGIN_SPOTIFY_VERSION_FILE}_${ARCH}.deb \
- && curl -L -o libshout3_2.4.1-2_${ARCH}.deb http://ftp.de.debian.org/debian/pool/main/libs/libshout/libshout3_2.4.1-2_${ARCH}.deb \
- && dpkg -i libshout3_2.4.1-2_${ARCH}.deb \
-  ; apt update && apt -f install -y \
- && rm libshout3_2.4.1-2_${ARCH}.deb
+ && rm gst-plugin-spotify_${GST_PLUGIN_SPOTIFY_VERSION_FILE}_${ARCH}.deb 
 
- RUN mkdir -p ~/.config/pip && printf "[global]\nbreak-system-packages = true\n" | tee ~/.config/pip/pip.conf \
- && pip install \
+ RUN pip install \
     Mopidy==3.4.2 \
     Mopidy-Iris \
     Mopidy-Local \
