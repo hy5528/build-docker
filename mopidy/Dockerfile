@@ -8,13 +8,6 @@ ARG GST_PLUGIN_SPOTIFY_VERSION_FILE=0.15.0.alpha.1-3
 ENV DEBIAN_FRONTEND=noninteractive
 ENV PIP_NO_CACHE_DIR=1
 
-# 安装系统级依赖（基于Mopidy需求）
-RUN apt-get update && apt-get install -y --no-install-recommends \
-    libgirepository1.0-dev \
-    libcairo2-dev \
-    gcc \
-    && apt-get clean \
-    && rm -rf /var/lib/apt/lists/*
 
  RUN apt-get update && apt-get install -y --no-install-recommends \ 
  && apt-get install -y curl \
