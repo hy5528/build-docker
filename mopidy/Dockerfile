@@ -11,6 +11,10 @@ ENV PIP_NO_CACHE_DIR=1
  RUN apt-get update 
  ADD --chmod=755 ./requirements.txt /requirements.txt
  RUN apt-get install -y curl \
+                       gstreamer1.0-alsa \
+                       gstreamer1.0-plugins-good \
+                       gstreamer1.0-plugins-ugly \
+                       gstreamer1.0-plugins-bad \
                        python3-gst-1.0 \
                        python3-lxml \
                        python3-pip \
