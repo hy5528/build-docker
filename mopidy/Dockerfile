@@ -1,4 +1,4 @@
-FROM --platform=$BUILDPLATFORM golang:alpine AS builder
+FROM alpine:3
 
 RUN apk update && \
     apk add python3 py3-pip
