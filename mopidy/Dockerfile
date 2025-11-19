@@ -30,8 +30,7 @@ RUN curl -L -o gst-plugin-spotify_${GST_PLUGIN_SPOTIFY_VERSION_FILE}_${ARCH}.deb
   ; apt update && apt -f install -y \
  && rm gst-plugin-spotify_${GST_PLUGIN_SPOTIFY_VERSION_FILE}_${ARCH}.deb 
 
- RUN pip install \
-    Mopidy==3.4.2 \
+ RUN pip install Mopidy==3.4.2 \
     Mopidy-Iris \
     Mopidy-Local \
     Mopidy-Mobile \
