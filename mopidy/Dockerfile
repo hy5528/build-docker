@@ -1,4 +1,4 @@
-FROM  debian:12-slim AS base
+FROM  --platform=$BUILDPLATFORM maven:3.9.6-eclipse-temurin-17 AS build
 LABEL Author="hy5528"
 
 ARG ARCH=amd64
