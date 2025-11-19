@@ -8,12 +8,23 @@ ARG GST_PLUGIN_SPOTIFY_VERSION_FILE=0.15.0.alpha.1-3
 ENV DEBIAN_FRONTEND=noninteractive
 ENV PIP_NO_CACHE_DIR=1
 
- RUN apt-get update \
+# 安装系统级依赖（基于Mopidy需求）
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    libgirepository1.0-dev \
+    libcairo2-dev \
+    gcc \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
+
+ RUN apt-get update && apt-get install -y --no-install-recommends \ 
  && apt-get install -y curl \
                        gstreamer1.0-alsa \
                        gstreamer1.0-plugins-good \
                        gstreamer1.0-plugins-ugly \
                        gstreamer1.0-plugins-bad \
+                       libgirepository1.0-dev \
+                       libcairo2-dev \
+                       gcc \
                        python3-gst-1.0 \
                        python3-lxml \
                        python3-pip \
