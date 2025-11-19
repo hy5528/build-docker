@@ -7,7 +7,8 @@ RUN apk update && \
 RUN flatpak remote-add --user --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo 
 RUN flatpak --user install -y flathub io.github.orontee.Argos 
 RUN flatpak run io.github.orontee.Argos 
-RUN apk add --no-cache mopidy
+RUN set -ex && \
+    apk add --no-cache mopidy
 
 
 EXPOSE 6600 6680
