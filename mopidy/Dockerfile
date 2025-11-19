@@ -42,9 +42,6 @@ RUN mkdir -p ~/.config/pip && printf "[global]\nbreak-system-packages = true\n" 
  && apt clean \
  && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* ~/.cache /root/.cache
 
-
-USER mopidy
-
 EXPOSE 6600
 EXPOSE 6680
 EXPOSE 5555/udp
