@@ -1,23 +1,7 @@
-Dockerfile <https://github.com/vgist/dockerfiles/tree/master/mpd>
 
-Automatically built by Github Actions
+mopidy
 
-#### Volume
 
-- /music
-- /var/lib/mpd/playlists
-
-#### Custom usage:
-
-    docker run \
-        -d \
-        --name mpd \
-        --device /dev/snd \
-        -p 6600:6600 \
-        -p 8000:8000 \
-        -v /your/music:/music \
-        -v /your/playlists:/var/lib/mpd/playlists \
-        gists/mpd
 
 #### Compose example:
 
