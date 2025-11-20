@@ -1,50 +1,58 @@
-FROM  python:3.12-slim AS base
-LABEL Author="hy5528"
+##########################################################
+FROM alpine as base
 
-ARG ARCH=amd64
-ARG GST_PLUGIN_SPOTIFY_VERSION_PATH=0.15.0.alpha.1-3
-ARG GST_PLUGIN_SPOTIFY_VERSION_FILE=0.15.0.alpha.1-3
+RUN apk update \
+    && apk upgrade \
+    && apk add --no-cache \
+            gstreamer \
+            mopidy \
+            py-pip \
+            alpine-sdk \
+            python3-dev\
+            dumb-init \
+            curl
 
-ENV DEBIAN_FRONTEND=noninteractive
-ENV PIP_NO_CACHE_DIR=1
+RUN pip3 install --upgrade --break-system-packages pip \
+    && pip3 install --break-system-packages --no-cache-dir Mopidy-MPD Mopidy-Local Mopidy-Podcast Mopidy-Iris \
+    && rm -rf ~/.cache/pip
 
- RUN apt-get update \
- && apt-get install -y curl \
-                       gstreamer1.0-alsa \
-                       gstreamer1.0-plugins-good \
-                       gstreamer1.0-plugins-ugly \
-                       gstreamer1.0-plugins-bad \
-                       python3-gst-1.0 \
-                       python3-lxml \
-                       python3-pip \
-                       python3-setuptools \
-                       python3-wheel \
-                       libasound2-dev \
- && apt purge --auto-remove -y \
-    gcc \
- && apt clean \
- && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* ~/.cache /root/.cache
+##########################################################
+FROM base as muse
+ARG app_path
 
-RUN curl -L -o gst-plugin-spotify_${GST_PLUGIN_SPOTIFY_VERSION_FILE}_${ARCH}.deb https://github.com/kingosticks/gst-plugins-rs-build/releases/download/gst-plugin-spotify_${GST_PLUGIN_SPOTIFY_VERSION_PATH}/gst-plugin-spotify_${GST_PLUGIN_SPOTIFY_VERSION_FILE}_${ARCH}.deb \
- && dpkg -i gst-plugin-spotify_${GST_PLUGIN_SPOTIFY_VERSION_FILE}_${ARCH}.deb \
-  ; apt update && apt -f install -y \
- && rm gst-plugin-spotify_${GST_PLUGIN_SPOTIFY_VERSION_FILE}_${ARCH}.deb 
+# Base dir /app
+WORKDIR $app_path
 
-ADD --chmod=755 ./requirements.txt /requirements.txt
+COPY mopidy_muse/mopidy.conf /root/.config/mopidy.conf
+COPY LICENSE ./
+COPY MANIFEST.in ./
+COPY README.md ./
+COPY pyproject.toml ./
+ADD ./mopidy_muse ./mopidy_muse
 
-# RUN pip3 install -r requirements.txt \
-RUN pip install --break-system-packages -r requirements.txt \
- && rm -rf ~/.cache/pip \
- && apt purge --auto-remove -y \
-    gcc \
- && apt clean \
- && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* ~/.cache /root/.cache
+#VOLUME ${app_path}/mopidy_muse/static
 
-RUN update-ca-certificates --fresh
+RUN pip3 install --break-system-packages -e .
 
+EXPOSE 6680
+CMD ["mopidy"]
 
-ENV TZ=Asia/Shanghai
+##########################################################
+FROM base as prod
+ARG app_path
 
-EXPOSE 6600 6680
+# Base dir /app
+WORKDIR $app_path
 
-ENTRYPOINT ["mopidy"]
+COPY mopidy_muse/mopidy.conf /root/.config/mopidy.conf
+COPY LICENSE ./
+COPY MANIFEST.in ./
+COPY README.md ./
+COPY pyproject.toml ./
+ADD ./mopidy_muse ./mopidy_muse
+ADD ./build ./mopidy_muse/static
+
+RUN pip install --break-system-packages -e .
+
+EXPOSE 6680
+CMD ["mopidy"]
