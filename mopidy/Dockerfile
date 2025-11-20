@@ -10,7 +10,10 @@ RUN echo "http://dl-cdn.alpinelinux.org/alpine/edge/testing" >> /etc/apk/reposit
   shadow \
   sudo \
   git \
-  alsa-utils \
+  gstreamer1.0-alsa \
+  gstreamer1.0-plugins-good \
+  gstreamer1.0-plugins-ugly \
+  gstreamer1.0-plugins-bad \
   py3-pip \
   mopidy 
 
