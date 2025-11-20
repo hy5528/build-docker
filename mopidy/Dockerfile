@@ -12,8 +12,8 @@ RUN echo "http://dl-cdn.alpinelinux.org/alpine/edge/testing" >> /etc/apk/reposit
   git \
   alsa-utils \
   py3-pip \
-  mopidy \
-  Mopidy-Mpd
+  mopidy 
+
 
 
 # Clone Iris from the repository and install in development mode.
