@@ -21,20 +21,21 @@ Automatically built by Github Actions
 
 #### Compose example:
 
-    mpd:
-      image: gists/mpd
-      ports:
-        - "6600:6600"
-        - "8000:8000"
-      volumes:
-        - /your/music:/music
-        - /your/playlists:/var/lib/mpd/playlists \
-      devices:
-
-
-
-
-
+services:
+  mopidy:
+    image: ghcr.nju.edu.cn/hy5528/mopidy66:latest
+    container_name: mopidy
+    devices:
+      - /dev/snd:/dev/snd
+    ports:
+      - 6680:6680
+      - 6600:6600
+    volumes:
+      - /run/udev:/run/udev:ro
+      - /opt/config:/root/.config
+      - /opt/local:/root/.local
+      - /media/music:/root/music
+    restart: always
 
       
         - /dev/snd
