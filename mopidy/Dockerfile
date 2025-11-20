@@ -1,5 +1,5 @@
 # Use Alpine edge for now as some required dependencies are only in the testing repository
-FROM docker.io/alpine:edge
+FROM --platform=$BUILDPLATFORM docker.io/alpine:edge
 LABEL org.opencontainers.image.authors="https://github.com/jaedb"
 
 # Switch to the root user while we do our changes
