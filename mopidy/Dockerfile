@@ -23,8 +23,8 @@ ARG app_path
 # Base dir /app
 WORKDIR $app_path
 
-ADD --chmod=755 mopidy_muse/mopidy.conf /root/.config/mopidy.conf
-ADD --chmod=755./LICENSE /
+ADD --chmod=755 ./mopidy_muse/mopidy.conf /root/.config/mopidy.conf
+ADD --chmod=755 ./LICENSE /
 ADD --chmod=755 ./MANIFEST.in /
 ADD --chmod=755 ./README.md /
 ADD --chmod=755 pyproject.toml /
