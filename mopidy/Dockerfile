@@ -1,4 +1,4 @@
-FROM  python:3.12-slim AS base
+FROM  debian:12-slim AS base
 LABEL Author="hy5528"
 
 ARG ARCH=amd64
