@@ -1,11 +1,5 @@
 #!/bin/bash
 
-echo -e "===================1. 启动unblockneteasemusic===========================\n"
-# start unblock service in the background
-npx unblockneteasemusic -p 80:443 -s -f ${NETEASE_SERVER_IP:-220.197.30.65} -o ${UNBLOCK_SOURCES:-kugou bodian pyncmd} 2>&1 &
-
-echo -e "unblockneteasemusic启动成功...\n"
-
 echo -e "===================1. 启动nginx===========================\n"
 nginx -s reload 2>/dev/null || nginx -c /etc/nginx/nginx.conf
 echo -e "nginx启动成功...\n"
