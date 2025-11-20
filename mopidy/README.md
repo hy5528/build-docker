@@ -21,6 +21,9 @@ services:
       - /media/music:/root/music
     restart: always
 
+
+
+
 #### Client
 
 - mpc: <http://www.musicpd.org/clients/mpc/>
