@@ -29,9 +29,9 @@ ADD https://api.github.com/repos/jaedb/Iris/git/refs/heads/master version.json
 ENV IRIS_VERSION=develop
 RUN git clone --depth 1 --single-branch -b ${IRIS_VERSION} https://github.com/jaedb/Iris.git /iris \
  && cd /iris \
- && npm install \
- && npm run prod \
- && python3 setup.py develop 
+ && sudo python3 setup.py install \
+ && echo "mopidy ALL=NOPASSWD: /iris/mopidy_iris/system.sh"  >> /etc/sudoers' 
+
  
 ENV TZ=Asia/Shanghai
 
