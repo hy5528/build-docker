@@ -1,5 +1,5 @@
 ##########################################################
-FROM alpine as base
+FROM --platform=$BUILDPLATFORM alpine as base
 
 RUN apk update \
     && apk upgrade \
