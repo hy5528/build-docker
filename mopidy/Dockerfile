@@ -1,10 +1,6 @@
-# Use Alpine edge for now as some required dependencies are only in the testing repository
-FROM --platform=$BUILDPLATFORM python:3.12-alpine
-LABEL org.opencontainers.image.authors="https://github.com/jaedb"
+FROM alpine:3
 
-# Switch to the root user while we do our changes
-USER root
-WORKDIR /
+ARG VERSION
 
 # Install GStreamer and other required Debian packages
 RUN echo "http://dl-cdn.alpinelinux.org/alpine/edge/testing" >> /etc/apk/repositories \
@@ -16,8 +12,7 @@ RUN echo "http://dl-cdn.alpinelinux.org/alpine/edge/testing" >> /etc/apk/reposit
   git \
   alsa-utils \
   py3-pip \
-  mopidy \
-  py3-mopidy-spotify
+  mopidy 
 
 
 
@@ -30,7 +25,7 @@ ENV IRIS_VERSION=develop
 RUN git clone --depth 1 --single-branch -b ${IRIS_VERSION} https://github.com/jaedb/Iris.git /iris \
  && cd /iris \
  && sudo python3 setup.py install \
- && echo "mopidy ALL=NOPASSWD: /iris/mopidy_iris/system.sh"  >> /etc/sudoers' 
+ && sudo sh -c 'echo "mopidy  ALL=NOPASSWD:   iris/mopidy_iris/system.sh" >> /etc/sudoers >> /etc/sudoers' 
 
  
 ENV TZ=Asia/Shanghai
