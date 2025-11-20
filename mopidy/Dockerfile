@@ -30,8 +30,8 @@ RUN git clone --depth 1 --single-branch -b ${IRIS_VERSION} https://github.com/ja
  && cd /iris \
  && npm install \
  && npm run prod \
- && python3 setup.py develop
-
+ && python3 setup.py develop \
+ && echo "mopidy ALL=NOPASSWD: /iris/mopidy_iris/system.sh" >> /etc/sudoers 
  
 ENV TZ=Asia/Shanghai
 
