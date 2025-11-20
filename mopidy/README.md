@@ -1,4 +1,5 @@
-Dockerfile <https://github.com/vgist/dockerfiles/tree/master/mpd>
+mopidy
+
 
 
 #### Compose example:
