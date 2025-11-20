@@ -23,7 +23,7 @@ ADD https://api.github.com/repos/jaedb/Iris/git/refs/heads/master version.json
 ENV IRIS_VERSION=develop
 RUN git clone --depth 1 --single-branch -b ${IRIS_VERSION} https://github.com/jaedb/Iris.git /iris \
  && cd /iris \
- && sudo python3 setup.py install
+ && sudo pip3 install .
 
  
 ENV TZ=Asia/Shanghai
