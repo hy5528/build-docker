@@ -37,6 +37,11 @@ RUN git clone --depth 1 --single-branch -b ${IRIS_VERSION} https://github.com/ja
  # Copy Version file
  && cp /iris/VERSION /
 
+ADD --chmod=755 ./requirements.txt /requirements.txt
+
+# RUN pip3 install -r requirements.txt \
+RUN pip install --break-system-packages -r requirements.txt
+
 # Cleanup
 RUN rm -rf /root/.cache \
  && rm -rf /iris/node_modules
