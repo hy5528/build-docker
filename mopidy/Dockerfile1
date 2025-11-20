@@ -1,50 +1,82 @@
-FROM  debian:12-slim AS base
-LABEL Author="hy5528"
+# Use Alpine edge for now as some required dependencies are only in the testing repository
+FROM docker.io/alpine:edge
+LABEL org.opencontainers.image.authors="https://github.com/jaedb"
 
-ARG ARCH=amd64
-ARG GST_PLUGIN_SPOTIFY_VERSION_PATH=0.15.0.alpha.1-3
-ARG GST_PLUGIN_SPOTIFY_VERSION_FILE=0.15.0.alpha.1-3
+# Switch to the root user while we do our changes
+USER root
+WORKDIR /
 
-ENV DEBIAN_FRONTEND=noninteractive
-ENV PIP_NO_CACHE_DIR=1
+# Install GStreamer and other required Debian packages
+RUN echo "http://dl-cdn.alpinelinux.org/alpine/edge/testing" >> /etc/apk/repositories \
+ && apk update \
+ && apk add \
+  dumb-init \
+  shadow \
+  sudo \
+  git \
+  alsa-utils \
+  py3-pip \
+  mopidy \
+  py3-mopidy-spotify
 
- RUN apt-get update \
- && apt-get install -y curl \
-                       gstreamer1.0-alsa \
-                       gstreamer1.0-plugins-good \
-                       gstreamer1.0-plugins-ugly \
-                       gstreamer1.0-plugins-bad \
-                       python3-gst-1.0 \
-                       python3-lxml \
-                       python3-pip \
-                       python3-setuptools \
-                       python3-wheel \
-                       libasound2-dev \
- && apt purge --auto-remove -y \
-    gcc \
- && apt clean \
- && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* ~/.cache /root/.cache
+# Install Node, to build Iris JS application
+RUN apk add nodejs npm
 
-RUN curl -L -o gst-plugin-spotify_${GST_PLUGIN_SPOTIFY_VERSION_FILE}_${ARCH}.deb https://github.com/kingosticks/gst-plugins-rs-build/releases/download/gst-plugin-spotify_${GST_PLUGIN_SPOTIFY_VERSION_PATH}/gst-plugin-spotify_${GST_PLUGIN_SPOTIFY_VERSION_FILE}_${ARCH}.deb \
- && dpkg -i gst-plugin-spotify_${GST_PLUGIN_SPOTIFY_VERSION_FILE}_${ARCH}.deb \
-  ; apt update && apt -f install -y \
- && rm gst-plugin-spotify_${GST_PLUGIN_SPOTIFY_VERSION_FILE}_${ARCH}.deb 
+# Allow pip to install over system packages
+ENV PIP_BREAK_SYSTEM_PACKAGES 1
 
-ADD --chmod=755 ./requirements.txt /requirements.txt
+# Clone Iris from the repository and install in development mode.
+# This allows a binding at "/iris" to map to your local folder for development, rather than
+# installing using pip.
+# Note: ADD helps prevent RUN caching issues. When HEAD changes in repo, our cache will be invalidated!
+ADD https://api.github.com/repos/jaedb/Iris/git/refs/heads/master version.json
+ENV IRIS_VERSION=develop
+RUN git clone --depth 1 --single-branch -b ${IRIS_VERSION} https://github.com/jaedb/Iris.git /iris \
+ && cd /iris \
+ && npm install \
+ && npm run prod \
+ && python3 setup.py develop \
+ && mkdir -p /var/lib/mopidy/.config \
+ && ln -s /config /var/lib/mopidy/.config/mopidy \
+ # Allow mopidy user to run system commands (restart, local scan, etc)
+ && echo "mopidy ALL=NOPASSWD: /iris/mopidy_iris/system.sh" >> /etc/sudoers \
+ # Enable container mode (disable restart option, etc.)
+ && echo "1" >> /IS_CONTAINER \
+ # Copy Version file
+ && cp /iris/VERSION /
 
-# RUN pip3 install -r requirements.txt \
-RUN pip install --break-system-packages -r requirements.txt \
- && rm -rf ~/.cache/pip \
- && apt purge --auto-remove -y \
-    gcc \
- && apt clean \
- && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* ~/.cache /root/.cache
+# Install additional mopidy extensions and Python dependencies via pip
+COPY docker/requirements.txt .
+RUN python3 -m pip install -r requirements.txt
 
-RUN update-ca-certificates --fresh
+# Cleanup
+RUN rm -rf /root/.cache \
+ && rm -rf /iris/node_modules
 
+# Start helper script.
+COPY docker/entrypoint.sh /entrypoint.sh
 
-ENV TZ=Asia/Shanghai
+# Copy Default configuration for mopidy
+COPY docker/mopidy/mopidy.example.conf /config/mopidy.conf
 
-EXPOSE 6600 6680
+# Copy the pulse-client configuratrion
+COPY docker/mopidy/pulse-client.conf /etc/pulse/client.conf
 
-ENTRYPOINT ["mopidy"]
+# Allows any user to run mopidy, but runs by default as a randomly generated UID/GID.
+# RUN useradd -ms /bin/bash mopidy
+ENV HOME=/var/lib/mopidy
+RUN set -ex \
+ && usermod -G audio,wheel mopidy \
+ && mkdir /var/lib/mopidy/local \
+ && chown mopidy:audio -R $HOME /entrypoint.sh /iris \
+ && chmod go+rwx -R $HOME /entrypoint.sh /iris
+
+# Runs as mopidy user by default.
+USER mopidy:audio
+
+VOLUME ["/var/lib/mopidy/local"]
+
+EXPOSE 6600 6680 1704 1705 5555/udp
+
+ENTRYPOINT ["/usr/bin/dumb-init", "/entrypoint.sh"]
+CMD ["mopidy"]
