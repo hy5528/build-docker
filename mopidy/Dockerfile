@@ -44,13 +44,13 @@ ARG app_path
 # Base dir /app
 WORKDIR $app_path
 
-COPY mopidy_muse/mopidy.conf /root/.config/mopidy.conf
-COPY LICENSE ./
-COPY MANIFEST.in ./
-COPY README.md ./
-COPY pyproject.toml ./
-ADD ./mopidy_muse ./mopidy_muse
-ADD ./build ./mopidy_muse/static
+ADD --chmod=755 mopidy_muse/mopidy.conf /root/.config/mopidy.conf
+ADD --chmod=755 LICENSE ./
+ADD --chmod=755 MANIFEST.in ./
+ADD --chmod=755 README.md ./
+ADD --chmod=755 pyproject.toml ./
+ADD --chmod=755 ./mopidy_muse ./mopidy_muse
+ADD --chmod=755 ./build ./mopidy_muse/static
 
 RUN pip install --break-system-packages -e .
 
