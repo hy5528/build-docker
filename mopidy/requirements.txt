@@ -1,4 +1,5 @@
 Mopidy-Local
+Mopidy-Iris
 Mopidy-Mpd
 Mopidy-MusicBox-Webclient
 Mopidy-Soundcloud
