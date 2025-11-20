@@ -45,12 +45,12 @@ ARG app_path
 WORKDIR $app_path
 
 ADD --chmod=755 mopidy_muse/mopidy.conf /root/.config/mopidy.conf
-ADD --chmod=755 LICENSE ./
-ADD --chmod=755 MANIFEST.in ./
-ADD --chmod=755 README.md ./
-ADD --chmod=755 pyproject.toml ./
-ADD --chmod=755 ./mopidy_muse ./mopidy_muse
-ADD --chmod=755 ./build ./mopidy_muse/static
+ADD --chmod=755 ./LICENSE /
+ADD --chmod=755 ./MANIFEST.in /
+ADD --chmod=755 ./README.md /
+ADD --chmod=755 ./pyproject.toml /
+ADD --chmod=755 ./mopidy_muse /mopidy_muse
+ADD --chmod=755 ./build /mopidy_muse/static
 
 RUN pip install --break-system-packages -e .
 
