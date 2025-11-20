@@ -5,15 +5,15 @@ ARG VERSION
 # Install GStreamer and other required Debian packages
 RUN echo "http://dl-cdn.alpinelinux.org/alpine/edge/testing" >> /etc/apk/repositories \
  && apk update \
- && apk add \
+ && apk add --no-cache \
   dumb-init \
   shadow \
   sudo \
   git \
   alsa-utils \
   py3-pip \
-  mopidy 
-
+  mopidy \
+  Mopidy-Mpd
 
 
 # Clone Iris from the repository and install in development mode.
