@@ -1,5 +1,5 @@
 # Use Alpine edge for now as some required dependencies are only in the testing repository
-FROM python:3.12-alpine
+FROM --platform=$BUILDPLATFORM python:3.12-alpine
 LABEL org.opencontainers.image.authors="https://github.com/jaedb"
 
 # Switch to the root user while we do our changes
