@@ -1,8 +1,6 @@
 
 mopidy
 
-
-
 #### Compose example:
 
 services:
