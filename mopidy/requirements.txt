@@ -1,9 +1,6 @@
 # https://github.com/mopidy/mopidy/releases
 Mopidy==3.4.2
 
-# https://github.com/Lesterpig/mopidy-party
-Mopidy-Party==1.3.0
-
 # https://github.com/jaedb/Iris/releases
 Mopidy-Iris==3.70.0
 
