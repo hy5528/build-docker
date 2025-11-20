@@ -31,7 +31,11 @@ RUN git clone --depth 1 --single-branch -b ${IRIS_VERSION} https://github.com/ja
  && npm install \
  && npm run prod \
  && python3 setup.py develop \
- && echo "mopidy ALL=NOPASSWD: /iris/mopidy_iris/system.sh" >> /etc/sudoers 
+  && echo "mopidy ALL=NOPASSWD: /iris/mopidy_iris/system.sh" >> /etc/sudoers \
+ # Enable container mode (disable restart option, etc.)
+ && echo "1" >> /IS_CONTAINER \
+ # Copy Version file
+ && cp /iris/VERSION /
  
 ENV TZ=Asia/Shanghai
 
