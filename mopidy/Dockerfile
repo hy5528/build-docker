@@ -36,6 +36,11 @@ RUN git clone --depth 1 --single-branch -b ${IRIS_VERSION} https://github.com/ja
  && echo "1" >> /IS_CONTAINER \
  # Copy Version file
  && cp /iris/VERSION /
+
+# Cleanup
+RUN rm -rf /root/.cache \
+ && rm -rf /iris/node_modules
+
  
 ENV TZ=Asia/Shanghai
 
