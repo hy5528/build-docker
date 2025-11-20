@@ -2,6 +2,7 @@
 
 #### Compose example:
 
+
 services:
   mopidy:
     image: ghcr.nju.edu.cn/hy5528/mopidy66:latest
