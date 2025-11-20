@@ -17,12 +17,12 @@ Automatically built by Github Actions
         -p 8000:8000 \
         -v /your/music:/music \
         -v /your/playlists:/var/lib/mpd/playlists \
-        gists/mpd
+        ghcr.io/hy5528/mpd66:latest
 
 #### Compose example:
 
     mpd:
-      image: gists/mpd
+      image: ghcr.io/hy5528/mpd66:latest
       ports:
         - "6600:6600"
         - "8000:8000"
