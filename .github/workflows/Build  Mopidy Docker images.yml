@@ -50,10 +50,15 @@ jobs:
           images: ghcr.io/hy5528/mopidy66
           tags: |
             type=raw,value=latest
+            
       - name: Clone Overleaf Gitlab Repo
         run: |
-          git clone https://github.com/mopidy/mopidy.git app
+          git clone https://github.com/cristianpb/muse.git app
 
+      - name: "Copy userpatches to build folder"
+        shell: bash
+        run: |
+          rsync -av mopidy/. ./app
       - name: "Copy userpatches to build folder"
         shell: bash
         run: |
