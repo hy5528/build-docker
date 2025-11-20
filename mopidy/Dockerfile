@@ -19,11 +19,7 @@ RUN echo "http://dl-cdn.alpinelinux.org/alpine/edge/testing" >> /etc/apk/reposit
   mopidy \
   py3-mopidy-spotify
 
-# Install Node, to build Iris JS application
-RUN apk add nodejs npm
 
-# Allow pip to install over system packages
-ENV PIP_BREAK_SYSTEM_PACKAGES 1
 
 # Clone Iris from the repository and install in development mode.
 # This allows a binding at "/iris" to map to your local folder for development, rather than
@@ -35,48 +31,10 @@ RUN git clone --depth 1 --single-branch -b ${IRIS_VERSION} https://github.com/ja
  && cd /iris \
  && npm install \
  && npm run prod \
- && python3 setup.py develop \
- && mkdir -p /var/lib/mopidy/.config \
- && ln -s /config /var/lib/mopidy/.config/mopidy \
- # Allow mopidy user to run system commands (restart, local scan, etc)
- && echo "mopidy ALL=NOPASSWD: /iris/mopidy_iris/system.sh" >> /etc/sudoers \
- # Enable container mode (disable restart option, etc.)
- && echo "1" >> /IS_CONTAINER \
- # Copy Version file
- && cp /iris/VERSION /
+ && python3 setup.py develop 
+ 
+ENV TZ=Asia/Shanghai
 
-# Install additional mopidy extensions and Python dependencies via pip
-COPY docker/requirements.txt .
-RUN python3 -m pip install -r requirements.txt
+EXPOSE 6600 6680
 
-# Cleanup
-RUN rm -rf /root/.cache \
- && rm -rf /iris/node_modules
-
-# Start helper script.
-COPY docker/entrypoint.sh /entrypoint.sh
-
-# Copy Default configuration for mopidy
-COPY docker/mopidy/mopidy.example.conf /config/mopidy.conf
-
-# Copy the pulse-client configuratrion
-COPY docker/mopidy/pulse-client.conf /etc/pulse/client.conf
-
-# Allows any user to run mopidy, but runs by default as a randomly generated UID/GID.
-# RUN useradd -ms /bin/bash mopidy
-ENV HOME=/var/lib/mopidy
-RUN set -ex \
- && usermod -G audio,wheel mopidy \
- && mkdir /var/lib/mopidy/local \
- && chown mopidy:audio -R $HOME /entrypoint.sh /iris \
- && chmod go+rwx -R $HOME /entrypoint.sh /iris
-
-# Runs as mopidy user by default.
-USER mopidy:audio
-
-VOLUME ["/var/lib/mopidy/local"]
-
-EXPOSE 6600 6680 1704 1705 5555/udp
-
-ENTRYPOINT ["/usr/bin/dumb-init", "/entrypoint.sh"]
-CMD ["mopidy"]
+ENTRYPOINT ["mopidy"]
