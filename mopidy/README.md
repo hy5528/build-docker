@@ -30,6 +30,13 @@ Automatically built by Github Actions
         - /your/music:/music
         - /your/playlists:/var/lib/mpd/playlists \
       devices:
+
+
+
+
+
+
+      
         - /dev/snd
       restart: always
 
