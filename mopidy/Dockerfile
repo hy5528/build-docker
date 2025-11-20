@@ -17,9 +17,7 @@ RUN apk add --no-cache nodejs npm
 
 # Allow pip to install over system packages
 ENV PIP_BREAK_SYSTEM_PACKAGES 1
-# Install additional mopidy extensions and Python dependencies via pip
-COPY docker/requirements.txt .
-RUN python3 -m pip install -r requirements.txt
+
 # Clone Iris from the repository and install in development mode.
 # This allows a binding at "/iris" to map to your local folder for development, rather than
 # installing using pip.
