@@ -24,11 +24,11 @@ ARG app_path
 WORKDIR $app_path
 
 COPY mopidy_muse/mopidy.conf /root/.config/mopidy.conf
-COPY LICENSE ./
-COPY MANIFEST.in ./
-COPY README.md ./
-COPY pyproject.toml ./
-ADD ./mopidy_muse ./mopidy_muse
+COPY ./LICENSE /
+COPY ./MANIFEST.in /
+COPY ./README.md /
+COPY pyproject.toml /
+ADD ./mopidy_muse /mopidy_muse
 
 #VOLUME ${app_path}/mopidy_muse/static
 
