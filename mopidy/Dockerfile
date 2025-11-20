@@ -13,7 +13,7 @@ RUN apk update \
             curl
 
 RUN pip3 install --upgrade --break-system-packages pip \
-    && pip3 install --break-system-packages --no-cache-dir Mopidy-MPD Mopidy-Local Mopidy-Podcast Mopidy-Iris \
+    && pip3 install --break-system-packages --no-cache-dir Mopidy-TuneIn Mopidy-Local Mopidy-Podcast Mopidy-Podcast \
     && rm -rf ~/.cache/pip
 
 ##########################################################
