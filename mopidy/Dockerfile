@@ -1,50 +1,28 @@
-FROM  debian:12-slim AS base
-LABEL Author="hy5528"
-
-ARG ARCH=amd64
-ARG GST_PLUGIN_SPOTIFY_VERSION_PATH=0.15.0.alpha.1-3
-ARG GST_PLUGIN_SPOTIFY_VERSION_FILE=0.15.0.alpha.1-3
-
-ENV DEBIAN_FRONTEND=noninteractive
-ENV PIP_NO_CACHE_DIR=1
-
- RUN apt-get update \
- && apt-get install -y curl \
-                       gstreamer1.0-alsa \
-                       gstreamer1.0-plugins-good \
-                       gstreamer1.0-plugins-ugly \
-                       gstreamer1.0-plugins-bad \
-                       python3-gst-1.0 \
-                       python3-lxml \
-                       python3-pip \
-                       python3-setuptools \
-                       python3-wheel \
-                       libasound2-dev \
- && apt purge --auto-remove -y \
+# 构建阶段
+FROM python:3.11-slim AS builder
+WORKDIR /app
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    libgirepository1.0-dev \
+    libcairo2-dev \
     gcc \
- && apt clean \
- && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* ~/.cache /root/.cache
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
+COPY pyproject.toml .
+RUN pip install --no-cache-dir setuptools>=66 setuptools-scm>=7.1 build
+COPY src/ ./src/
+RUN python -m build --wheel --no-isolation
 
-RUN curl -L -o gst-plugin-spotify_${GST_PLUGIN_SPOTIFY_VERSION_FILE}_${ARCH}.deb https://github.com/kingosticks/gst-plugins-rs-build/releases/download/gst-plugin-spotify_${GST_PLUGIN_SPOTIFY_VERSION_PATH}/gst-plugin-spotify_${GST_PLUGIN_SPOTIFY_VERSION_FILE}_${ARCH}.deb \
- && dpkg -i gst-plugin-spotify_${GST_PLUGIN_SPOTIFY_VERSION_FILE}_${ARCH}.deb \
-  ; apt update && apt -f install -y \
- && rm gst-plugin-spotify_${GST_PLUGIN_SPOTIFY_VERSION_FILE}_${ARCH}.deb 
-
-ADD --chmod=755 ./requirements.txt /requirements.txt
-
-# RUN pip3 install -r requirements.txt \
-RUN pip install --break-system-packages -r requirements.txt \
- && rm -rf ~/.cache/pip \
- && apt purge --auto-remove -y \
-    gcc \
- && apt clean \
- && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* ~/.cache /root/.cache
-
-RUN update-ca-certificates --fresh
-
-
-ENV TZ=Asia/Shanghai
-
-EXPOSE 6600 6680
-
-ENTRYPOINT ["mopidy"]
+# 运行阶段
+FROM python:3.11-alpine
+WORKDIR /app
+RUN apk add --no-cache \
+    libgirepository \
+    libcairo \
+    glib \
+    && rm -rf /var/cache/apk/*
+COPY --from=builder /app/dist/*.whl .
+RUN pip install --no-cache-dir --no-deps *.whl && rm -rf *.whl /tmp/*
+RUN adduser -D mopidy && mkdir -p /app/config && chown -R mopidy:mopidy /app
+USER mopidy
+EXPOSE 6680
+CMD ["mopidy"]
