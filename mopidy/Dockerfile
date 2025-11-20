@@ -14,6 +14,11 @@ RUN echo "http://dl-cdn.alpinelinux.org/alpine/edge/testing" >> /etc/apk/reposit
   py3-pip \
   mopidy \
  && rm -rf /var/cache/apk/*
+# Install Node, to build Iris JS application
+RUN apk add nodejs npm
+
+# Allow pip to install over system packages
+ENV PIP_BREAK_SYSTEM_PACKAGES 1
 
 # Clone Iris from the repository and install in development mode.
 # This allows a binding at "/iris" to map to your local folder for development, rather than
@@ -23,7 +28,9 @@ ADD https://api.github.com/repos/jaedb/Iris/git/refs/heads/master version.json
 ENV IRIS_VERSION=develop
 RUN git clone --depth 1 --single-branch -b ${IRIS_VERSION} https://github.com/jaedb/Iris.git /iris \
  && cd /iris \
- && sudo pip3 install .
+ && npm install \
+ && npm run prod \
+ && python3 setup.py develop
 
  
 ENV TZ=Asia/Shanghai
