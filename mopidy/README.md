@@ -1,3 +1,4 @@
+mopidy
 
 
 #### Compose example:
