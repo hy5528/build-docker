@@ -39,7 +39,7 @@ services:
 
 Look at the displayed instructions. The log should present a line similar to the following:
 
-```text
+
 
 You will need an active Tidal subscription, of course.  
 After this action, you can stop the container (CTRL-C), and then start it normally using:
@@ -49,11 +49,13 @@ After this action, you can stop the container (CTRL-C), and then start it normal
 The application should be accessible at the host-ip at port 6680.  
 
 
-
+```text
 ---
 splayer
 ---
 docker run -d --name SPlayer --restart=always -p 25884:25884 ghcr.nju.edu.cn/hy5528/splayer66:latest
+
+```text
 
 ---
 yesplaymusic
