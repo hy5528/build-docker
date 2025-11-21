@@ -14,14 +14,14 @@
         -p 8000:8000 \
         -v /your/music:/music \
         -v /your/playlists:/var/lib/mpd/playlists \
-        ghcr.io/hy5528/mpd66:latest
+        ghcr.nju.edu.cn/hy5528/mpd66:latest
 
 #### Compose example:
 
  ```text
   services:
     mpd:
-      image: ghcr.io/hy5528/mpd66:latest
+      image: ghcr.nju.edu.cn/hy5528/mpd66:latest
       ports:
         - "6600:6600"
         - "8000:8000"
