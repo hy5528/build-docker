@@ -15,4 +15,8 @@ RUN set -ex && \
 
 COPY mpd.conf /etc/mpd.conf
 
+VOLUME /var/lib/mpd
+
+EXPOSE 6600 8000 8080
+
 CMD ["mpd","mympd", "--stdout", "--no-daemon"]
