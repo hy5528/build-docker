@@ -10,30 +10,21 @@ A simple docker-compose.yaml file.
 
 ```text
 ---
-version: "3.3"
 
 services:
   mopidy:
-    image: giof71/mopidy
+    image: hy5528/mopidy:latest
     container_name: mopidy
-    user: "1000:29"
     devices:
       - /dev/snd:/dev/snd
-    environment:
-      - AUDIO_OUTPUT=alsasink device=hw:D10
-      - RESTORE_STATE=yes
-      - SCROBBLER_ENABLED=${SCROBBLER_ENABLED:-}
-      - SCROBBLER_USERNAME=${SCROBBLER_USERNAME:-}
-      - SCROBBLER_PASSWORD=${SCROBBLER_PASSWORD:-}
-      - TIDAL_ENABLED=yes
-      - TIDAL_QUALITY=${TIDAL_QUALITY:-LOSSLESS}
     ports:
       - 6680:6680
-      - 8989:8989
+      - 6600:6600
     volumes:
-      - ./config:/config
-      - ./cache:/cache
-      - ./data:/data
+      - /run/udev:/run/udev:ro
+      - /opt/config:/root/.config
+      - /opt/local:/root/.local
+      - /media/music:/music
     restart: always
 ```
 
