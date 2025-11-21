@@ -1,8 +1,7 @@
 Mopidy-Local
 Mopidy-Iris
 Mopidy-Mpd
-Mopidy-MusicBox-Webclient
+Mopidy-Muse
 Mopidy-Soundcloud
-Mopidy-Youtube
 Mopidy-YTMusic
 ytmusicapi
