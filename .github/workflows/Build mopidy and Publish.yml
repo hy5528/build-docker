@@ -40,7 +40,7 @@ jobs:
       - name: Build and push
         uses: docker/build-push-action@v5
         with:
-          context: "${{ github.server_url }}/${{ github.repository }}.git#${{ github.ref }}:mopidy1"
+          context: "${{ github.server_url }}/${{ github.repository }}.git#${{ github.ref }}:mopidy"
           platforms: linux/amd64,linux/arm64,linux/arm/v7
           push: ${{ github.event_name != 'pull_request' }}
           tags: |
