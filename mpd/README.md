@@ -31,7 +31,7 @@
       devices:
         - /dev/snd
       restart: always
-...
+```
 #### Client
 
 - mpc: <http://www.musicpd.org/clients/mpc/>
