@@ -1,6 +1,7 @@
 # mopidy-docker
 
 Run Mopidy in Docker
+
 Mopidy plugins：
 Mopidy-Local
 Mopidy-Iris
