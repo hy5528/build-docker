@@ -1,7 +1,13 @@
 # mopidy-docker
 
 Run Mopidy in Docker
-
+Mopidy plugins：
+Mopidy-Local
+Mopidy-Iris
+Mopidy-Mpd
+Mopidy-Muse
+Mopidy-MusicBox-Webclient
+Mopidy-Soundcloud
 
 ## Examples
 
