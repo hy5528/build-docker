@@ -12,8 +12,6 @@ RUN echo "http://dl-cdn.alpinelinux.org/alpine/edge/testing" >> /etc/apk/reposit
   py3-pip \
   mopidy \
  && rm -rf /var/cache/apk/*
-# Install Node, to build Iris JS application
-RUN apk add --no-cache nodejs npm
 
 # Allow pip to install over system packages
 ENV PIP_BREAK_SYSTEM_PACKAGES 1
