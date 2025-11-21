@@ -28,9 +28,6 @@ services:
     restart: always
 ```
 
-In order to correctly set the credentials for Tidal, the first run should be done with this command:
-
-`docker-compose run mopidy`
 
 Look at the displayed instructions. The log should present a line similar to the following:
 
