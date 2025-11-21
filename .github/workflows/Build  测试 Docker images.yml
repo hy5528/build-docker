@@ -47,7 +47,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@v5
         with:
-          images: ghcr.io/hy5528/mpd66
+          images: ghcr.io/hy5528/mopidy66
           tags: |
             type=raw,value=latest
       
