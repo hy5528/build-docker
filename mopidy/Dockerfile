@@ -18,10 +18,12 @@ RUN apk add --no-cache nodejs npm
 # Allow pip to install over system packages
 ENV PIP_BREAK_SYSTEM_PACKAGES 1
 
+# Install additional mopidy extensions and Python dependencies via pip
 ADD --chmod=755 ./requirements.txt /requirements.txt
-
-# RUN pip3 install -r requirements.txt \
 RUN pip install --break-system-packages -r requirements.txt
+
+# Copy Default configuration for mopidy
+ADD --chmod=755 ./mopidy.conf /config/mopidy.conf
 
 # Cleanup
 RUN rm -rf /root/.cache \
