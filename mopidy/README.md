@@ -9,7 +9,6 @@ A simple docker-compose.yaml file.
 
 
 ```text
----
 
 services:
   mopidy:
