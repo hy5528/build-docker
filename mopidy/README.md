@@ -7,7 +7,6 @@ Mopidy-Local
 Mopidy-Iris
 Mopidy-Mpd
 Mopidy-Muse
-Mopidy-MusicBox-Webclient
 Mopidy-Soundcloud
 
 ## Examples
