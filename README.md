@@ -36,18 +36,7 @@ services:
 ```
 
 
-Look at the displayed instructions. The log should present a line similar to the following:
-
-
-
-You will need an active Tidal subscription, of course.  
-After this action, you can stop the container (CTRL-C), and then start it normally using:
-
-`docker-compose up -d`
-
-The application should be accessible at the host-ip at port 6680.  
-
-# splayer
+＃ splayer
 ```text
 
 
