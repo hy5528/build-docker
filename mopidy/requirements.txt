@@ -1,8 +1,9 @@
 Mopidy-Local
 Mopidy-Mpd
 Mopidy-Muse
+Mopidy-MusicBox-Webclient
 Mopidy-Soundcloud
-Mopidy-YTMusic
+Mopidy-Youtube
 Mopidy-YTMusic
 ytmusicapi
 youtube_dl
