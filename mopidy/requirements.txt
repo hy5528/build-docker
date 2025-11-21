@@ -4,6 +4,4 @@ Mopidy-Mpd
 Mopidy-Muse
 Mopidy-MusicBox-Webclient
 Mopidy-Soundcloud
-Mopidy-YTMusic
-ytmusicapi
-tox
+
