@@ -3,4 +3,7 @@ Mopidy-Mpd
 Mopidy-Muse
 Mopidy-Soundcloud
 Mopidy-YTMusic
+Mopidy-YTMusic
 ytmusicapi
+youtube_dl
+tox
