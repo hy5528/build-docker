@@ -19,7 +19,7 @@
 #### Compose example:
 
  ```text
-
+  services:
     mpd:
       image: ghcr.io/hy5528/mpd66:latest
       ports:
@@ -31,7 +31,7 @@
       devices:
         - /dev/snd
       restart: always
-
+...
 #### Client
 
 - mpc: <http://www.musicpd.org/clients/mpc/>
