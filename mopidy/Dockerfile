@@ -20,9 +20,6 @@ ENV PIP_BREAK_SYSTEM_PACKAGES 1
 ADD --chmod=755 ./requirements.txt /requirements.txt
 RUN pip install --break-system-packages -r requirements.txt
 
-# Copy Default configuration for mopidy
-ADD --chmod=755 ./mopidy.conf /root/.config/mopidy/mopidy.conf
-
 # Cleanup
 RUN rm -rf /root/.cache \
  && rm -rf /iris/node_modules
