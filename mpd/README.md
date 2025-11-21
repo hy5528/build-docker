@@ -17,7 +17,9 @@
         ghcr.io/hy5528/mpd66:latest
 
 #### Compose example:
- 
+
+ ```text
+
     mpd:
       image: ghcr.io/hy5528/mpd66:latest
       ports:
