@@ -1,5 +1,5 @@
 #Base image
-FROM debian:bookworm-slim
+FROM alpine:3.22.2
 
 # Set environment variables
 ENV DEBIAN_FRONTEND=noninteractive
