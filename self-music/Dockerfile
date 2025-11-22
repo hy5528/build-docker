@@ -1,23 +1,24 @@
-# Stage 1: Base image with all runtimes
-FROM --platform=$BUILDPLATFORM debian:12-slim AS base
-ENV DEBIAN_FRONTEND=noninteractive
-RUN apt-get update && \
-    apt-get install -y --no-install-recommends \
-    python3 python3-pip \
-    nginx \
-    supervisor \
-    curl \
-    && \
-    # Install Node.js v18 from NodeSource
-    curl -fsSL https://deb.nodesource.com/setup_18.x | bash - && \
-    apt-get install -y --no-install-recommends nodejs && \
-    # Clean up
-    apt-get clean && \
-    rm -rf /var/lib/apt/lists/*
+# ---- 第 1 阶段：安装依赖 ----
+FROM --platform=$BUILDPLATFORM node:20-alpine AS deps
 
-# Stage 2: Build Frontend
-FROM alpine:3.22.2 AS frontend-builder
-RUN apk add --no-cache npm 
+# 启用 corepack 并激活 pnpm（Node20 默认提供 corepack）
+RUN corepack enable && corepack prepare pnpm@latest --activate
+
+WORKDIR /app
+
+# 仅复制依赖清单，提高构建缓存利用率
+COPY package.json pnpm-lock.yaml ./
+
+# 安装所有依赖（含 devDependencies，后续会裁剪）
+RUN pnpm install --frozen-lockfile
+
+# ---- 第 2 阶段：构建项目 ----
+FROM --platform=$BUILDPLATFORM node:20-alpine AS builder
+RUN corepack enable && corepack prepare pnpm@latest --activate
+WORKDIR /app
+
+# 复制依赖
+COPY --from=deps /app/node_modules ./node_modules
 WORKDIR /app
 RUN npm install -g pnpm
 COPY frontend/package.json frontend/pnpm-lock.yaml ./
@@ -41,9 +42,9 @@ COPY backend/config.yaml /defaults/
 COPY backend/music.db /defaults/
 
 # Copy built frontend
-COPY --from=frontend-builder /app/public /app/frontend/public
-COPY --from=frontend-builder /app/.next/standalone /app/frontend/
-COPY --from=frontend-builder /app/.next/static /app/frontend/.next/static
+COPY --from=builder /app/public /app/frontend/public
+COPY --from=builder /app/.next/standalone /app/frontend/
+COPY --from=builder /app/.next/static /app/frontend/.next/static
 
 # Copy configs
 COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
