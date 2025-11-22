@@ -43,7 +43,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@v5
         with:
-          images: ghcr.io/hy5528/${{github.event.inputs.MACH}}66
+          images: hy5528/${{github.event.inputs.MACH}}66
           tags: |
             type=raw,value=latest
       
