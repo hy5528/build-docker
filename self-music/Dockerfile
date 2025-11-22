@@ -1,18 +1,22 @@
-FROM  debian:12-slim AS base
+FROM alpine:3.22.2
 
- RUN apt-get update \
- && apt-get install -y curl \
+# Install GStreamer and other required Debian packages
+RUN echo "http://dl-cdn.alpinelinux.org/alpine/edge/testing" >> /etc/apk/repositories \
+ && apk update \
+ && apk add --no-cache \
   dumb-init \
   shadow \
   sudo \
-  py-pip \
-  alpine-sdk \
-  python3-dev\
+  git \
+  alsa-utils \
   py3-pip \
- && apt purge --auto-remove -y \
-    gcc \
- && apt clean \
- && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* ~/.cache /root/.cache
+  mopidy \
+ && rm -rf /var/cache/apk/*
+# Install Node, to build Iris JS application
+RUN apk add --no-cache nodejs npm
+
+# Allow pip to install over system packages
+ENV PIP_BREAK_SYSTEM_PACKAGES 1
 
 
 # 设置工作目录
