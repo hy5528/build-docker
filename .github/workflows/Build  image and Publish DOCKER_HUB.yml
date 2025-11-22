@@ -39,35 +39,38 @@ jobs:
           username: ${{ secrets.DOCKER_HUB_USERNAME }}
           password: ${{ secrets.DOCKER_HUB_TOKEN }}
 
-      - name: Get current date for tag
-        id: date
-        run: echo "TODAY=$(date +'%Y%m%d')" >> $GITHUB_ENV
-
-      - name: Build and push
+      - name: 提取 Docker 元数据
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ghcr.io/hy5528/${{github.event.inputs.MACH}}66
+          tags: |
+            type=raw,value=latest
+      
+      - name: 构建并推送 Docker 镜像
         uses: docker/build-push-action@v5
         with:
           context: "${{ github.server_url }}/${{ github.repository }}.git#${{ github.ref }}:${{github.event.inputs.MACH}}"
-          platforms: linux/amd64,linux/arm64,linux/arm/v7
-          push: ${{ github.event_name != 'pull_request' }}
-          tags: |
-            hy5528/${{github.event.inputs.MACH}}:latest
-
-      - name: Create GitHub Release
-        if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/')
-        uses: softprops/action-gh-release@v1
-        with:
-          tag_name: ${{ github.ref }}
-          name: Release ${{ github.ref }}
-          body: |
-            Docker image built and pushed to Docker Hub:
-            hy5528/${{github.event.inputs.MACH}}:latest
+          platforms: linux/arm64,linux/arm/v7
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
 
       - name: 输出镜像信息
         run: |
-          run: |
           echo "### 🐳 Docker镜像构建成功！" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "**镜像标签：**" >> $GITHUB_STEP_SUMMARY
-          echo 'hy5528' >> $GITHUB_STEP_SUMMARY
-          echo "hy5528/${{github.event.inputs.MACH}}:latest" >> $GITHUB_STEP_SUMMARY
-          
+          echo '```' >> $GITHUB_STEP_SUMMARY
+          echo "${{ steps.meta.outputs.tags }}" >> $GITHUB_STEP_SUMMARY
+          echo '```' >> $GITHUB_STEP_SUMMARY
+          if [ -n "${{ inputs.version_tag }}" ]; then
+            echo "**版本标签：** ${{ inputs.version_tag }}" >> $GITHUB_STEP_SUMMARY
+          fi
+          if [ "${{ inputs.include_latest }}" == "true" ]; then
+            echo "**包含latest标签：** 是" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "**包含latest标签：** 否" >> $GITHUB_STEP_SUMMARY
+          fi
