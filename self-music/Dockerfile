@@ -19,18 +19,14 @@ WORKDIR /app
 
 # 复制依赖
 COPY --from=deps /app/node_modules ./node_modules
-
 # 复制全部源代码
 COPY . .
 
-WORKDIR /app
-RUN npm install -g pnpm
-COPY frontend/package.json frontend/pnpm-lock.yaml ./
-RUN pnpm install
-COPY frontend/ .
-ARG NEXT_PUBLIC_API_URL=/api
-ENV NEXT_PUBLIC_API_URL=${NEXT_PUBLIC_API_URL}
-RUN pnpm build
+# 在构建阶段也显式设置 DOCKER_ENV，
+ENV DOCKER_ENV=true
+
+# 生成生产构建
+RUN pnpm run build
 
 # Stage 3: Final image
 WORKDIR /app
