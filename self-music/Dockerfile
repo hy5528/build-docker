@@ -15,11 +15,11 @@ RUN echo "http://dl-cdn.alpinelinux.org/alpine/edge/testing" >> /etc/apk/reposit
   nginx \
   supervisor \
   curl \
- && \
-  # Install Node.js v18 from NodeSource
-  curl -fsSL https://deb.nodesource.com/setup_18.x | bash - && \
-  apt-get install -y --no-install-recommends nodejs && \
-  && rm -rf /var/cache/apk/*
+ && rm -rf /var/cache/apk/*
+  
+# Install Node, to build Iris JS application
+RUN apk add nodejs npm 
+  
   
 # Stage 2: Build Frontend
 WORKDIR /app
