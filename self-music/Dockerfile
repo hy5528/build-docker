@@ -31,7 +31,6 @@ ENV NEXT_PUBLIC_API_URL=${NEXT_PUBLIC_API_URL}
 RUN pnpm build
 
 # Stage 3: Final image
-FROM base
 WORKDIR /app
 
 # Copy backend
