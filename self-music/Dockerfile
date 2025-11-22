@@ -16,7 +16,8 @@ WORKDIR /app
 
 # 安装依赖
 COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
+RUN pip3 install --upgrade --break-system-packages pip \
+&& pip3 install --break-system-packages --no-cache-di -r requirements.txt
 
 # 拷贝项目代码
 COPY . .
