@@ -1,5 +1,5 @@
 # 使用官方 Python 运行时作为父镜像
-FROM --platform=$BUILDPLATFORM python:3.9-slim
+FROM alpine:3.22.2
 
 # 设置工作目录
 WORKDIR /app
