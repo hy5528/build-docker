@@ -1,4 +1,4 @@
-name:  Build images and Publish DOCKER_HUB
+name:  Build images and publish DOCKER_HUB
 
 on:
   workflow_dispatch:
@@ -67,7 +67,5 @@ jobs:
           run: |
           echo "### 🐳 Docker镜像构建成功！" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
-          echo "**镜像标签：**" >> $GITHUB_STEP_SUMMARY
-          echo 'hy5528' >> $GITHUB_STEP_SUMMARY
-          echo "hy5528/${{github.event.inputs.MACH}}:latest" >> $GITHUB_STEP_SUMMARY
+          echo "**镜像标签：hy5528/${{github.event.inputs.MACH}}:latest**" >> $GITHUB_STEP_SUMMARY
           
