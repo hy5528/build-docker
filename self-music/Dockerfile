@@ -1,5 +1,5 @@
 # Stage 1: Base image with all runtimes
-FROM alpine:3.22.2 AS builder
+FROM alpine:3.22.2 AS frontend-builder
 
 # Install GStreamer and other required Debian packages
 RUN echo "http://dl-cdn.alpinelinux.org/alpine/edge/testing" >> /etc/apk/repositories \
