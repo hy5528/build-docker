@@ -1,1 +1,3 @@
-5
+FROM alpine:3
+
+ARG VERSION
