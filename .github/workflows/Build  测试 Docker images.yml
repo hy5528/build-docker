@@ -11,7 +11,7 @@ on:
         options:
         - 'mpd'
         - 'mopidy'
-
+        - 'lyrionmusicserver'
 env:
   REGISTRY: ghcr.io
   IMAGE_NAME: ${{ github.repository }}
