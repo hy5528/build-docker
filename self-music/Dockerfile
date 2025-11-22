@@ -12,11 +12,8 @@ RUN echo "http://dl-cdn.alpinelinux.org/alpine/edge/testing" >> /etc/apk/reposit
   python3-dev\
   py3-pip \
  && rm -rf /var/cache/apk/*
-
-
-
 # Stage 2: Build Frontend
-FROM node:18-alpine AS frontend-builder
+FROM node:20-alpine AS frontend-builder
 WORKDIR /app
 RUN npm install -g pnpm
 COPY frontend/package.json frontend/pnpm-lock.yaml ./
@@ -29,7 +26,7 @@ RUN pnpm build
 # 设置工作目录
 WORKDIR /app
 # 安装依赖
-FROM --platform=$BUILDPLATFORM alpine:3.22.2
+FROM alpine:3.22.2
 COPY requirements.txt .
 RUN pip3 install --upgrade --break-system-packages pip \
 && pip3 install --break-system-packages --no-cache-di -r requirements.txt
