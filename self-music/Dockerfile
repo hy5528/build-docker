@@ -1,29 +1,24 @@
 # Stage 1: Base image with all runtimes
-FROM alpine:3.22.2
+FROM debian:bullseye-slim AS base
+ENV DEBIAN_FRONTEND=noninteractive
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends \
+    python3 python3-pip \
+    nginx \
+    supervisor \
+    curl \
+    && \
+    # Install Node.js v18 from NodeSource
+    curl -fsSL https://deb.nodesource.com/setup_18.x | bash - && \
+    apt-get install -y --no-install-recommends nodejs && \
+    # Clean up
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
 
-# Install GStreamer and other required Debian packages
-RUN echo "http://dl-cdn.alpinelinux.org/alpine/edge/testing" >> /etc/apk/repositories \
- && apk update \
- && apk add --no-cache \
-  dumb-init \
-  shadow \
-  pnpm \
-  git \
-  alsa-utils \
-  py3-pip \
-  python3 python3-pip \
-  nginx \
-  supervisor \
-  curl \
- && rm -rf /var/cache/apk/*
-  
-# Install Node, to build Iris JS application
-RUN apk add nodejs npm 
-  
-  
 # Stage 2: Build Frontend
-FROM alpine:3.22.2 AS frontend-builder
+FROM node:18-alpine AS frontend-builder
 WORKDIR /app
+RUN npm install -g pnpm
 COPY frontend/package.json frontend/pnpm-lock.yaml ./
 RUN pnpm install
 COPY frontend/ .
@@ -31,6 +26,9 @@ ARG NEXT_PUBLIC_API_URL=/api
 ENV NEXT_PUBLIC_API_URL=${NEXT_PUBLIC_API_URL}
 RUN pnpm build
 
+# Stage 3: Final image
+FROM base
+WORKDIR /app
 
 # Copy backend
 COPY backend/ /app/backend/
