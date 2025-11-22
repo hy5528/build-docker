@@ -1,18 +1,19 @@
-name: Build  测试 Docker images
+name: Build 测试 Docker images
 
 on:
   workflow_dispatch:
     inputs:
-      MACH:
-        description: 'Choose machine'
-        required: true
-        default: 'mpd'
-        type: choice
-        options:
-        - 'mopidy'
-        - 'mpd'
-        - 'self-music'
-        
+      version_tag:
+        description: '版本标签 (例如: v1.0.0)'
+        required: false
+        type: string
+        default: ''
+      include_latest:
+        description: 'latest标签'
+        required: false
+        type: boolean
+        default: true
+
 env:
   REGISTRY: ghcr.io
   IMAGE_NAME: ${{ github.repository }}
@@ -28,7 +29,7 @@ jobs:
     steps:      
       - name: 检出代码
         uses: actions/checkout@v4
-      
+
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
         with:
@@ -46,15 +47,23 @@ jobs:
         id: meta
         uses: docker/metadata-action@v5
         with:
-          images: ghcr.io/hy5528/${{github.event.inputs.MACH}}66
+          images: ghcr.io/hy5528/self-music66
           tags: |
             type=raw,value=latest
-      
+      - name: Clone Overleaf Gitlab Repo
+        run: |
+          git clone https://github.com/zkeq/Self-music.git app
+
+      - name: "Copy userpatches to build folder"
+        shell: bash
+        run: |
+          rsync -av self-music/. ./app    
+          
       - name: 构建并推送 Docker 镜像
         uses: docker/build-push-action@v5
         with:
-          context: "${{ github.server_url }}/${{ github.repository }}.git#${{ github.ref }}:${{github.event.inputs.MACH}}"
-          platforms: linux/arm64,linux/arm/v7
+          context: ./app
+          platforms: linux/amd64,linux/arm64,linux/arm/v7
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
@@ -69,4 +78,11 @@ jobs:
           echo '```' >> $GITHUB_STEP_SUMMARY
           echo "${{ steps.meta.outputs.tags }}" >> $GITHUB_STEP_SUMMARY
           echo '```' >> $GITHUB_STEP_SUMMARY
-          
+          if [ -n "${{ inputs.version_tag }}" ]; then
+            echo "**版本标签：** ${{ inputs.version_tag }}" >> $GITHUB_STEP_SUMMARY
+          fi
+          if [ "${{ inputs.include_latest }}" == "true" ]; then
+            echo "**包含latest标签：** 是" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "**包含latest标签：** 否" >> $GITHUB_STEP_SUMMARY
+          fi
