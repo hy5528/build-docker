@@ -17,6 +17,7 @@ RUN apt-get update && \
 
 # Stage 2: Build Frontend
 FROM alpine:3.22.2 AS frontend-builder
+RUN apk add --no-cache npm 
 WORKDIR /app
 RUN npm install -g pnpm
 COPY frontend/package.json frontend/pnpm-lock.yaml ./
