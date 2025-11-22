@@ -1,4 +1,4 @@
-FROM node:22-alpine
+FROM python:3.12-slim
 
 # Install GStreamer and other required Debian packages
 RUN echo "http://dl-cdn.alpinelinux.org/alpine/edge/testing" >> /etc/apk/repositories \
