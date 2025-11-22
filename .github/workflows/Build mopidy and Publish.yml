@@ -64,6 +64,9 @@ jobs:
 
       - name: 输出镜像信息
         run: |
+          run: |
           echo "### 🐳 Docker镜像构建成功！" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "**镜像标签：**" >> $GITHUB_STEP_SUMMARY
+          echo '```' >> $GITHUB_STEP_SUMMARY
+          echo "hy5528/${{github.event.inputs.MACH}}:latest" >> $GITHUB_STEP_SUMMARY
