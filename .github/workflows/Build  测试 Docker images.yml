@@ -6,17 +6,9 @@ on:
       MACH:
         description: 'Choose machine'
         required: true
-        default: 'LunaTV'
+        default: 'mpd'
         type: choice
         options:
-        - 'DecoTV'
-        - 'LunaTV'
-        - 'MoonTV'
-        - 'Music-player'
-        - 'OrangeTV'
-        - 'SPlayer'
-        - 'YesPlayMusic'
-        - 'joyflix'
         - 'mopidy'
         - 'mpd'
 env:
