@@ -75,11 +75,4 @@ jobs:
           echo '```' >> $GITHUB_STEP_SUMMARY
           echo "${{ steps.meta.outputs.tags }}" >> $GITHUB_STEP_SUMMARY
           echo '```' >> $GITHUB_STEP_SUMMARY
-          if [ -n "${{ inputs.version_tag }}" ]; then
-            echo "**版本标签：** ${{ inputs.version_tag }}" >> $GITHUB_STEP_SUMMARY
-          fi
-          if [ "${{ inputs.include_latest }}" == "true" ]; then
-            echo "**包含latest标签：** 是" >> $GITHUB_STEP_SUMMARY
-          else
-            echo "**包含latest标签：** 否" >> $GITHUB_STEP_SUMMARY
-          fi
+          
