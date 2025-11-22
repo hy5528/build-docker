@@ -51,7 +51,7 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           context: "${{ github.server_url }}/${{ github.repository }}.git#${{ github.ref }}:${{github.event.inputs.MACH}}"
-          platforms: linux/arm64,linux/arm/v7
+          platforms: linux/amd64,linux/arm64,linux/arm/v7
           push: ${{ github.event_name != 'pull_request' }}
           tags: |
             hy5528/${{github.event.inputs.MACH}}:latest
