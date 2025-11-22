@@ -16,7 +16,7 @@ RUN apt-get update && \
     rm -rf /var/lib/apt/lists/*
 
 # Stage 2: Build Frontend
-FROM --platform=$BUILDPLATFORM alpine:3.22.2 AS frontend-builder
+FROM alpine:3.22.2 AS frontend-builder
 RUN apk add --no-cache npm 
 WORKDIR /app
 RUN npm install -g pnpm
