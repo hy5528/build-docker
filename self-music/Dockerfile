@@ -43,9 +43,9 @@ COPY backend/config.yaml /defaults/
 COPY backend/music.db /defaults/
 
 # Copy built frontend
-ADD --chmod=755 ./app/public /app/frontend/public
-ADD --chmod=755 ./app/.next/standalone /app/frontend/
-ADD --chmod=755 ./app/.next/static /app/frontend/.next/static
+ADD --chmod=755 ./public /app/frontend/public
+ADD --chmod=755 ./.next/standalone /app/frontend/
+ADD --chmod=755 ./.next/static /app/frontend/.next/static
 
 # Copy configs
 COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
