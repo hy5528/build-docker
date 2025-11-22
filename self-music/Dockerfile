@@ -1,9 +1,9 @@
-FROM  alpine:3.22.2 AS base
+FROM  debian:12-slim AS base
 
 # Install GStreamer and other required Debian packages
 RUN echo "http://dl-cdn.alpinelinux.org/alpine/edge/testing" >> /etc/apk/repositories \
- && apk update \
- && apk add --no-cache \
+ RUN apt-get update \
+ && apt-get install -y curl \
   dumb-init \
   shadow \
   sudo \
