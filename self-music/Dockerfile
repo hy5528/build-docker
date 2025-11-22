@@ -16,6 +16,17 @@ RUN echo "http://dl-cdn.alpinelinux.org/alpine/edge/testing" >> /etc/apk/reposit
 # 设置工作目录
 WORKDIR /app
 
+# Stage 2: Build Frontend
+FROM node:18-alpine AS frontend-builder
+WORKDIR /app
+RUN npm install -g pnpm
+COPY frontend/package.json frontend/pnpm-lock.yaml ./
+RUN pnpm install
+COPY frontend/ .
+ARG NEXT_PUBLIC_API_URL=/api
+ENV NEXT_PUBLIC_API_URL=${NEXT_PUBLIC_API_URL}
+RUN pnpm build
+
 # 安装依赖
 FROM --platform=$BUILDPLATFORM alpine:3.22.2
 COPY requirements.txt .
