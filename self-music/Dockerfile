@@ -7,7 +7,9 @@ RUN echo "http://dl-cdn.alpinelinux.org/alpine/edge/testing" >> /etc/apk/reposit
   dumb-init \
   shadow \
   sudo \
-  git \
+  py-pip \
+  alpine-sdk \
+  python3-dev\
   py3-pip \
  && rm -rf /var/cache/apk/*
 
