@@ -17,12 +17,13 @@ RUN apk add nodejs npm
 
 # Allow pip to install over system packages
 ENV PIP_BREAK_SYSTEM_PACKAGES 1
-RUN git clone https://github.com/zkeq/Self-music.git
-cd Self-music
-cd backend
-pip install -r requirements.txt
-uvicorn main:app --reload --host 0.0.0.0 --port 8000
+RUN git clone https://github.com/zkeq/Self-music.git \
+&& cd Self-music \
+&& cd backend \
+&& pip install -r requirements.txt \
+&& uvicorn main:app --reload --host 0.0.0.0 --port 8000
 
-cd ../frontend
-pnpm install
-pnpm dev
+RUN cd ../frontend \
+&& pnpm install \
+&& pnpm dev
+
