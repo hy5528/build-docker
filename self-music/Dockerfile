@@ -1,4 +1,4 @@
-FROM --platform=$BUILDPLATFORM alpine:3.22.2
+FROM  debian:12-slim AS base
 
 # Install GStreamer and other required Debian packages
 RUN echo "http://dl-cdn.alpinelinux.org/alpine/edge/testing" >> /etc/apk/repositories \
@@ -24,9 +24,10 @@ ENV NEXT_PUBLIC_API_URL=${NEXT_PUBLIC_API_URL}
 RUN pnpm build
 
 # 设置工作目录
-WORKDIR /app
+
 # 安装依赖
 FROM alpine:3.22.2
+WORKDIR /app
 COPY requirements.txt .
 RUN pip3 install --upgrade --break-system-packages pip \
 && pip3 install --break-system-packages --no-cache-di -r requirements.txt
