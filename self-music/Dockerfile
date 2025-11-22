@@ -13,7 +13,7 @@ COPY package.json pnpm-lock.yaml ./
 RUN pnpm install --frozen-lockfile
 
 # ---- 第 2 阶段：构建项目 ----
-FROM --platform=$BUILDPLATFORM node:20-alpine AS builder
+FROM --platform=$BUILDPLATFORM node:20-alpine AS frontend-builder
 RUN corepack enable && corepack prepare pnpm@latest --activate
 WORKDIR /app
 
@@ -42,9 +42,9 @@ COPY backend/config.yaml /defaults/
 COPY backend/music.db /defaults/
 
 # Copy built frontend
-COPY --from=builder /app/public /app/frontend/public
-COPY --from=builder /app/.next/standalone /app/frontend/
-COPY --from=builder /app/.next/static /app/frontend/.next/static
+COPY --from=frontend-builder /app/public /app/frontend/public
+COPY --from=frontend-builder /app/.next/standalone /app/frontend/
+COPY --from=frontend-builder /app/.next/static /app/frontend/.next/static
 
 # Copy configs
 COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
