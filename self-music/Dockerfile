@@ -22,7 +22,6 @@ ENV PIP_BREAK_SYSTEM_PACKAGES 1
 # 设置工作目录
 WORKDIR /app
 # 安装依赖
-FROM alpine:3.22.2
 
 COPY requirements.txt .
 RUN pip3 install --upgrade --break-system-packages pip \
