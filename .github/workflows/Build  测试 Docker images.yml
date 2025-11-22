@@ -11,6 +11,8 @@ on:
         options:
         - 'mopidy'
         - 'mpd'
+        - 'self-music'
+        
 env:
   REGISTRY: ghcr.io
   IMAGE_NAME: ${{ github.repository }}
