@@ -1,5 +1,5 @@
 # Stage 1: Base image with all runtimes
-FROM alpine:3.22.2 
+FROM alpine:3.22.2 AS builder
 
 # Install GStreamer and other required Debian packages
 RUN echo "http://dl-cdn.alpinelinux.org/alpine/edge/testing" >> /etc/apk/repositories \
@@ -43,9 +43,9 @@ COPY backend/config.yaml /defaults/
 COPY backend/music.db /defaults/
 
 # Copy built frontend
-ADD --chmod=755 /public /app/frontend/public
-ADD --chmod=755 /.next/standalone /app/frontend/
-ADD --chmod=755 /.next/static /app/frontend/.next/static
+COPY --from=builder /app/public /app/frontend/public
+COPY --from=builder /app/.next/standalone /app/frontend/
+COPY --from=builder /app/.next/static /app/frontend/.next/static
 
 # Copy configs
 COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
