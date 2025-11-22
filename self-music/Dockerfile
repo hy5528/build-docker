@@ -1,5 +1,5 @@
 # Stage 1: Base image with all runtimes
-FROM alpine:3.22.2 AS base
+FROM alpine:3.22.2 
 
 # Install GStreamer and other required Debian packages
 RUN echo "http://dl-cdn.alpinelinux.org/alpine/edge/testing" >> /etc/apk/repositories \
@@ -22,7 +22,6 @@ RUN echo "http://dl-cdn.alpinelinux.org/alpine/edge/testing" >> /etc/apk/reposit
   && rm -rf /var/cache/apk/*
   
 # Stage 2: Build Frontend
-FROM alpine:3.22.2 frontend-builder
 WORKDIR /app
 COPY frontend/package.json frontend/pnpm-lock.yaml ./
 RUN pnpm install
