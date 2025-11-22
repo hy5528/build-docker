@@ -3,16 +3,14 @@ name: Build  测试 Docker images
 on:
   workflow_dispatch:
     inputs:
-      version_tag:
-        description: '版本标签 (例如: v1.0.0)'
-        required: false
-        type: string
-        default: ''
-      include_latest:
-        description: 'latest标签'
-        required: false
-        type: boolean
-        default: true
+      MACH:
+        description: 'Choose machine'
+        required: true
+        default: 'mpd'
+        type: choice
+        options:
+        - 'mpd'
+        - 'mopidy'
 
 env:
   REGISTRY: ghcr.io
@@ -47,14 +45,14 @@ jobs:
         id: meta
         uses: docker/metadata-action@v5
         with:
-          images: ghcr.io/hy5528/lyrionmusicserver66
+          images: ghcr.io/hy5528/${{github.event.inputs.MACH}}66
           tags: |
             type=raw,value=latest
       
       - name: 构建并推送 Docker 镜像
         uses: docker/build-push-action@v5
         with:
-          context: "${{ github.server_url }}/${{ github.repository }}.git#${{ github.ref }}:lyrionmusicserver"
+          context: "${{ github.server_url }}/${{ github.repository }}.git#${{ github.ref }}:${{github.event.inputs.MACH}}"
           platforms: linux/arm64,linux/arm/v7
           push: true
           tags: ${{ steps.meta.outputs.tags }}
