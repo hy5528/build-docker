@@ -17,6 +17,7 @@ RUN echo "http://dl-cdn.alpinelinux.org/alpine/edge/testing" >> /etc/apk/reposit
 WORKDIR /app
 
 # 安装依赖
+FROM --platform=$BUILDPLATFORM alpine:3.22.2
 COPY requirements.txt .
 RUN pip3 install --upgrade --break-system-packages pip \
 && pip3 install --break-system-packages --no-cache-di -r requirements.txt
