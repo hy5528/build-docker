@@ -1,4 +1,4 @@
-name: Build Music-player Docker images
+name: Build 测试 Docker images
 
 on:
   workflow_dispatch:
