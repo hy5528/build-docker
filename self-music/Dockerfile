@@ -19,6 +19,10 @@ WORKDIR /app
 
 # 复制依赖
 COPY --from=deps /app/node_modules ./node_modules
+
+# 复制全部源代码
+COPY . .
+
 WORKDIR /app
 RUN npm install -g pnpm
 COPY frontend/package.json frontend/pnpm-lock.yaml ./
