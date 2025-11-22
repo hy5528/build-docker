@@ -1,5 +1,4 @@
-fi
-:  Build  image and Publish DOCKER_HUB
+name: Build  image and Publish DOCKER_HUB
 
 on:
   workflow_dispatch:
