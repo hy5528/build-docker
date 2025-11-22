@@ -61,9 +61,9 @@ jobs:
           echo "### 🐳 Docker镜像构建成功！" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "**镜像标签：**" >> $GITHUB_STEP_SUMMARY
-          echo '```' >> $GITHUB_STEP_SUMMARY
+          echo 'hy5528' >> $GITHUB_STEP_SUMMARY
           echo "${{ steps.meta.outputs.tags }}" >> $GITHUB_STEP_SUMMARY
-          echo '```' >> $GITHUB_STEP_SUMMARY
+          echo 'hy5528' >> $GITHUB_STEP_SUMMARY
           if [ -n "${{ inputs.version_tag }}" ]; then
             echo "**版本标签：** ${{ inputs.version_tag }}" >> $GITHUB_STEP_SUMMARY
           fi
