@@ -1,5 +1,5 @@
 # 使用官方 Python 运行时作为父镜像
-FROM python:3.9-slim
+FROM --platform=$BUILDPLATFORM python:3.9-slim
 
 # 设置工作目录
 WORKDIR /app
