@@ -13,8 +13,7 @@ RUN echo "http://dl-cdn.alpinelinux.org/alpine/edge/testing" >> /etc/apk/reposit
   py3-pip \
  && rm -rf /var/cache/apk/*
 
-# 设置工作目录
-WORKDIR /app
+
 
 # Stage 2: Build Frontend
 FROM node:18-alpine AS frontend-builder
@@ -27,6 +26,8 @@ ARG NEXT_PUBLIC_API_URL=/api
 ENV NEXT_PUBLIC_API_URL=${NEXT_PUBLIC_API_URL}
 RUN pnpm build
 
+# 设置工作目录
+WORKDIR /app
 # 安装依赖
 FROM --platform=$BUILDPLATFORM alpine:3.22.2
 COPY requirements.txt .
