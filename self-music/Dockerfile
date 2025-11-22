@@ -22,7 +22,7 @@ RUN echo "http://dl-cdn.alpinelinux.org/alpine/edge/testing" >> /etc/apk/reposit
   && rm -rf /var/cache/apk/*
   
 # Stage 2: Build Frontend
-FROM node:18-alpine AS frontend-builder
+FROM alpine:3.22.2 frontend-builder
 WORKDIR /app
 RUN npm install -g pnpm
 COPY frontend/package.json frontend/pnpm-lock.yaml ./
