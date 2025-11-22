@@ -1,5 +1,15 @@
-# 使用官方 Python 运行时作为父镜像
 FROM alpine:3.22.2
+
+# Install GStreamer and other required Debian packages
+RUN echo "http://dl-cdn.alpinelinux.org/alpine/edge/testing" >> /etc/apk/repositories \
+ && apk update \
+ && apk add --no-cache \
+  dumb-init \
+  shadow \
+  sudo \
+  git \
+  py3-pip \
+ && rm -rf /var/cache/apk/*
 
 # 设置工作目录
 WORKDIR /app
