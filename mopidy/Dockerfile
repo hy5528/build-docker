@@ -23,7 +23,6 @@ RUN pip install --break-system-packages -r requirements.txt
 # Cleanup
 RUN rm -rf /root/.cache \
  && rm -rf /iris/node_modules
-COPY mopidy.conf /root/.config/mopidy.conf
  
 ENV TZ=Asia/Shanghai
 
