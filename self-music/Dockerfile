@@ -9,7 +9,10 @@ FROM  debian:12-slim AS base
   alpine-sdk \
   python3-dev\
   py3-pip \
- && rm -rf /var/cache/apk/*
+ && apt purge --auto-remove -y \
+    gcc \
+ && apt clean \
+ && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* ~/.cache /root/.cache
 
 
 # 设置工作目录
