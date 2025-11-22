@@ -62,7 +62,7 @@ jobs:
           context: "${{ github.server_url }}/${{ github.repository }}.git#${{ github.ref }}:${{github.event.inputs.MACH}}"
           platforms: linux/arm64,linux/arm/v7
           push: true
-          tags: hy5528/${{github.event.inputs.MACH}}66:latest
+          tags: ghcr.io/hy5528/${{github.event.inputs.MACH}}66:latest
 
       - name: 输出镜像信息
         run: |
