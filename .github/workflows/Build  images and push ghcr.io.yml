@@ -1,19 +1,24 @@
-name: Build LunaTV Docker images
+name: Build  images and push ghcr.io
 
 on:
   workflow_dispatch:
     inputs:
-      version_tag:
-        description: '版本标签 (例如: v1.0.0)'
-        required: false
-        type: string
-        default: ''
-      include_latest:
-        description: 'latest标签'
-        required: false
-        type: boolean
-        default: true
-
+      MACH:
+        description: 'Choose machine'
+        required: true
+        default: 'LunaTV'
+        type: choice
+        options:
+        - 'DecoTV'
+        - 'LunaTV'
+        - 'MoonTV'
+        - 'Music-player'
+        - 'OrangeTV'
+        - 'SPlayer'
+        - 'YesPlayMusic'
+        - 'joyflix'
+        - 'mopidy'
+        - 'mpd'
 env:
   REGISTRY: ghcr.io
   IMAGE_NAME: ${{ github.repository }}
@@ -29,7 +34,7 @@ jobs:
     steps:      
       - name: 检出代码
         uses: actions/checkout@v4
-
+      
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
         with:
@@ -47,23 +52,15 @@ jobs:
         id: meta
         uses: docker/metadata-action@v5
         with:
-          images: ghcr.io/hy5528/LunaTV66
+          images: ghcr.io/hy5528/${{github.event.inputs.MACH}}66
           tags: |
             type=raw,value=latest
-      - name: Clone Overleaf Gitlab Repo
-        run: |
-          git clone https://github.com/SzeMeng76/LunaTV.git app
-
-      - name: "Copy userpatches to build folder"
-        shell: bash
-        run: |
-          rsync -av LunaTV/. ./app    
-          
+      
       - name: 构建并推送 Docker 镜像
         uses: docker/build-push-action@v5
         with:
-          context: ./app
-          platforms: linux/amd64,linux/arm64,linux/arm/v7
+          context: "${{ github.server_url }}/${{ github.repository }}.git#${{ github.ref }}:${{github.event.inputs.MACH}}"
+          platforms: linux/arm64,linux/arm/v7
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
