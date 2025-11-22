@@ -6,12 +6,19 @@ on:
       MACH:
         description: 'Choose machine'
         required: true
-        default: 'mpd'
+        default: 'LunaTV'
         type: choice
         options:
-        - 'mpd'
+        - 'DecoTV'
+        - 'LunaTV'
+        - 'MoonTV'
+        - 'Music-player'
+        - 'OrangeTV'
+        - 'SPlayer'
+        - 'YesPlayMusic'
+        - 'joyflix'
         - 'mopidy'
-        - 'lyrionmusicserver'
+        - 'mpd'
 env:
   REGISTRY: ghcr.io
   IMAGE_NAME: ${{ github.repository }}
