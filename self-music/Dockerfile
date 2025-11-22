@@ -27,3 +27,14 @@ RUN cd ../frontend \
 && pnpm install \
 && pnpm dev
 
+VOLUME /data
+
+# Expose the port Nginx is listening on
+EXPOSE 80
+
+# Copy and set entrypoint
+COPY docker-entrypoint.sh /usr/local/bin/
+RUN chmod +x /usr/local/bin/docker-entrypoint.sh
+ENTRYPOINT ["docker-entrypoint.sh"]
+
+CMD ["/usr/bin/supervisord"]
