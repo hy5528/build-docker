@@ -1,5 +1,5 @@
 # Stage 1: Base image with all runtimes
-FROM alpine:3.22.2 as base
+FROM alpine:3.22.2 AS base
 
 # Install GStreamer and other required Debian packages
 RUN echo "http://dl-cdn.alpinelinux.org/alpine/edge/testing" >> /etc/apk/repositories \
@@ -7,7 +7,7 @@ RUN echo "http://dl-cdn.alpinelinux.org/alpine/edge/testing" >> /etc/apk/reposit
  && apk add --no-cache \
   dumb-init \
   shadow \
-  sudo \
+  pnpm \
   git \
   alsa-utils \
   py3-pip \
