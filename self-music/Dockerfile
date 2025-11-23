@@ -20,8 +20,8 @@ ENV PIP_BREAK_SYSTEM_PACKAGES 1
 ADD --chmod=755 ./requirements.txt /requirements.txt
 RUN pip install --break-system-packages -r requirements.txt 
  
-WORKDIR /app
+
 RUN apk add --no-cache python3 make g++ git
-RUN cd app/frontend \
+RUN cd frontend \
     && pnpm install \
     && pnpm dev
