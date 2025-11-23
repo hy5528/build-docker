@@ -17,5 +17,5 @@ ENV PIP_BREAK_SYSTEM_PACKAGES 1
 RUN cd backend \
  && pip install -r requirements.txt \
  && cd ../frontend \
- && pnpm install
+ && pnpm install \
  && pnpm dev
