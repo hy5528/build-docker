@@ -19,7 +19,7 @@ ENV PIP_BREAK_SYSTEM_PACKAGES 1
 RUN cd backend \
  && pip install -r requirements.txt
  
-WORKDIR /app
+WORKDIR /
 RUN apk add --no-cache python3 make g++ git
 RUN cd app/frontend \
     && pnpm install \
