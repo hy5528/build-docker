@@ -1,6 +1,8 @@
 # Stage 1: Base image with all runtimes
 FROM debian:12-slim AS base
 ENV DEBIAN_FRONTEND=noninteractive
+WORKDIR /app
+COPY . .
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
     python3 python3-pip \
@@ -14,9 +16,7 @@ RUN apt-get update && \
     # Clean up
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
-WORKDIR /app
 
-COPY . .
 # Stage 2: Build Frontend
 FROM node:18-alpine AS frontend-builder
 WORKDIR /app
