@@ -12,19 +12,10 @@ RUN apk add --no-cache python3 make g++ git \
 
 FROM alpine:3.22.2
 WORKDIR /
-# Install GStreamer and other required Debian packages
-RUN echo "http://dl-cdn.alpinelinux.org/alpine/edge/testing" >> /etc/apk/repositories \
- && apk update \
- && apk add --no-cache \
-  dumb-init \
-  shadow \
-  nodejs \
-  git \
-  npm \
-  py3-pip \
- && rm -rf /var/cache/apk/*
- # Allow pip to install over system packages
-ENV PIP_BREAK_SYSTEM_PACKAGES 1
+
+
+RUN apk add --no-cache nginx && npm i -g @neteasecloudmusicapienhanced/api
+
 
 # Install additional mopidy extensions and Python dependencies via pip
 ADD --chmod=755 ./requirements.txt /requirements.txt
@@ -39,10 +30,9 @@ ADD --chmod=755 ./music.db /defaults/music.db
 ADD --chmod=755 ./supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 ADD --chmod=755 ./nginx.standalone.conf /etc/nginx/sites-available/default
 
-VOLUME /data
+EXPOSE 80 3000
 
-# Expose the port Nginx is listening on
-EXPOSE 80
+CMD ["sh", "-c", "nginx && exec npx @neteasecloudmusicapienhanced/api"]
 
 # Copy and set entrypoint
 ADD --chmod=755 ./docker-entrypoint.sh /usr/local/bin/
