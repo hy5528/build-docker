@@ -28,8 +28,7 @@ ENV PIP_BREAK_SYSTEM_PACKAGES 1
 
 # Install additional mopidy extensions and Python dependencies via pip
 ADD --chmod=755 ./requirements.txt /requirements.txt
-RUN pip install --break-system-packages -r requirements.txt \
- && uvicorn main:app --reload --host 0.0.0.0 --port 8000
+RUN pip install --break-system-packages -r requirements.txt 
 
 
 
@@ -43,4 +42,4 @@ COPY docker-entrypoint.sh /usr/local/bin/
 RUN chmod +x /usr/local/bin/docker-entrypoint.sh
 ENTRYPOINT ["docker-entrypoint.sh"]
 
-CMD ["/usr/bin/supervisord"]
+CMD ["/usr/bin/supervisord","uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
