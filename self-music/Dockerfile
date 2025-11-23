@@ -14,7 +14,9 @@ RUN apt-get update && \
     # Clean up
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
+WORKDIR /app
 
+COPY . .
 # Stage 2: Build Frontend
 FROM node:18-alpine AS frontend-builder
 WORKDIR /app
