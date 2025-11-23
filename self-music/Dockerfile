@@ -13,8 +13,6 @@ COPY package.json pnpm-lock.yaml ./
 # Install dependencies
 RUN pnpm install
 
-# Copy the rest of the application source code
-COPY . .
 
 # Build-time argument for the API URL
 ARG NEXT_PUBLIC_API_URL
@@ -25,8 +23,6 @@ RUN pnpm build
 
 # Stage 2: Production image
 FROM node:18-alpine AS runner
-
-WORKDIR /
 
 # Create a non-root user for security
 RUN addgroup --system --gid 1001 nodejs
