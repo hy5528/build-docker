@@ -26,7 +26,7 @@ RUN pnpm build
 # Stage 2: Production image
 FROM node:18-alpine AS runner
 
-WORKDIR /app
+WORKDIR /
 
 # Create a non-root user for security
 RUN addgroup --system --gid 1001 nodejs
