@@ -31,8 +31,8 @@ COPY --from=builder /app/public ./public
 COPY --from=builder /app/.next/standalone ./
 COPY --from=builder /app/.next/static ./.next/static
 
-# Stage 2: Final image
 FROM alpine:3.22.2
+WORKDIR /
 # Install GStreamer and other required Debian packages
 RUN echo "http://dl-cdn.alpinelinux.org/alpine/edge/testing" >> /etc/apk/repositories \
  && apk update \
@@ -47,33 +47,18 @@ RUN echo "http://dl-cdn.alpinelinux.org/alpine/edge/testing" >> /etc/apk/reposit
  # Allow pip to install over system packages
 ENV PIP_BREAK_SYSTEM_PACKAGES 1
 
-WORKDIR /app
-
-# Copy backend
-COPY backend/ /app/backend/
-RUN pip3 install --no-cache-dir -r /app/backend/requirements.txt
+# Install additional mopidy extensions and Python dependencies via pip
+ADD --chmod=755 ./requirements.txt /requirements.txt
+RUN pip install --break-system-packages -r requirements.txt 
 
 # Create a staging area for default data to initialize volumes
 RUN mkdir /defaults
-COPY backend/config.yaml /defaults/
-COPY backend/music.db /defaults/
-
-# Copy built frontend
-COPY --from=frontend-builder /app/public /app/frontend/public
-COPY --from=frontend-builder /app/.next/standalone /app/frontend/
-COPY --from=frontend-builder /app/.next/static /app/frontend/.next/static
+ADD --chmod=755 ./config.yaml /defaults/config.yaml
+ADD --chmod=755 ./music.db /defaults/music.db
 
 # Copy configs
-COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
-COPY nginx.standalone.conf /etc/nginx/sites-available/default
-
-# Remove original files and create symlinks for data persistence.
-# The entrypoint script will ensure the target files/dirs exist at runtime.
-RUN rm /app/backend/music.db /app/backend/config.yaml && \
-    rm -rf /app/backend/uploads && \
-    ln -s /data/music.db /app/backend/music.db && \
-    ln -s /data/config.yaml /app/backend/config.yaml && \
-    ln -s /data/uploads /app/backend/uploads
+ADD --chmod=755 ./supervisord.conf /etc/supervisor/conf.d/supervisord.conf
+ADD --chmod=755 ./nginx.standalone.conf /etc/nginx/sites-available/default
 
 VOLUME /data
 
