@@ -59,14 +59,16 @@ ADD --chmod=755 ./music.db /defaults/music.db
 # Copy configs
 ADD --chmod=755 ./supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 ADD --chmod=755 ./nginx.standalone.conf /etc/nginx/sites-available/default
-
+ADD --chmod=755 ./supervisord /usr/bin/supervisord
 VOLUME /data
 
-# Expose the port the app runs on
-EXPOSE 3000
+# Expose the port Nginx is listening on
+EXPOSE 80
 
-# Set the environment variable for the port
-ENV PORT=3000
+# Copy and set entrypoint
+ADD --chmod=755 ./docker-entrypoint.sh /usr/local/bin/
+RUN chmod +x /usr/local/bin/docker-entrypoint.sh
+ENTRYPOINT ["docker-entrypoint.sh"]
 
 # Command to run the standalone server
-CMD ["node"]
+CMD ["/usr/bin/supervisord"]
