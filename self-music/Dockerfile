@@ -1,7 +1,5 @@
 FROM --platform=$BUILDPLATFORM node:16-alpine AS build
 
-ENV VUE_APP_NETEASE_API_URL=/api
-
 WORKDIR /app
 
 COPY . .
@@ -26,7 +24,7 @@ RUN echo "http://dl-cdn.alpinelinux.org/alpine/edge/testing" >> /etc/apk/reposit
  # Allow pip to install over system packages
 ENV PIP_BREAK_SYSTEM_PACKAGES 1
 
-RUN npm install -g @neteasecloudmusicapienhanced/api
+
 
 
 # Install additional mopidy extensions and Python dependencies via pip
@@ -44,4 +42,4 @@ ADD --chmod=755 ./nginx.standalone.conf /etc/nginx/sites-available/default
 
 EXPOSE 80 3000
 
-CMD ["sh", "-c", "nginx && exec npx @neteasecloudmusicapienhanced/api"]
+CMD ["sh", "-c"]
