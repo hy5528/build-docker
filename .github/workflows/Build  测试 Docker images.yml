@@ -49,12 +49,12 @@ jobs:
             type=raw,value=latest
       - name: Clone Overleaf Gitlab Repo
         run: |
-          git clone https://github.com/SzeMeng76/LunaTV.git app
+          git clone https://github.com/zkeq/Self-Music.git app
 
       - name: "Copy userpatches to build folder"
         shell: bash
         run: |
-          rsync -av LunaTV/. ./app
+          rsync -av self-music/. ./app
       - name: 构建并推送 Docker 镜像
         uses: docker/build-push-action@v5
         with:
