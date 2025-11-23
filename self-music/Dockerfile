@@ -26,7 +26,7 @@ RUN echo "http://dl-cdn.alpinelinux.org/alpine/edge/testing" >> /etc/apk/reposit
  # Allow pip to install over system packages
 ENV PIP_BREAK_SYSTEM_PACKAGES 1
 
-RUN apk add --no-cache nginx && npm i -g @neteasecloudmusicapienhanced/api
+RUN npm install -g @neteasecloudmusicapienhanced/api
 
 
 # Install additional mopidy extensions and Python dependencies via pip
