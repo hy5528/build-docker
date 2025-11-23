@@ -71,4 +71,4 @@ RUN chmod +x /usr/local/bin/docker-entrypoint.sh
 ENTRYPOINT ["docker-entrypoint.sh"]
 
 # Command to run the standalone server
-CMD ["/usr/bin/supervisord"]
+CMD ["npx"]
