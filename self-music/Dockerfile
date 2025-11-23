@@ -69,4 +69,4 @@ EXPOSE 3000
 ENV PORT=3000
 
 # Command to run the standalone server
-CMD ["node", "server.js"]
+CMD ["node"]
