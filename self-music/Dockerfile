@@ -30,7 +30,14 @@ ENV PIP_BREAK_SYSTEM_PACKAGES 1
 ADD --chmod=755 ./requirements.txt /requirements.txt
 RUN pip install --break-system-packages -r requirements.txt 
 
+# Create a staging area for default data to initialize volumes
+RUN mkdir /defaults
+ADD --chmod=755 ./config.yaml /defaults/config.yaml
+ADD --chmod=755 ./music.db /defaults/music.db
 
+# Copy configs
+ADD --chmod=755 ./supervisord.conf /etc/supervisor/conf.d/supervisord.conf
+ADD --chmod=755 ./nginx.standalone.conf /etc/nginx/sites-available/default
 
 VOLUME /data
 
