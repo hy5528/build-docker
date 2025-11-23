@@ -1,5 +1,7 @@
 FROM alpine:3.22.2
 WORKDIR /app
+
+COPY . .
 # Install GStreamer and other required Debian packages
 RUN echo "http://dl-cdn.alpinelinux.org/alpine/edge/testing" >> /etc/apk/repositories \
  && apk update \
