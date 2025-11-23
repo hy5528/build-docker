@@ -31,8 +31,8 @@ FROM base
 WORKDIR /app
 
 # Copy backend
-COPY backend/ /app/backend/
-RUN pip3 install --no-cache-dir -r /app/backend/requirements.txt
+ADD --chmod=755 ./requirements.txt /requirements.txt
+RUN pip install --break-system-packages -r requirements.txt 
 
 # Create a staging area for default data to initialize volumes
 RUN mkdir /defaults
