@@ -28,8 +28,8 @@ FROM node:18-alpine AS runner
 # Copy public assets
 COPY --from=builder /app/public ./public
 # Copy standalone server and static assets
-COPY --from=frontend-builder /app/.next/standalone ./
-COPY --from=frontend-builder /app/.next/static ./.next/static
+COPY --from=builder /app/.next/standalone ./
+COPY --from=builder /app/.next/static ./.next/static
 
 # Stage 2: Final image
 FROM alpine:3.22.2
