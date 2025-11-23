@@ -1,14 +1,14 @@
-FROM node:20-alpine
+FROM --platform=$BUILDPLATFORM node:16-alpine AS build
 
+ENV VUE_APP_NETEASE_API_URL=/api
 
 WORKDIR /app
 
 COPY . .
-RUN apk add --no-cache python3 make g++ git
-RUN cd app/frontend \
-    && pnpm install \
-    && pnpm dev
 
+RUN apk add --no-cache python3 make g++ git \
+    && yarn install --frozen-lockfile \
+    && yarn build
 
 FROM alpine:3.22.2
 WORKDIR /
