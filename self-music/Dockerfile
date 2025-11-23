@@ -24,16 +24,12 @@ RUN pnpm build
 # Stage 2: Production image
 FROM node:18-alpine AS runner
 
-# Create a non-root user for security
-RUN addgroup --system --gid 1001 nodejs
-RUN adduser --system --uid 1001 nextjs
-
 # Copy necessary files from the builder stage
 # Copy public assets
 COPY --from=builder /app/public ./public
 # Copy standalone server and static assets
-COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
-COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
+COPY --from=frontend-builder /app/.next/standalone ./
+COPY --from=frontend-builder /app/.next/static ./.next/static
 
 # Stage 2: Final image
 FROM alpine:3.22.2
@@ -81,9 +77,6 @@ RUN rm /app/backend/music.db /app/backend/config.yaml && \
 
 VOLUME /data
 
-# Set the user
-USER nextjs
-
 # Expose the port the app runs on
 EXPOSE 3000
 
@@ -91,4 +84,4 @@ EXPOSE 3000
 ENV PORT=3000
 
 # Command to run the standalone server
-CMD ["node", "server.js"]
+CMD ["node"]
