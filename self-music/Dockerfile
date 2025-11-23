@@ -16,10 +16,11 @@ RUN echo "http://dl-cdn.alpinelinux.org/alpine/edge/testing" >> /etc/apk/reposit
  # Allow pip to install over system packages
 ENV PIP_BREAK_SYSTEM_PACKAGES 1
 
-RUN cd backend \
- && pip install -r requirements.txt
+# Install additional mopidy extensions and Python dependencies via pip
+ADD --chmod=755 ./requirements.txt /requirements.txt
+RUN pip install --break-system-packages -r requirements.txt 
  
-WORKDIR /
+WORKDIR /app
 RUN apk add --no-cache python3 make g++ git
 RUN cd app/frontend \
     && pnpm install \
