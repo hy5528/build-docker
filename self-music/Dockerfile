@@ -44,8 +44,6 @@ COPY --from=frontend-builder /app/.next/static /app/frontend/.next/static
 # Copy configs
 COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 COPY nginx.standalone.conf /etc/nginx/sites-available/default
-RUN rm -f /etc/nginx/sites-enabled/default && \
-    ln -s /etc/nginx/sites-available/default /etc/nginx/sites-enabled/default
 
 # Remove original files and create symlinks for data persistence.
 # The entrypoint script will ensure the target files/dirs exist at runtime.
