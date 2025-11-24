@@ -51,14 +51,12 @@ jobs:
         run: |
           git clone https://github.com/Sherlockouo/music.git app
 
-      - name: "Copy userpatches to build folder"
-        shell: bash
-        run: |
-          rsync -av musicweb/. ./app
+      
       - name: 构建并推送 Docker 镜像
         uses: docker/build-push-action@v5
         with:
-          context: ./app
+          context: ./
+          file: ./Dockerfile-build-alpine
           platforms: linux/amd64,linux/arm64
           push: true
           tags: ${{ steps.meta.outputs.tags }}
