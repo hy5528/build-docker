@@ -14,7 +14,7 @@ RUN apk add --no-cache python3 make g++ git \
 
 FROM alpine:3.22.2 AS app
 
-RUN apk add --no-cache npm
+RUN apk add --no-cache nginx && npm
 
 RUN npm install @neteasecloudmusicapienhanced/api -g
 
