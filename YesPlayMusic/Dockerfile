@@ -14,7 +14,18 @@ RUN apk add --no-cache python3 make g++ git \
 
 FROM alpine:3.22.2 AS app
 
-RUN apk add --no-cache nginx && npm i -g @neteasecloudmusicapienhanced/api
+RUN echo "http://dl-cdn.alpinelinux.org/alpine/edge/testing" >> /etc/apk/repositories \
+ && apk update \
+ && apk add --no-cache \
+  dumb-init \
+  nginx \
+  npm \
+  py3-pip \
+ && rm -rf /var/cache/apk/*
+ # Allow pip to install over system packages
+ENV PIP_BREAK_SYSTEM_PACKAGES 1
+
+RUN apk add --no-cache i -g @neteasecloudmusicapienhanced/api
 
 COPY --from=build /app/docker/nginx.conf.example /etc/nginx/http.d/default.conf
 COPY --from=build /app/dist /usr/share/nginx/html
