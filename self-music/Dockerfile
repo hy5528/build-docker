@@ -9,11 +9,14 @@ RUN echo "http://dl-cdn.alpinelinux.org/alpine/edge/testing" >> /etc/apk/reposit
   python3 \
   py3-pip \
   shadow \
-  nodejs \
   nginx \
   supervisor \
   git \
   npm \
+  && \
+    # Install Node.js v18 from NodeSource
+    curl -fsSL https://deb.nodesource.com/setup_18.x | bash - && \
+    apk add --no-cach nodejs && \
  && rm -rf /var/cache/apk/*
  # Allow pip to install over system packages
 ENV PIP_BREAK_SYSTEM_PACKAGES 1
