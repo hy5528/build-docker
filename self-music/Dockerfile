@@ -1,26 +1,19 @@
 # Stage 1: Base image with all runtimes
-FROM alpine:3.22.2 AS base
-WORKDIR /
-# Install GStreamer and other required Debian packages
-RUN echo "http://dl-cdn.alpinelinux.org/alpine/edge/testing" >> /etc/apk/repositories \
- && apk update \
- && apk add --no-cache \
-  dumb-init \
-  python3 \
-  py3-pip \
-  shadow \
-  nginx \
-  supervisor \
-  git \
-  npm \
- && rm -rf /var/cache/apk/*
-
-     # Install Node.js v18 from NodeSource
- RUN curl -fsSL https://deb.nodesource.com/setup_18.x | bash - && \
-  apk add --no-cach nodejs && \
- # Allow pip to install over system packages
-ENV PIP_BREAK_SYSTEM_PACKAGES 1
-
+FROM debian:12-slim AS base
+ENV DEBIAN_FRONTEND=noninteractive
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends \
+    python3 python3-pip \
+    nginx \
+    supervisor \
+    curl \
+    && \
+    # Install Node.js v22 from NodeSource
+    curl -fsSL https://deb.nodesource.com/setup_22.x | bash - && \
+    apt-get install -y --no-install-recommends nodejs && \
+    # Clean up
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
 # Stage 2: Build Frontend
 FROM node:18-alpine AS frontend-builder
 WORKDIR /app
