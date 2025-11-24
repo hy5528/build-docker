@@ -20,7 +20,7 @@ WORKDIR /app
 RUN pnpm i
 RUN pnpm prune --prod
 
-WORKDIR /
+
 # Copy package.json and install dependencies for the server
 # Copy the built server code
 COPY /packages/server/dist /app/
