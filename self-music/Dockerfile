@@ -1,45 +1,61 @@
-FROM --platform=$BUILDPLATFORM node:16-alpine AS build
-
-WORKDIR /app
-
-COPY . .
-
-RUN apk add --no-cache python3 make g++ git \
-    && yarn install --frozen-lockfile \
-    && yarn build
-
-FROM alpine:3.22.2
+FROM alpine:3.22.2 AS base
 WORKDIR /
 # Install GStreamer and other required Debian packages
 RUN echo "http://dl-cdn.alpinelinux.org/alpine/edge/testing" >> /etc/apk/repositories \
  && apk update \
  && apk add --no-cache \
   dumb-init \
-  nginx \
+  shadow \
   nodejs \
   git \
   npm \
   py3-pip \
  && rm -rf /var/cache/apk/*
- # Allow pip to install over system packages
+ # AllAllowp to install over system packages
 ENV PIP_BREAK_SYSTEM_PACKAGES 1
 
+# Stage 2: Build Frontend
+FROM node:18-alpine AS frontend-builder
+WORKDIR /app
+RUN npm install -g pnpm
+COPY frontend/package.json frontend/pnpm-lock.yaml ./
+RUN pnpm install
+COPY frontend/ .
+ARG NEXT_PUBLIC_API_URL=/api
+ENV NEXT_PUBLIC_API_URL=${NEXT_PUBLIC_API_URL}
+RUN pnpm build
 
+# Stage 3: Final image
+FROM base
+WORKDIR /app
 
-
-# Install additional mopidy extensions and Python dependencies via pip
-ADD --chmod=755 ./requirements.txt /requirements.txt
-RUN pip install --break-system-packages -r requirements.txt 
+# Copy backend
+COPY backend/ /app/backend/
+RUN pip3 install --no-cache-dir -r /app/backend/requirements.txt
 
 # Create a staging area for default data to initialize volumes
 RUN mkdir /defaults
-ADD --chmod=755 ./config.yaml /defaults/config.yaml
-ADD --chmod=755 ./music.db /defaults/music.db
+COPY backend/config.yaml /defaults/
+COPY backend/music.db /defaults/
+
+# Copy built frontend
+COPY --from=frontend-builder /app/public /app/frontend/public
+COPY --from=frontend-builder /app/.next/standalone /app/frontend/
+COPY --from=frontend-builder /app/.next/static /app/frontend/.next/static
 
 # Copy configs
-ADD --chmod=755 ./supervisord.conf /etc/supervisor/conf.d/supervisord.conf
-ADD --chmod=755 ./nginx.standalone.conf /etc/nginx/sites-available/default
+COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
+COPY nginx.standalone.conf /etc/nginx/sites-available/default
 
-EXPOSE 80 3000
 
-CMD ["sh", "-c"]
+VOLUME /data
+
+# Expose the port Nginx is listening on
+EXPOSE 80
+
+# Copy and set entrypoint
+COPY docker-entrypoint.sh /usr/local/bin/
+RUN chmod +x /usr/local/bin/docker-entrypoint.sh
+ENTRYPOINT ["docker-entrypoint.sh"]
+
+CMD ["/usr/bin/supervisord"]
