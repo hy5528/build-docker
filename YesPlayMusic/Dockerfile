@@ -12,7 +12,7 @@ RUN apk add --no-cache python3 make g++ git \
 
 # app
 
-FROM alpine:3.22.2 AS app
+FROM nginx:1.25.3-alpine-slim as app
 
 RUN apk add --no-cache nginx && npm
 
