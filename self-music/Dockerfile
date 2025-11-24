@@ -1,5 +1,5 @@
 # Stage 1: Base image with all runtimes
-FROM debian:12-slim AS base
+FROM debian:11-slim AS base
 ENV DEBIAN_FRONTEND=noninteractive
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
