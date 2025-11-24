@@ -14,9 +14,8 @@ RUN apk add --no-cache python3 make g++ git \
 
 FROM nginx:1.25.3-alpine-slim as app
 
-RUN apk add --no-cache nginx && npm
-
-RUN npm install @neteasecloudmusicapienhanced/api -g
+RUN apk add --no-cache npm python3  \
+    && npm install -g @unblockneteasemusic/server NeteaseCloudMusicApi 
 
 COPY --from=build /app/docker/nginx.conf.example /etc/nginx/http.d/default.conf
 COPY --from=build /app/dist /usr/share/nginx/html
