@@ -50,7 +50,7 @@ COPY --from=frontend-builder /app/.next/static /app/frontend/.next/static
 # Copy configs
 COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 COPY nginx.standalone.conf /etc/nginx/sites-available/default
-ADD --chmod=755 ./supervisord /usr/bin/supervisord
+
 
 # Remove original files and create symlinks for data persistence.
 # The entrypoint script will ensure the target files/dirs exist at runtime.
