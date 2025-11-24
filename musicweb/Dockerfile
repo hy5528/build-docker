@@ -1,6 +1,6 @@
 # Dockerfile for running the web (React) project
 FROM nginx:1.20.2-alpine as app
-WORKDIR /app
+WORKDIR /
 COPY ./packages/web/dist /usr/share/nginx/html
 COPY ./docker/nginx.conf.example /etc/nginx/conf.d/default.conf
 
