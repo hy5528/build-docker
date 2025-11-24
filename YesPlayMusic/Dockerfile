@@ -25,7 +25,7 @@ RUN echo "http://dl-cdn.alpinelinux.org/alpine/edge/testing" >> /etc/apk/reposit
  # Allow pip to install over system packages
 ENV PIP_BREAK_SYSTEM_PACKAGES 1
 
-RUN npm install @neteasecloudmusicapienhanced/api
+RUN pip install @neteasecloudmusicapienhanced/api
 
 COPY --from=build /app/docker/nginx.conf.example /etc/nginx/http.d/default.conf
 COPY --from=build /app/dist /usr/share/nginx/html
