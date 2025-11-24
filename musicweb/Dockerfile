@@ -1,9 +1,40 @@
-# Dockerfile for running the web (React) project
-FROM nginx:1.20.2-alpine as app
-WORKDIR /
-COPY packages/web/dist /usr/share/nginx/html
-COPY docker/nginx.conf.example /etc/nginx/conf.d/default.conf
+# Dockerfile.builder for building the web (React) project
+FROM node:20.0.0 AS builder
 
-EXPOSE 80
-# Start the server and the web app
-CMD ["sh", "-c", "nginx -g 'daemon off;'"]
+ENV NODE_ENV=production \
+  ELECTRON_WEB_SERVER_PORT=42710 \
+  ELECTRON_DEV_NETEASE_API_PORT=30001 \
+  UNBLOCK_SERVER_PORT=30003 \
+  VITE_APP_NETEASE_API_URL=/netease
+
+# Set registry for npm
+RUN npm config set registry https://registry.npmmirror.com/
+RUN pnpm config set registry https://registry.npmmirror.com/
+
+# Install global dependencies
+RUN npm i -g pnpm prisma fastify-cli turbo tsx
+
+# Copy package.json and install dependencies for the main app
+COPY package.json /app/
+WORKDIR /app
+RUN pnpm i
+RUN pnpm prune --prod
+
+
+# Copy package.json and install dependencies for the server
+# Copy the built server code
+COPY packages/server/dist /app/
+COPY packages/server/prisma /app/packages/server/prisma/
+COPY packages/server/package.json /app/packages/server/
+WORKDIR /app/packages/server/
+RUN pnpm i
+RUN pnpm prune --prod
+
+
+# WORKDIR /app/
+# RUN prisma generate
+# Generate Prisma client
+WORKDIR /app/packages/
+EXPOSE 35530
+# Start the server
+CMD ["sh", "-c", "fastify start --port 35530 --address 0.0.0.0 -l info server/src/app.js"]
