@@ -13,7 +13,6 @@ RUN echo "http://dl-cdn.alpinelinux.org/alpine/edge/testing" >> /etc/apk/reposit
   supervisor \
   git \
   npm \
-  py3-pip \
  && rm -rf /var/cache/apk/*
  # Allow pip to install over system packages
 ENV PIP_BREAK_SYSTEM_PACKAGES 1
