@@ -6,7 +6,8 @@ RUN echo "http://dl-cdn.alpinelinux.org/alpine/edge/testing" >> /etc/apk/reposit
  && apk update \
  && apk add --no-cache \
   dumb-init \
-  python3 python3-pip \
+  python3 \
+  python3-pip \
   shadow \
   nodejs \
   nginx \
