@@ -12,8 +12,9 @@ RUN npm install && npm run build
 WORKDIR /app
 RUN git clone https://github.com/nooblong/NeteaseCloudMusicApiBackup.git api
 WORKDIR /app/api
-
-RUN npm install --only=production
+RUN npm config set registry "https://registry.npmmirror.com/" \
+	&& npm install -g npm husky \
+	&& npm install --production
 
 FROM nginx:1.27-alpine-slim AS app
 WORKDIR /app
@@ -40,6 +41,7 @@ HEALTHCHECK --interval=30s --timeout=10s --start-period=30s --retries=3 \
 VOLUME ["/data"]
 
 CMD ["/entrypoint.sh"]
+
 
 
 
