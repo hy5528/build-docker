@@ -11,7 +11,6 @@ WORKDIR /app
 RUN git clone --recurse-submodules https://github.com/algerkong/AlgerMusicPlayer.git
 
 RUN cd AlgerMusicPlayer \
-	&& echo 'VITE_API = /api' > .env.development \
 	&& npm install  \
 	&& npm run build \
         && zip -r dist.zip dist
