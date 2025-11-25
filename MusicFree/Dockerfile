@@ -16,13 +16,26 @@ RUN cd AlgerMusicPlayer \
 
 FROM node:22-alpine AS app
 
-RUN apk add --no-cache nginx && npm i -g @neteasecloudmusicapienhanced/api
+RUN apk update && apk add --no-cache bash wget curl git nginx unzip
 
-COPY --from=build /app/docker/nginx.conf.example /etc/nginx/http.d/default.conf
-COPY --from=build /app/dist /usr/share/nginx/html
+WORKDIR /app
 
-EXPOSE 80 3000
 
-ENTRYPOINT ["/docker-entrypoint.sh"]
+ADD default.conf /etc/nginx/http.d/
 
-CMD ["sh", "-c", "nginx && exec npx @neteasecloudmusicapienhanced/api"]
+RUN npm install @neteasecloudmusicapienhanced/api -g
+
+WORKDIR /app/NeteaseCloudMusicApi
+
+ADD docker-entrypoint.sh ./
+ADD check.sh ./
+
+RUN chmod +x /app/NeteaseCloudMusicApi/*.sh
+
+EXPOSE 80 443 3000
+
+ENV NODE_TLS_REJECT_UNAUTHORIZED=0
+
+ENTRYPOINT ["./docker-entrypoint.sh"]
+
+CMD ["npx", "NeteaseCloudMusicApi"]
