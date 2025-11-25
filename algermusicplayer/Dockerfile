@@ -4,18 +4,16 @@ RUN apk add --no-cache git python3 make g++
 
 WORKDIR /app
 
-RUN git clone https://github.com/algerkong/AlgerMusicPlayer.git frontend 
-WORKDIR /app/frontend 
-RUN npm config set registry "https://registry.npmmirror.com/" \
-	&& npm install -g npm husky 
-RUN npm install && npm run build
+RUN git clone https://github.com/algerkong/AlgerMusicPlayer.git frontend
+WORKDIR /app/frontend
+COPY package*.json ./
+RUN npm ci && npm run build
 
 WORKDIR /app
 RUN git clone https://github.com/nooblong/NeteaseCloudMusicApiBackup.git api
 WORKDIR /app/api
-RUN npm config set registry "https://registry.npmmirror.com/" \
-	&& npm install -g npm husky \
-	&& npm install --production
+COPY package*.json ./
+RUN npm ci --only=production
 
 FROM nginx:alpine
 WORKDIR /app
@@ -42,6 +40,7 @@ HEALTHCHECK --interval=30s --timeout=10s --start-period=30s --retries=3 \
 VOLUME ["/data"]
 
 CMD ["/entrypoint.sh"]
+
 
 
 
