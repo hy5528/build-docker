@@ -18,3 +18,5 @@ RUN git clone --depth 1  https://github.com/maotoumao/MusicFreeDesktop.git /app 
 EXPOSE 80 
 
 ENV NODE_TLS_REJECT_UNAUTHORIZED=0
+
+CMD ["npx"]
