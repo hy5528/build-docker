@@ -1,18 +1,7 @@
-# build
-FROM --platform=$BUILDPLATFORM node:18-alpine AS builder
-
-RUN apk update && apk add --no-cache git
-
+FROM node:18-alpine AS frontend-builder
 WORKDIR /app
-
-COPY package*.json ./
-
-RUN npm install
-
-COPY . .
-RUN npm run build
-ADD --chmod=755 ./.env.development /src/renderer
-
-
-EXPOSE 80
-CMD ["npx"]
+RUN npm install -g pnpm
+COPY frontend/package.json frontend/pnpm-lock.yaml ./
+RUN pnpm install
+COPY frontend/ .
+RUN pnpm build
