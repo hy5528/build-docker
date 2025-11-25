@@ -8,10 +8,10 @@ RUN apk update && apk add --no-cache wget curl git zip
 
 WORKDIR /app
 
-RUN git clone https://github.com/maotoumao/MusicFree.git
+RUN git clone https://github.com/maotoumao/MusicFreeDesktop.git
 
-RUN cd MusicFree\
-	&& npm install  \
+RUN cd MusicFreeDesktop \
+	&& npm install 
 
 
 EXPOSE 80 
