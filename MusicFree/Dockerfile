@@ -19,8 +19,7 @@ FROM node:22-alpine AS app
 RUN apk update && apk add --no-cache bash wget curl git nginx unzip
 
 WORKDIR /app
-
-
+COPY --from=builder /out/renderer/* ./
 ADD default.conf /etc/nginx/http.d/
 
 RUN npm install @neteasecloudmusicapienhanced/api -g
@@ -32,7 +31,7 @@ ADD check.sh ./
 
 RUN chmod +x /app/NeteaseCloudMusicApi/*.sh
 
-EXPOSE 80 443 3000
+EXPOSE 80 3000
 
 ENV NODE_TLS_REJECT_UNAUTHORIZED=0
 
