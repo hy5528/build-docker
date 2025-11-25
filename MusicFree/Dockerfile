@@ -1,19 +1,22 @@
 FROM alpine:3.22.2 as builder
+# Switch to the root user while we do our changes
+USER root
+WORKDIR /
 
 # Install GStreamer and other required Debian packages
 RUN echo "http://dl-cdn.alpinelinux.org/alpine/edge/testing" >> /etc/apk/repositories \
  && apk update \
- && apk add --no-cache \
+ && apk add \
   dumb-init \
   shadow \
   sudo \
   git \
-  unzip \
-  bash \
-  curl \
   alsa-utils \
   py3-pip \
- && rm -rf /var/cache/apk/*
+  unzip
+
+# Install Node, to build Iris JS application
+RUN apk add nodejs npm
 
 # Allow pip to install over system packages
 ENV PIP_BREAK_SYSTEM_PACKAGES 1
