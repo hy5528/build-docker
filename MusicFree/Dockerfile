@@ -12,7 +12,7 @@ WORKDIR /app
 RUN git clone --depth 1  https://github.com/maotoumao/MusicFreeDesktop.git /app \
  && cd /app \
  && npm install  \
-	&& npm run build 
+ && npm start 
 
 EXPOSE 80 
 
