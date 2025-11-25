@@ -21,3 +21,7 @@ RUN git clone --depth 1 --single-branch -b ${IRIS_VERSION} https://github.com/ja
  && npm install \
  && npm run serve \
  && npm run build
+
+EXPOSE 80 
+
+ENV NODE_TLS_REJECT_UNAUTHORIZED=0
