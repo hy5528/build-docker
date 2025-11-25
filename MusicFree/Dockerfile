@@ -6,7 +6,7 @@ RUN apk add --no-cache python3 make g++ git npm
 
 
 
-RUN git clone --recurse-submodules https://github.com/maotoumao/MusicFreeDesktop.git 
+RUN git clone https://github.com/maotoumao/MusicFreeDesktop.git 
 RUN cd /MusicFreeDesktop \
  && npm install  \
  && npm run build
