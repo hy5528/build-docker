@@ -16,8 +16,8 @@ RUN echo "http://dl-cdn.alpinelinux.org/alpine/edge/testing" >> /etc/apk/reposit
 # Allow pip to install over system packages
 ENV PIP_BREAK_SYSTEM_PACKAGES 1
 
-RUN git clone --depth 1 --single-branch -b ${IRIS_VERSION} https://github.com/jaedb/Iris.git /iris \
- && cd /iris \
+RUN git clone --depth 1 --single-branch -b ${IRIS_VERSION} https://github.com/maotoumao/MusicFreeDesktop.git /app \
+ && cd /app \
  && npm install \
  && npm run serve \
  && npm run build
