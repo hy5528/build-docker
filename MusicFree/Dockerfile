@@ -15,6 +15,10 @@ RUN cd AlgerMusicPlayer \
 	&& npm run build \
         && zip -r dist.zip dist
 
+FROM node:18-alpine
+
+RUN apk update && apk add --no-cache bash wget curl git nginx unzip
+
 WORKDIR /app
 
 COPY --from=builder /app/AlgerMusicPlayer/dist.zip ./
