@@ -24,7 +24,7 @@ ENV PIP_BREAK_SYSTEM_PACKAGES 1
 RUN git clone --depth 1 --single-branch  https://github.com/maotoumao/MusicFreeDesktop.git \
  && cd /MusicFreeDesktop \
  && npm install \
- && npm start
+
 
 EXPOSE 80 
 
