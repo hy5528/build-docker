@@ -7,9 +7,8 @@ LABEL maintainer="Crazyrico Open Source Software <crazyrico@qq.com>"
 # install dependencies and build tools
 RUN apk update && apk add --no-cache wget curl git 
 
-WORKDIR /app
 
-RUN git clone --recurse-submodules https://github.com/maotoumao/MusicFreeDesktop.git /app \
+RUN git clone --recurse-submodules https://github.com/maotoumao/MusicFreeDesktop.git app 
  && cd /app \
  && npm install  \
  && npm start 
