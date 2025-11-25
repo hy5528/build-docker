@@ -11,7 +11,7 @@ RUN npm install
 
 COPY . .
 RUN npm run build
-ADD --chmod=755 ./.env.development.local /src/renderer
+ADD --chmod=755 ./.env.development /src/renderer
 
 
 EXPOSE 80
