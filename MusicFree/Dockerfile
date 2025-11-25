@@ -1,25 +1,21 @@
 FROM alpine:3.22.2
 
-# Switch to the root user while we do our changes
-USER root
-WORKDIR /
-
 # Install GStreamer and other required Debian packages
 RUN echo "http://dl-cdn.alpinelinux.org/alpine/edge/testing" >> /etc/apk/repositories \
  && apk update \
- && apk add \
+ && apk add --no-cache \
   dumb-init \
   shadow \
   sudo \
   git \
   alsa-utils \
-  py3-pip 
-
-# Install Node, to build Iris JS application
-RUN apk add nodejs npm
+  py3-pip \
+  mopidy \
+ && rm -rf /var/cache/apk/*
 
 # Allow pip to install over system packages
 ENV PIP_BREAK_SYSTEM_PACKAGES 1
+
 
 RUN git clone --depth 1 --single-branch  https://github.com/maotoumao/MusicFree.git  /MusicFre \
  && cd /MusicFre \
