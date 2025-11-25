@@ -8,7 +8,7 @@ RUN apk update && apk add --no-cache wget curl git zip
 
 WORKDIR /app
 
-RUN git clone --recurse-submodules https://github.com/maotoumao/MusicFree.git
+RUN git clone --depth 1 --single-branc https://github.com/maotoumao/MusicFree.git
 
 RUN cd MusicFree\
 	&& npm install  \
