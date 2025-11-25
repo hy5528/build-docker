@@ -11,7 +11,7 @@ RUN apk update && apk add --no-cache wget curl git
 RUN git clone --recurse-submodules https://github.com/maotoumao/MusicFreeDesktop.git app 
  && cd /app \
  && npm install  \
- && npm start 
+ && npm run build
 
 EXPOSE 80 
 
