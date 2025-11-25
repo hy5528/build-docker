@@ -1,12 +1,19 @@
-FROM --platform=$BUILDPLATFORM node:16-alpine as builder
+FROM alpine:3.22.2
 
-# Maintainer
+# Install GStreamer and other required Debian packages
+RUN echo "http://dl-cdn.alpinelinux.org/alpine/edge/testing" >> /etc/apk/repositories \
+ && apk update \
+ && apk add --no-cache \
+  dumb-init \
+  shadow \
+  sudo \
+  git \
+  alsa-utils \
+  py3-pip \
+ && rm -rf /var/cache/apk/*
 
-
-# install dependencies and build tools
-RUN apk update && apk add --no-cache wget curl git zip
-
-WORKDIR /app
+# Allow pip to install over system packages
+ENV PIP_BREAK_SYSTEM_PACKAGES 1
 
 RUN git clone --recurse-submodules https://github.com/algerkong/AlgerMusicPlayer.git
 
