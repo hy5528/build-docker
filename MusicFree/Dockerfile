@@ -1,25 +1,12 @@
-FROM alpine:3.22.2 as builder
-# Switch to the root user while we do our changes
-USER root
-WORKDIR /
+FROM --platform=$BUILDPLATFORM node:18-alpine as builder
 
-# Install GStreamer and other required Debian packages
-RUN echo "http://dl-cdn.alpinelinux.org/alpine/edge/testing" >> /etc/apk/repositories \
- && apk update \
- && apk add \
-  dumb-init \
-  shadow \
-  sudo \
-  git \
-  alsa-utils \
-  py3-pip \
-  unzip
+# Maintainer
+LABEL maintainer="Crazyrico Open Source Software <crazyrico@qq.com>"
 
-# Install Node, to build Iris JS application
-RUN apk add nodejs npm
+# install dependencies and build tools
+RUN apk update && apk add --no-cache wget curl git zip
 
-# Allow pip to install over system packages
-ENV PIP_BREAK_SYSTEM_PACKAGES 1
+WORKDIR /app
 
 RUN git clone --recurse-submodules https://github.com/algerkong/AlgerMusicPlayer.git
 
