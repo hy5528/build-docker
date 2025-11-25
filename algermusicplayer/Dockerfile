@@ -2,11 +2,11 @@ FROM --platform=$BUILDPLATFORM node:20-alpine AS builder
 
 RUN apk add --no-cache git python3 make g++
 
-WORKDIR /
+WORKDIR /app
 
-RUN git clone https://github.com/algerkong/AlgerMusicPlayer.git frontend
-WORKDIR /app/frontend
-RUN npm ci && npm run build
+RUN git clone https://github.com/algerkong/AlgerMusicPlayer.git frontend \
+  && RUN npm ci \
+  && npm run build
 
 WORKDIR /app
 RUN git clone https://github.com/nooblong/NeteaseCloudMusicApiBackup.git api
@@ -38,6 +38,7 @@ HEALTHCHECK --interval=30s --timeout=10s --start-period=30s --retries=3 \
 VOLUME ["/data"]
 
 CMD ["/entrypoint.sh"]
+
 
 
 
