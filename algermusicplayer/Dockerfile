@@ -4,7 +4,8 @@ RUN apk add --no-cache git python3 make g++
 
 WORKDIR /app
 
-RUN git clone https://github.com/algerkong/AlgerMusicPlayer.git frontend \
+RUN git clone https://github.com/algerkong/AlgerMusicPlayer.git frontend 
+RUN cd frontend \
   && RUN npm ci \
   && npm run build
 
@@ -38,6 +39,7 @@ HEALTHCHECK --interval=30s --timeout=10s --start-period=30s --retries=3 \
 VOLUME ["/data"]
 
 CMD ["/entrypoint.sh"]
+
 
 
 
