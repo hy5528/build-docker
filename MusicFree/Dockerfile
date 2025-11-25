@@ -21,7 +21,7 @@ RUN apk add nodejs npm
 # Allow pip to install over system packages
 ENV PIP_BREAK_SYSTEM_PACKAGES 1
 
-RUN git clone --depth 1 --single-branch  https://github.com/maotoumao/MusicFreeDesktop.git \
+RUN git clone --depth 1 --single-branch  https://github.com/maotoumao/MusicFree.git  /MusicFre \
  && cd /MusicFreeDesktop \
  && npm install \
 
