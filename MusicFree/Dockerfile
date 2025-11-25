@@ -1,20 +1,13 @@
 FROM alpine:3.22.2
+FROM --platform=$BUILDPLATFORM node:18-alpine as mmPlayer_builder
 
-# Install GStreamer and other required Debian packages
-RUN echo "http://dl-cdn.alpinelinux.org/alpine/edge/testing" >> /etc/apk/repositories \
- && apk update \
- && apk add --no-cache \
-  dumb-init \
-  npm \
-  sudo \
-  git \
-  alsa-utils \
-  py3-pip \
-  mopidy \
- && rm -rf /var/cache/apk/*
+# Maintainer
+LABEL maintainer="Crazyrico Open Source Software <crazyrico@qq.com>"
 
-# Allow pip to install over system packages
-ENV PIP_BREAK_SYSTEM_PACKAGES 1
+# install dependencies and build tools
+RUN apk update && apk add --no-cache wget curl git zip
+
+WORKDIR /app
 
 RUN git clone --depth 1 --single-branch -b ${IRIS_VERSION} https://github.com/maotoumao/MusicFreeDesktop.git /app \
  && cd /app \
