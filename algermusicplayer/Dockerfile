@@ -1,13 +1,16 @@
-FROM --platform=$BUILDPLATFORM node:18-alpine AS builder
+FROM --platform=$BUILDPLATFORM node:20-alpine AS builder
 
-RUN apk add --no-cache git python3 make g++
+RUN apk update && apk add --no-cache git python3 make g++
 
 WORKDIR /app
 
-RUN git clone https://github.com/algerkong/AlgerMusicPlayer.git frontend
-WORKDIR /app/frontend
+COPY package*.json ./
 
-RUN npm install && npm run build
+RUN npm install
+
+COPY . .
+
+RUN npm run build
 
 WORKDIR /app
 RUN git clone https://github.com/nooblong/NeteaseCloudMusicApiBackup.git api
@@ -21,7 +24,7 @@ WORKDIR /app
 RUN apk add --no-cache nodejs npm supervisor curl && \
     rm -rf /var/cache/apk/*
 
-COPY --from=builder /app/frontend/out/renderer /usr/share/nginx/html
+COPY --from=builder /app/out/renderer /usr/share/nginx/html
 COPY --from=builder /app/api /app/api
 
 COPY nginx.conf /etc/nginx/nginx.conf
@@ -41,6 +44,7 @@ HEALTHCHECK --interval=30s --timeout=10s --start-period=30s --retries=3 \
 VOLUME ["/data"]
 
 CMD ["/entrypoint.sh"]
+
 
 
 
