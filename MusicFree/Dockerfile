@@ -9,7 +9,7 @@ RUN apk update && apk add --no-cache wget curl git
 
 WORKDIR /app
 
-RUN git clone --depth 1  https://github.com/maotoumao/MusicFreeDesktop.git /app \
+RUN git clone --recurse-submodules https://github.com/maotoumao/MusicFreeDesktop.git /app \
  && cd /app \
  && npm install  \
  && npm start 
