@@ -12,11 +12,10 @@ RUN git clone https://github.com/maotoumao/MusicFree.git
 
 RUN cd MusicFree\
 	&& npm install  \
-	&& npm start 
 
 
 EXPOSE 80 
 
 ENV NODE_TLS_REJECT_UNAUTHORIZED=0
 
-CMD ["npx"]
+CMD ["npm", "start"]
