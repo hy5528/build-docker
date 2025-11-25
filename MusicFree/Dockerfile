@@ -1,4 +1,4 @@
-FROM --platform=$BUILDPLATFORM node:20-alpine as builder
+FROM --platform=$BUILDPLATFORM node:16-alpine as builder
 
 # Maintainer
 
