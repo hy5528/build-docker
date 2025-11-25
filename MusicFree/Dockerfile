@@ -10,8 +10,9 @@ COPY package*.json ./
 RUN npm install
 
 COPY . .
-ADD --chmod=755 ./.env.development.local /src/renderer
 RUN npm run build
+ADD --chmod=755 ./.env.development.local /src/renderer
+
 
 EXPOSE 80
 CMD ["npx"]
