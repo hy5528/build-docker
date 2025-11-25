@@ -4,6 +4,9 @@ RUN apk add --no-cache git python3 make g++ curl npm supervisor && \
 
 WORKDIR /app
 RUN npm install
-RUN npm build
+
+COPY . .
+
+RUN npm run build
 
 CMD ["npx"]
