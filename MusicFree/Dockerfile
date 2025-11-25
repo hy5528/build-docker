@@ -9,7 +9,7 @@ WORKDIR /
 RUN git clone --depth 1 --single-branch  https://github.com/maotoumao/MusicFreeDesktop.git \
  && cd /MusicFreeDesktop \
  && npm install \
- && npm run prod
+ && npm run build
 
 EXPOSE 80 
 
