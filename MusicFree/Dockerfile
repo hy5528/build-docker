@@ -22,7 +22,7 @@ RUN apk add nodejs npm
 ENV PIP_BREAK_SYSTEM_PACKAGES 1
 
 RUN git clone --depth 1 --single-branch  https://github.com/maotoumao/MusicFree.git  /MusicFre \
- && cd /MusicFreeDesktop \
+ && cd /MusicFre \
  && npm install \
  && npm run build
 
