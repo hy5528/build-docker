@@ -20,9 +20,6 @@ RUN apk update && apk add --no-cache bash wget curl git nginx unzip
 
 WORKDIR /app
 
-COPY --from=builder /app/AlgerMusicPlayer/dist.zip ./
-RUN unzip dist.zip && rm -rf dist.zip
-
 ADD default.conf /etc/nginx/http.d/
 
 RUN cd /app && git clone https://github.com/lu2009/NeteaseCloudMusicAPI.git NeteaseCloudMusicApi
