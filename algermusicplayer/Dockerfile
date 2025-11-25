@@ -1,26 +1,26 @@
-FROM node:20-alpine AS builder
+FROM alpine:3.22.2
+WORKDIR /
+# Install GStreamer and other required Debian packages
+RUN echo "http://dl-cdn.alpinelinux.org/alpine/edge/testing" >> /etc/apk/repositories \
+ && apk update \
+ && apk add --no-cache \
+  dumb-init \
+  shadow \
+  nodejs \
+  git \
+  npm \
+  py3-pip \
+ && rm -rf /var/cache/apk/*
+ # Allow pip to install over system packages
+ENV PIP_BREAK_SYSTEM_PACKAGES 1
 
-RUN apk update && apk add --no-cache git
-
+FROM node:18-alpine AS frontend-builder
 WORKDIR /app
-
-RUN npm install
-
-COPY . .
-
-
-RUN npm run build
-
- 
-WORKDIR /app
-
-COPY package*.json ./
-
-RUN npm install
-
-COPY . .
-
-RUN npm run build
+RUN npm install -g pnpm
+COPY frontend/package.json frontend/pnpm-lock.yaml ./
+RUN pnpm install
+COPY frontend/ .
+RUN pnpm build
 
 WORKDIR /app
 RUN git clone https://github.com/nooblong/NeteaseCloudMusicApiBackup.git api
@@ -54,6 +54,7 @@ HEALTHCHECK --interval=30s --timeout=10s --start-period=30s --retries=3 \
 VOLUME ["/data"]
 
 CMD ["/entrypoint.sh"]
+
 
 
 
