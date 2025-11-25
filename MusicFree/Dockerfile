@@ -1,7 +1,7 @@
 FROM --platform=$BUILDPLATFORM node:18-alpine as builder
 
 # Maintainer
-LABEL maintainer="Crazyrico Open Source Software <crazyrico@qq.com>"
+
 
 # install dependencies and build tools
 RUN apk update && apk add --no-cache wget curl git zip
