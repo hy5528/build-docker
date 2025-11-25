@@ -16,13 +16,19 @@ RUN npm run build
        
 FROM node:18-alpine
 
-RUN apk update && apk add --no-cache bash  nginx npm
+RUN apk update && apk add --no-cache bash wget curl git nginx unzip
 
 WORKDIR /app
 
+
 ADD default.conf /etc/nginx/http.d/
 
-RUN npm install @neteasecloudmusicapienhanced/api -g
+RUN cd /app && git clone https://github.com/lu2009/NeteaseCloudMusicAPI.git NeteaseCloudMusicApi
+
+RUN cd NeteaseCloudMusicApi \
+	&& npm config set registry "https://registry.npmmirror.com/" \
+	&& npm install -g npm husky \
+	&& npm install --production
 
 WORKDIR /app/NeteaseCloudMusicApi
 
