@@ -10,6 +10,7 @@ COPY package*.json ./
 RUN npm install
 
 COPY . .
+.env.development.local 到 src/renderer
 RUN npm run build
 
 EXPOSE 80
