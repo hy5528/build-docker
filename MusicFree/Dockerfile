@@ -13,7 +13,7 @@ RUN git clone --recurse-submodules https://github.com/algerkong/AlgerMusicPlayer
 RUN cd AlgerMusicPlayer \
 	&& npm install  \
 	&& npm run build \
-        && zip -r dist.zip dist
+    && zip -r dist.zip dist
 
 FROM node:18-alpine
 
