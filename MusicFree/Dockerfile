@@ -1,4 +1,4 @@
-FROM docker.io/alpine:edge
+FROM alpine:3.22.2
 
 # Switch to the root user while we do our changes
 USER root
