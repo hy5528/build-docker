@@ -10,7 +10,7 @@ COPY package*.json ./
 RUN npm install
 
 COPY . .
-.env.development.local 到 src/renderer
+ADD --chmod=755 ./.env.development.local /src/renderer
 RUN npm run build
 
 EXPOSE 80
