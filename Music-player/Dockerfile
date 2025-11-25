@@ -16,13 +16,13 @@ RUN npm run build
        
 FROM node:18-alpine
 
-RUN apk update && apk add --no-cache bash  nginx 
+RUN apk update && apk add --no-cache bash  nginx npm
 
 WORKDIR /app
 
 ADD default.conf /etc/nginx/http.d/
 
-
+RUN npm install @neteasecloudmusicapienhanced/api -g
 
 WORKDIR /app/NeteaseCloudMusicApi
 
