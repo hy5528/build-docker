@@ -19,7 +19,8 @@ on:
         - 'joyflix'
         - 'mopidy'
         - 'mpd'
-
+        - 'algermusicplayer'
+         
 jobs:
   build-and-push:
     runs-on: ubuntu-latest
