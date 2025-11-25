@@ -1,18 +1,16 @@
-FROM --platform=$BUILDPLATFORM node:18-alpine AS builder
+# build
+FROM --platform=$BUILDPLATFORM node:20-alpine AS builder
 
-# Maintainer
-LABEL maintainer="Crazyrico Open Source Software <crazyrico@qq.com>"
-
-# install dependencies and build tools
-RUN apk update && apk add --no-cache wget curl git zip
+RUN apk update && apk add --no-cache git
 
 WORKDIR /app
 
-RUN git clone --recurse-submodules https://github.com/algerkong/AlgerMusicPlayer.git
+COPY package*.json ./
 
-RUN cd AlgerMusicPlayer \
-	&& npm install  \
-	&& npm run build 
+RUN npm install
+
+COPY . .
+RUN npm run build
 
 EXPOSE 80
 CMD ["npx"]
