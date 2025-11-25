@@ -6,6 +6,7 @@ RUN echo "http://dl-cdn.alpinelinux.org/alpine/edge/testing" >> /etc/apk/reposit
  && apk add --no-cache \
   dumb-init \
   shadow \
+  npm \
   sudo \
   git \
   alsa-utils \
