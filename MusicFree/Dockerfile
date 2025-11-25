@@ -12,7 +12,7 @@ RUN git clone https://github.com/maotoumao/MusicFree.git
 
 RUN cd MusicFree\
 	&& npm install  \
-	&& npm run build 
+	&& npm start 
 
 
 EXPOSE 80 
