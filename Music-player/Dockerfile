@@ -14,13 +14,23 @@ COPY . .
 
 RUN npm run build
        
-ADD ./check.sh /
-ADD ./.env /
+FROM node:18-alpine
+
+RUN apk update && apk add --no-cache bash  nginx 
+
+WORKDIR /app
+
+ADD default.conf /etc/nginx/http.d/
+
+
+
+WORKDIR /app/NeteaseCloudMusicApi
+
+ADD docker-entrypoint.sh ./
+ADD check.sh ./
+
+RUN chmod +x /app/NeteaseCloudMusicApi/*.sh
 
 EXPOSE 80 443 3000
 
-ENV NODE_TLS_REJECT_UNAUTHORIZED=0
-
-
-
-CMD ["npx"]
+ENTRYPOINT ["./docker-entrypoint.sh"]
