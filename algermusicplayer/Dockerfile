@@ -1,4 +1,4 @@
-FROM alpine:3.22.2
+FROM alpine:3.22.2 AS base
 WORKDIR /
 # Install GStreamer and other required Debian packages
 RUN echo "http://dl-cdn.alpinelinux.org/alpine/edge/testing" >> /etc/apk/repositories \
@@ -21,6 +21,7 @@ COPY frontend/package.json frontend/pnpm-lock.yaml ./
 RUN pnpm install
 COPY frontend/ .
 RUN pnpm build
+
 
 WORKDIR /app
 RUN git clone https://github.com/nooblong/NeteaseCloudMusicApiBackup.git api
@@ -54,6 +55,7 @@ HEALTHCHECK --interval=30s --timeout=10s --start-period=30s --retries=3 \
 VOLUME ["/data"]
 
 CMD ["/entrypoint.sh"]
+
 
 
 
