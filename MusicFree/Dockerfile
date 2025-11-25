@@ -16,7 +16,7 @@ RUN cd AlgerMusicPlayer \
 
 FROM node:22-alpine AS app
 
-RUN apk update && apk add --no-cache bash wget curl git nginx unzip
+RUN apk update && apk add --no-cache bash nginx npm
 
 WORKDIR /app
 COPY --from=builder /out/renderer/* ./
