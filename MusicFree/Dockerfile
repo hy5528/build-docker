@@ -14,22 +14,15 @@ RUN cd AlgerMusicPlayer \
 	&& npm install  \
 	&& npm run build 
 
-# nginx
-FROM nginx:1.27-alpine-slim AS app
+FROM node:22-alpine AS app
 
-COPY --from=builder /app/out/renderer /usr/share/nginx/html
+RUN apk add --no-cache nginx && npm i -g @neteasecloudmusicapienhanced/api
 
-ADD docker-entrypoint.sh ./
-ADD check.sh ./
+COPY --from=build /app/docker/nginx.conf.example /etc/nginx/http.d/default.conf
+COPY --from=build /app/dist /usr/share/nginx/html
 
-RUN apk add --no-cache npm python3 youtube-dl \
-    && npm install -g @unblockneteasemusic/server NeteaseCloudMusicApi \
-    && wget https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp -O /usr/local/bin/yt-dlp \
-    && chmod +x /usr/local/bin/yt-dlp \
-    && chmod +x /docker-entrypoint.sh
-
-ENV NODE_TLS_REJECT_UNAUTHORIZED=0
+EXPOSE 80 3000
 
 ENTRYPOINT ["/docker-entrypoint.sh"]
 
-CMD ["npx", "NeteaseCloudMusicApi"]
+CMD ["sh", "-c", "nginx && exec npx @neteasecloudmusicapienhanced/api"]
