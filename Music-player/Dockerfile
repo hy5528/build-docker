@@ -14,8 +14,6 @@ COPY . .
 
 RUN npm run build
        
-
-ADD ./docker-entrypoint.sh /
 ADD ./check.sh /
 ADD ./.env /
 
@@ -23,6 +21,6 @@ EXPOSE 80 443 3000
 
 ENV NODE_TLS_REJECT_UNAUTHORIZED=0
 
-ENTRYPOINT ["./docker-entrypoint.sh"]
+
 
 CMD ["npx"]
