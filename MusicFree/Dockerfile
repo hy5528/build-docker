@@ -1,5 +1,5 @@
 # build
-FROM --platform=$BUILDPLATFORM node:20-alpine AS builder
+FROM --platform=$BUILDPLATFORM node:18-alpine AS builder
 
 RUN apk update && apk add --no-cache git
 
