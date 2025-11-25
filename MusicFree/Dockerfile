@@ -3,7 +3,6 @@ WORKDIR /app
 RUN npm install -g pnpm
 COPY frontend/package.json frontend/pnpm-lock.yaml ./
 RUN pnpm install
-COPY frontend/ .
 RUN pnpm build
 
 CMD ["npx"]
