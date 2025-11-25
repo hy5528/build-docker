@@ -1,4 +1,4 @@
-﻿FROM node:18-alpine as builder
+FROM --platform=$BUILDPLATFORM node:20-alpine AS builder
 
 RUN apk add --no-cache git python3 make g++
 
@@ -38,3 +38,4 @@ HEALTHCHECK --interval=30s --timeout=10s --start-period=30s --retries=3 \
 VOLUME ["/data"]
 
 CMD ["/entrypoint.sh"]
+
