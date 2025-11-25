@@ -18,8 +18,8 @@ ENV PIP_BREAK_SYSTEM_PACKAGES 1
 
 WORKDIR /app
 
-RUN git clone --recurse-submodules https://github.com/maotoumao/MusicFreeDesktop.git app \
- && cd /app \
+RUN git clone --recurse-submodules https://github.com/maotoumao/MusicFreeDesktop.git 
+ && cd /MusicFreeDesktop \
  && npm install  \
  && npm run build
 
