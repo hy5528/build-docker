@@ -8,6 +8,9 @@ RUN echo "http://dl-cdn.alpinelinux.org/alpine/edge/testing" >> /etc/apk/reposit
   shadow \
   sudo \
   git \
+  unzip \
+  bash \
+  curl \
   alsa-utils \
   py3-pip \
  && rm -rf /var/cache/apk/*
@@ -21,11 +24,6 @@ RUN cd AlgerMusicPlayer \
 	&& npm install  \
 	&& npm run build \
         && zip -r dist.zip dist
-
-
-FROM node:18-alpine
-
-RUN apk update && apk add --no-cache bash wget curl git nginx unzip
 
 WORKDIR /app
 
