@@ -4,8 +4,6 @@ RUN apk update && apk add --no-cache git
 
 WORKDIR /app
 
-COPY package*.json ./
-
 RUN npm install
 
 COPY . .
@@ -56,6 +54,7 @@ HEALTHCHECK --interval=30s --timeout=10s --start-period=30s --retries=3 \
 VOLUME ["/data"]
 
 CMD ["/entrypoint.sh"]
+
 
 
 
