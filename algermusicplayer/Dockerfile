@@ -4,7 +4,7 @@ RUN apk add --no-cache git python3 make g++ curl supervisor && \
     rm -rf /var/cache/apk/*
 
 WORKDIR /app
-RUN npm install
+
 COPY supervisord.conf entrypoint.sh ./
 RUN chmod +x entrypoint.sh
 
