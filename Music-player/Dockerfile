@@ -40,6 +40,6 @@ ADD check.sh ./
 
 RUN chmod +x /app/NeteaseCloudMusicApi/*.sh
 
-EXPOSE 80 3000
-
+EXPOSE 5173 3000
+CMD curl -f http://localhost:5173 || exit 1
 ENTRYPOINT ["./docker-entrypoint.sh"]
