@@ -10,6 +10,7 @@ mkdir -p /var/log/supervisor /etc/supervisor/conf.d /data
 
 # 复制 supervisor 配置
 cp /app/supervisord.conf /etc/supervisor/conf.d/
+npm config set registry https://registry.npmmirror.com
 
 # 如果前端目录不存在或为空，则克隆代码
 if [ ! -d "/app/frontend" ] || [ ! -f "/app/frontend/package.json" ]; then
