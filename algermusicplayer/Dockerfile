@@ -7,6 +7,7 @@ WORKDIR /app
 
 COPY supervisord.conf entrypoint.sh ./
 RUN chmod +x entrypoint.sh
+RUN npm config set registry https://registry.npmmirror.com
 
 ENV NODE_ENV=development
 
