@@ -2,7 +2,7 @@
 FROM --platform=$BUILDPLATFORM node:20-alpine AS deps
 
 # 启用
-RUN apk add --no-cache git python3 make g++
+RUN apk add --no-cache git python3 make g++ npm
 
 WORKDIR /
 RUN git clone https://github.com/algerkong/AlgerMusicPlayer.git app
