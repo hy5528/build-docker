@@ -50,10 +50,7 @@ jobs:
           images: ghcr.io/hy5528/algermusicplayer66
           tags: |
             type=raw,value=latest
-      - name: Clone Overleaf Gitlab Repo
-        run: |
-          git clone https://github.com/algerkong/AlgerMusicPlayer.git app
-
+    
       
           
       - name: 构建并推送 Docker 镜像
