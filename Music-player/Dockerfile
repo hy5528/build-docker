@@ -1,32 +1,34 @@
-FROM --platform=$BUILDPLATFORM node:22.12.0-alpine as builder
+FROM --platform=$BUILDPLATFORM node:18-alpine as mmPlayer_builder
 
+# Maintainer
+LABEL maintainer="Crazyrico Open Source Software <crazyrico@qq.com>"
 
 # install dependencies and build tools
 RUN apk update && apk add --no-cache wget curl git zip
 
 WORKDIR /app
 
-RUN git clone --recurse-submodules https://github.com/algerkong/AlgerMusicPlayer.git
+RUN git clone --recurse-submodules https://github.com/Dos7t3r/Vue-mmPlayer.git
 
-RUN cd AlgerMusicPlayer \
-    echo 'MUSIC_API_URL = /api' > .env.development \
+RUN cd Vue-mmPlayer \
+	&& echo 'VUE_APP_BASE_API_URL = /api' > .env \
 	&& npm install  \
 	&& npm run build \
-        && zip -r renderer.zip  out/renderer
+        && zip -r dist.zip dist
 
 
-FROM node:22.12.0-alpine
+FROM node:18-alpine
 
 RUN apk update && apk add --no-cache bash wget curl git nginx unzip
 
 WORKDIR /app
 
-COPY --from=builder /app/AlgerMusicPlayer/renderer.zip ./
-RUN unzip renderer.zip && rm -rf renderer.zip
+COPY --from=mmPlayer_builder /app/Vue-mmPlayer/dist.zip ./
+RUN unzip dist.zip && rm -rf dist.zip
 
 ADD default.conf /etc/nginx/http.d/
 
-RUN cd /app && git clone https://github.com/lu2009/NeteaseCloudMusicAPI.git NeteaseCloudMusicApi
+RUN cd /app && git clone https://github.com/NeteaseCloudMusicApiEnhanced/api-enhanced.git NeteaseCloudMusicApi
 
 RUN cd NeteaseCloudMusicApi \
 	&& npm config set registry "https://registry.npmmirror.com/" \
@@ -40,6 +42,6 @@ ADD check.sh ./
 
 RUN chmod +x /app/NeteaseCloudMusicApi/*.sh
 
-EXPOSE 5173 3000
-CMD curl -f http://localhost:5173 || exit 1
+EXPOSE 80 443 3000
+
 ENTRYPOINT ["./docker-entrypoint.sh"]
