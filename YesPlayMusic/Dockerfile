@@ -1,4 +1,4 @@
-FROM --platform=$BUILDPLATFORM node:16-alpine AS build
+FROM --platform=$BUILDPLATFORM alpine:3.22.2 AS build
 
 ENV VUE_APP_NETEASE_API_URL=/api
 
@@ -7,8 +7,8 @@ WORKDIR /app
 COPY . .
 
 RUN apk add --no-cache python3 make g++ git \
-    && yarn install --frozen-lockfile \
-    && yarn build
+    && npm install --frozen-lockfile \
+    && npm build
 
 # app
 
