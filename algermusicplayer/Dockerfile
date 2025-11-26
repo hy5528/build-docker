@@ -1,4 +1,4 @@
-FROM node:20-alpine
+FROM node:22.12.0-alpine
 
 RUN apk add --no-cache git python3 make g++ curl supervisor && \
     rm -rf /var/cache/apk/*
