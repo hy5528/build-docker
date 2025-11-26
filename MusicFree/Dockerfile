@@ -6,7 +6,7 @@ RUN git clone https://github.com/algerkong/AlgerMusicPlayer.git app
 
 WORKDIR /app
 
-ADD --chmod=755 ./MusicFree/package.json /MusicFree/package.json
+ADD --chmod=755 ./package.json /package.json
 RUN npm install
 
 
