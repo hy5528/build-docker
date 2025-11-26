@@ -15,13 +15,8 @@ RUN npm install
 FROM --platform=$BUILDPLATFORM node:20-alpine AS builder
 WORKDIR /app
 
-# 复制依赖
-COPY --from=deps /app/node_modules ./node_modules
 # 复制全部源代码
 COPY . .
-
-# 在构建阶段也显式设置 DOCKER_ENV，
-ENV DOCKER_ENV=true
 
 # 生成生产构建
 RUN npm run build
