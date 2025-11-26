@@ -1,5 +1,7 @@
 # build
-FROM node:20-alpine AS builder
+FROM node:18-alpine AS builder
+
+RUN apk add --no-cache git python3 make g++
 
 RUN apk update && apk add --no-cache git
 
