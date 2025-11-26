@@ -1,20 +1,18 @@
-FROM --platform=$BUILDPLATFORM node:18-alpine as mmPlayer_builder
+FROM --platform=$BUILDPLATFORM node:22.12.0-alpine as mmPlayer_builder
 
-# Maintainer
-LABEL maintainer="Crazyrico Open Source Software <crazyrico@qq.com>"
 
 # install dependencies and build tools
 RUN apk update && apk add --no-cache wget curl git zip
 
 WORKDIR /app
 
-RUN git clone --recurse-submodules https://github.com/Dos7t3r/Vue-mmPlayer.git
+RUN git clone --recurse-submodules https://github.com/algerkong/AlgerMusicPlayer.git
 
-RUN cd Vue-mmPlayer \
+RUN cd AlgerMusicPlayer \
 	&& echo 'VUE_APP_BASE_API_URL = /api' > .env \
 	&& npm install  \
 	&& npm run build \
-        && zip -r dist.zip dist
+        && zip -r dist.zip  /out/renderer
 
 
 FROM node:18-alpine
