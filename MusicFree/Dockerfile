@@ -8,7 +8,7 @@ WORKDIR /
 RUN git clone https://github.com/algerkong/AlgerMusicPlayer.git app
 
 # 安装所有依赖（含 devDependencies，后续会裁剪）
-RUN pnpm install --frozen-lockfile
+RUN npm install --frozen-lockfile
 
 # ---- 第 2 阶段：构建项目 ----
 FROM --platform=$BUILDPLATFORM node:20-alpine AS builder
@@ -24,6 +24,6 @@ COPY . .
 ENV DOCKER_ENV=true
 
 # 生成生产构建
-RUN pnpm run build
+RUN npm run build
 
 CMD ["npx"]
