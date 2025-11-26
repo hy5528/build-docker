@@ -1,5 +1,5 @@
 # ---- 第 1 阶段：安装依赖 ----
-FROM --platform=$BUILDPLATFORM node:20-alpine AS deps
+FROM --platform=$BUILDPLATFORM node:20-alpine AS builder
 
 # 启用
 RUN apk add --no-cache git python3 make g++ npm
@@ -10,7 +10,7 @@ WORKDIR /app
 RUN npm install 
 
 # ---- 第 2 阶段：构建项目 ----
-FROM --platform=$BUILDPLATFORM node:20-alpine AS builder
+
 WORKDIR /app
 
 # 复制全部源代码
