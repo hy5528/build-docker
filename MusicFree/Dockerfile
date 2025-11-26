@@ -17,6 +17,8 @@ FROM nginx:1.27-alpine-slim AS app
 
 COPY --from=builder /app/out/renderer /usr/share/nginx/html
 
+COPY --from=builder /app/nginx.conf /etc/nginx/conf.d/default.conf
+
 
 
 ADD --chmod=755 ./docker-entrypoint.sh /docker-entrypoint.sh
