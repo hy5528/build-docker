@@ -6,12 +6,12 @@ WORKDIR /app
 
 RUN git clone https://github.com/algerkong/AlgerMusicPlayer.git frontend
 WORKDIR /app/frontend
-RUN npm ci && npm run build
+RUN npm install && npm run build
 
 WORKDIR /app
 RUN git clone https://github.com/nooblong/NeteaseCloudMusicApiBackup.git api
 WORKDIR /app/api
-RUN npm ci --only=production
+RUN npm install
 
 FROM nginx:alpine
 
@@ -38,3 +38,4 @@ HEALTHCHECK --interval=30s --timeout=10s --start-period=30s --retries=3 \
 VOLUME ["/data"]
 
 CMD ["/entrypoint.sh"]
+
