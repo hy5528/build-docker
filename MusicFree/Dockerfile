@@ -7,7 +7,7 @@ RUN git clone https://github.com/algerkong/AlgerMusicPlayer.git app
 
 WORKDIR /app
 
-COPY ./package*.json /
+COPY ./app/package*.json /app
 # 安装所有依赖（含 devDependencies，后续会裁剪）
 RUN npm install 
 
