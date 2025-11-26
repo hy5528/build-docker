@@ -18,17 +18,11 @@ FROM nginx:1.27-alpine-slim AS app
 
 COPY --from=builder /app/out/renderer /usr/share/nginx/html
 
-
-ADD --chmod=755 ./docker-entrypoint.sh /docker-entrypoint.sh
-
 RUN apk add --no-cache npm python3 youtube-dl \
-    && npm install -g @unblockneteasemusic/server NeteaseCloudMusicApi \
-    && wget https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp -O /usr/local/bin/yt-dlp \
-    && chmod +x /usr/local/bin/yt-dlp \
-    && chmod +x /docker-entrypoint.sh
+    && npm install -g @unblockneteasemusic/server NeteaseCloudMusicApi 
+    
 
 ENV NODE_TLS_REJECT_UNAUTHORIZED=0
 VOLUME ["/data"]
-ENTRYPOINT ["/docker-entrypoint.sh"]
 
 CMD ["npx", "NeteaseCloudMusicApi"]
