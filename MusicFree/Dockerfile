@@ -28,7 +28,7 @@ RUN apk add --no-cache npm python3 youtube-dl \
     && chmod +x /docker-entrypoint.sh
 
 ENV NODE_TLS_REJECT_UNAUTHORIZED=0
-
+VOLUME ["/data"]
 ENTRYPOINT ["/docker-entrypoint.sh"]
 
 CMD ["npx", "NeteaseCloudMusicApi"]
