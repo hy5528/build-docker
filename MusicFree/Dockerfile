@@ -3,16 +3,15 @@ FROM --platform=$BUILDPLATFORM node:20-alpine AS deps
 
 # 启用
 RUN apk add --no-cache git python3 make g++ npm
-RUN git clone https://github.com/algerkong/AlgerMusicPlayer.git app
-COPY package*.json ./app
-WORKDIR /app
 
+WORKDIR /app
+RUN git clone https://github.com/algerkong/AlgerMusicPlayer.git app
 # 安装所有依赖（含 devDependencies，后续会裁剪）
 RUN npm install 
 
 # ---- 第 2 阶段：构建项目 ----
 FROM --platform=$BUILDPLATFORM node:20-alpine AS builder
-WORKDIR /app
+WORKDIR /app/app
 
 # 复制全部源代码
 COPY . .
