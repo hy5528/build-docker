@@ -1,4 +1,4 @@
-FROM alpine:3.22.2 
+FROM node:22-alpine
 
 RUN apk add --no-cache git python3 make g++ curl supervisor && \
     rm -rf /var/cache/apk/*
