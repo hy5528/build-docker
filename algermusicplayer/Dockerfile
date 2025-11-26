@@ -1,13 +1,13 @@
 FROM alpine:3.22.2
 
-RUN apk add --no-cache git python3 make g++ curl supervisor && \
+RUN apk add --no-cache git python3 make g++ curl supervisor npm && \
     rm -rf /var/cache/apk/*
 
 WORKDIR /app
+RUN npm config set registry https://registry.npmmirror.com
 
 COPY supervisord.conf entrypoint.sh ./
 RUN chmod +x entrypoint.sh
-RUN npm config set registry https://registry.npmmirror.com
 
 ENV NODE_ENV=development
 
