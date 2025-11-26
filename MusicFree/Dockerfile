@@ -13,16 +13,8 @@ COPY . .
 
 RUN npm run build
 
-# nginx
-FROM nginx:1.27-alpine-slim AS app
-
-COPY --from=builder /app/out/renderer /usr/share/nginx/html
-
-RUN apk add --no-cache npm python3 youtube-dl \
-    && npm install -g @unblockneteasemusic/server NeteaseCloudMusicApi 
-    
 
 ENV NODE_TLS_REJECT_UNAUTHORIZED=0
 VOLUME ["/data"]
 
-CMD ["npx", "NeteaseCloudMusicApi"]
+CMD ["npx"]
