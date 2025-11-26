@@ -50,13 +50,20 @@ jobs:
           images: ghcr.io/hy5528/algermusicplayer66
           tags: |
             type=raw,value=latest
-    
+      - name: Clone Overleaf Gitlab Repo
+        run: |
+          git clone https://github.com/algerkong/AlgerMusicPlayer.git app
+
+      - name: "Copy userpatches to build folder"
+        shell: bash
+        run: |
+          rsync -av algermusicplayer/. ./app  
      
 
       - name: 构建并推送 Docker 镜像
         uses: docker/build-push-action@v5
         with:
-          context: "${{ github.server_url }}/${{ github.repository }}.git#${{ github.ref }}:MusicFree"
+          context: ./app
           platforms: linux/amd64,linux/arm64,linux/arm/v7
           push: true
           tags: ${{ steps.meta.outputs.tags }}
