@@ -6,8 +6,6 @@ RUN apk add --no-cache git python3 make g++
 
 WORKDIR /
 RUN git clone https://github.com/algerkong/AlgerMusicPlayer.git app
-# 仅复制依赖清单，提高构建缓存利用率
-COPY package.json pnpm-lock.yaml ./
 
 # 安装所有依赖（含 devDependencies，后续会裁剪）
 RUN pnpm install --frozen-lockfile
