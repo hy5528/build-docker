@@ -1,6 +1,6 @@
 ﻿FROM node:20-alpine as builder
 
-RUN apk add --no-cache git python3 make g++
+RUN apk add --no-cache git python3 make g++ npm
 
 WORKDIR /app
 
@@ -38,6 +38,7 @@ HEALTHCHECK --interval=30s --timeout=10s --start-period=30s --retries=3 \
 VOLUME ["/data"]
 
 CMD ["/entrypoint.sh"]
+
 
 
 
