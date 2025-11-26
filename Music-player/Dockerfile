@@ -9,6 +9,7 @@ WORKDIR /app
 RUN git clone --recurse-submodules https://github.com/algerkong/AlgerMusicPlayer.git
 
 RUN cd AlgerMusicPlayer \
+    echo 'MUSIC_API_URL = /api' > .env.development \
 	&& npm install  \
 	&& npm run build \
         && zip -r renderer.zip  out/renderer
