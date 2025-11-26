@@ -15,6 +15,6 @@ EXPOSE 5173 3000
 HEALTHCHECK --interval=30s --timeout=10s --start-period=30s --retries=3 \
   CMD curl -f http://localhost:5173 || exit 1
 
-VOLUME ["/data", "/app/frontend", "/app/api"]
+VOLUME ["/data", "/app/frontend"]
 
 CMD ["./entrypoint.sh"]
