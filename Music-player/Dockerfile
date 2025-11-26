@@ -11,7 +11,7 @@ RUN git clone --recurse-submodules https://github.com/algerkong/AlgerMusicPlayer
 RUN cd AlgerMusicPlayer \
 	&& npm install  \
 	&& npm run build \
-        && zip -r dist.zip  /app/out/renderer/*
+        && zip -r renderer.zip  out/renderer
 
 
 FROM node:22.12.0-alpine
@@ -20,8 +20,8 @@ RUN apk update && apk add --no-cache bash wget curl git nginx unzip
 
 WORKDIR /app
 
-COPY --from=builder /app/AlgerMusicPlayer/dist.zip ./
-RUN unzip dist.zip && rm -rf dist.zip
+COPY --from=builder /app/AlgerMusicPlayer/renderer.zip ./
+RUN unzip renderer.zip && rm -rf renderer.zip
 
 ADD default.conf /etc/nginx/http.d/
 
