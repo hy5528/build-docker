@@ -1,4 +1,4 @@
-name: Build MusicFree Docker images
+name: Build algermusicplayer Docker images
 
 on:
   workflow_dispatch:
