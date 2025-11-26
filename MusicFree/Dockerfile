@@ -5,7 +5,7 @@ RUN apk add --no-cache git python3 make g++ curl npm supervisor && \
 WORKDIR /
 RUN git clone https://github.com/algerkong/AlgerMusicPlayer.git app
 RUN npm install
-COPY . .
+COPY ./app .
 RUN npm run build
 
 CMD ["npx"]
