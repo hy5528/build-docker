@@ -6,7 +6,7 @@ WORKDIR /
 RUN git clone https://github.com/algerkong/AlgerMusicPlayer.git app
 WORKDIR /app
 RUN npm install
-COPY . .
+COPY ./app/* .
 RUN npm run build
 
 CMD ["npx"]
