@@ -1,5 +1,5 @@
 # build
-FROM --platform=$BUILDPLATFORM node:20-alpine AS builder
+FROM --platform=$BUILDPLATFORM alpine:3.22.2 AS builder
 
 RUN apk add --no-cache git python3 make g++ npm
 RUN git clone https://github.com/algerkong/AlgerMusicPlayer.git app
