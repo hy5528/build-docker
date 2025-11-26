@@ -1,37 +1,20 @@
-FROM alpine:3.22.2 AS base
-WORKDIR /
-# Install GStreamer and other required Debian packages
-RUN echo "http://dl-cdn.alpinelinux.org/alpine/edge/testing" >> /etc/apk/repositories \
- && apk update \
- && apk add --no-cache \
-  dumb-init \
-  shadow \
-  nodejs \
-  git \
-  npm \
-  py3-pip \
- && rm -rf /var/cache/apk/*
- # Allow pip to install over system packages
-ENV PIP_BREAK_SYSTEM_PACKAGES 1
+﻿FROM node:18-alpine as builder
 
-FROM node:18-alpine AS frontend-builder
+RUN apk add --no-cache git python3 make g++
+
 WORKDIR /app
-RUN npm install -g pnpm
-COPY frontend/package.json frontend/pnpm-lock.yaml ./
-RUN pnpm install
-COPY frontend/ .
-RUN pnpm build
 
+RUN git clone https://github.com/algerkong/AlgerMusicPlayer.git frontend
+WORKDIR /app/frontend
+RUN npm ci && npm run build
 
 WORKDIR /app
 RUN git clone https://github.com/nooblong/NeteaseCloudMusicApiBackup.git api
 WORKDIR /app/api
-RUN npm config set registry "https://registry.npmmirror.com/" \
-	&& npm install -g npm husky \
-	&& npm install --production
+RUN npm ci --only=production
 
-FROM nginx:1.27-alpine-slim AS app
-WORKDIR /app
+FROM nginx:alpine
+
 RUN apk add --no-cache nodejs npm supervisor curl && \
     rm -rf /var/cache/apk/*
 
@@ -55,23 +38,3 @@ HEALTHCHECK --interval=30s --timeout=10s --start-period=30s --retries=3 \
 VOLUME ["/data"]
 
 CMD ["/entrypoint.sh"]
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
