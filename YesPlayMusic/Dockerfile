@@ -1,4 +1,4 @@
-FROM --platform=$BUILDPLATFORM alpine:3.22.2 AS build
+FROM --platform=$BUILDPLATFORM node:16-alpine AS build
 
 ENV VUE_APP_NETEASE_API_URL=/api
 
