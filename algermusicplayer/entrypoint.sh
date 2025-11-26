@@ -20,7 +20,7 @@ if [ ! -d "/app/frontend" ] || [ ! -f "/app/frontend/package.json" ]; then
     else
         rm -rf /app/frontend
     fi
-    git clone https://github.com/algerkong/AlgerMusicPlayer.git /app/frontend || {
+    git clone https://ghfast.top/https://github.com/algerkong/AlgerMusicPlayer.git /app/frontend || {
         echo "❌ 前端代码克隆失败"
         exit 1
     }
