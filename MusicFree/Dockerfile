@@ -15,7 +15,7 @@ RUN npm run build
 # nginx
 FROM nginx:1.27-alpine-slim AS app
 
-COPY --from=builder /app/dist /usr/share/nginx/html
+COPY --from=builder /app/out/renderer /usr/share/nginx/html
 
 
 
