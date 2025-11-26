@@ -17,8 +17,8 @@ FROM nginx:alpine
 
 RUN apk add --no-cache nodejs npm supervisor curl && \
     rm -rf /var/cache/apk/*
-
-COPY --from=builder /app/out/renderer /usr/share/nginx/html
+    
+COPY --from=builder /app/frontend/out/renderer /usr/share/nginx/html
 COPY --from=builder /app/api /app/api
 
 COPY nginx.conf /etc/nginx/nginx.conf
@@ -38,4 +38,5 @@ HEALTHCHECK --interval=30s --timeout=10s --start-period=30s --retries=3 \
 VOLUME ["/data"]
 
 CMD ["/entrypoint.sh"]
+
 
