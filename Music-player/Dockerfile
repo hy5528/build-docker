@@ -1,29 +1,34 @@
-# build
-FROM node:20-alpine AS builder
+FROM --platform=$BUILDPLATFORM node:18-alpine as mmPlayer_builder
 
-RUN apk update && apk add --no-cache git
+# Maintainer
+LABEL maintainer="Crazyrico Open Source Software <crazyrico@qq.com>"
+
+# install dependencies and build tools
+RUN apk update && apk add --no-cache wget curl git zip
 
 WORKDIR /app
 
-COPY package*.json ./
+RUN git clone --recurse-submodules https://github.com/Dos7t3r/Vue-mmPlayer.git
 
-RUN npm install
+RUN cd Vue-mmPlayer \
+	&& echo 'VUE_APP_BASE_API_URL = /api' > .env \
+	&& npm install  \
+	&& npm run build \
+        && zip -r dist.zip dist
 
-COPY . .
 
-
-RUN npm run build
-       
 FROM node:18-alpine
 
 RUN apk update && apk add --no-cache bash wget curl git nginx unzip
 
 WORKDIR /app
 
+COPY --from=mmPlayer_builder /app/Vue-mmPlayer/dist.zip ./
+RUN unzip dist.zip && rm -rf dist.zip
 
 ADD default.conf /etc/nginx/http.d/
 
-RUN cd /app && git clone https://github.com/nooblong/NeteaseCloudMusicApiBackup.git NeteaseCloudMusicApi
+RUN cd /app && git clone https://github.com/lu2009/NeteaseCloudMusicAPI.git NeteaseCloudMusicApi
 
 RUN cd NeteaseCloudMusicApi \
 	&& npm config set registry "https://registry.npmmirror.com/" \
