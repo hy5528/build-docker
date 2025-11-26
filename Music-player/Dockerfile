@@ -1,4 +1,4 @@
-FROM --platform=$BUILDPLATFORM node:22.12.0-alpine as mmPlayer_builder
+FROM --platform=$BUILDPLATFORM node:22.12.0-alpine as builder
 
 
 # install dependencies and build tools
@@ -20,7 +20,7 @@ RUN apk update && apk add --no-cache bash wget curl git nginx unzip
 
 WORKDIR /app
 
-COPY --from=mmPlayer_builder /app/Vue-mmPlayer/dist.zip ./
+COPY --from=builder /app/AlgerMusicPlayer/dist.zip ./
 RUN unzip dist.zip && rm -rf dist.zip
 
 ADD default.conf /etc/nginx/http.d/
