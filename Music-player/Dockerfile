@@ -14,7 +14,7 @@ RUN cd AlgerMusicPlayer \
         && zip -r dist.zip  /out/renderer
 
 
-FROM node:18-alpine
+FROM node:22.12.0-alpine
 
 RUN apk update && apk add --no-cache bash wget curl git nginx unzip
 
