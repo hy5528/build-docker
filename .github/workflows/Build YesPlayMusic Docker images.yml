@@ -50,7 +50,14 @@ jobs:
           images: ghcr.io/hy5528/YesPlayMusic66
           tags: |
             type=raw,value=latest
- 
+       - name: Clone Overleaf Gitlab Repo
+        run: |
+          git clone https://github.com/stark81/my_yesplaymusic.git app
+
+      - name: "Copy userpatches to build folder"
+        shell: bash
+        run: |
+          rsync -av YesPlayMusic/. ./app  
           
       - name: 构建并推送 Docker 镜像
         uses: docker/build-push-action@v5
