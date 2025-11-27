@@ -13,7 +13,7 @@ RUN yarn install
 
 # 复制源代码
 COPY . .
-ADD --chmod=755 ./fix-sandbox.js /fix-sandbox.js
+ADD --chmod=755 ./fix-sandbox.js /app/fix-sandbox.js
 # 构建项目
 RUN yarn run build
 
