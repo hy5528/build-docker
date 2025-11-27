@@ -30,4 +30,4 @@ RUN yarn install \
 
 EXPOSE 80 
 
-CMD ["sh", "-c"]
+CMD ["npm", "start"]
