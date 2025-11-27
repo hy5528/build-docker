@@ -33,15 +33,23 @@ COPY . .
 RUN npm run build
 
 
-FROM nginx:1.20.2-alpine as app
+# nginx
+FROM nginx:1.27-alpine-slim AS app
 
-COPY --from=build /app/package.json /usr/local/lib/
+COPY --from=builder /app/out/renderer /usr/share/nginx/html
 
-RUN apk add --no-cache --repository http://dl-cdn.alpinelinux.org/alpine/v3.14/main libuv \
-  && apk add --no-cache --update-cache --repository http://dl-cdn.alpinelinux.org/alpine/v3.14/main nodejs npm \
-  && npm i -g $(awk -F \" '{if($2=="NeteaseCloudMusicApi") print $2"@"$4}' /usr/local/lib/package.json) \
-  && rm -f /usr/local/lib/package.json
+COPY --from=builder /app/nginx.conf /etc/nginx/conf.d/default.conf
 
-COPY --from=build /app/dist /usr/share/nginx/html
+COPY --from=builder /app/docker-entrypoint.sh /docker-entrypoint.sh
 
-CMD nginx ; exec npx NeteaseCloudMusicApi
+RUN apk add --no-cache npm python3 youtube-dl \
+    && npm install -g @unblockneteasemusic/server NeteaseCloudMusicApi \
+    && wget https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp -O /usr/local/bin/yt-dlp \
+    && chmod +x /usr/local/bin/yt-dlp \
+    && chmod +x /docker-entrypoint.sh
+
+ENV NODE_TLS_REJECT_UNAUTHORIZED=0
+
+ENTRYPOINT ["/docker-entrypoint.sh"]
+
+CMD ["npx", "NeteaseCloudMusicApi"]
