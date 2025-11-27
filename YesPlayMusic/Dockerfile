@@ -11,7 +11,7 @@ RUN echo "http://dl-cdn.alpinelinux.org/alpine/edge/testing" >> /etc/apk/reposit
   g++ \
   make \
   py3-pip \
-  mopidy \
+  npm \
  && rm -rf /var/cache/apk/*
 
 # Allow pip to install over system packages
