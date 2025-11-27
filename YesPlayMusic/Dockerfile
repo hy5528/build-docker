@@ -6,9 +6,6 @@ RUN apk add --no-cache git python3 make g++ curl && \
 # 设置工作目录
 WORKDIR /app
 
-# 复制 package.json 和 package-lock.json
-COPY package*.json ./
-
 # 安装依赖
 RUN yarn  install
 
