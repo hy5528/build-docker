@@ -32,5 +32,6 @@ COPY . .
 # 如果需要构建应用（例如 Next.js）
 RUN npm run build
 
+EXPOSE 8080
 
 CMD ["npx"]
