@@ -12,7 +12,7 @@ RUN yarn config set electron_mirror https://npmmirror.com/mirrors/electron/ && \
 COPY . .
 RUN yarn build
 
-FROM nginx:1.20.2-alpine AS app
+FROM nginx:1.27-alpine AS app
 
 COPY --from=build /app/package.json /usr/local/lib/
 
