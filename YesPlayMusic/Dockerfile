@@ -4,14 +4,10 @@ ENV DEBIAN_FRONTEND=noninteractive
 RUN sudo apt-get update
 RUN sudo apt-get install -y rpm fakeroot snapd
 RUN sudo snap install snapcraft --classic
-RUN sudo apt-get install -y yarn libnss3-dev libgtk-3-dev libxss-dev libgconf-2-4 libasound2 \
-    python3 python3-pip \
-    nginx \
-    supervisor \
-    curl \
-    && \
+RUN sudo apt-get install -y yarn libnss3-dev libgtk-3-dev libxss-dev libgconf-2-4 libasound2 python3 python3-pip nginx curl
+
     # Install Node.js v22 from NodeSource
-    curl -fsSL https://deb.nodesource.com/setup_22.x | bash - && \
+RUN curl -fsSL https://deb.nodesource.com/setup_22.x | bash - && \
     apt-get install -y --no-install-recommends nodejs && \
     # Clean up
     apt-get clean && \
