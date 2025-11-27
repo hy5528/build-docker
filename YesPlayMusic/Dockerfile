@@ -1,5 +1,5 @@
 # Stage 1: Base image with all runtimes
-FROM debian:11-slim AS base
+FROM debian:12-slim AS base
 ENV DEBIAN_FRONTEND=noninteractive
 RUN sudo apt-get update
 RUN sudo apt-get install -y rpm fakeroot snapd
