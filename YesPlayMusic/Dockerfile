@@ -1,10 +1,10 @@
 # Stage 1: Base image with all runtimes
 FROM debian:12-slim AS base
 ENV DEBIAN_FRONTEND=noninteractive
-RUN sudo apt-get update
-RUN sudo apt-get install -y rpm fakeroot snapd
-RUN sudo snap install snapcraft --classic
-RUN sudo apt-get install -y yarn libnss3-dev libgtk-3-dev libxss-dev libgconf-2-4 libasound2 python3 python3-pip nginx curl
+RUN apt-get update
+RUN apt-get install -y rpm fakeroot snapd
+RUN snap install snapcraft --classic
+RUN apt-get install -y yarn libnss3-dev libgtk-3-dev libxss-dev libgconf-2-4 libasound2 python3 python3-pip nginx curl
 
     # Install Node.js v22 from NodeSource
 RUN curl -fsSL https://deb.nodesource.com/setup_22.x | bash - && \
