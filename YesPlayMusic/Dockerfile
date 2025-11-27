@@ -1,13 +1,24 @@
-# Stage 1: Base image with all runtimes
-FROM debian:12-slim 
-ENV DEBIAN_FRONTEND=noninteractive
-RUN apt-get update && \
-    apt-get install -y wget
-WORKDIR /app
-RUN wget https://github.com/stark81/VutronMusic/releases/download/v2.7.0/VutronMusic-2.7.0_linux_amd64.deb
-# 安装deb包并处理依赖
-RUN dpkg -i /app/VutronMusic-2.7.0_linux_amd64.deb || apt-get update && apt-get install -f -y
-RUN apt-get clean && \
-    rm -rf /var/lib/apt/lists/*
-EXPOSE 80
+FROM node:16-alpine AS build
 
+ENV VUE_APP_NETEASE_API_URL=/api
+
+WORKDIR /app
+
+COPY . .
+
+RUN apk add --no-cache python3 make g++ git \
+    && yarn install --frozen-lockfile \
+    && yarn build
+
+# app
+
+FROM node:22-alpine AS app
+
+RUN apk add --no-cache nginx && npm i -g @neteasecloudmusicapienhanced/api
+
+COPY --from=build /app/docker/nginx.conf.example /etc/nginx/http.d/default.conf
+COPY --from=build /app/dist /usr/share/nginx/html
+
+EXPOSE 80 3000
+
+CMD ["sh", "-c", "nginx && exec npx @neteasecloudmusicapienhanced/api"]
