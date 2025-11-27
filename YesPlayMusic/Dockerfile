@@ -1,6 +1,6 @@
 
 # 构建阶段
-FROM --platform=$BUILDPLATFORM node:21-alpine AS builder
+FROM --platform=$BUILDPLATFORM node:18-alpine AS builder
 RUN apk add --no-cache git python3 make g++ curl supervisor && \
     rm -rf /var/cache/apk/*
 # 设置工作目录
