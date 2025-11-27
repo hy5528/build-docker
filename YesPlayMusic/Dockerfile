@@ -24,7 +24,7 @@ WORKDIR /app
 
 COPY . .
 
-RUN npm install --frozen-lockfile \
+RUN npm install \
     && npm build
 
 # app
