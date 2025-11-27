@@ -9,13 +9,13 @@ WORKDIR /app
 COPY package*.json ./
 
 # 安装依赖
-RUN npm install
+RUN yarn install
 
 # 复制源代码
 COPY . .
 
 # 构建项目
-RUN npm run build
+RUN yarn run build
 
 # 生产阶段
 FROM nginx:alpine
