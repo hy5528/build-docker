@@ -1,4 +1,4 @@
-FROM --platform=$BUILDPLATFORM node:16.13.1-alpine AS build
+FROM --platform=$BUILDPLATFORM node:18-alpine AS build
 ENV VUE_APP_NETEASE_API_URL=/api
 WORKDIR /app
 RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.tuna.tsinghua.edu.cn/g' /etc/apk/repositories &&\
