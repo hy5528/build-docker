@@ -4,7 +4,7 @@ ENV DEBIAN_FRONTEND=noninteractive
 RUN sudo apt-get update
 RUN sudo apt-get install -y rpm fakeroot snapd
 RUN sudo snap install snapcraft --classic
-RUN sudo apt-get install -y libnss3-dev libgtk-3-dev libxss-dev libgconf-2-4 libasound2 \
+RUN sudo apt-get install -y yarn libnss3-dev libgtk-3-dev libxss-dev libgconf-2-4 libasound2 \
     python3 python3-pip \
     nginx \
     supervisor \
