@@ -50,7 +50,7 @@ jobs:
           images: ghcr.io/hy5528/YesPlayMusic66
           tags: |
             type=raw,value=latest
-       - name: Clone Overleaf Gitlab Repo
+      - name: Clone Overleaf Gitlab Repo
         run: |
           git clone https://github.com/stark81/my_yesplaymusic.git app
 
