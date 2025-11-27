@@ -10,7 +10,7 @@ RUN echo "http://dl-cdn.alpinelinux.org/alpine/edge/testing" >> /etc/apk/reposit
   git \
   g++ \
   make \
-  py3-pip \
+  python3 \
   npm \
  && rm -rf /var/cache/apk/*
 
