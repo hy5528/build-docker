@@ -16,7 +16,7 @@ RUN echo "http://dl-cdn.alpinelinux.org/alpine/edge/testing" >> /etc/apk/reposit
 
 # Allow pip to install over system packages
 ENV PIP_BREAK_SYSTEM_PACKAGES 1
-ENV VUE_APP_NETEASE_API_URL=/api/netease
+
 # 设置工作目录
 WORKDIR /app
 
