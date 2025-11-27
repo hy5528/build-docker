@@ -22,7 +22,7 @@ COPY . .
 
 
 # 生成生产构建
-RUN pnpm run build
+RUN yarn run build
 
 
 
