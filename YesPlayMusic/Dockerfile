@@ -1,20 +1,25 @@
-# ---- 第 1 阶段：安装依赖 ----
-FROM --platform=$BUILDPLATFORM node:21-alpine AS deps
-
-# 启用 corepack 并激活 pnpm（Node20 默认提供 corepack）
-RUN corepack enable && corepack prepare pnpm@latest --activate
+# Stage 1: Base image with all runtimes
+FROM debian:11-slim AS base
+ENV DEBIAN_FRONTEND=noninteractive
+RUN sudo apt-get update
+RUN sudo apt-get install -y rpm fakeroot snapd
+RUN sudo snap install snapcraft --classic
+RUN sudo apt-get install -y libnss3-dev libgtk-3-dev libxss-dev libgconf-2-4 libasound2 \
+    python3 python3-pip \
+    nginx \
+    supervisor \
+    curl \
+    && \
+    # Install Node.js v22 from NodeSource
+    curl -fsSL https://deb.nodesource.com/setup_22.x | bash - && \
+    apt-get install -y --no-install-recommends nodejs && \
+    # Clean up
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
 
 
-
-# 安装所有依赖（含 devDependencies，后续会裁剪）
-RUN pnpm install --frozen-lockfile prettier
-
-# ---- 第 2 阶段：构建项目 ----
-FROM --platform=$BUILDPLATFORM node:20-alpine AS builder
-RUN corepack enable && corepack prepare pnpm@latest --activate
-WORKDIR /app
 
 
 # 复制全部源代码
