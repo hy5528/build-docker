@@ -33,5 +33,4 @@ COPY . .
 RUN npm run build
 
 
-
 CMD ["npx"]
