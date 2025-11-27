@@ -27,14 +27,7 @@ COPY . .
 RUN yarn install \
     && yarn build
 
-# app
 
-FROM node:22-alpine AS app
+EXPOSE 80 
 
-RUN apk add --no-cache nginx && npm i -g @neteasecloudmusicapienhanced/api
-
-COPY --from=build /app/dist /usr/share/nginx/html
-
-EXPOSE 80 3000
-
-CMD ["sh", "-c", "nginx && exec npx @neteasecloudmusicapienhanced/api"]
+CMD ["sh", "-c"]
