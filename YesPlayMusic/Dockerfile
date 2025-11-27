@@ -42,7 +42,6 @@ RUN apk add --no-cache --repository http://dl-cdn.alpinelinux.org/alpine/v3.14/m
   && npm i -g $(awk -F \" '{if($2=="NeteaseCloudMusicApi") print $2"@"$4}' /usr/local/lib/package.json) \
   && rm -f /usr/local/lib/package.json
 
-COPY --from=build /app/docker/nginx.conf.example /etc/nginx/conf.d/default.conf
 COPY --from=build /app/dist /usr/share/nginx/html
 
 CMD nginx ; exec npx NeteaseCloudMusicApi
