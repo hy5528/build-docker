@@ -4,9 +4,6 @@ RUN apk add --no-cache git python3 make g++ curl supervisor npm && \
     rm -rf /var/cache/apk/*
 
 WORKDIR /app
-RUN git clone https://github.com/algerkong/AlgerMusicPlayer.git frontend
-WORKDIR /app/frontend
-RUN npm install
 
 COPY supervisord.conf entrypoint.sh ./
 RUN chmod +x entrypoint.sh
