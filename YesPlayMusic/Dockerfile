@@ -2,9 +2,9 @@
 FROM debian:12-slim 
 
 WORKDIR /app
-RUN 
+RUN wget https://github.com/stark81/VutronMusic/releases/download/v2.7.0/VutronMusic-2.7.0_linux_amd64.deb
 # 安装deb包并处理依赖
-RUN dpkg -i /tmp/your-package.deb || apt-get update && apt-get install -f -y
+RUN dpkg -i /app/VutronMusic-2.7.0_linux_amd64.deb || apt-get update && apt-get install -f -y
 
 EXPOSE 80
 
