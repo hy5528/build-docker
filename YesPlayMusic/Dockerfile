@@ -11,8 +11,6 @@ COPY package*.json ./
 # 安装依赖
 RUN yarn install
 
-# 复制源代码
-COPY . .
 
 # 构建项目
 RUN yarn run build
