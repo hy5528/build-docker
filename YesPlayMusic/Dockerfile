@@ -10,13 +10,13 @@ WORKDIR /app
 COPY package*.json ./
 
 # 安装依赖
-RUN npm install
+RUN yarn  install
 
 # 复制应用程序代码
 COPY . .
 
 # 如果需要构建应用（例如 Next.js）
-RUN npm run build
+RUN yarn  run build
 
 # 暴露端口
 EXPOSE 3000
