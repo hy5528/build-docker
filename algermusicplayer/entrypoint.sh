@@ -29,7 +29,7 @@ fi
 # 安装前端依赖（如果 node_modules 不存在）
 if [ ! -d "/app/frontend/node_modules" ]; then
     echo "📦 安装前端依赖..."
-    cd /app/frontend && npm --registry https://r.cnpmjs.org install || {
+    cd /app/frontend && npm --registry https://registry.npmmirror.com install || {
         echo "❌ 前端依赖安装失败"
         exit 1
     }
