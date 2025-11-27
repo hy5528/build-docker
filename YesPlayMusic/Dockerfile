@@ -16,7 +16,7 @@ RUN echo "http://dl-cdn.alpinelinux.org/alpine/edge/testing" >> /etc/apk/reposit
 
 # Allow pip to install over system packages
 ENV PIP_BREAK_SYSTEM_PACKAGES 1
-
+ENV VUE_APP_NETEASE_API_URL=/api
 # 设置工作目录
 WORKDIR /app
 
@@ -33,6 +33,16 @@ COPY . .
 RUN npm run build
 
 
-EXPOSE 80 
+FROM nginx:1.20.2-alpine as app
 
-CMD ["npm", "start"]
+COPY --from=build /app/package.json /usr/local/lib/
+
+RUN apk add --no-cache --repository http://dl-cdn.alpinelinux.org/alpine/v3.14/main libuv \
+  && apk add --no-cache --update-cache --repository http://dl-cdn.alpinelinux.org/alpine/v3.14/main nodejs npm \
+  && npm i -g $(awk -F \" '{if($2=="NeteaseCloudMusicApi") print $2"@"$4}' /usr/local/lib/package.json) \
+  && rm -f /usr/local/lib/package.json
+
+COPY --from=build /app/docker/nginx.conf.example /etc/nginx/conf.d/default.conf
+COPY --from=build /app/dist /usr/share/nginx/html
+
+CMD nginx ; exec npx NeteaseCloudMusicApi
