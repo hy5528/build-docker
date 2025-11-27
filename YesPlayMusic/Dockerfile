@@ -10,4 +10,3 @@ RUN dpkg -i /app/VutronMusic-2.7.0_linux_amd64.deb || apt-get update && apt-get 
 
 EXPOSE 80
 
-CMD ["node"] 
