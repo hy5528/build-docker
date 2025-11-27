@@ -19,7 +19,8 @@ RUN sudo apt-get install -y yarn libnss3-dev libgtk-3-dev libxss-dev libgconf-2-
 
 WORKDIR /app
 
-
+RUN yarn install --frozen-lockfile \
+    && yarn build
 
 
 # 复制全部源代码
