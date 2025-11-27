@@ -1,18 +1,23 @@
-# build
-FROM --platform=$BUILDPLATFORM node:20-alpine AS builder
+# 使用官方 Node.js 镜像作为基础镜像
+FROM node:20-alpine
 
-RUN apk update && apk add --no-cache git
-
+# 设置工作目录
 WORKDIR /app
 
+# 复制 package.json 和 package-lock.json
 COPY package*.json ./
 
+# 安装依赖
 RUN npm install
 
+# 复制应用程序代码
 COPY . .
 
-
+# 如果需要构建应用（例如 Next.js）
 RUN npm run build
-EXPOSE 8080
 
-CMD ["npx"]
+# 暴露端口
+EXPOSE 3000
+
+# 启动应用
+CMD ["npm", "start"]
