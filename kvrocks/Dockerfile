@@ -1,6 +1,6 @@
 FROM FROM alpine:3.22.2
 
-ARG MORE_BUILD_ARGS
+
 
 RUN echo "http://dl-cdn.alpinelinux.org/alpine/edge/testing" >> /etc/apk/repositories \
  && apk update \
