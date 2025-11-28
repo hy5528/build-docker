@@ -1,4 +1,4 @@
-name: Build algermusicplayer Docker images
+name: Build MusicBox Docker images
 
 on:
   workflow_dispatch:
@@ -47,17 +47,17 @@ jobs:
         id: meta
         uses: docker/metadata-action@v5
         with:
-          images: ghcr.io/hy5528/algermusicplayer66
+          images: ghcr.io/hy5528/MusicBox66
           tags: |
             type=raw,value=latest
       - name: Clone Overleaf Gitlab Repo
         run: |
-          git clone https://github.com/algerkong/AlgerMusicPlayer.git app
+          git clone https://github.com/asxez/MusicBox.git app
 
       - name: "Copy userpatches to build folder"
         shell: bash
         run: |
-          rsync -av algermusicplayer/. ./app  
+          rsync -av MusicBox/. ./app  
      
 
       - name: 构建并推送 Docker 镜像
