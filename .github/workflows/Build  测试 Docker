@@ -19,7 +19,7 @@ on:
         - 'joyflix'
         - 'mopidy'
         - 'mpd'
-        - 'algermusicplayer'
+        - 'DecoTV'
 
 env:
   REGISTRY: ghcr.io
