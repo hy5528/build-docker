@@ -1,9 +1,8 @@
-FROM alpine:3.22.2
+FROM --platform=$BUILDPLATFORM debian:bookworm-slim AS build
 
+ARG MORE_BUILD_ARGS
 
-RUN apk update \
- && apk add --no-cache git build-essential autoconf cmake libtool python3 libssl-dev clang \
- && rm -rf /var/cache/apk/*
+RUN DEBIAN_FRONTEND=noninteractive && apt-get update && apt-get upgrade -y && apt-get -y --no-install-recommends install git build-essential autoconf cmake libtool python3 libssl-dev clang && apt-get autoremove && apt-get clean
 
 
 WORKDIR /kvrocks
@@ -11,11 +10,9 @@ WORKDIR /kvrocks
 COPY . .
 RUN ./x.py build --compiler=clang -DENABLE_OPENSSL=ON -DPORTABLE=1 -DCMAKE_BUILD_TYPE=Release -j $(nproc) $MORE_BUILD_ARGS
 
-FROM FROM alpine:3.22.2
+FROM debian:bookworm-slim
 
-RUN apk update \
- && apk add --no-cache openssl ca-certificates redis-tools binutils \
- && rm -rf /var/cache/apk/*
+RUN DEBIAN_FRONTEND=noninteractive && apt-get update && apt-get upgrade -y && apt-get -y install openssl ca-certificates redis-tools binutils && apt-get clean
 
 # Create a dedicated non-root user and group
 RUN groupadd --gid=999 -r kvrocks && useradd --uid=999 -r -g kvrocks kvrocks
