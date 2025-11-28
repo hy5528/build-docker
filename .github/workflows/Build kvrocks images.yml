@@ -112,7 +112,7 @@ jobs:
         if: ${{ github.ref_name == 'unstable' }}
         uses: docker/metadata-action@v5
         with:
-          images: apache/kvrocks
+          images: hy5528/kvrocks
           flavor: latest=false
           tags: |
             type=sha,prefix=nightly-{{date 'YYYYMMDD'}}-,format=short
