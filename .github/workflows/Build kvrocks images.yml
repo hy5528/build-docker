@@ -52,7 +52,7 @@ jobs:
         id: build
         uses: docker/build-push-action@v6
         with:
-          context: .
+          context: "${{ github.server_url }}/${{ github.repository }}.git#${{ github.ref }}:kvrocks"
           platforms: ${{ matrix.platform }}
           push: ${{ github.event_name != 'pull_request' }}
           labels: ${{ steps.meta.outputs.labels }}
