@@ -1,6 +1,7 @@
-name: Build kvrocks Docker images
+push: Build kvrocks Docker images
 
 on:
+  workflow_dispatch:
   push:
     branches: [unstable]
     tags: ['v2.**']
