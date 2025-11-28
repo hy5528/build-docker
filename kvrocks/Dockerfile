@@ -1,9 +1,7 @@
 FROM alpine:3.22.2
 
 
-
-RUN echo "http://dl-cdn.alpinelinux.org/alpine/edge/testing" >> /etc/apk/repositories \
- && apk update \
+RUN apk update \
  && apk add --no-cache git build-essential autoconf cmake libtool python3 libssl-dev clang \
  && rm -rf /var/cache/apk/*
 
@@ -15,8 +13,7 @@ RUN ./x.py build --compiler=clang -DENABLE_OPENSSL=ON -DPORTABLE=1 -DCMAKE_BUILD
 
 FROM FROM alpine:3.22.2
 
-RUN echo "http://dl-cdn.alpinelinux.org/alpine/edge/testing" >> /etc/apk/repositories \
- && apk update \
+RUN apk update \
  && apk add --no-cache openssl ca-certificates redis-tools binutils \
  && rm -rf /var/cache/apk/*
 
