@@ -1,4 +1,21 @@
-name: Build kvrocks Docker images
+# Licensed to the Apache Software Foundation (ASF) under one
+# or more contributor license agreements.  See the NOTICE file
+# distributed with this work for additional information
+# regarding copyright ownership.  The ASF licenses this file
+# to you under the Apache License, Version 2.0 (the
+# "License"); you may not use this file except in compliance
+# with the License.  You may obtain a copy of the License at
+#
+#   http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing,
+# software distributed under the License is distributed on an
+# "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+# KIND, either express or implied.  See the License for the
+# specific language governing permissions and limitations
+# under the License.
+
+name: Nightly
 
 on:
   workflow_dispatch:
@@ -7,9 +24,7 @@ on:
     tags: ['v2.**']
   pull_request:
     paths: ['.github/workflows/nightly.yaml']
-env:
-  REGISTRY: ghcr.io
-  IMAGE_NAME: ${{ github.repository }}
+
 jobs:
   build:
     name: "Build nightly docker images"
@@ -17,10 +32,11 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        platform:
-          - linux/amd64
-          - linux/arm64
-          - linux/arm/v7
+        include:
+          - platform: linux/amd64
+            os: ubuntu-24.04
+          - platform: linux/arm64
+            os: ubuntu-24.04-arm
     steps:
       - name: Prepare
         run: |
@@ -35,25 +51,24 @@ jobs:
         id: meta
         uses: docker/metadata-action@v5
         with:
-          images: hy5528/kvrocks66
+          images: hy5528/kvrocks
 
-      - name: 登录到 GitHub Container Registry
+      - name: Login to Docker Hub
+        if: ${{ github.event_name != 'pull_request' }}
         uses: docker/login-action@v3
         with:
-          registry: ${{ env.REGISTRY }}
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
+          username: ${{ secrets.DOCKER_HUB_USERNAME }}
+          password: ${{ secrets.DOCKER_HUB_TOKEN }}
 
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
-
       - name: Clone Overleaf Gitlab Repo
         run: |
           git clone https://github.com/apache/kvrocks.git app
-      
+          
       - name: Build and push by digest
         id: build
         uses: docker/build-push-action@v6
@@ -62,7 +77,7 @@ jobs:
           platforms: ${{ matrix.platform }}
           push: ${{ github.event_name != 'pull_request' }}
           labels: ${{ steps.meta.outputs.labels }}
-          outputs: type=image,"name=hy5528/kvrocks66",push-by-digest=true,name-canonical=true
+          outputs: type=image,"name=hy5528/kvrocks",push-by-digest=true,name-canonical=true
 
       - name: Export digest
         run: |
@@ -93,12 +108,11 @@ jobs:
           pattern: digests-*
           merge-multiple: true
 
-      - name: 登录到 GitHub Container Registry
+      - name: Login to Docker Hub
         uses: docker/login-action@v3
         with:
-          registry: ${{ env.REGISTRY }}
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
+          username: ${{ secrets.DOCKER_HUB_USERNAME }}
+          password: ${{ secrets.DOCKER_HUB_TOKEN }}
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
@@ -108,7 +122,7 @@ jobs:
         if: ${{ github.ref_name == 'unstable' }}
         uses: docker/metadata-action@v5
         with:
-          images: hy5528/kvrocks66
+          images: apache/kvrocks
           flavor: latest=false
           tags: |
             type=sha,prefix=nightly-{{date 'YYYYMMDD'}}-,format=short
@@ -119,7 +133,7 @@ jobs:
         if: ${{ github.ref_name != 'unstable' }}
         uses: docker/metadata-action@v5
         with:
-          images: hy5528/kvrocks66
+          images: hy5528/kvrocks
           flavor: latest=false
           tags: |
             type=sha,prefix=nightly-{{date 'YYYYMMDD'}}-{{tag}}-,format=short
@@ -128,7 +142,7 @@ jobs:
         working-directory: ${{ runner.temp }}/digests
         run: |
           docker buildx imagetools create $(jq -cr '.tags | map("-t " + .) | join(" ")' <<< "$DOCKER_METADATA_OUTPUT_JSON") \
-            $(printf 'hy5528/kvrocks66@sha256:%s ' *)
+            $(printf 'hy5528/kvrocks@sha256:%s ' *)
 
       - name: Inspect image (for unstable)
         if: ${{ github.ref_name == 'unstable' }}
@@ -138,4 +152,4 @@ jobs:
       - name: Inspect image (for tags)
         if: ${{ github.ref_name != 'unstable' }}
         run: |
-          docker buildx imagetools inspect hy5528/kvrocks66:${{ steps.meta_tag.outputs.version }}
+          docker buildx imagetools inspect hy5528/kvrocks:${{ steps.meta_tag.outputs.version }}
