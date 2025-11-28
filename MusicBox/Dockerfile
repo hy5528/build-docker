@@ -19,8 +19,8 @@ WORKDIR /app
 COPY . .
 RUN apk add --no-cache python3 make g++ git
 RUN npm install \
-    && npm run install:renderer \
-    && npm run install:rs
+    && npm install:renderer \
+    && npm install:rs
 RUN npm run build
 
 
