@@ -22,8 +22,6 @@ RUN npm install
 RUN npm run build
 
 
-
-# Install additional mopidy extensions and Python dependencies via pip
 ADD --chmod=755 ./requirements.txt /requirements.txt
 RUN pip install --break-system-packages -r requirements.txt
 
