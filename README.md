@@ -56,7 +56,7 @@ services:
       - moontv-kvrocks
 
   moontv-kvrocks:
-    image: ghcr.nju.edu.cn/hy5528/kvrocks66:latest
+    image: hy5528/kvrocks:latest
     container_name: moontv-kvrocks
     restart: unless-stopped
     volumes:
