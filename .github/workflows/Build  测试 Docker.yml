@@ -6,7 +6,7 @@ on:
       MACH:
         description: 'Choose machine'
         required: true
-        default: 'mopidy'
+        default: 'redis'
         type: choice
         options:
         - 'DecoTV'
