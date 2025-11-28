@@ -50,8 +50,7 @@ jobs:
       - name: 构建并推送 Docker 镜像
         uses: docker/build-push-action@v5
         with:
-          context: ./app
-          platforms: linux/amd64,linux/arm64,linux/arm/v7
+          context: "${{ github.server_url }}/${{ github.repository }}.git#${{ github.ref }}:kvrocks"
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
