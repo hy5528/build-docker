@@ -9,7 +9,7 @@ on:
         default: 'mopidy'
         type: choice
         options:
-        - 'MusicBox'
+        - 'DecoTV'
         - 'LunaTV'
         - 'MoonTV'
         - 'Music-player'
@@ -19,7 +19,7 @@ on:
         - 'joyflix'
         - 'mopidy'
         - 'mpd'
-        - 'DecoTV'
+        - 'algermusicplayer'
 
 env:
   REGISTRY: ghcr.io
