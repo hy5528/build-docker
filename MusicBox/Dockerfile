@@ -1,6 +1,6 @@
 FROM --platform=$BUILDPLATFORM node:22-alpine AS builder
 
-RUN apk update && apk add --no-cache git
+RUN apk update && apk add --no-cache git Python3 Rust
 
 WORKDIR /app
 
