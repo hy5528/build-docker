@@ -9,7 +9,7 @@ on:
         default: 'mopidy'
         type: choice
         options:
-        - 'DecoTV'
+        - 'MusicBox'
         - 'LunaTV'
         - 'MoonTV'
         - 'Music-player'
