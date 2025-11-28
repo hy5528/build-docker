@@ -6,7 +6,7 @@ on:
     tags: ['v2.**']
   pull_request:
     paths: ['.github/workflows/nightly.yaml']
-  workflow_dispatch:
+  
 env:
   REGISTRY: ghcr.io
   IMAGE_NAME: ${{ github.repository }}
