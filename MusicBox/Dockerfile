@@ -1,4 +1,5 @@
 FROM alpine:3.22.2
+
 WORKDIR /app
 # Install GStreamer and other required Debian packages
 RUN echo "http://dl-cdn.alpinelinux.org/alpine/edge/testing" >> /etc/apk/repositories \
@@ -14,20 +15,18 @@ RUN echo "http://dl-cdn.alpinelinux.org/alpine/edge/testing" >> /etc/apk/reposit
  # Allow pip to install over system packages
 ENV PIP_BREAK_SYSTEM_PACKAGES 1
 
+WORKDIR /
+RUN wget -O app.tar.gz https://github.com/asxez/MusicBox/releases/download/0.2.4/musicbox-0.2.4.tar.gz
+
+# 合并并解压app.part_*文件到/app目录
+RUN mkdir -p /app && \
+    tar -xzf app.tar.gz -C /app && \
+    rm app.tar.gz
+
+
 WORKDIR /app
-
-COPY . .
-RUN apk add --no-cache python3 make g++ git
-RUN npm install \
-    && npm install:renderer \
-    && npm install:rs
+# 构建当前平台版本
 RUN npm run build
-
-
-
-# Install additional mopidy extensions and Python dependencies via pip
-ADD --chmod=755 ./requirements.txt /requirements.txt
-RUN pip install --break-system-packages -r requirements.txt
 
 # 暴露端口
 EXPOSE 8080
