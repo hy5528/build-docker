@@ -128,7 +128,7 @@ jobs:
       - name: Inspect image (for unstable)
         if: ${{ github.ref_name == 'unstable' }}
         run: |
-          docker buildx imagetools inspect apache/kvrocks:${{ steps.meta.outputs.version }}
+          docker buildx imagetools inspect hy5528/kvrocks:${{ steps.meta.outputs.version }}
 
       - name: Inspect image (for tags)
         if: ${{ github.ref_name != 'unstable' }}
