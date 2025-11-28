@@ -126,7 +126,7 @@ jobs:
           images: hy5528/kvrocks
           flavor: latest=false
           tags: |
-            type=sha,prefix=nightly-{{date 'YYYYMMDD'}}-{{tag}}-,format=short
+            type=sha,prefix=latest
 
       - name: Create manifest list and push
         working-directory: ${{ runner.temp }}/digests
