@@ -11,14 +11,10 @@ jobs:
   build:
     name: "Build nightly docker images"
     runs-on: ${{ matrix.os }}
-    strategy:
-      fail-fast: false
-      matrix:
-        platform:
-          - linux/amd64
-          - linux/arm64
-          - linux/arm/v7
-
+    
+    env:
+      REGISTRY: ghcr.io
+      IMAGE_NAME: ${{ github.repository }}
     steps:
       - name: Prepare
         run: |
