@@ -1,13 +1,12 @@
 push: Build kvrocks Docker images
 
 on:
-  workflow_dispatch:
   push:
     branches: [unstable]
     tags: ['v2.**']
   pull_request:
     paths: ['.github/workflows/nightly.yaml']
-
+  workflow_dispatch:
 env:
   REGISTRY: ghcr.io
   IMAGE_NAME: ${{ github.repository }}
