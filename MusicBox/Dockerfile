@@ -5,7 +5,6 @@ RUN echo "http://dl-cdn.alpinelinux.org/alpine/edge/testing" >> /etc/apk/reposit
  && apk update \
  && apk add --no-cache \
   dumb-init \
-  Rust \
   nodejs \
   git \
   Python \
