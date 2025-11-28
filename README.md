@@ -47,7 +47,7 @@ services:
       - '3000:3000'
     environment:
       - USERNAME=admin
-      - PASSWORD=your_secure_password
+      - PASSWORD=123456
       - NEXT_PUBLIC_STORAGE_TYPE=kvrocks
       - KVROCKS_URL=redis://moontv-kvrocks:6666
     networks:
