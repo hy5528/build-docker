@@ -4,6 +4,8 @@ ARG MORE_BUILD_ARGS
 
 RUN DEBIAN_FRONTEND=noninteractive && apt-get update && apt-get upgrade -y && apt-get -y --no-install-recommends install git build-essential autoconf cmake libtool python3 libssl-dev clang && apt-get autoremove && apt-get clean
 
+RUN git clone https://github.com/apache/kvrocks.git
+
 WORKDIR /kvrocks
 
 COPY . .
