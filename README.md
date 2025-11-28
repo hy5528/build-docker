@@ -50,9 +50,6 @@ services:
       - PASSWORD=your_secure_password
       - NEXT_PUBLIC_STORAGE_TYPE=kvrocks
       - KVROCKS_URL=redis://moontv-kvrocks:6666
-      # 可选：站点配置
-      - SITE_BASE=https://your-domain.com
-      - NEXT_PUBLIC_SITE_NAME=LunaTV Enhanced
     networks:
       - moontv-network
     depends_on:
