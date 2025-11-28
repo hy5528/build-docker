@@ -35,6 +35,46 @@ services:
     restart: always
 ```
 
+# lunatv
+```text
+
+services:
+  moontv-core:
+    image: ghcr.nju.edu.cn/hy5528/lunatv66:latest
+    container_name: moontv-core
+    restart: on-failure
+    ports:
+      - '3000:3000'
+    environment:
+      - USERNAME=admin
+      - PASSWORD=your_secure_password
+      - NEXT_PUBLIC_STORAGE_TYPE=kvrocks
+      - KVROCKS_URL=redis://moontv-kvrocks:6666
+      # 可选：站点配置
+      - SITE_BASE=https://your-domain.com
+      - NEXT_PUBLIC_SITE_NAME=LunaTV Enhanced
+    networks:
+      - moontv-network
+    depends_on:
+      - moontv-kvrocks
+
+  moontv-kvrocks:
+    image: apache/kvrocks
+    container_name: moontv-kvrocks
+    restart: unless-stopped
+    volumes:
+      - kvrocks-data:/var/lib/kvrocks
+    networks:
+      - moontv-network
+
+networks:
+  moontv-network:
+    driver: bridge
+
+volumes:
+  kvrocks-data:
+
+```
 
 # splayer
 ```text
