@@ -115,7 +115,7 @@ jobs:
           images: hy5528/kvrocks
           flavor: latest=false
           tags: |
-            type=sha,prefix=nightly-{{date 'YYYYMMDD'}}-,format=short
+            type=sha,prefix=latest
             type=raw,value=nightly
 
       - name: Docker meta (for tags)
