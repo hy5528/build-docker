@@ -21,12 +21,12 @@ on:
         - 'mpd'
         - 'algermusicplayer'
       
-
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: ${{ github.repository }}
 jobs:
   build-and-push:
     runs-on: ubuntu-latest
-    env:
-      IMAGE_NAME: ${{ github.repository }}
     permissions:
       contents: read
       packages: write
