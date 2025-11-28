@@ -113,9 +113,9 @@ jobs:
         uses: docker/metadata-action@v5
         with:
           images: hy5528/kvrocks
-          flavor: latest=false
+          flavor: latest=true
           tags: |
-            prefix=latest
+            type=sha,prefix=latest
             
 
       - name: Docker meta (for tags)
@@ -124,9 +124,9 @@ jobs:
         uses: docker/metadata-action@v5
         with:
           images: hy5528/kvrocks
-          flavor: latest=false
+          flavor: latest=true
           tags: |
-            prefix=latest
+            type=sha,prefix=latest
 
       - name: Create manifest list and push
         working-directory: ${{ runner.temp }}/digests
