@@ -28,10 +28,14 @@ env:
 jobs:
   build-and-push:
     runs-on: ubuntu-latest
+    env:
+      IMAGE_NAME: ${{ github.repository }}
     permissions:
       contents: read
       packages: write
-     strategy:
+      attestations: write
+      id-token: write
+    strategy:
       fail-fast: false
       matrix:
         platform:
