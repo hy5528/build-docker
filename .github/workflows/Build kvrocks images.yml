@@ -35,7 +35,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@v5
         with:
-          images: apache/kvrocks
+          images: hy5528/kvrocks
 
       - name: 登录到 GitHub Container Registry
         uses: docker/login-action@v3
