@@ -42,13 +42,13 @@ jobs:
         id: meta
         uses: docker/metadata-action@v5
         with:
-          images: ghcr.io/hy5528/decotv66
+          images: ghcr.io/hy5528/kvrocks66
           tags: |
             type=raw,value=latest
     
       - name: Clone Overleaf Gitlab Repo
         run: |
-          git clone .git app
+          git clone https://github.com/apache/kvrocks.git app
 
       - name: "Copy userpatches to build folder"
         shell: bash
