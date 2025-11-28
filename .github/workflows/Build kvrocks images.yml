@@ -1,4 +1,4 @@
-name: Build DecoTV Docker images
+name: Build kvrocks Docker images
 
 on:
   workflow_dispatch:
