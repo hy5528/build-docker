@@ -20,7 +20,13 @@ on:
         - 'mopidy'
         - 'mpd'
         - 'algermusicplayer'
-
+   strategy:
+      fail-fast: false
+      matrix:
+        platform:
+          - linux/amd64
+          - linux/arm64
+          - linux/arm/v7
 env:
   REGISTRY: ghcr.io
   IMAGE_NAME: ${{ github.repository }}
@@ -31,13 +37,7 @@ jobs:
     permissions:
       contents: read
       packages: write
-     strategy:
-      fail-fast: false
-      matrix:
-        platform:
-          - linux/amd64
-          - linux/arm64
-          - linux/arm/v7 
+     
     steps:      
       - name: 检出代码
         uses: actions/checkout@v4
