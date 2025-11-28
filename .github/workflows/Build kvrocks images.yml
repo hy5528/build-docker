@@ -11,10 +11,6 @@ jobs:
   build:
     name: "Build nightly docker images"
     runs-on: ${{ matrix.os }}
-    
-    env:
-      REGISTRY: ghcr.io
-      IMAGE_NAME: ${{ github.repository }}
     steps:
       - name: Prepare
         run: |
