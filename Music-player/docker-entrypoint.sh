@@ -1,4 +1,5 @@
 #!/bin/bash
+
 npx unblockneteasemusic -p 80:443 -s -f ${NETEASE_SERVER_IP:-220.197.30.65} -o ${UNBLOCK_SOURCES:-kugou bodian pyncmd} 
 
 echo -e "===================1. 启动nginx===========================\n"
