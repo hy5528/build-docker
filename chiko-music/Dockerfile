@@ -1,16 +1,36 @@
-FROM --platform=$BUILDPLATFORM node:20-alpine AS builder
-WORKDIR /app
-COPY . .
-RUN apk add --no-cache python3 make g++ git
-RUN npm install && npm run build
+FROM alpine:3.22.2
 
-FROM nginx:1.27-alpine-slim AS app
+# Install GStreamer and other required Debian packages
+RUN echo "http://dl-cdn.alpinelinux.org/alpine/edge/testing" >> /etc/apk/repositories \
+ && apk update \
+ && apk add --no-cache \
+  dumb-init \
+  shadow \
+  sudo \
+  git \
+  alsa-utils \
+  py3-pip \
+  mopidy \
+ && rm -rf /var/cache/apk/*
 
-WORKDIR /app
-ADD default.conf /etc/nginx/http.d/ 
-COPY --from=builder /app/dist /usr/share/nginx/html
-RUN apk add --no-cache npm python3 \
-    && npm install -g @unblockneteasemusic/server NeteaseCloudMusicApi
+# Allow pip to install over system packages
+ENV PIP_BREAK_SYSTEM_PACKAGES 1
+
+RUN git clone git@github.com:chen-ziwen/NeteaseCloudMusicApi.git \
+&& cd NeteaseCloudMusicApi \
+&& npm install \
+&& node app.js
+RUN git clone git@github.com:chen-ziwen/chiko-music.git \
+&& cd chiko-music \
+&& npm install \
+&& npm start \
+&& npm run build
+ 
+ENV TZ=Asia/Shanghai
+
+EXPOSE 6600 6680
+
+
 EXPOSE 80 443 3000
 CMD ["npx", "NeteaseCloudMusicApi"]
 
