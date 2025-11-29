@@ -7,7 +7,7 @@ RUN npm install && npm run build
 FROM nginx:1.27-alpine-slim AS app
 
 WORKDIR /app
-COPY --from=builder /app/nginx.conf /etc/nginx/conf.d/default.conf
+ADD default.conf /etc/nginx/http.d/ 
 COPY --from=builder /app/dist /usr/share/nginx/html
 RUN apk add --no-cache npm python3 \
     && npm install -g @unblockneteasemusic/server NeteaseCloudMusicApi
