@@ -5,7 +5,7 @@ WORKDIR /app
 
 # 复制package文件
 COPY package*.json ./
-
+RUN echo 'VITE_API_BASE_URL = ' > .env
 # 安装依赖（使用淘宝镜像加速）
 RUN npm config set registry https://registry.npmmirror.com/ && \
     npm install
