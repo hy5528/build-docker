@@ -5,6 +5,7 @@ RUN apk add --no-cache python3 make g++ git
 RUN npm install && npm run build
 
 FROM nginx:alpine
+RUN apk update && apk add --no-cache bash wget curl git
 WORKDIR /app
 
 COPY --from=builder /app/dist /usr/share/nginx/html
