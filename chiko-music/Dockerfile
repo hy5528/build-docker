@@ -6,8 +6,12 @@ RUN npm install && npm run build
 
 FROM nginx:alpine
 COPY --from=builder /app/dist /usr/share/nginx/html
-RUN apk add --no-cache npm python3 \
-    && npm install -g @unblockneteasemusic/server NeteaseCloudMusicApi
+RUN cd /app && git clone https://github.com/ice909/NeteaseCloudMusicApi.git NeteaseCloudMusicApi
+
+RUN cd NeteaseCloudMusicApi \
+	&& npm config set registry "https://registry.npmmirror.com/" \
+	&& npm install -g npm husky \
+	&& npm install --production
 EXPOSE 80 443 3000
 CMD ["npx", "NeteaseCloudMusicApi"]
 
