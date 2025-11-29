@@ -34,7 +34,8 @@ RUN cd NeteaseCloudMusicApi \
 	&& npm config set registry "https://registry.npmmirror.com/" \
 	&& npm install -g npm husky \
 	&& npm install --production
-
+RUN npm install @unblockneteasemusic/server \
+    && yarn add @unblockneteasemusic/server # for Yarn users
 WORKDIR /app/NeteaseCloudMusicApi
 
 ADD docker-entrypoint.sh ./
