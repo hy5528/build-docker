@@ -17,8 +17,8 @@ ENV PIP_BREAK_SYSTEM_PACKAGES 1
 
 RUN git clone git@github.com:chen-ziwen/NeteaseCloudMusicApi.git \
 && cd NeteaseCloudMusicApi \
-&& npm install \
-&& node app.js
+&& npm install 
+
 RUN git clone git@github.com:chen-ziwen/chiko-music.git \
 && cd chiko-music \
 && npm install \
@@ -27,7 +27,6 @@ RUN git clone git@github.com:chen-ziwen/chiko-music.git \
  
 ENV TZ=Asia/Shanghai
 
-EXPOSE 6600 6680
 
 
 EXPOSE 80 443 3000
