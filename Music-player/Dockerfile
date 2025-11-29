@@ -47,4 +47,4 @@ EXPOSE 80 443 3000
 
 ENTRYPOINT ["./docker-entrypoint.sh"]
 
-CMD ["node", "NeteaseCloudMusicApi","app.js"]
+CMD ["node", "app.js"]
