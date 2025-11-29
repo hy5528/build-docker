@@ -30,8 +30,6 @@ if ! grep -q "interface3.music.163.com.163jiasu.com" /etc/hosts; then
     echo "127.0.0.1 interface3.music.163.com.163jiasu.com" >> /etc/hosts
 fi
 
-# start the nginx daemon
-nginx
 
 
 
