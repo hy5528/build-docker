@@ -43,7 +43,7 @@ ADD check.sh ./
 
 RUN chmod +x /app/NeteaseCloudMusicApi/*.sh
 
-EXPOSE 80 443 3000 8080
+EXPOSE 80 443 3000
 
 ENTRYPOINT ["./docker-entrypoint.sh"]
 
