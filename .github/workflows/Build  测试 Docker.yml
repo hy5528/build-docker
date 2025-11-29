@@ -9,14 +9,7 @@ on:
         default: 'redis'
         type: choice
         options:
-        - 'DecoTV'
-        - 'LunaTV'
-        - 'MoonTV'
         - 'Music-player'
-        - 'OrangeTV'
-        - 'SPlayer'
-        - 'YesPlayMusic'
-        - 'joyflix'
         - 'mopidy'
         - 'mpd'
         - 'redis'
