@@ -4,12 +4,13 @@ COPY . .
 RUN apk add --no-cache python3 make g++ git
 RUN npm install && npm run build
 
-FROM nginx:alpine
+FROM nginx:1.27-alpine-slim AS app
 
 WORKDIR /app
-
+COPY --from=builder /app/nginx.conf /etc/nginx/conf.d/default.conf
 COPY --from=builder /app/dist /usr/share/nginx/html
-
+RUN apk add --no-cache npm python3 \
+    && npm install -g @unblockneteasemusic/server NeteaseCloudMusicApi
 EXPOSE 80 443 3000
 CMD ["npx", "NeteaseCloudMusicApi"]
 
