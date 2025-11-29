@@ -42,7 +42,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@v5
         with:
-          images: ghcr.io/hy5528/music-player66
+          images: ghcr.io/hy5528/redis66
           tags: |
             type=raw,value=latest
     
