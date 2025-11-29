@@ -12,12 +12,9 @@ jobs:
   build:
     name: "Build nightly docker images"
     runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-      matrix:
-        include:
-          - platform: linux/amd64
-          - platform: linux/arm64
+    permissions:
+      contents: read
+      packages: write
     steps:
       - name: Prepare
         run: |
