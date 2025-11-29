@@ -77,7 +77,7 @@ redis储存
 ```text
 services:
   moontv-core:
-    image: ghcr.io/szemeng76/lunatv:latest
+    image: ghcr.nju.edu.cn/hy5528/lunatv66:latest
     container_name: moontv-core
     restart: on-failure
     ports:
