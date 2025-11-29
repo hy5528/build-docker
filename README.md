@@ -36,6 +36,7 @@ services:
 ```
 
 # lunatv
+kvrocks储存
 ```text
 
 services:
@@ -71,6 +72,39 @@ networks:
 volumes:
   kvrocks-data:
 
+```
+redis储存
+```text
+services:
+  moontv-core:
+    image: ghcr.io/szemeng76/lunatv:latest
+    container_name: moontv-core
+    restart: on-failure
+    ports:
+      - '3000:3000'
+    environment:
+      - USERNAME=admin
+      - PASSWORD=your_secure_password
+      - NEXT_PUBLIC_STORAGE_TYPE=redis
+      - REDIS_URL=redis://moontv-redis:6379
+    networks:
+      - moontv-network
+    depends_on:
+      - moontv-redis
+
+  moontv-redis:
+    image: ghcr.io/hy5528/redis66:latest
+    container_name: moontv-redis
+    restart: unless-stopped
+    command: redis-server --save 60 1 --loglevel warning
+    volumes:
+      - ./data:/data
+    networks:
+      - moontv-network
+
+networks:
+  moontv-network:
+    driver: bridge
 ```
 
 # splayer
