@@ -20,7 +20,7 @@ COPY --from=build /app/docker/nginx.conf.example /etc/nginx/http.d/default.conf
 COPY --from=build /app/dist /usr/share/nginx/html
 ADD --chmod=755 ./docker-entrypoint.sh /docker-entrypoint.sh
 
-EXPOSE 80 3000
+EXPOSE 8088 3000
 ENV NODE_TLS_REJECT_UNAUTHORIZED=0
 
 ENTRYPOINT ["/docker-entrypoint.sh"]
