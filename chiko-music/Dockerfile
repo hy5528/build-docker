@@ -1,7 +1,4 @@
-FROM --platform=$BUILDPLATFORM node:18-alpine as mmPlayer_builder
-
-# Maintainer
-LABEL maintainer="Crazyrico Open Source Software <crazyrico@qq.com>"
+FROM --platform=$BUILDPLATFORM node:22-alpine as builder
 
 # install dependencies and build tools
 RUN apk update && apk add --no-cache wget curl git 
