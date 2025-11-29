@@ -1,4 +1,4 @@
-FROM --platform=$BUILDPLATFORM node:22-alpine 
+FROM --platform=$BUILDPLATFORM node:20-alpine 
 # install dependencies and build tools
 RUN apk update && apk add --no-cache npm wget curl git 
 
