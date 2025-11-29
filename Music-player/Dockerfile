@@ -1,4 +1,4 @@
-FROM --platform=$BUILDPLATFORM node:18-alpine as mmPlayer_builder
+FROM --platform=$BUILDPLATFORM node:20-alpine as mmPlayer_builder
 
 # Maintainer
 LABEL maintainer="Crazyrico Open Source Software <crazyrico@qq.com>"
@@ -11,13 +11,12 @@ WORKDIR /app
 RUN git clone --recurse-submodules https://github.com/chen-ziwen/chiko-music.git Vue-mmPlayer
 
 RUN cd Vue-mmPlayer \
-	&& echo 'VUE_APP_BASE_API_URL = /api' > .env \
 	&& npm install  \
 	&& npm run build \
         && zip -r dist.zip dist
 
 
-FROM node:18-alpine
+FROM node:20-alpine
 
 RUN apk update && apk add --no-cache bash wget curl git nginx unzip
 
@@ -33,8 +32,8 @@ RUN cd /app && git clone https://github.com/ice909/NeteaseCloudMusicApi.git Nete
 RUN cd NeteaseCloudMusicApi \
 	&& npm config set registry "https://registry.npmmirror.com/" \
 	&& npm install -g npm husky \
-	&& npm install --production \
-	&& node app.js
+	&& npm install --production 
+
 RUN npm install @unblockneteasemusic/server \
     && yarn add @unblockneteasemusic/server # for Yarn users
 WORKDIR /app/NeteaseCloudMusicApi
