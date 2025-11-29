@@ -1,50 +1,36 @@
-FROM --platform=$BUILDPLATFORM node:20-alpine as mmPlayer_builder
+FROM alpine:3.22.2
 
-# Maintainer
-LABEL maintainer="Crazyrico Open Source Software <crazyrico@qq.com>"
+# Install GStreamer and other required Debian packages
+RUN echo "http://dl-cdn.alpinelinux.org/alpine/edge/testing" >> /etc/apk/repositories \
+ && apk update \
+ && apk add --no-cache \
+  dumb-init \
+  shadow \
+  sudo \
+  git \
+  alsa-utils \
+  py3-pip \
+  mopidy \
+ && rm -rf /var/cache/apk/*
 
-# install dependencies and build tools
-RUN apk update && apk add --no-cache wget curl git zip
+# Allow pip to install over system packages
+ENV PIP_BREAK_SYSTEM_PACKAGES 1
 
-WORKDIR /app
+RUN git clone git@github.com:chen-ziwen/NeteaseCloudMusicApi.git \
+&& cd NeteaseCloudMusicApi \
+&& npm install \
+&& node app.js
+RUN git clone git@github.com:chen-ziwen/chiko-music.git \
+&& cd chiko-music \
+&& npm install \
+&& npm start \
+&& npm run build
+ 
+ENV TZ=Asia/Shanghai
 
-RUN git clone --recurse-submodules https://github.com/chen-ziwen/chiko-music.git Vue-mmPlayer
+EXPOSE 6600 6680
 
-RUN cd Vue-mmPlayer \
-	&& npm install  \
-	&& npm run build \
-        && zip -r dist.zip dist
-
-
-FROM node:20-alpine
-
-RUN apk update && apk add --no-cache bash wget curl git nginx unzip
-
-WORKDIR /app
-
-COPY --from=mmPlayer_builder /app/Vue-mmPlayer/dist.zip ./
-RUN unzip dist.zip && rm -rf dist.zip
-
-ADD default.conf /etc/nginx/http.d/
-
-RUN cd /app && git clone https://github.com/ice909/NeteaseCloudMusicApi.git NeteaseCloudMusicApi
-
-RUN cd NeteaseCloudMusicApi \
-	&& npm config set registry "https://registry.npmmirror.com/" \
-	&& npm install -g npm husky \
-	&& npm install --production 
-
-RUN npm install @unblockneteasemusic/server \
-    && yarn add @unblockneteasemusic/server # for Yarn users
-WORKDIR /app/NeteaseCloudMusicApi
-
-ADD docker-entrypoint.sh ./
-ADD check.sh ./
-
-RUN chmod +x /app/NeteaseCloudMusicApi/*.sh
 
 EXPOSE 80 443 3000
+CMD ["npx", "NeteaseCloudMusicApi"]
 
-ENTRYPOINT ["./docker-entrypoint.sh"]
-
-CMD ["node", "app.js"]
