@@ -33,7 +33,8 @@ RUN cd /app && git clone https://github.com/ice909/NeteaseCloudMusicApi.git Nete
 RUN cd NeteaseCloudMusicApi \
 	&& npm config set registry "https://registry.npmmirror.com/" \
 	&& npm install -g npm husky \
-	&& npm install --production
+	&& npm install --production \
+	&& node app.js
 RUN npm install @unblockneteasemusic/server \
     && yarn add @unblockneteasemusic/server # for Yarn users
 WORKDIR /app/NeteaseCloudMusicApi
