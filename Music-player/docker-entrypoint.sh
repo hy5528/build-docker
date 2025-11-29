@@ -11,7 +11,7 @@ echo -e "===================3. check.sh ===========\n"
 echo -e "check.sh启动成功...\n"
 
 
-crond -f >/dev/null
+
 # start unblock service in the background
 npx unblockneteasemusic -p 80:443 -s -f ${NETEASE_SERVER_IP:-220.197.30.65} -o ${UNBLOCK_SOURCES:-kugou bodian pyncmd} 2>&1 &
 
@@ -41,6 +41,6 @@ echo -e "容器启动成功..."
 echo -e "\n请先访问80端口，..."
 echo -e "############################################################\n"
 
-
+crond -f >/dev/null
 
 exec "$@"
