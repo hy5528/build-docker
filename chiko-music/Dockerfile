@@ -1,36 +1,21 @@
-FROM alpine:3.22.2
+FROM --platform=$BUILDPLATFORM node:18-alpine as mmPlayer_builder
 
-# Install GStreamer and other required Debian packages
-RUN echo "http://dl-cdn.alpinelinux.org/alpine/edge/testing" >> /etc/apk/repositories \
- && apk update \
- && apk add --no-cache \
-  dumb-init \
-  shadow \
-  sudo \
-  git \
-  alsa-utils \
-  py3-pip \
-  mopidy \
- && rm -rf /var/cache/apk/*
+# Maintainer
+LABEL maintainer="Crazyrico Open Source Software <crazyrico@qq.com>"
 
-# Allow pip to install over system packages
-ENV PIP_BREAK_SYSTEM_PACKAGES 1
+# install dependencies and build tools
+RUN apk update && apk add --no-cache wget curl git 
 
-RUN git clone git@github.com:chen-ziwen/NeteaseCloudMusicApi.git \
-&& cd NeteaseCloudMusicApi \
-&& npm install \
-&& node app.js
-RUN git clone git@github.com:chen-ziwen/chiko-music.git \
-&& cd chiko-music \
-&& npm install \
+WORKDIR /app
+
+
+RUN npm install \
 && npm start \
 && npm run build
  
-ENV TZ=Asia/Shanghai
-
-EXPOSE 6600 6680
 
 
-EXPOSE 80 443 3000
-CMD ["npx", "NeteaseCloudMusicApi"]
+
+EXPOSE 80 
+CMD ["npx"]
 
