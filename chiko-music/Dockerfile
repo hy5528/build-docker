@@ -5,6 +5,8 @@ RUN apk add --no-cache python3 make g++ git
 RUN npm install && npm run build
 
 FROM nginx:alpine
+WORKDIR /app
+
 COPY --from=builder /app/dist /usr/share/nginx/html
 RUN git clone https://github.com/ice909/NeteaseCloudMusicApi.git
 
