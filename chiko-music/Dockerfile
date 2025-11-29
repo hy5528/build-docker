@@ -24,4 +24,5 @@ COPY --from=builder /app/dist /usr/share/nginx/html
 # COPY nginx.conf /etc/nginx/nginx.conf
 ADD --chmod=755 docker-entrypoint.sh ./
 EXPOSE 80
+ENTRYPOINT ["./docker-entrypoint.sh"]
 CMD ["nginx", "-g", "daemon off;"]
