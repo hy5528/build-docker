@@ -1,5 +1,5 @@
 # 第一阶段：构建Vue项目
-FROM node:16-alpine AS builder
+FROM --platform=$BUILDPLATFORM node:16-alpine AS builder
 
 WORKDIR /app
 
