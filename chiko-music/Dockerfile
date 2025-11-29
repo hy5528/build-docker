@@ -8,5 +8,6 @@ FROM nginx:alpine
 COPY --from=builder /app/dist /usr/share/nginx/html
 RUN apk add --no-cache npm python3 \
     && npm install -g @unblockneteasemusic/server NeteaseCloudMusicApi
+EXPOSE 80 443 3000
 CMD ["npx", "NeteaseCloudMusicApi"]
 
