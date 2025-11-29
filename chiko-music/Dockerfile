@@ -8,5 +8,5 @@ FROM nginx:alpine
 COPY --from=builder /app/dist /usr/share/nginx/html
 RUN apk add --no-cache npm python3 \
     && npm install -g @unblockneteasemusic/server NeteaseCloudMusicApi
-CMD ["npm", "NeteaseCloudMusicApi"]
+CMD ["npx", "NeteaseCloudMusicApi"]
 
