@@ -22,7 +22,7 @@ COPY --from=builder /app/dist /usr/share/nginx/html
 
 # 复制自定义nginx配置（如有需要）
 # COPY nginx.conf /etc/nginx/nginx.conf
-ADD --chmod=755 docker-entrypoint.sh ./
+
 EXPOSE 80
-ENTRYPOINT ["./docker-entrypoint.sh"]
+
 CMD ["nginx", "-g", "daemon off;"]
