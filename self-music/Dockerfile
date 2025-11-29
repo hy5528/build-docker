@@ -15,7 +15,7 @@ RUN apt-get update && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 # Stage 2: Build Frontend
-FROM node:18-alpine AS frontend-builder
+FROM --platform=$BUILDPLATFORM node:18-alpine AS frontend-builder
 WORKDIR /app
 RUN npm install -g pnpm
 COPY frontend/package.json frontend/pnpm-lock.yaml ./
