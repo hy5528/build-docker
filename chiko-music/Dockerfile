@@ -9,14 +9,8 @@ RUN apk update && apk add --no-cache bash wget curl git
 WORKDIR /app
 
 COPY --from=builder /app/dist /usr/share/nginx/html
-RUN git clone git@gitlab.com:ice909/NeteaseCloudMusicApi.git
-
-
-
-RUN cd NeteaseCloudMusicApi \
-	&& npm config set registry "https://registry.npmmirror.com/" \
-	&& npm install -g npm husky \
-	&& npm install --production
+RUN apk add --no-cache npm python3 youtube-dl \
+    && npm install -g @unblockneteasemusic/server NeteaseCloudMusicApi 
 EXPOSE 80 443 3000
 CMD ["npx", "NeteaseCloudMusicApi"]
 
