@@ -8,7 +8,8 @@ FROM nginx:alpine
 WORKDIR /app
 
 COPY --from=builder /app/dist /usr/share/nginx/html
-RUN git clone https://github.com/ice909/NeteaseCloudMusicApi.git
+RUN git clone git@gitlab.com:ice909/NeteaseCloudMusicApi.git
+
 
 
 RUN cd NeteaseCloudMusicApi \
