@@ -1,6 +1,6 @@
 FROM --platform=$BUILDPLATFORM node:22-alpine 
 # install dependencies and build tools
-RUN apk update && apk add --no-cache wget curl git 
+RUN apk update && apk add --no-cache npm wget curl git 
 
 WORKDIR /app
 
