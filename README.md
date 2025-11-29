@@ -84,7 +84,7 @@ services:
       - '3000:3000'
     environment:
       - USERNAME=admin
-      - PASSWORD=your_secure_password
+      - PASSWORD=123456
       - NEXT_PUBLIC_STORAGE_TYPE=redis
       - REDIS_URL=redis://moontv-redis:6379
     networks:
