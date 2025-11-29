@@ -5,7 +5,7 @@ RUN echo "http://dl-cdn.alpinelinux.org/alpine/edge/testing" >> /etc/apk/reposit
  && apk update \
  && apk add --no-cache \
   dumb-init \
-  shadow \
+  npm \
   sudo \
   git \
   curl \
@@ -15,9 +15,7 @@ RUN echo "http://dl-cdn.alpinelinux.org/alpine/edge/testing" >> /etc/apk/reposit
 # Allow pip to install over system packages
 ENV PIP_BREAK_SYSTEM_PACKAGES 1
 
-RUN git clone git@github.com:chen-ziwen/NeteaseCloudMusicApi.git \
-&& cd NeteaseCloudMusicApi \
-&& npm install 
+RUN npm install -g @unblockneteasemusic/server NeteaseCloudMusicApi
 
 RUN git clone git@github.com:chen-ziwen/chiko-music.git \
 && cd chiko-music \
