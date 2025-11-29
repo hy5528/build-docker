@@ -17,11 +17,15 @@ ENV PIP_BREAK_SYSTEM_PACKAGES 1
 
 RUN npm install -g @unblockneteasemusic/server NeteaseCloudMusicApi
 
-RUN git clone git@github.com:chen-ziwen/chiko-music.git \
-&& cd chiko-music \
-&& npm install \
-&& npm start \
-&& npm run build
+WORKDIR /app
+
+RUN git clone --recurse-submodules github.com:chen-ziwen/chiko-music.git
+
+RUN cd chiko-music \
+	
+	&& npm install  \
+	&& npm run build 
+
  
 ENV TZ=Asia/Shanghai
 
