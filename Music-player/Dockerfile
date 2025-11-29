@@ -47,4 +47,4 @@ EXPOSE 80 443 3000
 
 ENTRYPOINT ["./docker-entrypoint.sh"]
 
-CMD ["npx", "NeteaseCloudMusicApi","npx -p @unblockneteasemusic/server unblockneteasemusic"]
+CMD ["npx", "NeteaseCloudMusicApi","unblockneteasemusic"]
