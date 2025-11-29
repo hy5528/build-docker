@@ -1,4 +1,4 @@
-name: Build Self-Music Docker images
+name: Build chiko-music Docker images
 
 on:
   workflow_dispatch:
