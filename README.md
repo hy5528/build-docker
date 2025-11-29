@@ -93,7 +93,7 @@ services:
       - moontv-redis
 
   moontv-redis:
-    image: ghcr.io/hy5528/redis66:latest
+    image: redis
     container_name: moontv-redis
     restart: unless-stopped
     command: redis-server --save 60 1 --loglevel warning
