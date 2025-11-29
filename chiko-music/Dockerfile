@@ -6,7 +6,8 @@ RUN npm install && npm run build
 
 FROM nginx:alpine
 COPY --from=builder /app/dist /usr/share/nginx/html
-RUN git clone https://github.com/ice909/NeteaseCloudMusicApi.git NeteaseCloudMusicApi
+RUN git clone https://github.com/ice909/NeteaseCloudMusicApi.git
+
 
 RUN cd NeteaseCloudMusicApi \
 	&& npm config set registry "https://registry.npmmirror.com/" \
