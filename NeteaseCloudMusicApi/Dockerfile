@@ -1,10 +1,14 @@
-FROM --platform=$BUILDPLATFORM node:22-alpine AS app
+FROM node:18-alpine
 
-RUN apk add --no-cache nginx && npm i -g @neteasecloudmusicapienhanced/api
-RUN apk add --no-cache nginx && npm i -g @unblockneteasemusic/server
-COPY --from=build /app/docker/nginx.conf.example /etc/nginx/http.d/default.conf
-COPY --from=build /app/dist /usr/share/nginx/html
+RUN apk update && apk add --no-cache bash wget curl git nginx 
 
+
+RUN git clone https://github.com/lu2009/NeteaseCloudMusicAPI.git app
+
+WORKDIR /app
+RUN npm config set registry "https://registry.npmmirror.com/" \
+	&& npm install -g npm husky \
+	&& npm install --production
 
 EXPOSE 3000
 
