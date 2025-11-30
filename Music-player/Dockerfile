@@ -11,7 +11,7 @@ WORKDIR /app
 RUN git clone --recurse-submodules https://github.com/chen-ziwen/chiko-music.git Vue-mmPlayer
 
 RUN cd Vue-mmPlayer \
-	&& echo 'VUE_APP_BASE_API_URL = /api' > .env \
+	&& echo 'VITE_API_BASE_URL = /api' > .env \
 	&& npm install  \
 	&& npm run build \
         && zip -r dist.zip dist
