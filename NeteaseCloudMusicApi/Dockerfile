@@ -8,15 +8,16 @@ RUN echo "http://dl-cdn.alpinelinux.org/alpine/edge/testing" >> /etc/apk/reposit
   shadow \
   sudo \
   git \
-  alsa-utils \
-  py3-pip \
-  mopidy \
  && rm -rf /var/cache/apk/*
 # Install Node, to build Iris JS application
 RUN apk add --no-cache nodejs npm
 
 WORKDIR /app
 
+RUN cd NeteaseCloudMusicApi \
+	&& npm config set registry "https://registry.npmmirror.com/" \
+	&& npm install -g npm husky \
+	&& npm install --production
 
 USER node
 EXPOSE 3000
