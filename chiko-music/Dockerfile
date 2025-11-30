@@ -1,4 +1,4 @@
-FROM --platform=$BUILDPLATFORM node:20-alpine as builder
+FROM --platform=$BUILDPLATFORM node:22-alpine as builder
 
 
 
@@ -15,7 +15,7 @@ RUN cd chiko-music \
         && zip -r dist.zip dist
 
 
-FROM node:20-alpine
+FROM node:22-alpine
 
 RUN apk update && apk add --no-cache bash wget curl git nginx unzip
 
