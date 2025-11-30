@@ -1,32 +1,47 @@
-FROM alpine:3.22.2
+FROM --platform=$BUILDPLATFORM node:20-alpine as mmPlayer_builder
 
-# Install GStreamer and other required Debian packages
-RUN echo "http://dl-cdn.alpinelinux.org/alpine/edge/testing" >> /etc/apk/repositories \
- && apk update \
- && apk add --no-cache \
-  dumb-init \
-  npm \
-  sudo \
-  git \
-  curl \
-  wget \
- && rm -rf /var/cache/apk/*
+# Maintainer
+LABEL maintainer="Crazyrico Open Source Software <crazyrico@qq.com>"
 
-# Allow pip to install over system packages
-ENV PIP_BREAK_SYSTEM_PACKAGES 1
-
-RUN npm install -g @unblockneteasemusic/server NeteaseCloudMusicApi
+# install dependencies and build tools
+RUN apk update && apk add --no-cache wget curl git zip
 
 WORKDIR /app
 
-RUN git clone --recurse-submodules github.com:chen-ziwen/chiko-music.git
+RUN git clone --recurse-submodules https://github.com:chen-ziwen/chiko-music.git Vue-mmPlayer
 
-RUN cd chiko-music \
-	
+RUN cd Vue-mmPlayer \
+	&& echo 'VUE_APP_BASE_API_URL = /api' > .env \
 	&& npm install  \
-	&& npm run build 
+	&& npm run build \
+        && zip -r dist.zip dist
 
- 
+
+FROM node:20-alpine
+
+RUN apk update && apk add --no-cache bash wget curl git nginx unzip
+
+WORKDIR /app
+
+COPY --from=mmPlayer_builder /app/Vue-mmPlayer/dist.zip ./
+RUN unzip dist.zip && rm -rf dist.zip
+
+ADD default.conf /etc/nginx/http.d/
+
+RUN cd /app && git clone https://github.com/lu2009/NeteaseCloudMusicAPI.git NeteaseCloudMusicApi
+
+RUN cd NeteaseCloudMusicApi \
+	&& npm config set registry "https://registry.npmmirror.com/" \
+	&& npm install -g npm husky \
+	&& npm install --production
+
+WORKDIR /app/NeteaseCloudMusicApi
+
+
+ADD check.sh ./
+
+RUN chmod +x /app/NeteaseCloudMusicApi/*.sh
+
 ENV TZ=Asia/Shanghai
 
 
