@@ -1,13 +1,11 @@
-FROM --platform=$BUILDPLATFORM node:18-alpine
+FROM --platform=$BUILDPLATFORM node:22-alpine AS app
 
-RUN apk update && apk add --no-cache bash wget curl git nginx npm
+RUN apk add --no-cache nginx && npm i -g @neteasecloudmusicapienhanced/api
+RUN apk add --no-cache nginx && npm i -g @unblockneteasemusic/server
+COPY --from=build /app/docker/nginx.conf.example /etc/nginx/http.d/default.conf
+COPY --from=build /app/dist /usr/share/nginx/html
 
-WORKDIR /app
 
-RUN npm install
-  
-
-USER node
 EXPOSE 3000
 
 CMD ["node", "app.js" ]
