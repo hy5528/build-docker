@@ -1,4 +1,4 @@
-FROM --platform=$BUILDPLATFORM node:20-alpine as mmPlayer_builder
+FROM --platform=$BUILDPLATFORM node:20-alpine AS builder
 
 
 
@@ -7,9 +7,9 @@ RUN apk update && apk add --no-cache wget curl git zip
 
 WORKDIR /app
 
-RUN git clone --recurse-submodules https://github.com:chen-ziwen/chiko-music.git Vue-mmPlayer
+RUN git clone --recurse-submodules https://github.com:chen-ziwen/chiko-music.git 
 
-RUN cd Vue-mmPlayer \
+RUN cd chiko-music \
 	&& echo 'VITE_API_BASE_URL = /api' > .env \
 	&& npm install  \
 	&& npm run build \
@@ -22,7 +22,7 @@ RUN apk update && apk add --no-cache bash wget curl git nginx unzip
 
 WORKDIR /app
 
-COPY --from=mmPlayer_builder /app/Vue-mmPlayer/dist.zip ./
+COPY --from=builder /app/chiko-music/dist.zip ./
 RUN unzip dist.zip && rm -rf dist.zip
 
 ADD default.conf /etc/nginx/http.d/
