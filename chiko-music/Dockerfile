@@ -8,11 +8,10 @@ WORKDIR /app
 
 RUN git clone --recurse-submodules https://github.com/chen-ziwen/chiko-music.git
 
-RUN cd chiko-music \
-	&& npm install  \
-	&& npm run build \
-        && zip -r dist.zip dist
-
+RUN cd chiko-music 
+RUN npm config set registry https://registry.npmmirror.com/ && \
+    npm install
+RUN npm run build
 
 FROM nginx:1.29.3-alpine3.22-slim AS app
 
