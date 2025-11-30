@@ -1,16 +1,24 @@
-FROM --platform=$BUILDPLATFORM node:18-alpine
+FROM alpine:3.22.2
 
-RUN apk add --no-cache tini
-
-ENV NODE_ENV production
-USER node
+# Install GStreamer and other required Debian packages
+RUN echo "http://dl-cdn.alpinelinux.org/alpine/edge/testing" >> /etc/apk/repositories \
+ && apk update \
+ && apk add --no-cache \
+  dumb-init \
+  shadow \
+  sudo \
+  git \
+  alsa-utils \
+  py3-pip \
+  mopidy \
+ && rm -rf /var/cache/apk/*
+# Install Node, to build Iris JS application
+RUN apk add --no-cache nodejs npm
 
 WORKDIR /app
 
-COPY --chown=node:node . ./
 
-RUN yarn --network-timeout=100000
-
+USER node
 EXPOSE 3000
 
-CMD [ "/sbin/tini", "--", "node", "app.js" ]
+CMD ["node", "app.js" ]
