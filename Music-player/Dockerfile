@@ -1,10 +1,18 @@
-FROM --platform=$BUILDPLATFORM node:18-alpine as mmPlayer_builder
-
-# Maintainer
-LABEL maintainer="Crazyrico Open Source Software <crazyrico@qq.com>"
-
-# install dependencies and build tools
-RUN apk update && apk add --no-cache wget curl git zip FFmpeg
+FROM debian:12-slim AS builder
+ENV DEBIAN_FRONTEND=noninteractive
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends \
+    python3 python3-pip \
+    nginx \
+    FFmpeg \
+    curl \
+    && \
+    # Install Node.js v22 from NodeSource
+    curl -fsSL https://deb.nodesource.com/setup_22.x | bash - && \
+    apt-get install -y --no-install-recommends nodejs && \
+    # Clean up
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/* 
 
 WORKDIR /app
 
@@ -23,7 +31,7 @@ RUN apk update && apk add --no-cache bash wget curl git nginx unzip
 
 WORKDIR /app
 
-COPY --from=mmPlayer_builder /app/Vue-mmPlayer/dist.zip ./
+COPY --from=builder /app/Vue-mmPlayer/dist.zip ./
 RUN unzip dist.zip && rm -rf dist.zip
 
 ADD default.conf /etc/nginx/http.d/
