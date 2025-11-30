@@ -4,7 +4,7 @@ FROM --platform=$BUILDPLATFORM node:18-alpine as mmPlayer_builder
 LABEL maintainer="Crazyrico Open Source Software <crazyrico@qq.com>"
 
 # install dependencies and build tools
-RUN apk update && apk add --no-cache wget curl git zip
+RUN apk update && apk add --no-cache wget curl git zip FFmpeg
 
 WORKDIR /app
 
