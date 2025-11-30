@@ -47,18 +47,11 @@ jobs:
           images: ghcr.io/hy5528/NeteaseCloudMusicApi66
           tags: |
             type=raw,value=latest
-      - name: Clone Overleaf Gitlab Repo
-        run: |
-          git clone https://github.com/NeteaseCloudMusicApiEnhanced/api-enhanced.git app
-
-      - name: "Copy userpatches to build folder"
-        shell: bash
-        run: |
-          rsync -av NeteaseCloudMusicApi/. ./app
+      
       - name: 构建并推送 Docker 镜像
         uses: docker/build-push-action@v5
         with:
-          context: ./app
+          context: "${{ github.server_url }}/${{ github.repository }}.git#${{ github.ref }}:NeteaseCloudMusicApi"
           platforms: linux/amd64,linux/arm64,linux/arm/v7
           push: true
           tags: ${{ steps.meta.outputs.tags }}
