@@ -15,7 +15,7 @@ RUN cd chiko-music \
 
 FROM nginx:1.29.3-alpine3.22-slim AS app
 
-RUN apk update && apk add --no-cache bash wget curl git nginx unzip npm
+RUN apk update && apk add --no-cache bash wget curl git nginx unzip npm python3 
 
 WORKDIR /app
 
