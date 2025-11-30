@@ -1,16 +1,6 @@
-FROM alpine:3.22.2
+FROM node:18-alpine
 
-# Install GStreamer and other required Debian packages
-RUN echo "http://dl-cdn.alpinelinux.org/alpine/edge/testing" >> /etc/apk/repositories \
- && apk update \
- && apk add --no-cache \
-  dumb-init \
-  shadow \
-  sudo \
-  git \
- && rm -rf /var/cache/apk/*
-# Install Node, to build Iris JS application
-RUN apk add --no-cache nodejs npm
+RUN apk update && apk add --no-cache bash wget curl git nginx 
 
 WORKDIR /app
 
