@@ -49,12 +49,12 @@ jobs:
             type=raw,value=latest
       - name: Clone Overleaf Gitlab Repo
         run: |
-          git clone https://github.com/chen-ziwen/chiko-music.git app
+          git clone https://github.com/NeteaseCloudMusicApiEnhanced/api-enhanced.git app
 
       - name: "Copy userpatches to build folder"
         shell: bash
         run: |
-          rsync -av chiko-music/. ./app
+          rsync -av NeteaseCloudMusicApi/. ./app
       - name: 构建并推送 Docker 镜像
         uses: docker/build-push-action@v5
         with:
