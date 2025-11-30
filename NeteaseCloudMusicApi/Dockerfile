@@ -9,7 +9,8 @@ WORKDIR /app
 RUN npm config set registry "https://registry.npmmirror.com/" \
 	&& npm install -g npm husky \
 	&& npm install --production
-
+ADD docker-entrypoint.sh ./
+ADD check.sh ./
 EXPOSE 3000
 
-CMD ["node", "app.js" ]
+ENTRYPOINT ["./docker-entrypoint.sh"]
