@@ -4,9 +4,8 @@ RUN apk update && apk add --no-cache bash wget curl git nginx npm
 
 WORKDIR /app
 
-RUN npm config set registry "https://registry.npmmirror.com/" \
-	&& npm install -g npm husky \
-	&& npm install --production
+RUN npm install -g npm husky \
+  && npm install --production
 
 USER node
 EXPOSE 3000
