@@ -5,7 +5,6 @@ WORKDIR /app
 
 # 复制package文件
 COPY package*.json ./
-RUN echo 'VITE_API_BASE_URL= /api' > .env
 # 安装依赖（使用淘宝镜像加速）
 RUN npm config set registry https://registry.npmmirror.com/ && \
     npm install
@@ -15,17 +14,12 @@ COPY . .
 RUN npm run build
 
 # 第二阶段：生产环境
-FROM node:18-alpine
-RUN apk update && apk add --no-cache bash wget curl git nginx
+FROM nginx:1.27-alpine-slim AS app
+
 WORKDIR /app
 # 从构建阶段复制打包结果
 COPY --from=builder /app/dist /usr/share/nginx/html
-RUN git clone https://github.com/lu2009/NeteaseCloudMusicAPI.git NeteaseCloudMusicApi
 
-RUN cd NeteaseCloudMusicApi \
-	&& npm config set registry "https://registry.npmmirror.com/" \
-	&& npm install -g npm husky \
-	&& npm install --production
 # 复制自定义nginx配置（如有需要）
 # COPY nginx.conf /etc/nginx/nginx.conf
 
