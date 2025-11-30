@@ -8,7 +8,6 @@ RUN echo "http://dl-cdn.alpinelinux.org/alpine/edge/testing" >> /etc/apk/reposit
   shadow \
   sudo \
   git \
-  FFmpeg \
   py3-pip \
   npm \
  && rm -rf /var/cache/apk/*
