@@ -1,6 +1,6 @@
 FROM node:18-alpine
 
-RUN apk update && apk add --no-cache bash wget curl git nginx 
+RUN apk update && apk add --no-cache bash wget curl git nginx npm
 
 WORKDIR /app
 
