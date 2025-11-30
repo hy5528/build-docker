@@ -1,33 +1,26 @@
-# build
-FROM --platform=$BUILDPLATFORM node:20-alpine AS builder
+FROM --platform=$BUILDPLATFORM node:18-alpine AS build
 
-RUN apk update && apk add --no-cache git
+ENV VUE_APP_NETEASE_API_URL=/api
 
 WORKDIR /app
 
-COPY package*.json ./
-
-RUN npm install
-
 COPY . .
 
+RUN apk add --no-cache python3 make g++ git \
+    && yarn install --frozen-lockfile \
+    && yarn build
 
-RUN npm run build
+# app
 
-# nginx
-FROM nginx:1.27-alpine-slim AS app
+FROM node:22-alpine AS app
 
-COPY --from=builder /app/out/renderer /usr/share/nginx/html
-
-COPY --from=builder /app/nginx.conf /etc/nginx/conf.d/default.conf
-
-RUN apk add --no-cache npm python3 youtube-dl \
-    && npm install -g @unblockneteasemusic/server NeteaseCloudMusicApi \
-    && wget https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp -O /usr/local/bin/yt-dlp \
-    && chmod +x /usr/local/bin/yt-dlp \
-    && chmod +x /docker-entrypoint.sh
-
-ENV NODE_TLS_REJECT_UNAUTHORIZED=0
+RUN apk add --no-cache nginx && npm i -g @neteasecloudmusicapienhanced/api
+RUN apk add --no-cache nginx && npm i -g @unblockneteasemusic/server
+COPY --from=build /app/docker/nginx.conf.example /etc/nginx/http.d/default.conf
+COPY --from=build /app/dist /usr/share/nginx/html
 
 
-CMD ["npx", "NeteaseCloudMusicApi"]
+EXPOSE 80 3000
+
+
+CMD ["sh", "-c", "nginx && exec npx @neteasecloudmusicapienhanced/api"]
