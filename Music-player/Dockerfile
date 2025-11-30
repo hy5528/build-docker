@@ -36,15 +36,14 @@ RUN cd NeteaseCloudMusicApi \
 
 WORKDIR /app/NeteaseCloudMusicApi
 
-
+ADD docker-entrypoint.sh ./
 ADD check.sh ./
 
 RUN chmod +x /app/NeteaseCloudMusicApi/*.sh
 
-ENV TZ=Asia/Shanghai
-
-
-
 EXPOSE 80 443 3000
-CMD ["npx", "NeteaseCloudMusicApi"]
+
+ENTRYPOINT ["./docker-entrypoint.sh"]
+
+
 
