@@ -1,8 +1,10 @@
-FROM --platform=$BUILDPLATFORM node:22-alpine AS builder
+FROM --platform=$BUILDPLATFORM node:20-alpine as builder
 
+# Maintainer
+LABEL maintainer="Crazyrico Open Source Software <crazyrico@qq.com>"
 
 # install dependencies and build tools
-RUN apk update && apk add --no-cache wget curl git zip npm
+RUN apk update && apk add --no-cache wget curl git zip
 
 WORKDIR /app
 
@@ -13,9 +15,10 @@ RUN cd chiko-music \
 	&& npm run build \
         && zip -r dist.zip dist
 
-FROM nginx:1.29.3-alpine3.22-slim AS app
 
-RUN apk update && apk add --no-cache bash wget curl git nginx unzip npm python3 
+FROM node:20-alpine
+
+RUN apk update && apk add --no-cache bash wget curl git nginx unzip
 
 WORKDIR /app
 
