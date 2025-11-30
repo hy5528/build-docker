@@ -16,6 +16,7 @@ RUN npm run build
 
 # 第二阶段：生产环境
 FROM nginx:alpine
+RUN apk update && apk add --no-cache bash wget curl git
 WORKDIR /app
 # 从构建阶段复制打包结果
 COPY --from=builder /app/dist /usr/share/nginx/html
