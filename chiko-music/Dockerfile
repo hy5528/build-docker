@@ -2,16 +2,16 @@ FROM --platform=$BUILDPLATFORM node:22-alpine AS builder
 
 
 # install dependencies and build tools
-RUN apk update && apk add --no-cache wget curl git zip
+RUN apk update && apk add --no-cache wget curl git zip npm
 
 WORKDIR /app
 
 RUN git clone --recurse-submodules https://github.com/chen-ziwen/chiko-music.git
 
-RUN cd chiko-music 
-RUN npm config set registry https://registry.npmmirror.com/ && \
-    npm install
-RUN npm run build
+RUN cd chiko-music \
+	&& npm install  \
+	&& npm run build \
+        && zip -r dist.zip dist
 
 FROM nginx:1.29.3-alpine3.22-slim AS app
 
