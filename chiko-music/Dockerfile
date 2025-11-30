@@ -32,7 +32,7 @@ RUN cd NeteaseCloudMusicApi \
 	&& npm config set registry "https://registry.npmmirror.com/" \
 	&& npm install -g npm husky \
 	&& npm install --production
-COPY --from=builder /app/dist /usr/share/nginx/html
+COPY --from=builder /app//chiko-music/dist /usr/share/nginx/html
 WORKDIR /app/NeteaseCloudMusicApi
 
 ADD docker-entrypoint.sh ./
