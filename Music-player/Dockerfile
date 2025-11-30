@@ -7,7 +7,7 @@ RUN apk update && apk add --no-cache wget curl git zip
 
 WORKDIR /app
 
-RUN git clone --recurse-submodules https://github.com:chen-ziwen/chiko-music.git 
+RUN git clone https://github.com:chen-ziwen/chiko-music.git 
 
 RUN cd chiko-music \
 	&& echo 'VITE_API_BASE_URL = /api' > .env \
