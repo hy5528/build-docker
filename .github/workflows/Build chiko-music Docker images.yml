@@ -24,8 +24,6 @@ jobs:
     permissions:
       contents: read
       packages: write
-
-      
     steps:      
       - name: 检出代码
         uses: actions/checkout@v4
@@ -47,19 +45,13 @@ jobs:
           images: ghcr.io/hy5528/chiko-music66
           tags: |
             type=raw,value=latest
-      - name: Clone Overleaf Gitlab Repo
-        run: |
-          git clone https://github.com/chen-ziwen/chiko-music.git app
-
-      - name: "Copy userpatches to build folder"
-        shell: bash
-        run: |
-          rsync -av chiko-music/. ./app
+    
       - name: 构建并推送 Docker 镜像
         uses: docker/build-push-action@v5
         with:
-          context: ./app
-          platforms: linux/amd64,linux/arm64,linux/arm/v7
+          context: "${{ github.server_url }}/${{ github.repository }}.git#${{ github.ref }}:chiko-music"
+        
+          platforms:  linux/amd64,linux/arm64,linux/arm/v7
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
