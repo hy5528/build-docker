@@ -44,7 +44,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@v5
         with:
-          images: ghcr.io/hy5528/NeteaseCloudMusicApi66
+          images: ghcr.io/hy5528/MusicApi66
           tags: |
             type=raw,value=latest
       
