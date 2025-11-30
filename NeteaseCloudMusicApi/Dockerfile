@@ -14,8 +14,7 @@ RUN apk add --no-cache nodejs npm
 
 WORKDIR /app
 
-RUN cd NeteaseCloudMusicApi \
-	&& npm config set registry "https://registry.npmmirror.com/" \
+RUN npm config set registry "https://registry.npmmirror.com/" \
 	&& npm install -g npm husky \
 	&& npm install --production
 
