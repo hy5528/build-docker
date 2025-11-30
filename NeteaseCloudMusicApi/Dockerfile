@@ -4,8 +4,8 @@ RUN apk update && apk add --no-cache bash wget curl git nginx npm
 
 WORKDIR /app
 
-RUN npm install -g npm husky \
-  && npm install --production
+RUN npm install
+  
 
 USER node
 EXPOSE 3000
