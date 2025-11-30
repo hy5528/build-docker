@@ -11,8 +11,6 @@ RUN npm install
 
 COPY . .
 
-# add .env.example to .env
-RUN [ ! -e ".env" ] && cp .env.example .env || true
 
 RUN npm run build
 
