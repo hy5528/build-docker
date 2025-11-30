@@ -44,4 +44,5 @@ RUN chmod +x /app/NeteaseCloudMusicApi/*.sh
 
 EXPOSE 80 443 3000
 
+CMD ["nginx", "-g", "daemon off;"]
 
