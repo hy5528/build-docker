@@ -5,7 +5,7 @@ WORKDIR /app
 
 # 复制package文件
 COPY package*.json ./
-RUN echo 'VITE_API_BASE_URL=http://192.168.2.241:25884/api/netease' > .env
+RUN echo 'VITE_API_BASE_URL= /api' > .env
 # 安装依赖（使用淘宝镜像加速）
 RUN npm config set registry https://registry.npmmirror.com/ && \
     npm install
