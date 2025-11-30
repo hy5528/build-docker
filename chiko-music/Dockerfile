@@ -15,7 +15,7 @@ RUN npm run build
 
 FROM nginx:1.29.3-alpine3.22-slim AS app
 
-RUN apk update && apk add --no-cache bash wget curl git nginx unzip
+RUN apk update && apk add --no-cache bash wget curl git nginx unzip npm
 
 WORKDIR /app
 
