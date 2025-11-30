@@ -1,4 +1,4 @@
-FROM --platform=$BUILDPLATFORM node:20-alpine as builder
+FROM --platform=$BUILDPLATFORM node:18-alpine as builder
 
 # Maintainer
 LABEL maintainer="Crazyrico Open Source Software <crazyrico@qq.com>"
