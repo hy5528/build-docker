@@ -14,7 +14,6 @@ RUN apk add --no-cache python3 make g++ git \
 
 FROM node:22-alpine AS app
 
-RUN apk add --no-cache nginx && npm i -g @neteasecloudmusicapienhanced/api
 COPY --from=build /app/dist /usr/share/nginx/html
 
 
