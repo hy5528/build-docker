@@ -1,4 +1,4 @@
-FROM --platform=$BUILDPLATFORM node:18-alpine as builder
+FROM --platform=$BUILDPLATFORM node:20-alpine as builder
 
 
 # install dependencies and build tools
@@ -15,7 +15,7 @@ RUN cd Vue-mmPlayer \
         && zip -r dist.zip dist
 
 
-FROM node:18-alpine
+FROM node:20-alpine
 
 RUN apk update && apk add --no-cache bash wget curl git nginx unzip
 
