@@ -17,8 +17,8 @@
     "element-plus": "^2.2.20",
     "lyric-parser": "^1.0.1",
     "pinia": "^2.0.12",
-    "vue": "^3.3.8",
-    "vue-router": "^4.0.14"
+    "vue": "^3.5.10",
+    "vue-router": "^4.3.0",
   },
   "devDependencies": {
     "@types/lodash-es": "^4.17.7",
