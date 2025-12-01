@@ -45,11 +45,18 @@ jobs:
           images: ghcr.io/hy5528/chiko-music66
           tags: |
             type=raw,value=latest
-    
+      - name: Clone Overleaf Gitlab Repo
+        run: |
+          git clone https://github.com/chen-ziwen/chiko-music.git app
+
+      - name: "Copy userpatches to build folder"
+        shell: bash
+        run: |
+          rsync -av chiko-music/. ./app  
       - name: 构建并推送 Docker 镜像
         uses: docker/build-push-action@v5
         with:
-          context: "${{ github.server_url }}/${{ github.repository }}.git#${{ github.ref }}:chiko-music"
+          context: ./app  
         
           platforms:  linux/amd64,linux/arm64,linux/arm/v7
           push: true
