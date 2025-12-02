@@ -32,7 +32,7 @@ RUN mkdir -p /var/log/supervisor /data && \
 
 ENV NODE_ENV=production
 
-EXPOSE 80
+EXPOSE 80 3000
 
 HEALTHCHECK --interval=30s --timeout=10s --start-period=30s --retries=3 \
   CMD curl -f http://localhost || exit 1
@@ -40,4 +40,5 @@ HEALTHCHECK --interval=30s --timeout=10s --start-period=30s --retries=3 \
 VOLUME ["/data"]
 
 CMD ["/entrypoint.sh"]
+
 
