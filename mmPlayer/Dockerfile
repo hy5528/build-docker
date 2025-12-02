@@ -9,19 +9,17 @@ WORKDIR /app/frontend
 RUN echo 'VUE_APP_BASE_API_URL = /api' > .env \
 	&& npm install  \
 	&& npm run build 
-	
-FROM nginx:1.29.3-alpine3.22-slim
-RUN apk add --no-cache nodejs npm supervisor git && \
-    rm -rf /var/cache/apk/*
+
 WORKDIR /app
-
-RUN git clone https://github.com/lu2009/NeteaseCloudMusicAPI.git NeteaseCloudMusicApi
-
-RUN cd /app/NeteaseCloudMusicApi \
-	&& npm config set registry "https://registry.npmmirror.com/" \
-	&& npm install -g npm husky \
+RUN git clone https://github.com/nooblong/NeteaseCloudMusicApiBackup.git api
+WORKDIR /app/api
+RUN npm install -g npm husky \
 	&& npm install --production
-	
+
+FROM nginx:alpine
+
+RUN apk add --no-cache nodejs npm supervisor curl && \
+    rm -rf /var/cache/apk/*
 
 COPY --from=builder /app/frontend/dist /usr/share/nginx/html
 COPY --from=builder /app/api /app/api
@@ -42,11 +40,6 @@ HEALTHCHECK --interval=30s --timeout=10s --start-period=30s --retries=3 \
 VOLUME ["/data"]
 
 CMD ["/entrypoint.sh"]
-
-
-
-
-
 
 
 
