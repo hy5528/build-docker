@@ -6,7 +6,7 @@ WORKDIR /app
 
 RUN git clone https://github.com/Dos7t3r/Vue-mmPlayer.git frontend
 RUN cd /app/frontend  \
-	&& echo 'VUE_APP_BASE_API_URL = /api' > .env \
+	&& echo 'VUE_APP_BASE_API_URL = /app/api' > .env \
 	&& npm install  \
 	&& npm run build 
 
@@ -36,6 +36,7 @@ ENV NODE_ENV=production
 EXPOSE 80
 
 CMD ["/entrypoint.sh"]
+
 
 
 
