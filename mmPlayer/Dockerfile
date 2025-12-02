@@ -17,7 +17,7 @@ WORKDIR /app
 
 RUN git clone https://github.com/lu2009/NeteaseCloudMusicAPI.git NeteaseCloudMusicApi
 
-RUN cd  /app/NeteaseCloudMusicApi \
+RUN cd /app/NeteaseCloudMusicApi \
 	&& npm config set registry "https://registry.npmmirror.com/" \
 	&& npm install -g npm husky \
 	&& npm install --production
@@ -42,6 +42,7 @@ HEALTHCHECK --interval=30s --timeout=10s --start-period=30s --retries=3 \
 VOLUME ["/data"]
 
 CMD ["/entrypoint.sh"]
+
 
 
 
