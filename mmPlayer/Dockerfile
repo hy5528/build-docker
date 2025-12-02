@@ -26,13 +26,20 @@ WORKDIR /app
 
 # 从构建阶段复制打包结果
 COPY --from=builder /app/dist /usr/share/nginx/html
-
+COPY --from=builder /app/docker-entrypoint.sh /docker-entrypoint.sh
 # 复制自定义nginx配置（如有需要）
 # COPY nginx.conf /etc/nginx/nginx.conf
+RUN apk add --no-cache npm python3 youtube-dl \
+    && npm install -g @unblockneteasemusic/server \
+    && wget https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp -O /usr/local/bin/yt-dlp \
+    && chmod +x /usr/local/bin/yt-dlp \
+    && chmod +x /docker-entrypoint.sh
 
 EXPOSE 80
 
+ENTRYPOINT ["/docker-entrypoint.sh"]
 CMD ["nginx", "-g", "daemon off;"]
+
 
 
 
