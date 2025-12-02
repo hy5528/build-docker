@@ -11,7 +11,7 @@ RUN echo 'VUE_APP_BASE_API_URL = /api' > .env \
 	&& npm run build 
 	
 FROM nginx:1.29.3-alpine3.22-slim
-RUN apk add --no-cache nodejs npm supervisor curl && \
+RUN apk add --no-cache nodejs npm supervisor git && \
     rm -rf /var/cache/apk/*
 WORKDIR /app
 
@@ -42,6 +42,7 @@ HEALTHCHECK --interval=30s --timeout=10s --start-period=30s --retries=3 \
 VOLUME ["/data"]
 
 CMD ["/entrypoint.sh"]
+
 
 
 
