@@ -35,12 +35,10 @@ ENV NODE_ENV=production
 
 EXPOSE 80
 
-HEALTHCHECK --interval=30s --timeout=10s --start-period=30s --retries=3 \
-  CMD curl -f http://localhost || exit 1
-
-VOLUME ["/data"]
+HEALTHCHECK --interval=30s --timeout=10s --start-period=30s --retries=3 
 
 CMD ["/entrypoint.sh"]
+
 
 
 
