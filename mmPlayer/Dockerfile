@@ -7,7 +7,7 @@ WORKDIR /app
 RUN git clone https://github.com/Dos7t3r/Vue-mmPlayer.git frontend
 WORKDIR /app/frontend
 RUN echo 'VUE_APP_BASE_API_URL = /api' > .env 
-RUN npm ci && npm run build
+RUN npm install && npm run build
 
 WORKDIR /app
 RUN git clone https://github.com/nooblong/NeteaseCloudMusicApiBackup.git api
@@ -39,4 +39,5 @@ HEALTHCHECK --interval=30s --timeout=10s --start-period=30s --retries=3 \
 VOLUME ["/data"]
 
 CMD ["/entrypoint.sh"]
+
 
