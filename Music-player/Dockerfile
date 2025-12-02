@@ -1,8 +1,5 @@
 FROM --platform=$BUILDPLATFORM node:18-alpine as mmPlayer_builder
 
-# Maintainer
-LABEL maintainer="Crazyrico Open Source Software <crazyrico@qq.com>"
-
 # install dependencies and build tools
 RUN apk update && apk add --no-cache wget curl git zip
 
@@ -17,7 +14,7 @@ RUN cd Vue-mmPlayer \
         && zip -r dist.zip dist
 
 
-FROM node:22-alpine 
+FROM node:18-alpine
 
 RUN apk update && apk add --no-cache bash wget curl git nginx unzip
 
@@ -26,12 +23,22 @@ WORKDIR /app
 COPY --from=mmPlayer_builder /app/Vue-mmPlayer/dist.zip ./
 RUN unzip dist.zip && rm -rf dist.zip
 
+ADD default.conf /etc/nginx/http.d/
 
-RUN apk add --no-cache nginx && npm i -g @neteasecloudmusicapienhanced/api
-COPY --from=mmPlayer_builder /app/dist /usr/share/nginx/html
+RUN cd /app && git clone https://github.com/lu2009/NeteaseCloudMusicAPI.git NeteaseCloudMusicApi
 
+RUN cd NeteaseCloudMusicApi \
+	&& npm config set registry "https://registry.npmmirror.com/" \
+	&& npm install -g npm husky \
+	&& npm install --production
 
-EXPOSE 80 3000
+WORKDIR /app/NeteaseCloudMusicApi
 
+ADD docker-entrypoint.sh ./
+ADD check.sh ./
 
-CMD ["sh", "-c", "nginx && exec npx @neteasecloudmusicapienhanced/api"]
+RUN chmod +x /app/NeteaseCloudMusicApi/*.sh
+
+EXPOSE 80 443 3000
+
+ENTRYPOINT ["./docker-entrypoint.sh"]
