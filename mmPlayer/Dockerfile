@@ -12,7 +12,7 @@ RUN npm install && npm run build
 WORKDIR /app
 RUN git clone https://github.com/nooblong/NeteaseCloudMusicApiBackup.git api
 WORKDIR /app/api
-RUN npm ci --only=production
+RUN npm install --only=production
 
 FROM nginx:alpine
 
@@ -39,5 +39,6 @@ HEALTHCHECK --interval=30s --timeout=10s --start-period=30s --retries=3 \
 VOLUME ["/data"]
 
 CMD ["/entrypoint.sh"]
+
 
 
