@@ -11,7 +11,7 @@ RUN echo 'VUE_APP_BASE_API_URL = /api' > .env \
 	&& npm run build 
 
 WORKDIR /app
-RUN git clone https://github.com/nooblong/NeteaseCloudMusicApiBackup.git api
+RUN git clone https://github.com/lu2009/NeteaseCloudMusicAPI.git api
 WORKDIR /app/api
 RUN npm install -g npm husky \
 	&& npm install --production
@@ -40,6 +40,7 @@ HEALTHCHECK --interval=30s --timeout=10s --start-period=30s --retries=3 \
 VOLUME ["/data"]
 
 CMD ["/entrypoint.sh"]
+
 
 
 
