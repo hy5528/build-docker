@@ -1,7 +1,3 @@
-
-
-RUN git clone --recurse-submodules https://github.com/Dos7t3r/Vue-mmPlayer.git 
-
 # 第一阶段：构建Vue项目
 FROM --platform=$BUILDPLATFORM node:22-alpine AS builder
 RUN apk add --no-cache python3 npm git
@@ -37,6 +33,7 @@ COPY --from=builder /app/dist /usr/share/nginx/html
 EXPOSE 80
 
 CMD ["nginx", "-g", "daemon off;"]
+
 
 
 
