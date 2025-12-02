@@ -20,7 +20,10 @@ WORKDIR /app
 RUN git clone https://github.com/nooblong/NeteaseCloudMusicApiBackup.git api
 RUN cd api
 RUN npm install 
+WORKDIR /app/api
+RUN chmod +x /app/api/*.sh
 
+WORKDIR /app
 FROM nginx:alpine
 
 RUN apk add --no-cache nodejs npm supervisor curl && \
@@ -35,7 +38,7 @@ COPY entrypoint.prod.sh /entrypoint.sh
 
 RUN mkdir -p /var/log/supervisor /data && \
     chmod +x /entrypoint.sh
-RUN chmod +x /app/api/*.sh
+
 ENV NODE_ENV=production
 
 EXPOSE 80
@@ -46,6 +49,7 @@ HEALTHCHECK --interval=30s --timeout=10s --start-period=30s --retries=3 \
 
 
 CMD ["/entrypoint.sh"]
+
 
 
 
