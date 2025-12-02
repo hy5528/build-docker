@@ -1,9 +1,0 @@
-services:
-  alger-music-player:
-    volumes:
-      - "./frontend:/app/frontend:cached"
-      - "./api:/app/api:cached"
-    environment:
-      - NODE_ENV=development
-      - CHOKIDAR_USEPOLLING=true
-      - DEV_MODE=true
