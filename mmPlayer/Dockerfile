@@ -13,8 +13,8 @@ RUN echo 'VUE_APP_BASE_API_URL = /api' > .env \
     && npm install \
     && npm run build
 
-COPY . .
-FROM node:18-alpine
+
+FROM nginx:1.29.3-alpine3.22-slim
 
 RUN apk update && apk add --no-cache bash wget curl git 
 
@@ -53,6 +53,7 @@ HEALTHCHECK --interval=30s --timeout=10s --start-period=30s --retries=3 \
 
 
 CMD ["/entrypoint.sh"]
+
 
 
 
