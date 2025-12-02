@@ -17,35 +17,13 @@ RUN cd Vue-mmPlayer \
         && zip -r dist.zip dist
 
 
-FROM node:18-alpine
+FROM node:22-alpine AS app
 
-RUN apk update && apk add --no-cache bash wget curl git nginx unzip
+RUN apk add --no-cache nginx && npm i -g @neteasecloudmusicapienhanced/api
+COPY --from=build /app/dist /usr/share/nginx/html
 
-WORKDIR /app
 
-COPY --from=mmPlayer_builder /app/Vue-mmPlayer/dist.zip ./
-RUN unzip dist.zip && rm -rf dist.zip
+EXPOSE 80 3000
 
-ADD default.conf /etc/nginx/http.d/
 
-RUN cd /app && git clone https://github.com/lu2009/NeteaseCloudMusicAPI.git NeteaseCloudMusicApi
-
-RUN cd NeteaseCloudMusicApi \
-	&& npm config set registry "https://registry.npmmirror.com/" \
-	&& npm install -g npm husky \
-	&& npm install --production
-
-WORKDIR /app/NeteaseCloudMusicApi
-
-ADD docker-entrypoint.sh ./
-ADD check.sh ./
-
-RUN chmod +x /app/NeteaseCloudMusicApi/*.sh
-
-EXPOSE 80 443 3000
-
-ENV NODE_TLS_REJECT_UNAUTHORIZED=0
-
-ENTRYPOINT ["./docker-entrypoint.sh"]
-
-CMD ["npx", "NeteaseCloudMusicApi"]
+CMD ["sh", "-c", "nginx && exec npx @neteasecloudmusicapienhanced/api"]
