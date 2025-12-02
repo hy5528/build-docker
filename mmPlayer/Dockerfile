@@ -5,10 +5,11 @@ RUN apk add --no-cache git python3 make g++
 WORKDIR /app
 
 RUN git clone https://github.com/Dos7t3r/Vue-mmPlayer.git frontend
-WORKDIR /app/frontend
-RUN echo 'VUE_APP_BASE_API_URL = /api' > .env \
+WORKDIR /app/frontend  \
+	&& echo 'VUE_APP_BASE_API_URL = /api' > .env \
 	&& npm install  \
 	&& npm run build 
+
 
 WORKDIR /app
 RUN git clone https://github.com/lu2009/NeteaseCloudMusicAPI.git api
@@ -40,6 +41,7 @@ HEALTHCHECK --interval=30s --timeout=10s --start-period=30s --retries=3 \
 VOLUME ["/data"]
 
 CMD ["/entrypoint.sh"]
+
 
 
 
