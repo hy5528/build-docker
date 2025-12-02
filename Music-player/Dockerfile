@@ -20,7 +20,7 @@ RUN cd Vue-mmPlayer \
 FROM node:22-alpine AS app
 
 RUN apk add --no-cache nginx && npm i -g @neteasecloudmusicapienhanced/api
-COPY --from=build /app/dist /usr/share/nginx/html
+COPY --from=mmPlayer_builder /app/dist /usr/share/nginx/html
 
 
 EXPOSE 80 3000
