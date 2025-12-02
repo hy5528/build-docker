@@ -28,7 +28,7 @@ RUN unzip dist.zip && rm -rf dist.zip
 
 
 RUN apk add --no-cache nginx && npm i -g @neteasecloudmusicapienhanced/api
-COPY --from=builder /app/dist /usr/share/nginx/html
+COPY --from=mmPlayer_builder /app/dist /usr/share/nginx/html
 
 
 EXPOSE 80 3000
