@@ -1,39 +1,26 @@
-﻿FROM  --platform=$BUILDPLATFORM node:18-alpine as builder
+﻿FROM node:18-alpine as builder
 
 RUN apk add --no-cache git python3 make g++
 
-WORKDIR /
-
-RUN git clone https://github.com/Dos7t3r/Vue-mmPlayer.git app
 WORKDIR /app
 
-COPY package*.json ./
-
-RUN echo 'VUE_APP_BASE_API_URL = /api' > .env \
-    && npm install \
-    && npm run build
-
-
-FROM nginx:1.29.3-alpine3.22-slim
-
-RUN apk update && apk add --no-cache bash wget curl git 
+RUN git clone https://github.com/Dos7t3r/Vue-mmPlayer.git frontend
+WORKDIR /app/frontend
+RUN npm install && npm run build
 
 WORKDIR /app
-
-COPY . .
-
-RUN cd /app && git clone https://github.com/lu2009/NeteaseCloudMusicAPI.git NeteaseCloudMusicApi
-
-RUN cd NeteaseCloudMusicApi \
-	&& npm config set registry "https://registry.npmmirror.com/" \
+RUN git clone https://github.com/lu2009/NeteaseCloudMusicAPI.git api
+WORKDIR /app/api
+RUN npm config set registry "https://registry.npmmirror.com/" \
 	&& npm install -g npm husky \
 	&& npm install --production
-WORKDIR /app/NeteaseCloudMusicApi
-RUN chmod +x /app/NeteaseCloudMusicApi/*.sh
 
-WORKDIR /app
+FROM nginx:alpine
 
-COPY --from=builder /app/dist /usr/share/nginx/html
+RUN apk add --no-cache nodejs npm supervisor curl && \
+    rm -rf /var/cache/apk/*
+
+COPY --from=builder /app/frontend/dist /usr/share/nginx/html
 COPY --from=builder /app/api /app/api
 
 COPY nginx.conf /etc/nginx/nginx.conf
@@ -45,29 +32,12 @@ RUN mkdir -p /var/log/supervisor /data && \
 
 ENV NODE_ENV=production
 
-EXPOSE 80 3000
+EXPOSE 80
 
 HEALTHCHECK --interval=30s --timeout=10s --start-period=30s --retries=3 \
   CMD curl -f http://localhost || exit 1
 
-
+VOLUME ["/data"]
 
 CMD ["/entrypoint.sh"]
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
