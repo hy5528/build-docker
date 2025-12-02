@@ -16,7 +16,7 @@ WORKDIR /app/api
 RUN npm install -g npm husky \
 	&& npm install --production
 
-FROM nginx:alpine
+FROM nginx:1.29.3-alpine3.22-slim
 
 RUN apk add --no-cache nodejs npm supervisor curl && \
     rm -rf /var/cache/apk/*
@@ -40,6 +40,7 @@ HEALTHCHECK --interval=30s --timeout=10s --start-period=30s --retries=3 \
 VOLUME ["/data"]
 
 CMD ["/entrypoint.sh"]
+
 
 
 
