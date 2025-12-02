@@ -5,7 +5,7 @@ RUN apk add --no-cache git python3 make g++
 WORKDIR /app
 
 RUN git clone https://github.com/Dos7t3r/Vue-mmPlayer.git frontend
-WORKDIR /app/frontend  \
+RUN cd /app/frontend  \
 	&& echo 'VUE_APP_BASE_API_URL = /api' > .env \
 	&& npm install  \
 	&& npm run build 
@@ -41,6 +41,7 @@ HEALTHCHECK --interval=30s --timeout=10s --start-period=30s --retries=3 \
 VOLUME ["/data"]
 
 CMD ["/entrypoint.sh"]
+
 
 
 
