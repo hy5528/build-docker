@@ -10,11 +10,11 @@ WORKDIR /app
 COPY package*.json ./
 
 RUN echo 'VUE_APP_BASE_API_URL = /api' > .env \
-    && npm install
+    && npm install \
+    && npm run build
 
 COPY . .
 
-RUN npm run build
 
 WORKDIR /app
 RUN git clone https://github.com/nooblong/NeteaseCloudMusicApiBackup.git api
@@ -46,6 +46,7 @@ HEALTHCHECK --interval=30s --timeout=10s --start-period=30s --retries=3 \
 
 
 CMD ["/entrypoint.sh"]
+
 
 
 
