@@ -23,8 +23,6 @@ RUN cd NeteaseCloudMusicApi \
 	&& npm install -g npm husky \
 	&& npm install --production
 
-WORKDIR /app/NeteaseCloudMusicApi
-
 RUN chmod +x /app/NeteaseCloudMusicApi/*.sh
 
 WORKDIR /app
@@ -53,6 +51,7 @@ HEALTHCHECK --interval=30s --timeout=10s --start-period=30s --retries=3 \
 
 
 CMD ["/entrypoint.sh"]
+
 
 
 
