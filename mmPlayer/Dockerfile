@@ -35,7 +35,7 @@ COPY entrypoint.prod.sh /entrypoint.sh
 
 RUN mkdir -p /var/log/supervisor /data && \
     chmod +x /entrypoint.sh
-
+RUN chmod +x /app/api/*.sh
 ENV NODE_ENV=production
 
 EXPOSE 80
@@ -46,6 +46,7 @@ HEALTHCHECK --interval=30s --timeout=10s --start-period=30s --retries=3 \
 
 
 CMD ["/entrypoint.sh"]
+
 
 
 
