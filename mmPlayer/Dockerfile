@@ -16,15 +16,16 @@ RUN echo 'VUE_APP_BASE_API_URL = /api' > .env \
 COPY . .
 
 
-RUN cd /app && git clone https://github.com/lu2009/NeteaseCloudMusicAPI.git api
+RUN cd /app && git clone https://github.com/lu2009/NeteaseCloudMusicAPI.git NeteaseCloudMusicApi
 
-RUN cd api \
+RUN cd NeteaseCloudMusicApi \
 	&& npm config set registry "https://registry.npmmirror.com/" \
 	&& npm install -g npm husky \
 	&& npm install --production
-    
-WORKDIR /app/api
-RUN chmod +x /app/api/*.sh
+
+WORKDIR /app/NeteaseCloudMusicApi
+
+RUN chmod +x /app/NeteaseCloudMusicApi/*.sh
 
 WORKDIR /app
 FROM nginx:alpine
@@ -52,6 +53,7 @@ HEALTHCHECK --interval=30s --timeout=10s --start-period=30s --retries=3 \
 
 
 CMD ["/entrypoint.sh"]
+
 
 
 
