@@ -1,13 +1,13 @@
 # ---- 第 1 阶段：安装依赖 ----
 FROM --platform=$BUILDPLATFORM node:22-alpine AS deps
 
-# 启用 corepack 并激活 pnpm（Node20 默认提供 corepack）
-RUN corepack enable && corepack prepare pnpm@latest --activate
 RUN apk update && apk add --no-cache git
 WORKDIR /
 
 RUN git clone --recurse-submodules https://github.com/Decohererk/DecoTV.git app
 
+# 启用 corepack 并激活 pnpm（Node20 默认提供 corepack）
+RUN corepack enable && corepack prepare pnpm@latest --activate
 
 WORKDIR /app
 
