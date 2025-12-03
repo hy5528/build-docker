@@ -1,19 +1,21 @@
 # build
 FROM node:18-alpine as builder
 
-RUN apk update && apk add --no-cache git npm
+RUN apk update && apk add --no-cache git
 
 WORKDIR /app
 
 COPY package*.json ./
 
-RUN npm install
+RUN npm install pnpm -g
+
+RUN pnpm install
 
 COPY . .
 
 RUN [ ! -e ".env" ] && cp .env.example .env || true
 
-RUN npm build
+RUN pnpm run build
 
 # nginx
 FROM nginx:1.25.3-alpine-slim as app
@@ -24,6 +26,6 @@ COPY --from=builder /app/nginx.conf /etc/nginx/conf.d/default.conf
 
 RUN apk add --no-cache npm
 
-RUN npm install -g NeteaseCloudMusicApi
+RUN npm install @neteasecloudmusicapienhanced/api -g
 
-CMD nginx && npx NeteaseCloudMusicApi
+CMD nginx && npx @neteasecloudmusicapienhanced/api@latest
