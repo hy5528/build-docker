@@ -8,8 +8,9 @@ WORKDIR /app
 # 复制package文件
 COPY package*.json ./
 
-# 安装依赖（使用淘宝镜像加速）
-RUN npm install
+RUN npm install pnpm -g
+
+RUN pnpm install
     
 
 # 复制源代码并构建
