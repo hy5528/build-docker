@@ -52,7 +52,7 @@ jobs:
             type=raw,value=latest
       - name: Clone Overleaf Gitlab Repo
         run: |
-          git clone https://github.com/okaykai/SPlayer.git app
+          git clone https://github.com/GSQZ/TuneFree.git app
 
       - name: "Copy userpatches to build folder"
         shell: bash
