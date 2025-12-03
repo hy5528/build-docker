@@ -14,7 +14,8 @@ on:
         - 'mpd'
         - 'SPlayer'
         - 'chiko-music'
-  
+        - 'DecoTV'
+      
       
 env:
   REGISTRY: ghcr.io
