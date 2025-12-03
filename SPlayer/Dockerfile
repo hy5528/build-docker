@@ -5,7 +5,7 @@ RUN apk update && apk add --no-cache git
 
 WORKDIR /
 
-RUN git clone --recurse-submodules https://github.com/GSQZ/TuneFree.git app
+RUN git clone --recurse-submodules https://github.com/okaykai/SPlayer.git app
 
 WORKDIR /app
 
