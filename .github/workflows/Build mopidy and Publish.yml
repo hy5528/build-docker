@@ -9,14 +9,6 @@ on:
         default: 'mopidy'
         type: choice
         options:
-        - 'DecoTV'
-        - 'LunaTV'
-        - 'MoonTV'
-        - 'Music-player'
-        - 'OrangeTV'
-        - 'SPlayer'
-        - 'YesPlayMusic'
-        - 'joyflix'
         - 'mopidy'
         - 'mpd'
          
