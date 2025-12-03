@@ -11,6 +11,8 @@ on:
         options:
         - 'mopidy'
         - 'mpd'
+        - 'kvrocks'
+        
          
 jobs:
   build-and-push:
