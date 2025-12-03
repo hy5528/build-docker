@@ -6,13 +6,13 @@ on:
       MACH:
         description: 'Choose machine'
         required: true
-        default: 'redis'
+        default: 'SPlayer'
         type: choice
         options:
         - 'Music-player'
         - 'mopidy'
         - 'mpd'
-        - 'redis'
+        - 'SPlayer'
       
 env:
   REGISTRY: ghcr.io
