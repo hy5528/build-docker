@@ -13,6 +13,8 @@ on:
         - 'mopidy'
         - 'mpd'
         - 'SPlayer'
+        - 'chiko-music'
+  
       
 env:
   REGISTRY: ghcr.io
