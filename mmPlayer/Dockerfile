@@ -20,7 +20,7 @@ COPY . .
 RUN npm run build
 
 # 第二阶段：生产环境
-FROM nginx:1.29.3-alpine3.22-slim AS app
+FROM node:22-alpine AS app 
 
 WORKDIR /app
 
@@ -39,6 +39,7 @@ EXPOSE 80
 
 ENTRYPOINT ["/docker-entrypoint.sh"]
 CMD ["nginx", "-g", "daemon off;"]
+
 
 
 
