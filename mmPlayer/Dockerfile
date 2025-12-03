@@ -33,16 +33,16 @@ COPY --from=builder /app/dist /usr/share/nginx/html
 # 从构建阶段复制打包结果
 COPY --from=builder /app/dist /usr/share/nginx/html
 COPY --from=builder /app/docker-entrypoint.sh /docker-entrypoint.sh
-
+WORKDIR /app
 RUN apk add --no-cache npm python3  \
-    && npm install @unblockneteasemusic/server \
-    && yarn add @unblockneteasemusic/server # for Yarn users
+    && npm install @unblockneteasemusic/server 
 
 
 EXPOSE 80
 
 ENTRYPOINT ["/docker-entrypoint.sh"]
 CMD ["nginx", "-g", "npx -p @unblockneteasemusic/server unblockneteasemusic"]
+
 
 
 
