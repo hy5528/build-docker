@@ -14,7 +14,7 @@ on:
         - 'mpd'
         - 'SPlayer'
         - 'chiko-music'
-        - 'DecoTV'
+   
       
       
 env:
