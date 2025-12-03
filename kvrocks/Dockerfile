@@ -6,7 +6,7 @@ RUN DEBIAN_FRONTEND=noninteractive && apt-get update && apt-get upgrade -y && ap
 
 WORKDIR /
 
-RUN git clone --recurse-submodules https://github.com/apache/kvrocks.git
+RUN git clone --recurse-submodules https://github.com/apache/kvrocks.git app
 
 WORKDIR /kvrocks
 
