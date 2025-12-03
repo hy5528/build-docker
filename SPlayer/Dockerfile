@@ -13,7 +13,7 @@ COPY . .
 
 RUN [ ! -e ".env" ] && cp .env.example .env || true
 
-RUN npm run build
+RUN npm build
 
 # nginx
 FROM nginx:1.25.3-alpine-slim as app
