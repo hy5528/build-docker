@@ -1,34 +1,35 @@
-# build
-FROM node:18-alpine as builder
+# 第一阶段：构建Vue项目
+FROM --platform=$BUILDPLATFORM node:22-alpine AS builder
+RUN apk add --no-cache python3 npm git 
 
-RUN apk update && apk add --no-cache git
+WORKDIR /
+
+RUN git clone --recurse-submodules https://github.com/chen-ziwen/chiko-music.git app
 
 WORKDIR /app
 
+# 复制package文件
 COPY package*.json ./
 
-RUN npm install pnpm -g
+# 安装依赖（使用淘宝镜像加速）
+RUN npm install
+    
 
-RUN pnpm install
-
+# 复制源代码并构建
 COPY . .
+RUN npm run build
 
-RUN [ ! -e ".env" ] && cp .env.example .env || true
+# 第二阶段：生产环境
+FROM nginx:1.29.3-alpine3.22-slim AS app
 
-RUN pnpm run build
+WORKDIR /app
 
-# nginx
-FROM nginx:1.25.3-alpine-slim as app
+# 从构建阶段复制打包结果
+COPY --from=builder /app/dist /usr/share/nginx/html
 
-COPY --from=builder /app/out/renderer /usr/share/nginx/html
+# 复制自定义nginx配置（如有需要）
+# COPY nginx.conf /etc/nginx/nginx.conf
 
-COPY --from=builder /app/nginx.conf /etc/nginx/conf.d/default.conf
+EXPOSE 80
 
-RUN apk add --no-cache npm
-
-RUN apk add --no-cache npm python3 youtube-dl \
-    && npm install -g @unblockneteasemusic/server NeteaseCloudMusicApi \
-    && wget https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp -O /usr/local/bin/yt-dlp \
-    && chmod +x /usr/local/bin/yt-dlp
-
-CMD ["npx", "NeteaseCloudMusicApi"]
+CMD ["nginx", "-g", "daemon off;"]
