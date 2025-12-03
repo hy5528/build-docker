@@ -5,7 +5,7 @@ FROM --platform=$BUILDPLATFORM node:22-alpine AS deps
 RUN corepack enable && corepack prepare pnpm@latest --activate
 RUN apk update && apk add --no-cache git
 WORKDIR /
-RUN git clone https://github.com/Decohererk/DecoTV.git app
+RUN git clone --recurse-submodules https://github.com/Decohererk/DecoTV.git app
 
 WORKDIR /app
 
