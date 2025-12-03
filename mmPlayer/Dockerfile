@@ -34,7 +34,8 @@ COPY --from=builder /app/dist /usr/share/nginx/html
 COPY --from=builder /app/dist /usr/share/nginx/html
 COPY --from=builder /app/docker-entrypoint.sh /docker-entrypoint.sh
 
-RUN npm install @unblockneteasemusic/server \
+RUN apk add --no-cache npm python3  \
+    && npm install @unblockneteasemusic/server \
     && yarn add @unblockneteasemusic/server # for Yarn users
 
 
@@ -42,6 +43,7 @@ EXPOSE 80
 
 ENTRYPOINT ["/docker-entrypoint.sh"]
 CMD ["nginx", "-g", "npx -p @unblockneteasemusic/server unblockneteasemusic"]
+
 
 
 
