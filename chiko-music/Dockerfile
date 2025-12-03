@@ -3,7 +3,8 @@ FROM --platform=$BUILDPLATFORM node:22-alpine AS builder
 RUN apk add --no-cache python3 npm 
 
 WORKDIR /
-RUN git clone --recurse-submodules https://github.com/chen-ziwen/chiko-music.git app 
+
+RUN git clone --recurse-submodules https://github.com/chen-ziwen/chiko-music.git app
 
 WORKDIR /app
 
