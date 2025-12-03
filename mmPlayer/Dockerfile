@@ -41,7 +41,8 @@ RUN apk add --no-cache npm python3  \
 EXPOSE 80
 
 ENTRYPOINT ["/docker-entrypoint.sh"]
-CMD ["nginx", "-g", "@unblockneteasemusic"]
+CMD ["nginx", "-g", "daemon off;"]
+
 
 
 
