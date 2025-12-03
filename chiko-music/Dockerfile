@@ -1,6 +1,10 @@
 # 第一阶段：构建Vue项目
 FROM --platform=$BUILDPLATFORM node:22-alpine AS builder
 RUN apk add --no-cache python3 npm 
+
+WORKDIR /
+RUN git clone https://github.com/chen-ziwen/chiko-music.git app 
+
 WORKDIR /app
 
 # 复制package文件
