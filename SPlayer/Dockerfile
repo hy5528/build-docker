@@ -26,7 +26,7 @@ COPY --from=builder /app/nginx.conf /etc/nginx/conf.d/default.conf
 COPY --from=builder /app/docker-entrypoint.sh /docker-entrypoint.sh
 
 RUN apk add --no-cache npm python3 youtube-dl \
-    && npm install -g @unblockneteasemusic/server NeteaseCloudMusicApi \
+    && npm install -g @unblockneteasemusic/server \
     && wget https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp -O /usr/local/bin/yt-dlp \
     && chmod +x /usr/local/bin/yt-dlp \
     && chmod +x /docker-entrypoint.sh
