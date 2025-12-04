@@ -1,7 +1,7 @@
 # ================================
 # 构建阶段
 # ================================
-FROM node:20-alpine AS builder
+FROM --platform=$BUILDPLATFORM node:20-alpine AS builder
 
 # 配置 Alpine 镜像源（加速下载）
 RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.aliyun.com/g' /etc/apk/repositories
