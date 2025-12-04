@@ -66,6 +66,7 @@ jobs:
       - name: "Copy userpatches to build folder"
         shell: bash
         run: |
+          sudo rm -r app/public  
           rsync -av SPlayer/. ./app    
           
       - name: 构建并推送 Docker 镜像
