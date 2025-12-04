@@ -28,4 +28,5 @@ RUN apk add --no-cache npm
 
 RUN npm install @neteasecloudmusicapienhanced/api -g
 
+ENTRYPOINT ["/docker-entrypoint.sh"]
 CMD nginx && npx @neteasecloudmusicapienhanced/api@latest
