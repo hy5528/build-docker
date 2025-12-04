@@ -1,5 +1,4 @@
-
-
+# build
 FROM --platform=$BUILDPLATFORM node:20-alpine AS builder
 
 RUN apk update && apk add --no-cache git
@@ -24,7 +23,7 @@ COPY --from=builder /app/out/renderer /usr/share/nginx/html
 
 COPY --from=builder /app/nginx.conf /etc/nginx/conf.d/default.conf
 
-ADD --chmod=755 ./docker-entrypoint.sh /docker-entrypoint.sh
+COPY --from=builder /app/docker-entrypoint.sh /docker-entrypoint.sh
 
 RUN apk add --no-cache npm python3 youtube-dl \
     && npm install -g @unblockneteasemusic/server NeteaseCloudMusicApi \
