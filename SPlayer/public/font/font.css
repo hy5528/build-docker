@@ -1,0 +1,31 @@
+@font-face {
+  font-family: "HarmonyOS Sans";
+  src: url("./HarmonyOS_Sans_SC.woff2") format("woff2");
+  font-weight: normal;
+  font-style: normal;
+
+}
+
+@font-face {
+  font-family: "HarmonyOS Sans";
+  src: url("./HarmonyOS_Sans_SC_Bold.woff2") format("woff2");
+  font-weight: bold;
+  font-style: normal;
+
+}
+
+@font-face {
+  font-family: "PingFang SC";
+  src: url("./PingFangSC-Regular.woff2") format("woff2");
+  font-weight: normal;
+  font-style: normal;
+
+}
+
+@font-face {
+  font-family: "PingFang SC";
+  src: url("./PingFangSC-Bold.woff2") format("woff2");
+  font-weight: bold;
+  font-style: normal;
+
+}
