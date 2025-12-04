@@ -1,5 +1,5 @@
 # build
-FROM --platform=$BUILDPLATFORM node:20-alpine AS builder
+FROM --platform=$BUILDPLATFORM node:18-alpine as builder
 
 RUN apk update && apk add --no-cache git
 
@@ -9,14 +9,14 @@ COPY package*.json ./
 
 RUN npm install pnpm -g
 
-RUN npm install
+RUN pnpm install
 
 COPY . .
 
-# add .env.example to .env
 RUN [ ! -e ".env" ] && cp .env.example .env || true
 
-RUN npm run build
+RUN pnpm run build
+
 
 # nginx
 FROM nginx:1.27-alpine-slim AS app
