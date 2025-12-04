@@ -21,7 +21,7 @@ env:
 jobs:
   build-and-push:
     runs-on: ubuntu-latest
-     permissions:
+    permissions:
       contents: read
       packages: write
       attestations: write
