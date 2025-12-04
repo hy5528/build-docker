@@ -18,7 +18,7 @@ RUN [ ! -e ".env" ] && cp .env.example .env || true
 RUN npm run build
 
 # nginx
-FROM nginx:1.27-alpine-slim AS app
+FROM nginx:1.25.3-alpine-slim as app
 
 COPY --from=builder /app/out/renderer /usr/share/nginx/html
 
