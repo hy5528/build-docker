@@ -1,6 +1,7 @@
 FROM node:16.13.1-alpine as build
 ENV VUE_APP_NETEASE_API_URL=/api
 WORKDIR /app
+COPY package*.json ./
 RUN apk add --no-cache python3 make g++ git
 COPY package.json yarn.lock ./
 RUN yarn install
