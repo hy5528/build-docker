@@ -32,11 +32,12 @@ COPY --from=builder /app/dist /usr/share/nginx/html
 
 # 从构建阶段复制打包结果
 COPY --from=builder /app/dist /usr/share/nginx/html
-ADD --chmod=755 ./requirements.txt /requirements.txt
+ADD --chmod=755 ./docker-entrypoint.sh /docker-entrypoint.sh
 
 EXPOSE 80
 
 CMD ["nginx", "-g", "daemon off;"]
+
 
 
 
