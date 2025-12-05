@@ -1,5 +1,6 @@
 # build
 FROM --platform=$BUILDPLATFORM node:20-alpine AS builder
+ENV VUE_APP_NETEASE_API_URL=/api
 
 RUN apk update && apk add --no-cache git
 
