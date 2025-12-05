@@ -27,7 +27,7 @@ ENV NODE_TLS_REJECT_UNAUTHORIZED=0
 
 ENTRYPOINT ["/docker-entrypoint.sh"]
 
-EXPOSE 80 3000
+EXPOSE 8080 3000
 
 
 CMD ["sh", "-c", "nginx && exec npx @neteasecloudmusicapienhanced/api"]
