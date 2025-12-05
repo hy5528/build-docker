@@ -19,7 +19,7 @@ RUN apk add --no-cache nginx && npm i -g @neteasecloudmusicapienhanced/api
 
 COPY --from=build /app/docker/nginx.conf.example /etc/nginx/http.d/default.conf
 COPY --from=build /app/dist /usr/share/nginx/html
-ADD --chmod=755 ./app/docker-entrypoint.sh /docker-entrypoint.sh
+ADD --chmod=755 ./docker-entrypoint.sh /docker-entrypoint.sh
 EXPOSE 80 3000
 
 
