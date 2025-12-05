@@ -61,7 +61,7 @@ jobs:
             type=raw,value=latest
       - name: Clone Overleaf Gitlab Repo
         run: |
-          git clone https://github.com/junlongzzz/YesPlayMusic.git app
+          git clone https://github.com/alvinelric/YesPlayMusic.git app
       - name: "Copy userpatches to build folder"
         shell: bash
         run: |
