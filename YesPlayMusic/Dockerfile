@@ -2,10 +2,6 @@
 FROM --platform=$BUILDPLATFORM node:16-alpine AS builder
 RUN apk add --no-cache python3 npm git 
 
-WORKDIR /
-
-RUN git clone --recurse-submodules https://github.com/chen-ziwen/chiko-music.git app
-
 WORKDIR /app
 
 # 复制package文件
