@@ -19,6 +19,9 @@ RUN apk add --no-cache nginx && npm i -g @unblockneteasemusic/server
 COPY --from=build /app/docker/nginx.conf.example /etc/nginx/http.d/default.conf
 COPY --from=build /app/dist /usr/share/nginx/html
 
+ENV NODE_TLS_REJECT_UNAUTHORIZED=0
+
+ENTRYPOINT ["/docker-entrypoint.sh"]
 
 EXPOSE 80 3000
 
