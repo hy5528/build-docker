@@ -3,5 +3,7 @@ RUN DEBIAN_FRONTEND=noninteractive && apt-get update && apt-get upgrade -y && ap
 WORKDIR /app
 ADD --chmod=755 ./podman.sh /podman.sh
 ADD --chmod=755 ./moode_docker.sh /moode_docker.sh
+ADD --chmod=755 ./moode-player_9.0.0-1moode1~pre1_all.deb /moode-player_9.0.0-1moode1~pre1_all.deb
+
 RUN /podman.sh
 RUN /moode_docker.sh
