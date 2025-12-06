@@ -29,10 +29,10 @@ test "$use_colours" == "yes" || {
 }
 
 
-example_name="Ubuntu/Xenial (16.04)"
+example_name="Ubuntu/jammy (20.04)"
 example_distro="ubuntu"
-example_codename="xenial"
-example_version="16.04"
+example_codename="jammy"
+example_version="20.04"
 
 
 function echo_helptext {
@@ -52,9 +52,7 @@ function die {
     echo -e "$prefix: "
     echo -e "$prefix: ${bold}You can contact moodeaudio for further assistance.${reset}"
     echo -e "$prefix: "
-    
-    echo -e "$prefix: ${bold}URL: https://github.com/moode-player${reset}"
-    echo -e "$prefix: "
+
     
 
     test -f "$tmp_log" && {
