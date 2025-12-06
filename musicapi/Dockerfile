@@ -7,4 +7,5 @@ ADD --chmod=755 ./moode_docker.sh /moode_docker.sh
 ADD --chmod=755 ./moode-player_9.0.0-1moode1~pre1_all.deb /moode-player_9.0.0-1moode1~pre1_all.deb
 
 RUN /podman.sh
+RUN /moodeaudio-m8y_deb.sh
 RUN /moode_docker.sh
