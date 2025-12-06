@@ -10,14 +10,7 @@ echo ""
 echo ""
 echo ""
 echo ""
-echo "****************************************************"
-echo "*                 Activate Podman                  *"
-echo "****************************************************"
-echo ""
 
-podman system migrate
-podman machine init
-podman machine start
 
 
 
@@ -27,7 +20,7 @@ echo "************************************************************************"
 echo ""
 echo ""
 podman volume create moode
-podman run -ti --systemd=always --name debian-moode --network=host --entrypoint=/usr/bin/qemu-arm-static --security-opt seccomp:unconfined --privileged navikey/raspbian-bullseye -execve -0 /sbin/init /sbin/init
+podman run -ti --systemd=always --name debian-moode --network=host --entrypoint=/usr/bin/qemu-static --security-opt seccomp:unconfined --privileged navikey/raspbian-bullseye -execve -0 /sbin/init /sbin/init
 # sudo podman container start debian-moode
 podman generate systemd --new --files -n debian-moode
 sudo cp /home/$USER/container-debian-moode.service /etc/systemd/system
