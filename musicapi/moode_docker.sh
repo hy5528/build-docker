@@ -78,7 +78,7 @@ echo ""
 echo ""
 #read -p "Press any key to continue... " -n1 -s
 
-podman exec -ti debian-moode /bin/bash -c "apt-get install moode-player -y --fix-missing"
+podman exec -ti debian-moode /bin/bash -c "apt install -y moode-player_9.0.0-1moode1~pre1_all.deb"
 echo ""
 echo ""
 echo ""
@@ -91,7 +91,7 @@ sleep 1
 echo ""
 echo ""
 echo ""
-podman exec -ti debian-moode /bin/bash -c "apt install -y ./home/moode-player_9.0.0-1moode1~pre1_all.deb"
+podman exec -ti debian-moode /bin/bash -c "apt install -y moode-player_9.0.0-1moode1~pre1_all.deb"
 sleep 1
 echo ""
 echo ""
