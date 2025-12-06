@@ -47,17 +47,10 @@ jobs:
         id: meta
         uses: docker/metadata-action@v5
         with:
-          images: ghcr.io/hy5528/musicapi66
+          images: ghcr.io/hy5528/moode66
           tags: |
             type=raw,value=latest
-      - name: Clone Overleaf Gitlab Repo
-        run: |
-          git clone https://github.com/Catamint/yuji-music.git app
-
-      - name: "Copy userpatches to build folder"
-        shell: bash
-        run: |
-          rsync -av musicapi/. ./app  
+      
           
       - name: 构建并推送 Docker 镜像
         uses: docker/build-push-action@v5
