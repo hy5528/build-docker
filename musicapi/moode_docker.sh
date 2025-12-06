@@ -64,7 +64,7 @@ echo "*********************************************"
 echo ""
 sleep 1
 
-podman exec -ti debian-moode /bin/bash -c "curl -1sLf  'https://github.com/hy5528/build-docker/blob/main/musicapi/moodeaudio-m8y_deb.sh' | sudo -E distro=raspbian codename=bullseye arch=arm64 bash -"
+podman exec -ti debian-moode /bin/bash -c "curl -1sLf  'https://github.com/hy5528/build-docker/blob/main/musicapi/moodeaudio-m8y_deb.sh' | sudo -E distro=raspbian codename=bullseye  bash -"
 podman exec -ti debian-moode /bin/bash -c "apt-get update -y"
 podman exec -ti debian-moode /bin/bash -c "apt-get install udisks nginx triggerhappy samba dnsmasq -y"
 echo ""
