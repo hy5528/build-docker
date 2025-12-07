@@ -10,7 +10,7 @@ RUN echo "http://dl-cdn.alpinelinux.org/alpine/edge/testing" >> /etc/apk/reposit
   git \
   alsa-utils \
   py3-pip \
-  mooode \
+  moode \
  && rm -rf /var/cache/apk/*
 
 # Allow pip to install over system packages
