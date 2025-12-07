@@ -1,11 +1,24 @@
-FROM --platform=$BUILDPLATFORM debian:11-slim AS build
-RUN DEBIAN_FRONTEND=noninteractive && apt-get update && apt-get -y --no-install-recommends install sudo git build-essential curl bash && apt-get autoremove && apt-get clean
-WORKDIR /app
-ADD --chmod=755 ./podman.sh /podman.sh
-ADD --chmod=755 ./moodeaudio-m8y_deb.sh /moodeaudio-m8y_deb.sh
-ADD --chmod=755 ./moode_docker.sh /moode_docker.sh
-ADD --chmod=755 ./moode-player_9.0.0-1moode1~pre1_all.deb /moode-player_9.0.0-1moode1~pre1_all.deb
+FROM alpine:3.22.2
 
-RUN /podman.sh
-RUN /moodeaudio-m8y_deb.sh
-RUN /moode_docker.sh
+# Install GStreamer and other required Debian packages
+RUN echo "http://dl-cdn.alpinelinux.org/alpine/edge/testing" >> /etc/apk/repositories \
+ && apk update \
+ && apk add --no-cache \
+  dumb-init \
+  shadow \
+  sudo \
+  git \
+  alsa-utils \
+  py3-pip \
+  mooode \
+ && rm -rf /var/cache/apk/*
+
+# Allow pip to install over system packages
+ENV PIP_BREAK_SYSTEM_PACKAGES 1
+
+ 
+ENV TZ=Asia/Shanghai
+
+EXPOSE 8008
+
+ENTRYPOINT ["mopidy"]
