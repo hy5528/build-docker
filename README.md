@@ -17,7 +17,6 @@ A simple docker-compose.yaml file.
 
 
 ```text
-
 services:
   mopidy:
     image: hy5528/mopidy:latest
@@ -113,11 +112,6 @@ docker run -d --name SPlayer --restart=always -p 25884:25884 ghcr.nju.edu.cn/hy5
 
 ```
 
-# yesplaymusic
-```text
-docker run -d --name yesplaymusic --restart=always -p 5300:80 ghcr.nju.edu.cn/hy5528/yesplaymusic66:latest
-
-```
 
 # mmPlayer
 ```text
