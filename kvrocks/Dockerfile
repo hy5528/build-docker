@@ -1,4 +1,4 @@
-FROM --platform=$BUILDPLATFORM debian:bookworm-slim AS build
+FROM debian:bookworm-slim AS build
 
 ARG MORE_BUILD_ARGS
 
