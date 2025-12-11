@@ -4,5 +4,5 @@ Mopidy-Mpd
 Mopidy-Muse
 Mopidy-Soundcloud
 Mopidy-Youtube
-youtube-dl
+
 
