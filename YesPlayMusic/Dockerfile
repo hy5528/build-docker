@@ -1,4 +1,4 @@
-FROM --platform=$BUILDPLATFORM node:16-alpine AS build
+FROM node:16-alpine AS build
 
 ENV VUE_APP_NETEASE_API_URL=/api
 
@@ -12,11 +12,13 @@ RUN apk add --no-cache python3 make g++ git \
 
 # app
 
-FROM node:20-alpine AS app
+FROM node:22-alpine AS app
 
-RUN apk add --no-cache nginx && npm i -g @neteaseapireborn/api
+RUN apk add --no-cache nginx && npm i -g @neteasecloudmusicapienhanced/api
 
 COPY --from=build /app/docker/nginx.conf.example /etc/nginx/http.d/default.conf
 COPY --from=build /app/dist /usr/share/nginx/html
 
-CMD ["sh", "-c", "nginx && exec npx @neteaseapireborn/api"]
+EXPOSE 80 3000
+
+CMD ["sh", "-c", "nginx && exec npx @neteasecloudmusicapienhanced/api"]
