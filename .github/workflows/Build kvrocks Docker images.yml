@@ -47,11 +47,7 @@ jobs:
         run: |
           git clone https://github.com/apache/kvrocks.git app
       
-      - name: "Copy userpatches to build folder"
-        shell: bash
-        run: |
-          rsync -av kvrocks/. ./app 
-         
+
       - name: Build and push by digest
         id: build
         uses: docker/build-push-action@v6
