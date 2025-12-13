@@ -19,18 +19,11 @@ env:
   IMAGE_NAME: ${{ github.repository }}
 
 jobs:
-  name: "Build docker images"
-    runs-on: ${{ matrix.os }}
-    strategy:
-      fail-fast: false
-      matrix:
-        include:
-          - platform: linux/amd64
-            os: ubuntu-24.04
-          - platform: linux/arm64
-            os: ubuntu-24.04-arm
-          - platform: linux/arm/v7
-            os: ubuntu-24.04-arm
+  build-and-push:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
 
    
     steps:      
@@ -70,7 +63,7 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           context: ./app
-          platforms: ${{ matrix.platform }}
+          platforms: linux/amd64,linux/arm64,linux/arm/v7
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
