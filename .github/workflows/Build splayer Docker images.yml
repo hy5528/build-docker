@@ -19,8 +19,8 @@ env:
   IMAGE_NAME: ${{ github.repository }}
 
 jobs:
-  build-and-push:
-  runs-on: ${{ matrix.os }}
+  name: "Build docker images"
+    runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
       matrix:
