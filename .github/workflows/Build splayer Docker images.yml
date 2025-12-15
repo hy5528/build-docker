@@ -1,4 +1,4 @@
-name: Build  splayer Docker images
+name: Build Splayer Docker images
 
 on:
   workflow_dispatch:
@@ -25,7 +25,7 @@ jobs:
       contents: read
       packages: write
 
-   
+      
     steps:      
       - name: 检出代码
         uses: actions/checkout@v4
