@@ -56,7 +56,7 @@ services:
       - moontv-kvrocks
 
   moontv-kvrocks:
-    image: hy5528/kvrocks:latest
+    image: apache/kvrocks
     container_name: moontv-kvrocks
     restart: unless-stopped
     volumes:
