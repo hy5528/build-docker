@@ -1,5 +1,6 @@
 # Stage 1: Build Frontend
 FROM --platform=$BUILDPLATFORM node:20-alpine AS frontend-builder
+RUN apk update && apk add --no-cache git npm
 WORKDIR /app
 COPY package*.json ./
 # Remove electron and electron-builder from package.json
