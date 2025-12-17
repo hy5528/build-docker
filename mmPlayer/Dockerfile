@@ -30,13 +30,12 @@ COPY --from=builder /app/dist /usr/share/nginx/html
 # 复制自定义nginx配置（如有需要）
 # COPY nginx.conf /etc/nginx/nginx.con
 
-# 从构建阶段复制打包结果
-COPY --from=builder /app/dist /usr/share/nginx/html
 
 
 EXPOSE 80
 
 CMD ["nginx", "-g", "daemon off;"]
+
 
 
 
