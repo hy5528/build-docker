@@ -8,7 +8,6 @@ RUN echo "http://dl-cdn.alpinelinux.org/alpine/edge/testing" >> /etc/apk/reposit
   npm \
   sudo \
   git \
-  alsa-utils \
   py3-pip \
  && rm -rf /var/cache/apk/*
 # Allow pip to install over system packages
