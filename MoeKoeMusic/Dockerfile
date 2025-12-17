@@ -18,11 +18,9 @@ COPY . .
 RUN npm run build:docker
 
 # Stage 2: Setup Combined App
-FROM node:20-alpine
+FROM nginx:1.29.3-alpine3.22-slim AS app
 WORKDIR /app
 
-# Install Nginx
-RUN apk add --no-cache nginx
 
 # Copy API code
 COPY ./api ./api
