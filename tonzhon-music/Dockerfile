@@ -4,12 +4,10 @@ RUN apk add --no-cache python3 npm git
 
 WORKDIR /
 
-RUN git clone --recurse-submodules https://github.com/chen-ziwen/chiko-music.git app
+RUN git clone --recurse-submodules https://github.com/enzeberg/tonzhon-music.git 
 
-WORKDIR /app
+WORKDIR /tonzhon-music
 
-# 复制package文件
-COPY package*.json ./
 
 # 安装依赖（使用淘宝镜像加速）
 RUN npm install
@@ -22,10 +20,10 @@ RUN npm run build
 # 第二阶段：生产环境
 FROM nginx:1.29.3-alpine3.22-slim AS app
 
-WORKDIR /app
+
 
 # 从构建阶段复制打包结果
-COPY --from=builder /app/dist /usr/share/nginx/html
+COPY --from=builder /tonzhon-music/dist /usr/share/nginx/html
 
 # 复制自定义nginx配置（如有需要）
 # COPY nginx.conf /etc/nginx/nginx.conf
