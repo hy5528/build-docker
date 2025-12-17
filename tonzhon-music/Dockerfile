@@ -28,4 +28,4 @@ RUN npm run build
 
 EXPOSE 80
 
-CMD ["-g", "daemon off;"]
+CMD ["--stdout", "--no-daemon"]
