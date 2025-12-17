@@ -20,6 +20,7 @@ RUN npm run build:docker
 
 # Stage 2: Setup Combined App
 FROM nginx:1.29.3-alpine3.22-slim AS app
+RUN apk update && apk add --no-cache git npm
 WORKDIR /app
 
 
