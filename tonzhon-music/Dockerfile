@@ -1,6 +1,14 @@
 # 第一阶段：构建Vue项目
-FROM --platform=$BUILDPLATFORM node:22-alpine AS builder
-RUN apk add --no-cache python3 npm git 
+FROM alpine:3.22.2
+
+# Install GStreamer and other required Debian packages
+RUN echo "http://dl-cdn.alpinelinux.org/alpine/edge/testing" >> /etc/apk/repositories \
+ && apk update \
+ && apk add --no-cache RUN apk add --no-cache python3 npm git \
+ && rm -rf /var/cache/apk/*
+
+# Allow pip to install over system packages
+ENV PIP_BREAK_SYSTEM_PACKAGES 1
 
 
 WORKDIR /app
