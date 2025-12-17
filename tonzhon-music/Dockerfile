@@ -4,7 +4,7 @@ RUN apk add --no-cache python3 npm git
 
 WORKDIR /
 
-RUN git clone --recurse-submodules https://github.com/enzeberg/tonzhon-music.git 
+RUN git clone https://github.com/enzeberg/tonzhon-music.git 
 
 RUN cd tonzhon-music \
 	&& npm install  \
