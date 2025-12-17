@@ -23,4 +23,4 @@ RUN npm run build
 
 EXPOSE 80
 
-CMD ["--no-daemon"]
+
