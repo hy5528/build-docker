@@ -1,12 +1,10 @@
-FROM alpine:3.22.2
+# 第一阶段：构建Vue项目
+FROM --platform=$BUILDPLATFORM node:22-alpine AS builder
+RUN apk add --no-cache python3 npm git 
 
-# Install GStreamer and other required Debian packages
-RUN echo "http://dl-cdn.alpinelinux.org/alpine/edge/testing" >> /etc/apk/repositories \
- && apk update \
- && apk add --no-cache \
-  npm \
-  git \
- && rm -rf /var/cache/apk/*
+WORKDIR /
+
+RUN git clone --recurse-submodules https://github.com/chen-ziwen/chiko-music.git app
 
 WORKDIR /app
 
@@ -21,6 +19,17 @@ RUN npm install
 COPY . .
 RUN npm run build
 
+# 第二阶段：生产环境
+FROM nginx:1.29.3-alpine3.22-slim AS app
+
+WORKDIR /app
+
+# 从构建阶段复制打包结果
+COPY --from=builder /app/dist /usr/share/nginx/html
+
+# 复制自定义nginx配置（如有需要）
+# COPY nginx.conf /etc/nginx/nginx.conf
+
 EXPOSE 80
 
-
+CMD ["nginx", "-g", "daemon off;"]
