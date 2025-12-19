@@ -1,6 +1,6 @@
 FROM --platform=$BUILDPLATFORM node:16-alpine AS build
 
-ENV VUE_APP_NETEASE_API_URL=/api
+ENV VUE_APP_NETEASE_API_URL=https://ncm-api.prod.gbclstudio.cn
 
 WORKDIR /app
 
@@ -14,12 +14,10 @@ RUN apk add --no-cache python3 make g++ git \
 
 FROM nginx:1.29.3-alpine3.22-slim AS app
 
-RUN apk add --no-cache npm python3 \
-    && npm install -g @neteasecloudmusicapienhanced/api
 
 COPY --from=build /app/docker/nginx.conf.example /etc/nginx/http.d/default.conf
 COPY --from=build /app/dist /usr/share/nginx/html
 
-EXPOSE 80 3000
+EXPOSE 80 
 
-CMD ["sh", "-c", "nginx && exec npx @neteasecloudmusicapienhanced/api"]
+CMD ["nginx", "-g", "daemon off;"]
