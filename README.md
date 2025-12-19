@@ -37,7 +37,6 @@ services:
 # lunatv
 kvrocks储存
 ```text
-
 services:
   moontv-core:
     image: ghcr.nju.edu.cn/hy5528/lunatv66:latest
@@ -111,7 +110,11 @@ networks:
 docker run -d --name SPlayer --restart=always -p 25884:25884 ghcr.nju.edu.cn/hy5528/splayer66:latest
 
 ```
+# yesplaymusic
+```text
+docker run -d --name yesplaymusic --restart=always -p 5300:80 ghcr.nju.edu.cn/hy5528/yesplaymusic66:latest
 
+```
 
 # mmPlayer
 ```text
