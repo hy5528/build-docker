@@ -110,6 +110,11 @@ networks:
 docker run -d --name SPlayer --restart=always -p 25884:25884 ghcr.nju.edu.cn/hy5528/splayer66:latest
 
 ```
+# moekoemusic
+```text
+docker run -d --name moekoemusic --restart=always -p 8080:8080 ghcr.nju.edu.cn/hy5528/moekoemusic66:latest
+
+```
 # yesplaymusic
 ```text
 docker run -d --name yesplaymusic --restart=always -p 5300:80 ghcr.nju.edu.cn/hy5528/yesplaymusic66:latest
