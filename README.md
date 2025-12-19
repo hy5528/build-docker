@@ -104,6 +104,20 @@ networks:
   moontv-network:
     driver: bridge
 ```
+# mpd
+```text
+docker run \
+    -d \
+    --name mpd \
+    --device /dev/snd \
+    -p 6600:6600 \
+    -p 8000:8000 \
+    -v /your/mpd:/mpd.conf \
+    -v /your/music:/music \
+    -v /your/playlists:/var/lib/mpd/playlists \
+    ghcr.nju.edu.cn/hy5528/mpd66:latest
+
+```
 
 # splayer
 ```text
