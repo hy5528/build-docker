@@ -11,11 +11,6 @@ Mopidy-Mpd
 Mopidy-Muse
 Mopidy-Soundcloud
 
-## Examples
-
-A simple docker-compose.yaml file.  
-
-
 ```text
 services:
   mopidy:
