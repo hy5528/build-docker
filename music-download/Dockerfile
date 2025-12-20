@@ -1,4 +1,4 @@
-FROM --platform=$BUILDPLATFORM node:20-alpine AS builder
+FROM --platform=$BUILDPLATFORM node:22-alpine AS builder
 RUN corepack enable && corepack prepare pnpm@latest --activate
 
 # Install dependencies
