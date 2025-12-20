@@ -15,9 +15,6 @@ RUN npm run build
 # ---- 第 3 阶段：生成运行时镜像 ----
 FROM node:20-alpine AS runner
 
-
-
-
 WORKDIR /app
 ENV NODE_ENV=production
 ENV PORT=3000
@@ -31,9 +28,6 @@ COPY --from=builder /app/scripts ./scripts
 # 从构建器中复制 public 和 .next/static 目录
 COPY --from=builder /app/public ./public
 COPY --from=builder /app/.next/static ./.next/static
-
-# 切换到非特权用户
-USER nextjs
 
 EXPOSE 3000
 
