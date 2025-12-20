@@ -9,8 +9,8 @@ WORKDIR /app
 # 仅复制依赖清单，提高构建缓存利用率
 COPY package*.json ./
 
-# 安装所有依赖（含 devDependencies，后续会裁剪）
-RUN pnpm install --frozen-lockfile
+# 安装所有依赖
+RUN pnpm install
 
 # ---- 第 2 阶段：构建项目 ----
 FROM --platform=$BUILDPLATFORM node:22-alpine AS builder
