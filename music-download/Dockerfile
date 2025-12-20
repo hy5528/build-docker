@@ -4,7 +4,7 @@ RUN apk update && apk add --no-cache git npm
 FROM base AS deps
 WORKDIR /app
 COPY package*.json ./
-RUN npm ci
+RUN npm install
 
 # Build
 FROM base AS builder
