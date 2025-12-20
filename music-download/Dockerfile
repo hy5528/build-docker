@@ -3,8 +3,7 @@ FROM --platform=$BUILDPLATFORM node:22-alpine AS deps
 
 
 
-# 启用 corepack 并激活 pnpm（Node20 默认提供 corepack）
-RUN corepack enable && corepack prepare pnpm@latest --activate
+RUN apk update && apk add --no-cache git npm
 
 WORKDIR /app
 
@@ -12,7 +11,7 @@ WORKDIR /app
 COPY package.json ./
 
 # 安装所有依赖（含 devDependencies，后续会裁剪）
-RUN pnpm install 
+RUN npm install 
 
 # ---- 第 2 阶段：构建项目 ----
 FROM --platform=$BUILDPLATFORM node:22-alpine AS builder
