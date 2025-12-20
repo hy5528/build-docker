@@ -1,32 +1,22 @@
-FROM --platform=$BUILDPLATFORM node:20-alpine AS base
-RUN apk update && apk add --no-cache git npm
-# Install dependencies
-FROM base AS deps
-WORKDIR /app
-COPY package*.json ./
-RUN npm install
+FROM --platform=$BUILDPLATFORM node:20-alpine AS build
 
-# Build
-FROM base AS builder
+ENV VUE_APP_NETEASE_API_URL=https://ncm-api.prod.gbclstudio.cn
+
 WORKDIR /app
-COPY --from=deps /app/node_modules ./node_modules
+
 COPY . .
-RUN npm run build
 
-# Production
-FROM base AS runner
-WORKDIR /app
+RUN apk add --no-cache python3 make g++ git \
+    && yarn install --frozen-lockfile \
+    && yarn build
 
-ENV NODE_ENV production
+# app
 
-RUN addgroup -g 1001 -S nodejs && adduser -u 1001 -S nextjs -G nodejs
+FROM nginx:1.29.3-alpine3.22-slim AS app
 
-COPY --from=builder /app/public ./public
-COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
-COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
 
-USER nextjs
-
+COPY --from=build /app/docker/nginx.conf.example /etc/nginx/http.d/default.conf
+COPY --from=build /app/dist /usr/share/nginx/html
 EXPOSE 3000
 
 ENV PORT 3000
