@@ -1,36 +1,20 @@
-# ---- 第 1 阶段：安装依赖 ----
-FROM --platform=$BUILDPLATFORM node:22-alpine AS deps
-
-
+FROM --platform=$BUILDPLATFORM node:20-alpine AS builder
 
 RUN apk update && apk add --no-cache git npm
 
 WORKDIR /app
 
-# 仅复制依赖清单，提高构建缓存利用率
-COPY package.json ./
+COPY package*.json ./
 
-# 安装所有依赖（含 devDependencies，后续会裁剪）
-RUN npm install 
+RUN npm install
 
-# ---- 第 2 阶段：构建项目 ----
-FROM --platform=$BUILDPLATFORM node:22-alpine AS builder
-RUN corepack enable && corepack prepare pnpm@latest --activate
-WORKDIR /app
-
-# 复制依赖
-COPY --from=deps /app/node_modules ./node_modules
-# 复制全部源代码
 COPY . .
 
-# 在构建阶段也显式设置 DOCKER_ENV，
-ENV DOCKER_ENV=true
-
-# 生成生产构建
-RUN pnpm run build
+RUN npm run build
 
 # ---- 第 3 阶段：生成运行时镜像 ----
 FROM node:20-alpine AS runner
+
 
 # 创建非 root 用户
 RUN addgroup -g 1001 -S nodejs && adduser -u 1001 -S nextjs -G nodejs
