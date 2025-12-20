@@ -15,7 +15,7 @@ RUN apk add --no-cache python3 make g++ git \
 FROM nginx:1.29.3-alpine3.22-slim AS app
 
 
-COPY --from=build /app/dist /usr/share/nginx/html
+COPY --from=builder /app/out/renderer /usr/share/nginx/html
 EXPOSE 3000
 
 ENV PORT 3000
