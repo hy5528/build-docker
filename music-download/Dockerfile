@@ -15,7 +15,6 @@ RUN apk add --no-cache python3 make g++ git \
 FROM nginx:1.29.3-alpine3.22-slim AS app
 
 
-COPY --from=build /app/docker/nginx.conf.example /etc/nginx/http.d/default.conf
 COPY --from=build /app/dist /usr/share/nginx/html
 EXPOSE 3000
 
