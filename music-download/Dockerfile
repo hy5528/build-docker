@@ -4,7 +4,7 @@ FROM --platform=$BUILDPLATFORM node:22-alpine AS base
 FROM base AS deps
 WORKDIR /app
 COPY package*.json ./
-RUN npm ci
+RUN pnpm install --frozen-lockfile
 
 # Build
 FROM base AS builder
