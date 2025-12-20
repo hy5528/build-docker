@@ -1,6 +1,6 @@
 FROM --platform=$BUILDPLATFORM node:20-alpine AS build
 
-ENV VUE_APP_NETEASE_API_URL=https://ncm-api.prod.gbclstudio.cn
+
 
 WORKDIR /app
 
