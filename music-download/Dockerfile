@@ -16,8 +16,7 @@ RUN npm run build
 FROM node:20-alpine AS runner
 
 
-# 创建非 root 用户
-RUN addgroup -g 1001 -S nodejs && adduser -u 1001 -S nextjs -G nodejs
+
 
 WORKDIR /app
 ENV NODE_ENV=production
@@ -25,13 +24,13 @@ ENV PORT=3000
 ENV DOCKER_ENV=true
 
 # 从构建器中复制 standalone 输出
-COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
+COPY --from=builder /app/.next/standalone ./
 # 从构建器中复制 scripts 目录
-COPY --from=builder --chown=nextjs:nodejs /app/scripts ./scripts
+COPY --from=builder /app/scripts ./scripts
 
 # 从构建器中复制 public 和 .next/static 目录
-COPY --from=builder --chown=nextjs:nodejs /app/public ./public
-COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
+COPY --from=builder /app/public ./public
+COPY --from=builder /app/.next/static ./.next/static
 
 # 切换到非特权用户
 USER nextjs
