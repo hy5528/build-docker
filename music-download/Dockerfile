@@ -15,7 +15,7 @@ COPY . .
 RUN npm run build
 
 # Production
-FROM base AS runner
+FROM node:20-alpine AS runner
 WORKDIR /app
 
 ENV NODE_ENV production
