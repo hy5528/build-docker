@@ -1,7 +1,5 @@
 # ---- 第 1 阶段：安装依赖 ----
-FROM --platform=$BUILDPLATFORM node:22-alpine AS deps
-
-
+FROM --platform=$BUILDPLATFORM node:20-alpine AS deps
 
 # 启用 corepack 并激活 pnpm（Node20 默认提供 corepack）
 RUN corepack enable && corepack prepare pnpm@latest --activate
@@ -15,7 +13,7 @@ COPY package.json pnpm-lock.yaml ./
 RUN pnpm install --frozen-lockfile
 
 # ---- 第 2 阶段：构建项目 ----
-FROM --platform=$BUILDPLATFORM node:22-alpine AS builder
+FROM node:20-alpine AS builder
 RUN corepack enable && corepack prepare pnpm@latest --activate
 WORKDIR /app
 
@@ -24,8 +22,9 @@ COPY --from=deps /app/node_modules ./node_modules
 # 复制全部源代码
 COPY . .
 
-# 在构建阶段也显式设置 DOCKER_ENV，
+# 在构建阶段也显式设置 DOCKER_ENV 和 DOCKER_BUILD
 ENV DOCKER_ENV=true
+ENV DOCKER_BUILD=true
 
 # 生成生产构建
 RUN pnpm run build
