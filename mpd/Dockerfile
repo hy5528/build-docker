@@ -8,7 +8,6 @@ ENV \
 #
 RUN set -xe \
 #
-    && userdel -rf alpine \
     && addgroup -g ${PGID} -S ${S6_USER} \
     && adduser -u ${PUID} -G ${S6_USER} -h ${S6_USERHOME} -s /bin/false -D ${S6_USER} \
 #
