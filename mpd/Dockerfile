@@ -2,8 +2,11 @@ FROM alpine:3
 
 ARG VERSION
 
-RUN set -ex && \
-    apk add --no-cache \
+
+# Install GStreamer and other required Debian packages
+RUN echo "http://dl-cdn.alpinelinux.org/alpine/edge/testing" >> /etc/apk/repositories \
+ && apk update \
+ && apk add --no-cache \
         lsa-lib \
         alsa-plugins-pulse \
         alsa-utils \
