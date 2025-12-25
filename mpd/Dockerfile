@@ -12,7 +12,6 @@ RUN set -ex && \
         mpc \
         mpd \
         mpdscribble \
-        ncmpcpp \
         ympd \
     && mkdir -p /defaults \
     && mv /etc/mpd.conf /defaults/mpd.conf.default \
