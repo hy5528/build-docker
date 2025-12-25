@@ -17,7 +17,6 @@ RUN echo "http://dl-cdn.alpinelinux.org/alpine/edge/testing" >> /etc/apk/reposit
         ympd \
     && mkdir -p /defaults \
     && mv /etc/mpd.conf /defaults/mpd.conf.default \
-    && mv /etc/mpdscribble.conf /defaults/mpdscribble.conf.default \
     && addgroup pulse \
     && adduser ${S6_USER} audio \
     && adduser ${S6_USER} pulse \
