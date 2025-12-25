@@ -5,7 +5,6 @@ RUN apt-get update && apt-get install -yq --no-install-recommends \
         bash  \
     && rm -rf /var/lib/apt/lists/*
 
-RUN sudo rm /etc/apt/sources.list.d/sid.list
 RUN sudo apt update -y
 RUN sudo apt install aptitude
 RUN echo 'APT::Default-Release "bullseye";' | sudo tee /etc/apt/apt.conf.d/00default
