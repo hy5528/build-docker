@@ -1,9 +1,5 @@
-FROM debian:11-slim 
-RUN apt-get update && apt-get install -yq --no-install-recommends \
-        curl \
-        git \
-        bash  \
-    && rm -rf /var/lib/apt/lists/*
+FROM ghcr.io/linuxserver/baseimage-debian:bullseye
+
 
 RUN sudo apt update -y
 RUN sudo apt install aptitude
