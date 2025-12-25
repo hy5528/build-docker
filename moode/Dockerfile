@@ -1,4 +1,4 @@
-FROM ghcr.io/linuxserver/baseimage-debian:bullseye
+FROM rust:slim-bullseye AS rust-builder
 
 
 RUN sudo apt update -y
