@@ -5,7 +5,7 @@ ARG VERSION
 #
 RUN set -xe \
 
-    && apk add --no-cache --purge \
+    && apk add --no-cache \
         alsa-lib \
         alsa-plugins-pulse \
         alsa-utils \
