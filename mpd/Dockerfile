@@ -7,7 +7,6 @@ ARG VERSION
 RUN echo "http://dl-cdn.alpinelinux.org/alpine/edge/testing" >> /etc/apk/repositories \
  && apk update \
  && apk add --no-cache \
-        lsa-lib \
         alsa-plugins-pulse \
         alsa-utils \
         libmpdclient \
