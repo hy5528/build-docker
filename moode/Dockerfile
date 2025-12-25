@@ -1,7 +1,5 @@
 FROM rust:slim-bullseye AS rust-builder
 
-
-RUN sudo apt update -y
 RUN sudo apt install aptitude
 RUN echo 'APT::Default-Release "bullseye";' | sudo tee /etc/apt/apt.conf.d/00default
 RUN sudo cat /etc/apt/sources.list.d/sid.list
