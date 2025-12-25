@@ -3,7 +3,7 @@ FROM alpine:3
 ARG VERSION
 
 RUN set -ex && \
-    apk add --no-cache mpd && \
+    apk add --no-cache \
         lsa-lib \
         alsa-plugins-pulse \
         alsa-utils \
