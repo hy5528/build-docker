@@ -2,15 +2,9 @@ FROM alpine:3
 
 ARG VERSION
 #
-ENV \
-    S6_USER=mpd \
-    S6_USERHOME=/var/lib/mpd
 #
 RUN set -xe \
-#
-    && addgroup -g ${PGID} -S ${S6_USER} \
-    && adduser -u ${PUID} -G ${S6_USER} -h ${S6_USERHOME} -s /bin/false -D ${S6_USER} \
-#
+
     && apk add --no-cache --purge \
         alsa-lib \
         alsa-plugins-pulse \
