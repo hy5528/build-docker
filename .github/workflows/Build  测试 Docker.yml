@@ -9,7 +9,7 @@ on:
         default: 'SPlayer'
         type: choice
         options:
-        - 'mmPlayer'
+        - 'moode'
         - 'mopidy'
         - 'mpd'
         - 'SPlayer'
