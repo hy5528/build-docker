@@ -1,8 +1,6 @@
-# syntax=docker/dockerfile:1
-#
-ARG IMAGEBASE=frommakefile
-#
-FROM ${IMAGEBASE}
+FROM alpine:3
+
+ARG VERSION
 #
 ENV \
     S6_USER=mpd \
