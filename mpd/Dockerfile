@@ -7,13 +7,13 @@ ARG VERSION
 RUN echo "http://dl-cdn.alpinelinux.org/alpine/edge/testing" >> /etc/apk/repositories \
  && apk update \
  && apk add --no-cache \
+        alsa-lib \
         alsa-plugins-pulse \
         alsa-utils \
         libmpdclient \
         libpulse \
         mpc \
         mpd \
-        mpdscribble \
         ympd \
     && mkdir -p /defaults \
     && mv /etc/mpd.conf /defaults/mpd.conf.default \
