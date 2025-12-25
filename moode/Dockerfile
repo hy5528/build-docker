@@ -1,5 +1,18 @@
 FROM rust:slim-bullseye AS rust-builder
-
+RUN apt-get update && apt-get install -yq --no-install-recommends \
+        build-essential \
+        cmake \
+        curl \
+        sudo \
+        git \
+        patch \
+        libgstreamer-plugins-base1.0-dev \
+        libgstreamer1.0-dev \
+        libcsound64-dev \
+        libclang-11-dev \
+        libpango1.0-dev  \
+        libdav1d-dev \
+    && rm -rf /var/lib/apt/lists/*
 RUN sudo apt install aptitude
 RUN echo 'APT::Default-Release "bullseye";' | sudo tee /etc/apt/apt.conf.d/00default
 RUN sudo cat /etc/apt/sources.list.d/sid.list
