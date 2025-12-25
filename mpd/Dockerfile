@@ -18,8 +18,6 @@ RUN echo "http://dl-cdn.alpinelinux.org/alpine/edge/testing" >> /etc/apk/reposit
     && mkdir -p /defaults \
     && mv /etc/mpd.conf /defaults/mpd.conf.default \
     && addgroup pulse \
-    && adduser ${S6_USER} audio \
-    && adduser ${S6_USER} pulse \
     && chmod 1777 /var/run/mpd \
     && rm -rf /var/cache/apk/* /tmp/*
 #
