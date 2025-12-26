@@ -29,7 +29,7 @@ RUN set -xe \
     && chmod 1777 /var/run/mpd \
     && rm -rf /var/cache/apk/* /tmp/*
 #
-
+COPY mpd.conf /etc/mpd.conf
 #
 VOLUME /var/lib/mpd/ /music
 #
