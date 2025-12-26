@@ -7,6 +7,7 @@ WORKDIR /
 
 RUN apk update \
   && apk add \
+      bash \
       alpine-sdk \
       boost-dev \
       autoconf \
