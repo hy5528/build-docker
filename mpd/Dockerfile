@@ -7,6 +7,7 @@ ARG VERSION
 RUN echo "http://dl-cdn.alpinelinux.org/alpine/edge/testing" >> /etc/apk/repositories \
  && apk update \
  && apk add --no-cache \
+        ffmpeg \
         alsa-lib \
         alsa-plugins-pulse \
         alsa-utils \
