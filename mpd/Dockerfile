@@ -2,7 +2,7 @@
 #
 ARG IMAGEBASE=frommakefile
 #
-FROM ${IMAGEBASE}
+FROM alpine:3.22
 #
 ENV \
     S6_USER=mpd \
@@ -29,9 +29,6 @@ RUN set -xe \
     # && echo "http://dl-cdn.alpinelinux.org/alpine/edge/community/" >> /etc/apk/repositories \
     # && echo "http://dl-cdn.alpinelinux.org/alpine/edge/testing/" >> /etc/apk/repositories \
     # && apk add -U --no-cache \
-    && mkdir -p /defaults \
-    && mv /etc/mpd.conf /defaults/mpd.conf.default \
-    && mv /etc/mpdscribble.conf /defaults/mpdscribble.conf.default \
     && addgroup pulse \
     && adduser ${S6_USER} audio \
     && adduser ${S6_USER} pulse \
