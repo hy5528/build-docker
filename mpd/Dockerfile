@@ -14,7 +14,7 @@ RUN set -ex && \
 
 COPY mpd.conf /etc/mpd.conf
 
-VOLUME /var/lib/mpd
+VOLUME /var/lib/mpd/ /music
 
 EXPOSE 6600 8000
 
