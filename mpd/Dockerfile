@@ -45,4 +45,4 @@ HEALTHCHECK \
         || exit 1
 #
 ENTRYPOINT ["mpd", "--no-daemon"]
-CMD ["--stdout", "--stderr"]
+
