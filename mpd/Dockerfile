@@ -14,13 +14,8 @@ RUN set -ex && \
         mpdscribble \
         ncmpcpp \
         ympd \
-    mkdir -p /var/lib/mpd/playlists && \
-    mkdir -p /music && \
-    touch /var/lib/mpd/database \
-        /var/lib/mpd/mpd.pid \
-        /var/lib/mpd/state \
-        /var/lib/mpd/sticker.sql && \
-    chown mpd:audio -R /var/lib/mpd
+    && chmod 1777 /var/run/mpd \
+    && rm -rf /var/cache/apk/* /tmp/*
 
 COPY mpd.conf /etc/mpd.conf
 
