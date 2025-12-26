@@ -12,7 +12,6 @@ RUN mkdir -p \
     chown -R mpd:audio /var/lib/mpd /var/log/mpd /run/mpd
 
 # Copy MPD configuration
-COPY ./mpd.conf /etc/mpd.conf
 RUN chown mpd:audio /etc/mpd.conf
 
 # Switch to MPD user
