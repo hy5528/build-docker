@@ -26,8 +26,6 @@ RUN set -xe \
     # && echo "http://dl-cdn.alpinelinux.org/alpine/edge/testing/" >> /etc/apk/repositories \
     # && apk add -U --no-cache \
     && addgroup pulse \
-    && adduser ${S6_USER} audio \
-    && adduser ${S6_USER} pulse \
     && chmod 1777 /var/run/mpd \
     && rm -rf /var/cache/apk/* /tmp/*
 #
