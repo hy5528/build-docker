@@ -1,4 +1,3 @@
-MPD_TAG="0.21.22"
 MPD_CNF=
 MPD_PORT=6600
 MPD_SND=/dev/snd
