@@ -38,3 +38,4 @@ HEALTHCHECK \
         || exit 1
 #
 ENTRYPOINT ["/init"]
+CMD ["mpd", "--stdout", "--no-daemon"]
