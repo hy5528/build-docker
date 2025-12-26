@@ -37,5 +37,4 @@ HEALTHCHECK \
         && wget --quiet --tries=1 --no-check-certificate --spider http://localhost:${MPD_WEB_PORT:-64801} \
         || exit 1
 #
-ENTRYPOINT ["/init"]
-CMD ["mpd", "--stdout", "--no-daemon"]
+ENTRYPOINT ["mpd", "--no-daemon"]
