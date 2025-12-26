@@ -30,8 +30,7 @@ Maintained (or sometimes a lack thereof?) by [WOAHBase][110].
 
 ```text
 
-docker run \
-    -d \
+sudo docker run -d \
     --name mpd \
     --device /dev/snd \
     -p 6600:6600 \
