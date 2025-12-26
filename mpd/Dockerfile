@@ -35,7 +35,7 @@ RUN set -xe \
     && chmod 1777 /var/run/mpd \
     && rm -rf /var/cache/apk/* /tmp/*
 #
-COPY root/ /
+
 #
 VOLUME /var/lib/mpd/ /music
 #
