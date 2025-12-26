@@ -23,6 +23,7 @@ RUN echo "http://dl-cdn.alpinelinux.org/alpine/edge/testing" >> /etc/apk/reposit
     && rm -rf /var/cache/apk/* /tmp/*
 #
 COPY root/ /
+ADD --chmod=755 ./mpd.conf /etc/mpd.conf
 #
 VOLUME /var/lib/mpd/ /music
 #
