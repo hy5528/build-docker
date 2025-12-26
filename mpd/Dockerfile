@@ -1,8 +1,8 @@
 # docker_mpd
 FROM alpine:edge
 
-COPY docker-compose.yml env start.sh mpd.conf /
-RUN apk --no-cache add mpd=0.24.6 sqlite-libs \
+COPY env start.sh mpd.conf /
+RUN apk --no-cache add mpd sqlite-libs \
 	&& chmod u+x /start.sh \
 	&& mkdir /mpd
 
