@@ -14,7 +14,7 @@ RUN set -xe \
     && addgroup -g ${PGID} -S ${S6_USER} \
     && adduser -u ${PUID} -G ${S6_USER} -h ${S6_USERHOME} -s /bin/false -D ${S6_USER} \
 #
-    && apk add -Uu --no-cache --purge \
+    && && apk add --no-cache \
         alsa-lib \
         alsa-plugins-pulse \
         alsa-utils \
