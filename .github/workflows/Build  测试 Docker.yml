@@ -6,13 +6,12 @@ on:
       MACH:
         description: 'Choose machine'
         required: true
-        default: 'SPlayer'
+        default: 'mpd'
         type: choice
         options:
         - 'moode'
         - 'mopidy'
         - 'mpd'
-        - 'SPlayer'
         - 'chiko-music'
    
       
