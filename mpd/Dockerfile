@@ -19,7 +19,7 @@ RUN chown mpd:audio /etc/mpd.conf
 USER mpd
 
 # Expose MPD port and HTTP streaming port
-EXPOSE 6600 8000
+EXPOSE 6600 8000 64801
 
 # Health check
 HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
