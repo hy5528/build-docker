@@ -33,7 +33,7 @@ services:
 
   # MySQL
   db:
-    image: mysql:8.0
+    image: mariadb:10.3
     container_name: maccms_db
     restart: unless-stopped
     environment:
