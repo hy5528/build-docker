@@ -37,10 +37,7 @@ services:
     container_name: maccms_db
     restart: unless-stopped
     environment:
-      MYSQL_ROOT_PASSWORD: maccms_root_password
-      MYSQL_DATABASE: maccms
-      MYSQL_USER: maccms_user
-      MYSQL_PASSWORD: maccms_password
+        - MARIADB_ROOT_PASSWORD=123456
     volumes:
       - db_data:/var/lib/mysql
       - ./mysql.cnf:/etc/mysql/conf.d/custom.cnf
