@@ -99,7 +99,21 @@ networks:
   moontv-network:
     driver: bridge
 ```
+# cmsmovie
+```text
+docker run -d \
+  --name cmsmovie \
+  -p 5000:5000 \
+  --restart=always \
+  -v /opt/maccms/instance:/app/instance \
+  -v /opt/maccms/backups:/app/backups \
+  -v /opt/maccms/app/static/uploads:/app/app/static/uploads \
+  -v /opt/maccms/logs:/app/logs \
+  -e ADMIN_USERNAME=admin \
+  -e ADMIN_PASSWORD=123456 \
+  ghcr.nju.edu.cn/hy5528/flask_maccms66:latest
 
+```
 
 # splayer
 ```text
