@@ -1,48 +1,32 @@
-FROM php:7.4-apache
+FROM php:8.5.0RC1-fpm
 
-COPY docker-entrypoint.sh /entrypoint.sh
+WORKDIR /var/www/html
+
+RUN apt-get update && apt-get install -y \
+    wget \
+    unzip \
+    libzip-dev \
+    libwebp-dev \
+    libjpeg-dev \
+    libpng-dev \
+    libfreetype6-dev \
+    && docker-php-ext-configure gd --with-freetype --with-jpeg --with-webp \
+    && docker-php-ext-install zip gd pdo_mysql \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
 
 RUN wget -O maccms10.zip https://github.com/hy5528/build-Openwrt-Armbian/releases/download/20250523/maccms.zip \
     && unzip maccms10.zip \
-    && mv maccms/* . \
-    && mv maccms/.* . 2>/dev/null || true \
-    && rm -rf maccms maccms10.zip
+    && mv maccms10-maccms/* . \
+    && mv maccms10-maccms/.* . 2>/dev/null || true \
+    && rm -rf maccms10-maccms maccms10.zip
 
-RUN set -ex \
-    && apt-get update && apt-get install -y \
-       git \
-       unzip \
-       libfreetype-dev \
-       libjpeg-dev \
-       libwebp-dev \
-       libzip-dev \
-    && docker-php-ext-install -j$(nproc) mysqli pdo_mysql sockets zip \
-    && docker-php-ext-configure gd \
-        --with-freetype \
-        --with-jpeg \
-        --with-webp \
-    && docker-php-ext-install -j$(nproc) gd \
-    && apt-get autoremove -y \
-    && apt-get clean \
-    && rm -rf /tmp/* /var/lib/apt/lists/*
+RUN chmod -R 755 /var/www/html \
+    && chown -R www-data:www-data /var/www/html
 
-RUN set -ex \
-    && mv "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini" \
-    && a2enmod remoteip \
-    && sed -i 's/%h/%a/g' /etc/apache2/apache2.conf \
-    && echo "ServerName localhost" >> /etc/apache2/apache2.conf
+RUN mkdir -p /var/www/html/datas \
+    && chmod -R 777 /var/www/html/datas
 
-COPY <<EOT /etc/apache2/mods-enabled/remoteip.conf
-RemoteIPHeader X-Forwarded-For
-RemoteIPTrustedProxy 127.0.0.0/8
-RemoteIPTrustedProxy ::1/128
-EOT
+EXPOSE 9000
 
-VOLUME /var/www/html
-
-ENV ADMIN_PHP cmsadmin.php
-
-EXPOSE 80
-
-ENTRYPOINT ["/entrypoint.sh"]
-CMD ["apache2-foreground"]
+CMD ["php-fpm"]
