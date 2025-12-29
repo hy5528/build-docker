@@ -1,9 +1,7 @@
-#version: '3.8'
-
 services:
   # PHP-FPM
   app:
-    image: risedog/maccms10-m:latest
+    image: ghcr.nju.edu.cn/hy5528/maccms66:latest
     container_name: maccms_app
     restart: unless-stopped
     volumes:
@@ -33,11 +31,11 @@ services:
 
   # MySQL
   db:
-    image: mariadb:10.3
+    image: yobasystems/alpine-mariadb:latest 
     container_name: maccms_db
     restart: unless-stopped
     environment:
-        - MARIADB_ROOT_PASSWORD=123456
+        - MYSQL_PASSWORD=123456
     volumes:
       - db_data:/var/lib/mysql
       - ./mysql.cnf:/etc/mysql/conf.d/custom.cnf
