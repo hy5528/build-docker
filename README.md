@@ -107,7 +107,7 @@ networks:
 
 默认账户配置在 config.py 中:
 用户名: admin
-密码: admin
+密码: 123456
 ```text
 docker run -d \
   --name cmsmovie \
