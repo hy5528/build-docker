@@ -10,7 +10,6 @@ RUN echo "http://dl-cdn.alpinelinux.org/alpine/edge/testing" >> /etc/apk/reposit
   sudo \
   curl \
   py3-pip \
-  python \
  && rm -rf /var/cache/apk/*
 
 # Allow pip to install over system packages
