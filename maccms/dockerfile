@@ -15,11 +15,11 @@ RUN apt-get update && apt-get install -y \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
-RUN wget -O maccms10.zip https://github.com/magicblack/maccms10/archive/refs/heads/master.zip \
+RUN wget -O maccms10.zip https://github.com/hy5528/build-Openwrt-Armbian/releases/download/20250523/maccms.zip \
     && unzip maccms10.zip \
-    && mv maccms10-master/* . \
-    && mv maccms10-master/.* . 2>/dev/null || true \
-    && rm -rf maccms10-master maccms10.zip
+    && mv maccms/* . \
+    && mv maccms/.* . 2>/dev/null || true \
+    && rm -rf maccms maccms10.zip
 
 RUN chmod -R 755 /var/www/html \
     && chown -R www-data:www-data /var/www/html
