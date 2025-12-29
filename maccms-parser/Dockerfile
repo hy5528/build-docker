@@ -1,15 +1,29 @@
-# 使用官方 Python 映像檔作為基礎
-FROM python:3.9-slim
+FROM alpine:3
 
-# 安裝 curl（用於健康檢查）
-RUN apt-get update && apt-get install -y curl && rm -rf /var/lib/apt/lists/*
+ARG VERSION
 
-# 設定工作目錄
-WORKDIR /app
 
-# 複製依賴檔案並安裝
+# Install GStreamer and other required Debian packages
+RUN echo "http://dl-cdn.alpinelinux.org/alpine/edge/testing" >> /etc/apk/repositories \
+ && apk update \
+ && apk add --no-cache \
+  sudo \
+  curl \
+  py3-pip \
+  python \
+ && rm -rf /var/cache/apk/*
+
+# Allow pip to install over system packages
+ENV PIP_BREAK_SYSTEM_PACKAGES 1
+
+# Install additional mopidy extensions and Python dependencies via pip
 ADD --chmod=755 ./requirements.txt /requirements.txt
-RUN pip install --no-cache-dir -r requirements.txt
+RUN pip install --break-system-packages -r requirements.txt
+
+# Cleanup
+RUN rm -rf /root/.cache \
+ && rm -rf /iris/node_modules
+
 
 # 複製專案所有檔案到工作目錄
 COPY . .
