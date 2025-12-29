@@ -1,5 +1,5 @@
 # 使用官方 Python 映像檔作為基礎
-FROM --platform=$BUILDPLATFORM python:3.9-slim
+FROM python:3.9-slim
 
 # 安裝 curl（用於健康檢查）
 RUN apt-get update && apt-get install -y curl && rm -rf /var/lib/apt/lists/*
