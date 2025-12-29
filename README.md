@@ -100,6 +100,8 @@ networks:
     driver: bridge
 ```
 # cmsmovie
+前台: http://localhost:5000/
+后台: http://localhost:5000/admin/login
 ```text
 docker run -d \
   --name cmsmovie \
