@@ -102,7 +102,9 @@ networks:
 # cmsmovie
 前台: http://localhost:5000/
 后台: http://localhost:5000/admin/login
+
 管理员账户
+
 默认账户配置在 config.py 中:
 用户名: admin
 密码: admin
