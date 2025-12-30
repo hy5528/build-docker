@@ -1,4 +1,4 @@
-name: Build chiko-music Docker images
+name: Build any-reader Docker images
 
 on:
   workflow_dispatch:
@@ -42,12 +42,12 @@ jobs:
         id: meta
         uses: docker/metadata-action@v5
         with:
-          images: ghcr.io/hy5528/chiko-music66
+          images: ghcr.io/hy5528/any-reader66
           tags: |
             type=raw,value=latest
       - name: Clone Overleaf Gitlab Repo
         run: |
-          git clone https://github.com/moode-player/moode.git app
+          git clone https://github.com/aooiuu/any-reader.git app
 
       - name: "Copy userpatches to build folder"
         shell: bash
