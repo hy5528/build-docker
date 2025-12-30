@@ -5,18 +5,35 @@ RUN rm -f /etc/localtime && \
     echo "Asia/Shanghai" > /etc/timezone
 ENV TZ=Asia/Shanghai
 
-ADD ./sources.list /etc/apt/sources.list
-RUN apt-get update && \
-    apt-get install -y tzdata bash python3 python3-pip \
-    zip libzip-dev libpng-dev libwebp-dev libjpeg-dev libfreetype6-dev && \
-    apt-get clean && \
-    rm -rf /var/lib/apt/lists/* && \
-    rm -rf /var/cache/apt/*
+RUN set -ex \
+    && apt-get update && apt-get install -y \
+       git \
+       unzip \
+       libfreetype-dev \
+       libjpeg-dev \
+       libwebp-dev \
+       libzip-dev \
+    && docker-php-ext-install -j$(nproc) mysqli pdo_mysql sockets zip \
+    && docker-php-ext-configure gd \
+        --with-freetype \
+        --with-jpeg \
+        --with-webp \
+    && docker-php-ext-install -j$(nproc) gd \
+    && apt-get autoremove -y \
+    && apt-get clean \
+    && rm -rf /tmp/* /var/lib/apt/lists/*
 
-RUN docker-php-ext-configure gd --with-freetype --with-jpeg --with-webp && \
-    docker-php-ext-install pdo_mysql zip gd && \
-    mv "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini"
+RUN set -ex \
+    && mv "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini" \
+    && a2enmod remoteip \
+    && sed -i 's/%h/%a/g' /etc/apache2/apache2.conf \
+    && echo "ServerName localhost" >> /etc/apache2/apache2.conf
 
+COPY <<EOT /etc/apache2/mods-enabled/remoteip.conf
+RemoteIPHeader X-Forwarded-For
+RemoteIPTrustedProxy 127.0.0.0/8
+RemoteIPTrustedProxy ::1/128
+EOT
 ADD ./launcher /opt/launcher
 RUN chmod +x /opt/launcher/launch.sh
 RUN pip3 install -r /opt/launcher/requirements.txt --no-cache-dir --index-url https://pypi.tuna.tsinghua.edu.cn/simple/
