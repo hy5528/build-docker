@@ -14,7 +14,7 @@ docker build -t hvlive/maccms:latest .
 > 该项目需要用到 MySQL 数据库，请先自行部署 MySQL 数据库（8.4.0版本测试可用，其他版本自行测试）
 
 ```
-docker run -d --restart=unless-stopped --name maccms -p {host_port}:80 -v {host_data_path}:/var/www/html hvlive/maccms:latest
+docker run -d --restart=unless-stopped --name maccms -p 3900:80 -v /opt/cms:/var/www/html ghcr.nju.edu.cn/hy5528/maccms66:latest
 ```
 
 # 访问地址
