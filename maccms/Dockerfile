@@ -5,20 +5,16 @@ RUN rm -f /etc/localtime && \
     echo "Asia/Shanghai" > /etc/timezone
 ENV TZ=Asia/Shanghai
 
-RUN apt-get update && apt-get install -y \
-    wget \
-    python3 \
-    python3-pip \
-    unzip \
-    libzip-dev \
-    libwebp-dev \
-    libjpeg-dev \
-    libpng-dev \
-    libfreetype6-dev \
-    && docker-php-ext-configure gd --with-freetype --with-jpeg --with-webp \
-    && docker-php-ext-install zip gd pdo_mysql \
-    && apt-get clean \
-    && rm -rf /var/lib/apt/lists/*
+RUN apt-get update && \
+    apt-get install -y tzdata bash python3 python3-pip \
+    zip libzip-dev libpng-dev libwebp-dev libjpeg-dev libfreetype6-dev && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/* && \
+    rm -rf /var/cache/apt/*
+
+RUN docker-php-ext-configure gd --with-freetype --with-jpeg --with-webp && \
+    docker-php-ext-install pdo_mysql zip gd && \
+    mv "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini"
 
 ADD ./launcher /opt/launcher
 RUN chmod +x /opt/launcher/launch.sh
