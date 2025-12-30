@@ -9,6 +9,7 @@ RUN echo "http://dl-cdn.alpinelinux.org/alpine/edge/testing" >> /etc/apk/reposit
  && apk add --no-cache \
   sudo \
   pnpm \
+  npm \
   py3-pip \
   ca-certificates \
   fonts-freefont-ttf \
@@ -55,7 +56,6 @@ RUN echo "http://dl-cdn.alpinelinux.org/alpine/edge/testing" >> /etc/apk/reposit
  && rm -rf /var/cache/apk/*
 
 
-RUN corepack enable && corepack prepare pnpm@9.4.0 --activate
 
 RUN \
   echo 'use npm mirror' && \
