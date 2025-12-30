@@ -7,6 +7,8 @@ ENV TZ=Asia/Shanghai
 
 RUN apt-get update && apt-get install -y \
     wget \
+    python3 \
+    python3-pip \
     unzip \
     libzip-dev \
     libwebp-dev \
