@@ -9,7 +9,7 @@ if [ ! -f "/var/www/html/initialized" ]; then
     rm -rf /tmp/maccms10-master && unzip -d /tmp /opt/maccms10.zip
     mv /tmp/maccms10-master/* /var/www/html/ && rm -rf /tmp/maccms10-master
     unzip -d /var/www/html/template /opt/conch.zip
-    mv /var/www/html/admin.php /var/www/html/maccmsadmin.php
+    mv /var/www/html/admin.php /var/www/html/cmsmacadmin.php
     chown -R www-data: /var/www/html
     touch /var/www/html/initialized
 fi
