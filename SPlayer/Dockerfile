@@ -1,5 +1,5 @@
 # build
-FROM node:22-alpine AS builder
+FROM --platform=$BUILDPLATFORM node:22-alpine AS builder
 
 # install pnpm and build tools
 RUN npm install -g pnpm && apk update && apk add --no-cache git build-base
