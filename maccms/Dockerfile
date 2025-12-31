@@ -1,37 +1,19 @@
-FROM php:7.4-fpm-alpine
+FROM php:7.4-fpm
 
-RUN echo "http://dl-cdn.alpinelinux.org/alpine/edge/testing" >> /etc/apk/repositories \
- && apk update \
- && apk add --no-cache \
-     curl \
-     sudo \
-     wget \
-     git \
-     zip \
-     libmemcached-dev \
-		g++ \
-		pcre \
-		gcc \
-		autoconf \
-		automake \
-		make \
-		zlib-dev \
-		openssl \
-    unzip 
- 
-RUN apk add libwebp-dev libjpeg-turbo-dev libpng-dev  freetype-dev
-RUN docker-php-ext-configure gd --with-webp-dir --with-jpeg-dir --with-png-dir --with-zlib-dir --with-freetype-dir
-RUN docker-php-ext-install gd
-
-# zip 扩展
-RUN apk add libzip-dev && docker-php-ext-install zip
-
-# Mysqli 扩展 自带 直接安装即可(当前数据库使用的mysqli查询的)
-RUN docker-php-ext-install mysqli
-# PDO 扩展 自带 直接安装即可
-RUN docker-php-ext-install pdo_mysql
-# Bcmath 扩展 自带 直接安装即可
-RUN docker-php-ext-install bcmath
+# Install system dependencies required for PHP extensions, including GD
+RUN apt-get update && apt-get install -y \
+    libzip-dev \
+    libcurl4-openssl-dev \
+    libxml2-dev \
+    libonig-dev \
+    libpng-dev \
+    libjpeg-dev \
+    libfreetype6-dev \
+    unzip \
+    zip \
+    && docker-php-ext-configure gd --with-freetype --with-jpeg \
+    && docker-php-ext-install -j$(nproc) pdo pdo_mysql zip fileinfo curl xml mbstring gd \
+    && docker-php-ext-enable opcache gd \
     && rm -rf /var/lib/apt/lists/*
 COPY / /var/www/html
 RUN chown -R www-data:www-data /var/www/html
