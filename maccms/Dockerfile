@@ -12,7 +12,6 @@ RUN echo "http://dl-cdn.alpinelinux.org/alpine/edge/testing" >> /etc/apk/reposit
 		g++ \
 		pcre \
 		gcc \
-		gcc-c++ \
 		autoconf \
 		automake \
 		make \
