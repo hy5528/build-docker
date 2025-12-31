@@ -112,7 +112,7 @@ RUN addgroup -S nginx && adduser -DHS -s /sbin/nologin -G nginx nginx
 RUN apk add nginx=1.20.2-r1
 RUN chown -R nginx:nginx /var/lib/nginx
 EXPOSE 80
-
+VOLUME [ "/usr/share/nginx/html" ]
 COPY / /usr/share/nginx/html
 RUN chown -R www-data:www-data /usr/share/nginx/html
 
