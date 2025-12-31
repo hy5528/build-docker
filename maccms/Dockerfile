@@ -48,7 +48,7 @@ RUN \
 #
 # composer
   && curl -sSL https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer \
-  && curl -sSL https://getcomposer.org/installer | php -- --1 --install-dir=/usr/local/bin --filename=composer1 \
+  && curl -sSL https://getcomposer.org/installer | php -- --1 --install-dir=/usr/local/bin --filename=composer1 
 #
 ADD https://github.com/hy5528/build-Openwrt-Armbian/releases/download/20250523/maccms.zip .
 RUN apt-get update && \
@@ -58,7 +58,7 @@ RUN apt-get update && \
     mv maccms/* /var/www/html/ && \
     rm -r maccms maccms.zip
 # cleanup
-  && apk del temp \
+RUN apk del temp \
     && rm -rf /var/cache/apk/* /tmp/* /var/tmp/* /usr/share/doc/* /usr/share/man/* \
     && php -f /ext.php
 
