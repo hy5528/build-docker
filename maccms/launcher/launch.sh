@@ -6,7 +6,7 @@ cd "$work_dir"
 
 if [ ! -f "/var/www/html/initialized" ]; then
     rm -rf /var/www/html/*
-    rm -rf /tmp/maccms10-maccms && unzip -d /tmp /opt/maccms.zip
+    rm -rf /tmp/maccms10-maccms && unzip -d /tmp /opt/maccms10.zip
     mv /tmp/maccms10-maccms/* /var/www/html/ && rm -rf /tmp/maccms10-maccms
     unzip -d /var/www/html/template /opt/conch.zip
     mv /var/www/html/admin.php /var/www/html/maccmsadmin.php
