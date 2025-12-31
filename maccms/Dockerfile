@@ -15,7 +15,8 @@ RUN apt-get update && apt-get install -y \
     && docker-php-ext-install -j$(nproc) pdo pdo_mysql zip fileinfo curl xml mbstring gd \
     && docker-php-ext-enable opcache gd \
     && rm -rf /var/lib/apt/lists/*
-
+COPY / /var/www/html
+RUN chown -R www-data:www-data /var/www/html
 # Set working directory (adjust if needed)
 WORKDIR /var/www/html
 
