@@ -1,5 +1,5 @@
 #FROM php:7.2.4-fpm
-FROM php:7.3.33-fpm-alpine3.15
+FROM php:7-fpm-alpine
 #alpine国内镜像及修改方法
 RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.aliyun.com/g' /etc/apk/repositories
 #查看系统版本
