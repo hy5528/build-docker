@@ -19,10 +19,19 @@ RUN echo "http://dl-cdn.alpinelinux.org/alpine/edge/testing" >> /etc/apk/reposit
 		openssl \
     unzip 
  
-	RUN apk add libwebp-dev libjpeg-turbo-dev libpng-dev  freetype-dev \
-    && docker-php-ext-configure gd --with-freetype --with-jpeg \
-    && docker-php-ext-install -j$(nproc) pdo pdo_mysql zip fileinfo curl xml mbstring gd \
-    && docker-php-ext-enable opcache gd \
+RUN apk add libwebp-dev libjpeg-turbo-dev libpng-dev  freetype-dev
+RUN docker-php-ext-configure gd --with-webp-dir --with-jpeg-dir --with-png-dir --with-zlib-dir --with-freetype-dir
+RUN docker-php-ext-install gd
+
+# zip 扩展
+RUN apk add libzip-dev && docker-php-ext-install zip
+
+# Mysqli 扩展 自带 直接安装即可(当前数据库使用的mysqli查询的)
+RUN docker-php-ext-install mysqli
+# PDO 扩展 自带 直接安装即可
+RUN docker-php-ext-install pdo_mysql
+# Bcmath 扩展 自带 直接安装即可
+RUN docker-php-ext-install bcmath
     && rm -rf /var/lib/apt/lists/*
 COPY / /var/www/html
 RUN chown -R www-data:www-data /var/www/html
