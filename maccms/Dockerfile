@@ -1,5 +1,5 @@
 #FROM php:7.2.4-fpm
-FROM php:7.4-fpm-alpine:3
+FROM php:7.4-fpm-alpine
 
 #查看系统版本
 RUN cat /proc/version
