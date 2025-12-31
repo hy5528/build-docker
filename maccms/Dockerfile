@@ -1,10 +1,5 @@
 #FROM php:7.2.4-fpm
 FROM php:7.4-fpm-alpine3
-ARG VERSION
-#alpine国内镜像及修改方法
-RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.aliyun.com/g' /etc/apk/repositories
-MAINTAINER kannokaze <1131429439@qq.com>
-LABEL description="php-fpm nginx 镜像，已开启FCGI nginx，可用于web服务，也可以用于运行 cli 程序。"
 
 #查看系统版本
 RUN cat /proc/version
