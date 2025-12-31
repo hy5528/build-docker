@@ -8,7 +8,7 @@ FROM php:7.4-apache
 
 COPY docker-entrypoint.sh /entrypoint.sh
 
-ENV REPO_URL https://github.com/magicblack/maccms10.git
+ENV REPO_URL https://github.com/ikun245/MACCMSV10-Remove.git maccms10
 
 RUN set -ex \
     && apt-get update && apt-get install -y \
