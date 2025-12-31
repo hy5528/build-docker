@@ -107,7 +107,7 @@ RUN docker-php-ext-install bcmath
 RUN addgroup -S nginx && adduser -DHS -s /sbin/nologin -G nginx nginx
 
 #nginx安装 apk 方式默认开机启动 默认安装目录 /etc/nginx
-RUN apk add nginx=1.20.2-r1
+RUN apk add nginx=1.28.1
 RUN chown -R nginx:nginx /var/lib/nginx
 EXPOSE 80
 VOLUME [ "/usr/share/nginx/html" ]
