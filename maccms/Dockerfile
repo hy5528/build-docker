@@ -1,28 +1,34 @@
-FROM php:7.4-fpm
+FROM php:7.4.33-apache-buster
 
-# Install system dependencies required for PHP extensions, including GD
-RUN apt-get update && apt-get install -y \
-    libzip-dev \
-    libcurl4-openssl-dev \
-    libxml2-dev \
-    libonig-dev \
-    libpng-dev \
-    libjpeg-dev \
-    libfreetype6-dev \
-    unzip \
-    zip \
-    && docker-php-ext-configure gd --with-freetype --with-jpeg \
-    && docker-php-ext-install -j$(nproc) pdo pdo_mysql zip fileinfo curl xml mbstring gd \
-    && docker-php-ext-enable opcache gd \
-    && rm -rf /var/lib/apt/lists/*
-COPY / /var/www/html
-RUN chown -R www-data:www-data /var/www/html
-# Set working directory (adjust if needed)
-WORKDIR /var/www/html
+RUN rm -f /etc/localtime && \
+    ln -sv /usr/share/zoneinfo/Asia/Shanghai /etc/localtime && \
+    echo "Asia/Shanghai" > /etc/timezone
+ENV TZ=Asia/Shanghai
 
-# Copy composer from official image (optional if you use composer)
-COPY --from=composer:latest /usr/bin/composer /usr/local/bin/composer
+ADD ./sources.list /etc/apt/sources.list
+RUN apt-get update && \
+    apt-get install -y tzdata bash python3 python3-pip \
+    zip libzip-dev libpng-dev libwebp-dev libjpeg-dev libfreetype6-dev && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/* && \
+    rm -rf /var/cache/apt/*
 
-EXPOSE 9000
-VOLUME /var/www/html
-CMD ["php-fpm"]
+RUN docker-php-ext-configure gd --with-freetype --with-jpeg --with-webp && \
+    docker-php-ext-install pdo_mysql zip gd && \
+    mv "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini"
+
+ADD ./launcher /opt/launcher
+RUN chmod +x /opt/launcher/launch.sh
+RUN pip3 install -r /opt/launcher/requirements.txt --no-cache-dir --index-url https://pypi.tuna.tsinghua.edu.cn/simple/
+
+ADD ./maccms10.zip /opt/
+ADD ./conch.zip /opt/
+
+ENV HV_RELEASE=true
+ENV HV_HTTP_PORT=80
+
+EXPOSE 80
+VOLUME [ "/var/www/html" ]
+VOLUME [ "/etc/launcher" ]
+
+ENTRYPOINT [ "/opt/launcher/launch.sh" ]
