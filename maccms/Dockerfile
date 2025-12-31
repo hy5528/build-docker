@@ -24,5 +24,5 @@ WORKDIR /var/www/html
 COPY --from=composer:latest /usr/bin/composer /usr/local/bin/composer
 
 EXPOSE 9000
-
+VOLUME /var/www/html
 CMD ["php-fpm"]
