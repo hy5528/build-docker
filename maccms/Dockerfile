@@ -1,4 +1,4 @@
-FROM shinsenter/phpfpm-apache:dev-php7.4
+FROM php:7.4-fpm
 ADD https://github.com/hy5528/build-Openwrt-Armbian/releases/download/20250523/maccms.zip .
 RUN apt-get update && \
     apt-get install -y unzip && \
