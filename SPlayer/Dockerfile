@@ -1,7 +1,7 @@
 # build
 FROM --platform=$BUILDPLATFORM node:20-alpine AS builder
 
-RUN apk update && apk add --no-cache git rust cargo build-base
+RUN apk update && apk add --no-cache git rust cargo build-base pnpm
 
 WORKDIR /app
 
