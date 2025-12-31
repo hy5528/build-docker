@@ -1,7 +1,8 @@
-FROM php:7.4-fpm
+FROM php:7.4-fpm-alpine
 
-# Install system dependencies required for PHP extensions, including GD
-RUN apt-get update && apt-get install -y \
+RUN echo "http://dl-cdn.alpinelinux.org/alpine/edge/testing" >> /etc/apk/repositories \
+ && apk update \
+ && apk add --no-cache \
     libzip-dev \
     libcurl4-openssl-dev \
     libxml2-dev \
