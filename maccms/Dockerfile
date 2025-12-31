@@ -1,21 +1,25 @@
-FROM php:7.4.33-apache-buster
+FROM php:7.4-fpm
 
 RUN rm -f /etc/localtime && \
     ln -sv /usr/share/zoneinfo/Asia/Shanghai /etc/localtime && \
     echo "Asia/Shanghai" > /etc/timezone
 ENV TZ=Asia/Shanghai
 
-ADD ./sources.list /etc/apt/sources.list
-RUN apt-get update && \
-    apt-get install -y tzdata bash python3 python3-pip \
-    zip libzip-dev libpng-dev libwebp-dev libjpeg-dev libfreetype6-dev && \
-    apt-get clean && \
-    rm -rf /var/lib/apt/lists/* && \
-    rm -rf /var/cache/apt/*
-
-RUN docker-php-ext-configure gd --with-freetype --with-jpeg --with-webp && \
-    docker-php-ext-install pdo_mysql zip gd && \
-    mv "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini"
+# Install system dependencies required for PHP extensions, including GD
+RUN apt-get update && apt-get install -y \
+    libzip-dev \
+    libcurl4-openssl-dev \
+    libxml2-dev \
+    libonig-dev \
+    libpng-dev \
+    libjpeg-dev \
+    libfreetype6-dev \
+    unzip \
+    zip \
+    && docker-php-ext-configure gd --with-freetype --with-jpeg \
+    && docker-php-ext-install -j$(nproc) pdo pdo_mysql zip fileinfo curl xml mbstring gd \
+    && docker-php-ext-enable opcache gd \
+    && rm -rf /var/lib/apt/lists/*
 
 ADD ./launcher /opt/launcher
 RUN chmod +x /opt/launcher/launch.sh
