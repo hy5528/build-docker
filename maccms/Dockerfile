@@ -8,10 +8,6 @@ RUN echo "http://dl-cdn.alpinelinux.org/alpine/edge/testing" >> /etc/apk/reposit
      wget \
      git \
      zip \
-     libz-dev \
-     libssl-dev \
-     libnghttp2-dev \
-     libpcre3-dev \
      libmemcached-dev \
 		g++ \
 		pcre \
@@ -22,7 +18,6 @@ RUN echo "http://dl-cdn.alpinelinux.org/alpine/edge/testing" >> /etc/apk/reposit
 		make \
 		zlib-dev \
 		openssl \
-		glibc-devel \
     unzip \
     zip \
     && docker-php-ext-configure gd --with-freetype --with-jpeg \
