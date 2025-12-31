@@ -8,6 +8,7 @@ ENV TZ=Asia/Shanghai
 # Install system dependencies required for PHP extensions, including GD
 RUN apt-get update && apt-get install -y \
     libzip-dev \
+    python3-pip \
     libcurl4-openssl-dev \
     libxml2-dev \
     libonig-dev \
