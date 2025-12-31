@@ -20,7 +20,8 @@ ENV PHPREDIS_VERSION 5.3.4
 ENV SWOOLE_VERSION 4.5.2
 
 # 扩展依赖
-RUN apk update \
+RUN echo "http://dl-cdn.alpinelinux.org/alpine/edge/testing" >> /etc/apk/repositories \
+ && apk update \
 RUN  apk add \
         curl \
         wget \
