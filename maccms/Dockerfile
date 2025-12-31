@@ -17,8 +17,8 @@ RUN echo "http://dl-cdn.alpinelinux.org/alpine/edge/testing" >> /etc/apk/reposit
 		make \
 		zlib-dev \
 		openssl \
-    unzip \
-    zip 
+    unzip 
+ 
 	RUN apk add libwebp-dev libjpeg-turbo-dev libpng-dev  freetype-dev \
     && docker-php-ext-configure gd --with-freetype --with-jpeg \
     && docker-php-ext-install -j$(nproc) pdo pdo_mysql zip fileinfo curl xml mbstring gd \
