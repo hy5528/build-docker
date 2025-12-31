@@ -6,7 +6,7 @@
 
 FROM php:7.4-apache
 
-ADD --chmod=755 ./entrypoint.sh /entrypoint.sh
+ADD --chmod=755 ./docker-entrypoint.sh /entrypoint.sh
 
 
 ENV REPO_URL https://github.com/ikun245/MACCMSV10-Remove.git maccms10
