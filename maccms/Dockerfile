@@ -3,13 +3,31 @@ FROM php:7.4-fpm-alpine
 RUN echo "http://dl-cdn.alpinelinux.org/alpine/edge/testing" >> /etc/apk/repositories \
  && apk update \
  && apk add --no-cache \
-    libzip-dev \
-    libcurl4-openssl-dev \
-    libxml2-dev \
-    libonig-dev \
-    libpng-dev \
-    libjpeg-dev \
-    libfreetype6-dev \
+     curl \
+     sudo \
+     wget \
+     git \
+     zip \
+     libz-dev \
+     libssl-dev \
+     libnghttp2-dev \
+     libpcre3-dev \
+     libmemcached-dev \
+		   sendmail \
+     zlib1g-dev \
+		passwd \
+		g++ \
+		pcre \
+		pcre-devel \
+		gcc \
+		gcc-c++ \
+		autoconf \
+		automake \
+		make \
+		zlib-dev \
+		openssl \
+		openssl-devel \
+		glibc-devel \
     unzip \
     zip \
     && docker-php-ext-configure gd --with-freetype --with-jpeg \
