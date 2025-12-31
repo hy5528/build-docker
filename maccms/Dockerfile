@@ -13,12 +13,8 @@ RUN echo "http://dl-cdn.alpinelinux.org/alpine/edge/testing" >> /etc/apk/reposit
      libnghttp2-dev \
      libpcre3-dev \
      libmemcached-dev \
-		   sendmail \
-     zlib1g-dev \
-		passwd \
 		g++ \
 		pcre \
-		pcre-devel \
 		gcc \
 		gcc-c++ \
 		autoconf \
@@ -26,7 +22,6 @@ RUN echo "http://dl-cdn.alpinelinux.org/alpine/edge/testing" >> /etc/apk/reposit
 		make \
 		zlib-dev \
 		openssl \
-		openssl-devel \
 		glibc-devel \
     unzip \
     zip \
