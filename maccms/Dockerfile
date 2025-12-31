@@ -1,5 +1,5 @@
 #FROM php:7.2.4-fpm
-FROM php:7.4-fpm-alpine3.22
+FROM php:7.4-fpm-alpine3.13
 #alpine国内镜像及修改方法
 RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.aliyun.com/g' /etc/apk/repositories
 MAINTAINER kannokaze <1131429439@qq.com>
