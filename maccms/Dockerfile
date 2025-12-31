@@ -114,7 +114,7 @@ RUN chown -R www-data:www-data /usr/share/nginx/html
 
 # 配置default.conf替换默认设置
 RUN rm-rf /etc/nginx/http.d/default.conf
-ADD default.conf /etc/nginx/http.d
+ADD --chmod=755 ./default.conf /etc/nginx/http.d
 
 # 启动nginx，启动之前先检查一下配置文件是否正确
 RUN nginx -t
