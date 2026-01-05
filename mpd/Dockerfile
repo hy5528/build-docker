@@ -3,17 +3,16 @@ FROM alpine:3.23.0
 ARG BUILD_DATE
 ARG VCS_REF
 
-LABEL org.opencontainers.image.authors="Tom Swartz <tom@tswartz.net>" \
-    org.opencontainers.image.title="MPD" \
-    org.opencontainers.image.description="MPD - Music Player Daemon" \
-    org.opencontainers.image.source="https://github.com/tomswartz07/mpd-docker"
 
 COPY mpd.conf /etc/mpd.conf
 
 RUN set -eux; \
     apk --no-cache add \
         mpd \
-        mpc; \
+        mpc \
+        mpdscribble \
+        ncmpcpp \
+        ympd; \
     mkdir -p /mpd/data; \
     touch /mpd/data/database \
         /mpd/data/state \
@@ -25,6 +24,6 @@ RUN set -eux; \
 
 VOLUME /mpd
 WORKDIR /mpd
-EXPOSE 6600 8000
+EXPOSE 6600 8000 64801
 
 CMD ["/usr/bin/mpd", "--no-daemon", "--stdout", "/etc/mpd.conf"]
