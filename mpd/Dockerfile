@@ -8,11 +8,16 @@ COPY mpd.conf /etc/mpd.conf
 
 RUN set -eux; \
     apk --no-cache add \
+        alsa-lib \
+        alsa-plugins-pulse \
+        alsa-utils \
         libmpdclient \
         libpulse \
-        mpd \
         mpc \
-        ympd; \
+        mpd \
+        mpdscribble \
+        ncmpcpp \
+        ympd \
     mkdir -p /mpd/data; \
     touch /mpd/data/database \
         /mpd/data/state \
