@@ -10,7 +10,6 @@ RUN set -eux; \
     apk --no-cache add \
         mpd \
         mpc \
-        mpdscribble \
         ncmpcpp \
         ympd; \
     mkdir -p /mpd/data; \
