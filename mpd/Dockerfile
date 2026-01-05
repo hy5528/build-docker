@@ -21,6 +21,6 @@ RUN set -eux; \
 
 VOLUME /mpd
 WORKDIR /mpd
-EXPOSE 6600 8000 64801
+EXPOSE 6600 8000
 
 CMD ["/usr/bin/mpd", "--no-daemon", "--stdout", "/etc/mpd.conf"]
