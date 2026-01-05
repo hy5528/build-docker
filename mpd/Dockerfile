@@ -18,7 +18,7 @@ RUN set -eux; \
     cp /etc/mpd.conf /etc/mpd.conf.backup; \
     chown -R mpd:audio /etc/mpd.conf*
 
-VOLUME /mpd
+VOLUME /mpd /etc/mpd.conf
 WORKDIR /mpd
 EXPOSE 6600 8000
 
