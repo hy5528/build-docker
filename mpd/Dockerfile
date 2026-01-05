@@ -19,7 +19,6 @@ RUN set -eux; \
     chown -R mpd:audio /etc/mpd.conf*
 
 VOLUME /mpd 
-VOLUME /etc/mpd.conf
 WORKDIR /mpd
 EXPOSE 6600 8000
 
