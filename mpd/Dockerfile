@@ -1,7 +1,6 @@
-FROM alpine:3.23.0
+FROM alpine:3
 
-ARG BUILD_DATE
-ARG VCS_REF
+ARG VERSION
 
 
 COPY mpd.conf /etc/mpd.conf
