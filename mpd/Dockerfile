@@ -7,7 +7,7 @@ ARG VCS_REF
 COPY mpd.conf /etc/mpd.conf
 
 RUN set -eux; \
-    apk --no-cache add \
+    apk add -Uu --no-cache --purge \
         alsa-lib \
         alsa-plugins-pulse \
         alsa-utils \
