@@ -8,7 +8,10 @@ COPY mpd.conf /etc/mpd.conf
 RUN set -eux; \
     apk --no-cache add \
         mpd \
-        mpc; \
+        mpc \
+        mpdscribble \
+        ncmpcpp \
+        ympd; \
     mkdir -p /mpd/data; \
     touch /mpd/data/database \
         /mpd/data/state \
