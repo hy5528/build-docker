@@ -1,0 +1,55 @@
+version: "3.6"
+services:
+  mpd:
+    command:
+      - "/usr/bin/mpd"
+      - "--no-daemon"
+      - "--stdout"
+      - "/etc/mpd.conf"
+    container_name: "mpd"
+    environment:
+      - "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+      - "TZ=America/New_York"
+    hostname: "mpd-docker"
+    image: "ghcr.io/tomswartz07/mpd-docker:latest"
+    ipc: "private"
+    user: "1026:100" # Use if you're on Synology, to match your local Synology user
+    logging:
+      driver: "db"
+      options: {}
+    network_mode: "bridge"
+    ports:
+      - "6666:6600/tcp"
+      - "8000:8000/tcp"
+    restart: "unless-stopped"
+    volumes:
+      - "./music:/mpd/music:ro"
+      - "./mpd/data:/mpd"
+      - "./mpd/mpd.conf:/etc/mpd.conf"
+    working_dir: "/mpd"
+    cap_add:
+      - SYS_NICE
+  mpdscribble-docker:
+    command:
+      - "/usr/bin/mpdscribble"
+      - "--no-daemon"
+      - "--conf"
+      - "/etc/mpdscribble.conf"
+    container_name: "mpdscribble-docker"
+    environment:
+      - "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+      - "TZ=America/New_York"
+      - "MPD_HOST=localhost"
+      - "MPD_PORT=6666"
+    hostname: "mpdscribble-docker"
+    image: "ghcr.io/tomswartz07/mpdscribble-docker:latest"
+    ipc: "private"
+    logging:
+      driver: "db"
+      options: {}
+    network_mode: "bridge"
+    restart: "unless-stopped"
+    volumes:
+      - "./mpdscribble.conf:/etc/mpdscribble.conf:ro"
+      - "./mpdscribble-docker.log:/mpdscribble/maloja.journal"
+    working_dir: "/mpdscribble"
