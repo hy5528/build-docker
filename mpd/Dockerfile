@@ -12,7 +12,6 @@ RUN set -eux; \
         libpulse \
         mpd \
         mpc \
-        ncmpcpp \
         ympd; \
     mkdir -p /mpd/data; \
     touch /mpd/data/database \
