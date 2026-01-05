@@ -8,6 +8,8 @@ COPY mpd.conf /etc/mpd.conf
 
 RUN set -eux; \
     apk --no-cache add \
+        libmpdclient \
+        libpulse \
         mpd \
         mpc \
         ncmpcpp \
