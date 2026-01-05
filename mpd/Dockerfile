@@ -7,17 +7,10 @@ ARG VCS_REF
 COPY mpd.conf /etc/mpd.conf
 
 RUN set -eux; \
-    apk add -Uu --no-cache --purge \
-        alsa-lib \
-        alsa-plugins-pulse \
-        alsa-utils \
-        libmpdclient \
-        libpulse \
-        mpc \
+    apk --no-cache add \
         mpd \
-        mpdscribble \
-        ncmpcpp \
-        ympd \
+        mpc \
+        ympd; \
     mkdir -p /mpd/data; \
     touch /mpd/data/database \
         /mpd/data/state \
