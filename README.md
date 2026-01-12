@@ -36,7 +36,7 @@ services:
   moontv-core:
     image: ghcr.nju.edu.cn/hy5528/lunatv66:latest
     container_name: moontv-core
-    restart: on-failure
+    restart: always
     ports:
       - '3000:3000'
     environment:
@@ -52,7 +52,7 @@ services:
   moontv-kvrocks:
     image: apache/kvrocks
     container_name: moontv-kvrocks
-    restart: unless-stopped
+    restart: always
     volumes:
       - kvrocks-data:/var/lib/kvrocks
     networks:
@@ -72,7 +72,7 @@ services:
   moontv-core:
     image: ghcr.nju.edu.cn/hy5528/lunatv66:latest
     container_name: moontv-core
-    restart: on-failure
+    restart: always
     ports:
       - '3000:3000'
     environment:
@@ -88,7 +88,7 @@ services:
   moontv-redis:
     image: redis
     container_name: moontv-redis
-    restart: unless-stopped
+    restart: always
     command: redis-server --save 60 1 --loglevel warning
     volumes:
       - ./data:/data
