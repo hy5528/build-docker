@@ -1,14 +1,15 @@
 # build
 FROM --platform=$BUILDPLATFORM node:22-alpine AS builder
 
-# install pnpm and build tools
-RUN npm install -g pnpm && apk update && apk add --no-cache git build-base
+# install pnpm
+RUN npm install -g pnpm
 
 WORKDIR /app
 
 COPY package.json pnpm-lock.yaml ./
 
-RUN pnpm install --frozen-lockfile
+# skip postinstall
+RUN pnpm install --frozen-lockfile --ignore-scripts
 
 COPY . .
 
