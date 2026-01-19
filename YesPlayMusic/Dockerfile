@@ -1,6 +1,6 @@
 FROM --platform=$BUILDPLATFORM node:16-alpine AS build
 
-ENV VUE_APP_NETEASE_API_URL=https://api.hypcvgm.top/NeteaseMiniPlayer/nmp.php
+ENV VUE_APP_NETEASE_API_URL=https://api-music.cenguigui.cn
 
 WORKDIR /app
 
