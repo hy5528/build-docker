@@ -25,6 +25,6 @@ ADD --chmod=755 ./nginx.conf /usr/share/nginx/nginx.conf
 
 
 
-EXPOSE 80
+EXPOSE 5688
 
 CMD ["nginx", "-g", "daemon off;"]
