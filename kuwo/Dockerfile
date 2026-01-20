@@ -19,7 +19,7 @@ WORKDIR /app
 
 # 从构建阶段复制打包结果
 COPY --from=builder /app/dist /usr/share/nginx/html
-
+ADD --chmod=755 ./nginx.conf /usr/share/nginx/nginx.conf
 # 复制自定义nginx配置（如有需要）
 # COPY nginx.conf /etc/nginx/nginx.con
 
