@@ -1,15 +1,13 @@
 # build
 FROM --platform=$BUILDPLATFORM node:22-alpine AS builder
 
-# install pnpm
-RUN npm install -g pnpm 
 
 WORKDIR /app
 
 COPY package.json pnpm-lock.yaml ./
 
 # skip postinstall
-RUN pnpm install 
+RUN npm install 
 
 COPY . .
 RUN npm run build
