@@ -1,5 +1,7 @@
 # 第一阶段：构建Vue项目
-FROM --platform=$BUILDPLATFORM node:22-alpine AS builder
+FROM alpine:3
+
+ARG VERSIONAS 
 RUN apk add --no-cache python3 pnpm npm git curl gcc musl-dev \
     && curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
 WORKDIR /app
