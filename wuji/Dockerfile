@@ -4,7 +4,7 @@ FROM --platform=$BUILDPLATFORM node:22-alpine AS builder
 # Install build dependencies
 RUN apk add --no-cache \
     curl \
-    npm \
+    pnpm \
     build-base \
     perl \
     llvm-dev \
@@ -31,10 +31,10 @@ COPY package*.json pnpm-workspace.yaml ./
 
 
 # Install pnpm and dependencies
-RUN npm install
+RUN pnpm install
 # 复制源代码并构建
 COPY . .
-RUN npm tauri build
+RUN pnpm tauri build
 
 # 第二阶段：生产环境
 FROM nginx:1.29.3-alpine3.22-slim AS app
