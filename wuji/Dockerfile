@@ -1,7 +1,7 @@
 # 第一阶段：构建Vue项目
 FROM --platform=$BUILDPLATFORM node:22-alpine AS builder
-RUN apk add --no-cache python3 npm git Rust
-RUN npm install -g pnpm
+RUN apk add --no-cache python3 npm git 
+RUN npm install -g pnpm Rust
 
 WORKDIR /app
 
