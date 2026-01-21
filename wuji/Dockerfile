@@ -30,8 +30,8 @@ COPY package*.json pnpm-workspace.yaml ./
 
 
 # Install pnpm and dependencies
-RUN npm install -g pnpm && pnpm install
-
+RUN npm install  pnpm 
+RUN pnpm install
 # 复制源代码并构建
 COPY . .
 RUN pnpm tauri build
