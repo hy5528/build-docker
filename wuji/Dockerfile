@@ -1,5 +1,5 @@
 FROM --platform=$BUILDPLATFORM node:22-alpine AS builder
-RUN apk add --no-cache python3 npm git pnpm
+RUN apk add --no-cache python3 npm git pnpm curl
 
 # Allow linking libclang on musl
 ENV RUSTFLAGS="-C target-feature=-crt-static"
