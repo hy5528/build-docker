@@ -1,8 +1,8 @@
 # 第一阶段：构建Vue项目
 FROM --platform=$BUILDPLATFORM node:22-alpine AS builder
 RUN apk add --no-cache python3 npm git 
-RUN npm install -g pnpm Rust
-
+RUN npm install -g pnpm 
+RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
 WORKDIR /app
 
 # 复制package文件
