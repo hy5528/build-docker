@@ -17,9 +17,6 @@ ENV VITE_PUBLIC_POSTHOG_HOST=$POSTHOG_API_ENDPOINT
 # Set working directory
 WORKDIR /app
 
-# Copy package files for dependency caching
-COPY package*.json pnpm-workspace.yaml ./
-
 
 # Install pnpm and dependencies
 RUN pnpm install
