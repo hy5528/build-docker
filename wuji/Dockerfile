@@ -21,7 +21,7 @@ WORKDIR /app
 # Copy package files for dependency caching
 COPY package.json pnpm-workspace.yaml ./
 # Install pnpm and dependencies
-RUN pnpm install --frozen-lockfile --ignore-scripts
+RUN pnpm install --ignore-scripts
 # 复制源代码并构建
 COPY . .
 RUN pnpm tauri build
