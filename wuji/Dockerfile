@@ -4,7 +4,7 @@ FROM --platform=$BUILDPLATFORM node:22-alpine AS builder
 # Install build dependencies
 RUN apk add --no-cache \
     curl \
-    pnpm \
+    npm \
     build-base \
     perl \
     llvm-dev \
