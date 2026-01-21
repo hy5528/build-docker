@@ -1,5 +1,5 @@
 FROM --platform=$BUILDPLATFORM node:22-alpine AS builder
-RUN apk add --no-cache python3 npm git
+RUN apk add --no-cache python3 npm git pnpm
 
 # Allow linking libclang on musl
 ENV RUSTFLAGS="-C target-feature=-crt-static"
@@ -22,10 +22,10 @@ COPY package*.json ./
 
 
 # Install pnpm and dependencies
-RUN npm install
+RUN pnpm install
 # 复制源代码并构建
 COPY . .
-RUN npm tauri build
+RUN pnpm tauri build
 
 # 第二阶段：生产环境
 FROM nginx:1.29.3-alpine3.22-slim AS app
