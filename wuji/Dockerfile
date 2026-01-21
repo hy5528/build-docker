@@ -1,14 +1,5 @@
-# Build stage
 FROM --platform=$BUILDPLATFORM node:22-alpine AS builder
-
-# Install build dependencies
-RUN apk add --no-cache \
-    curl \
-    npm \
-    build-base \
-    perl \
-    llvm-dev \
-    clang-dev
+RUN apk add --no-cache python3 npm git
 
 # Allow linking libclang on musl
 ENV RUSTFLAGS="-C target-feature=-crt-static"
