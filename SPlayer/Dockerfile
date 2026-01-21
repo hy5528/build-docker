@@ -9,7 +9,7 @@ WORKDIR /app
 COPY package.json pnpm-lock.yaml ./
 
 # skip postinstall
-RUN pnpm install --frozen-lockfile --ignore-scripts
+RUN pnpm install  --ignore-scripts
 
 COPY . .
 
