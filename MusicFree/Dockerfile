@@ -5,7 +5,7 @@ RUN apk add --no-cache python3 npm git
 WORKDIR /app
 
 # 复制package文件
-COPY package*.json package-lock.json./
+COPY package.json package-lock.json./
 
 # 安装依赖（使用淘宝镜像加速）
 RUN npm install
