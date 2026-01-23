@@ -18,6 +18,6 @@ FROM nginx:1.29.3-alpine3.22-slim AS app
 COPY --from=build /app/docker/nginx.conf.example /etc/nginx/http.d/default.conf
 COPY --from=build /app/dist /usr/share/nginx/html
 
-EXPOSE 80 3000
+EXPOSE 80 
 
-CMD ["sh", "-c", "nginx"]
+CMD ["nginx", "-g", "daemon off;"]
