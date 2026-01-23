@@ -20,4 +20,4 @@ COPY --from=build /app/dist /usr/share/nginx/html
 
 EXPOSE 80 3000
 
-CMD ["sh", "-c", "nginx && exec npx @neteaseapireborn/api@latest"]
+CMD ["sh", "-c", "nginx"]
