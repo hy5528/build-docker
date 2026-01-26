@@ -3,15 +3,7 @@
 
 Get config from image:
 
-```docker
-docker run --rm jsiu/docker_mpd cat /mpd.conf > mpd.conf
-```
 
-Change mpd.conf log_level to verbose:
-
-```conf
-log_level  "verbose"
-```
 
 Run with mpd.conf mapping:
 
@@ -20,11 +12,11 @@ docker run \
 -e PUID=1001 \
 -e PGID=1002 \
 -p 6600:6600/tcp \
--v /home/jsiu/mpd.conf:/mpd.conf \ # Map mpd.conf into container
--v /home/jsiu/MPD:/mpd/.mpd \
--v /home/jsiu/Music:/mpd/music \
+-v /home/mpd/mpd.conf:/mpd.conf \ # Map mpd.conf into container
+-v /home/mpd/MPD:/mpd/.mpd \
+-v mnt:/mpd/music \
 --device /dev/snd \
-jsiu/docker_mpd
+ghcr.io/hy5528/mpd66:latest
 ```
 
 #### Compose
