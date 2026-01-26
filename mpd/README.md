@@ -9,14 +9,15 @@ Run with mpd.conf mapping:
 
 ```docker
 docker run \
--e PUID=1001 \
--e PGID=1002 \
--p 6600:6600/tcp \
--v /home/mpd/mpd.conf:/mpd.conf \ 
--v /home/mpd/MPD:/mpd/.mpd \
--v /mnt:/mpd/music \
---device /dev/snd \
-ghcr.nju.edu.cn/hy5528/mpd66:latest
+    -d \
+    --name mpd \
+    --device /dev/snd \
+    -p 6900:6600 \
+    -p 8000:8000 \
+    -v /home/mpd/mpd.conf:/mpd.conf\
+    -v /home/mpd/MPD:/mpd/.mpd \
+    -v /mnt:/mpd/music \
+    ghcr.nju.edu.cn/hy5528/mpd66:latest
 ```
 
 #### Compose
