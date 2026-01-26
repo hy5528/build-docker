@@ -16,7 +16,7 @@ docker run \
 -v /home/mpd/MPD:/mpd/.mpd \
 -v /mnt:/mpd/music \
 --device /dev/snd \
-ghcr.io/hy5528/mpd66:latest
+ghcr.nju.edu.cn/hy5528/mpd66:latest
 ```
 
 #### Compose
