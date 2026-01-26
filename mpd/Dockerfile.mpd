@@ -1,4 +1,4 @@
-FROM alpine:3.22
+FROM alpine:edge
 
 RUN apk --no-cache add mpd=0.24.6-r1 sqlite-libs \
 && mkdir -p /usr/local/mpd/ \
