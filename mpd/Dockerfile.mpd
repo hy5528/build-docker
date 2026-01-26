@@ -1,6 +1,6 @@
-FROM alpine:3.22
+FROM alpine:3
 
-ARG MPD_VER=0.24.7
+ARG VERSION
 
 RUN set -ex && \
     apk add --no-cache mpd \
