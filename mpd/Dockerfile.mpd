@@ -6,7 +6,7 @@ RUN set -ex && \
     apk add --no-cache mpd \
 && mkdir -p /usr/local/mpd/ \
 && sed	-e 's:\#user.*:user\t\t"mpd":' \
-  -e 's:\#log_file.*:log_file\t\t"syslog":' \
-  doc/mpdconf.example > /usr/local/mpd/mpd.conf \
+  -e 's:\#log_file.*:log_file\t\t"syslog":' 
+ADD --chmod=755 ./mpd.conf  /usr/local/mpd/mpd.conf \
 && apk del mpddep \
 && rm -rf /var/cache/apk/* /tmp/*
