@@ -1,7 +1,5 @@
 FROM alpine:edge
 
+COPY  mpd.conf /
 RUN apk --no-cache add mpd=0.24.6-r1 sqlite-libs \
-&& mkdir -p /usr/local/mpd/ \
-&& sed	-e doc/mpdconf.example > /usr/local/mpd/mpd.conf \
-&& apk del mpddep \
-&& rm -rf /var/cache/apk/* /tmp/*
+	&& mkdir /mpd
