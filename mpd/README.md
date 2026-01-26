@@ -12,7 +12,7 @@ docker run \
 -e PUID=1001 \
 -e PGID=1002 \
 -p 6600:6600/tcp \
--v /home/mpd/mpd.conf:/mpd.conf \ # Map mpd.conf into container
+-v /home/mpd/mpd.conf:/mpd.conf \ 
 -v /home/mpd/MPD:/mpd/.mpd \
 -v /mnt:/mpd/music \
 --device /dev/snd \
