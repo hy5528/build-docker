@@ -1,7 +1,7 @@
 name: Build mpd Docker images
 
 on:
-  push:
+  workflow_dispatch:
     paths:
     - 'mpd/Dockerfile'
     - 'mpd/Dockerfile.mpd'
