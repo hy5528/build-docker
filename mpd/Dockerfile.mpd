@@ -1,22 +1,17 @@
-FROM alpine:3.23.2
+FROM alpine:3
 
-ARG BUILD_DATE
-ARG VCS_REF
+ARG VERSION
+
+RUN set -ex && \
+    apk add --no-cache mpd && \
+    mkdir -p /var/lib/mpd/playlists && \
+    mkdir -p /music && \
+    touch /var/lib/mpd/database \
+        /var/lib/mpd/mpd.pid \
+        /var/lib/mpd/state \
+        /var/lib/mpd/sticker.sql && \
+    chown mpd:audio -R /var/lib/mpd
 
 COPY mpd.conf /etc/mpd.conf
 
-RUN set -eux; \
-    apk --no-cache add \
-        mpd \
-        mpc; \
-    mkdir -p /mpd/data; \
-    touch /mpd/data/database \
-        /mpd/data/state \
-        /mpd/data/sticker.sql \
-    ; \
-    chown -R mpd:audio /mpd; \
-    cp /etc/mpd.conf /etc/mpd.conf.backup; \
-    chown -R mpd:audio /etc/mpd.conf*
-
-VOLUME /mpd
-WORKDIR /mpd
+VOLUME /var/lib/mpd
