@@ -4,7 +4,7 @@ ARG VERSION
 
 RUN set -ex && \
     apk add --no-cache mpd \
-&& mkdir -p /usr/local/mpd/  
+&& mkdir -p /usr/local/mpd
 ADD --chmod=755 ./mpd.conf  /usr/local/mpd/mpd.conf \
 && apk del mpddep \
 && rm -rf /var/cache/apk/* /tmp/*
