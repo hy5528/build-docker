@@ -1,5 +1,22 @@
-FROM alpine:edge
+FROM alpine:3.23.2
 
-COPY  mpd.conf /
-RUN apk --no-cache add mpd=0.24.7 sqlite-libs \
-	&& mkdir /mpd
+ARG BUILD_DATE
+ARG VCS_REF
+
+COPY mpd.conf /etc/mpd.conf
+
+RUN set -eux; \
+    apk --no-cache add \
+        mpd \
+        mpc; \
+    mkdir -p /mpd/data; \
+    touch /mpd/data/database \
+        /mpd/data/state \
+        /mpd/data/sticker.sql \
+    ; \
+    chown -R mpd:audio /mpd; \
+    cp /etc/mpd.conf /etc/mpd.conf.backup; \
+    chown -R mpd:audio /etc/mpd.conf*
+
+VOLUME /mpd
+WORKDIR /mpd
