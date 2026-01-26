@@ -14,7 +14,7 @@ docker run \
 -p 6600:6600/tcp \
 -v /home/mpd/mpd.conf:/mpd.conf \ # Map mpd.conf into container
 -v /home/mpd/MPD:/mpd/.mpd \
--v mnt:/mpd/music \
+-v /mnt:/mpd/music \
 --device /dev/snd \
 ghcr.io/hy5528/mpd66:latest
 ```
