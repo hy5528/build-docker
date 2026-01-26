@@ -2,7 +2,7 @@ version: '3'
 services:
   mpd:
     restart: unless-stopped
-    image: jsiu/mpd
+    image: hy5528/mpd
     container_name: mpd
     logging:
       options:
