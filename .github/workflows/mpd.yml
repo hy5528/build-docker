@@ -52,7 +52,7 @@ jobs:
           push: true
           tags: |
             ghcr.io/hy5528/mpd-bin:latest
-            ghcr.io/hy5528/mpd-bin:${{ env.MPD_VER }}-alpine-${{ env.ALPINE_VER }}
+        
 
       - name: Build and push
         uses: docker/build-push-action@v6
@@ -65,6 +65,6 @@ jobs:
             johngong/mpd:latest
             johngong/mpd:${{ env.MPD_VER }}-${{ env.MYMPD_VER }}
             ghcr.io/hy5528/mpd:latest
-            ghcr.io/hy5528/mpd:${{ env.MPD_VER }}-${{ env.MYMPD_VER }}
+         
 
   
