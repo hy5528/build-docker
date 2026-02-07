@@ -1,7 +1,7 @@
 services:
   mpd:
     # github镜像：ghcr.io/gshang2017/mpd:latest
-    image: johngong/mpd:latest
+    image: hy5528/mpd66:latest
     # 容器名
     container_name: mpd
     # bluetooth需要host网络
