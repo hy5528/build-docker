@@ -55,7 +55,7 @@ jobs:
           platforms: linux/amd64,linux/arm64,linux/arm/v7
           push: true
           tags: |
-            ghcr.io/hy5528/mpd-bin66:latest
+            ghcr.io/hy5528/mpdbin66:latest
            
 
       - name: Build and push
