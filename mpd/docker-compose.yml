@@ -1,8 +1,7 @@
-version: '3'
 services:
   mpd:
     restart: unless-stopped
-    image: hy5528/mpd
+    image: ghcr.nju.edu.cn/hy5528/mpd66:latest
     container_name: mpd
     logging:
       options:
