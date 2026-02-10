@@ -1,5 +1,5 @@
 # docker_mpd
-FROM alpine:3
+FROM alpine:3.23.3
 
 ARG VERSION
 
