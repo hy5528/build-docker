@@ -18,6 +18,8 @@ services:
     container_name: mopidy
     devices:
       - /dev/snd:/dev/snd
+    environment:
+      - "TZ=Asia/Shanghai"
     ports:
       - 6680:6680
       - 6600:6600
