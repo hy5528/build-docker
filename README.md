@@ -25,7 +25,7 @@ services:
       - /run/udev:/run/udev:ro
       - /opt/config:/root/.config
       - /opt/local:/root/.local
-      - /media/music:/music
+      - /mnt:/music
     restart: always
 ```
 
