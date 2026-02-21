@@ -132,7 +132,7 @@ docker run -d --name SPlayer --restart=always -p 25884:25884 ghcr.nju.edu.cn/hy5
 ```
 # moekoemusic
 ```text
-docker run -d --name moekoemusic --restart=always -p 8680:8080 ghcr.nju.edu.cn/hy5528/moekoemusic66:latest
+docker run -d --name moekoemusic --restart=always -p 8650:8080 ghcr.nju.edu.cn/hy5528/moekoemusic66:latest
 
 ```
 # yesplaymusic
