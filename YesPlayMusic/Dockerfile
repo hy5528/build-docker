@@ -1,6 +1,6 @@
 FROM --platform=$BUILDPLATFORM node:16-alpine AS build
 
-ENV VUE_APP_NETEASE_API_URL=http://192.168.2.204:25884/api/netease
+ENV VUE_APP_NETEASE_API_URL=http://localhost:25884/api/netease
 
 WORKDIR /app
 
