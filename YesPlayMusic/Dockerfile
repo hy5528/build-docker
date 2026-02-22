@@ -1,6 +1,6 @@
 FROM --platform=$BUILDPLATFORM node:16-alpine AS build
 
-ENV VUE_APP_NETEASE_API_URL=https://api-music.cenguigui.cn
+ENV VUE_APP_NETEASE_API_URL=https://ncm-api.prod.gbclstudio.cn
 
 WORKDIR /app
 
