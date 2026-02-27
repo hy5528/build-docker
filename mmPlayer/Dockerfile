@@ -4,7 +4,7 @@ RUN apk add --no-cache python3 npm git
 
 WORKDIR /
 
-RUN git clone --recurse-submodules https://github.com/Dos7t3r/Vue-mmPlayer.git app
+RUN git clone --recurse-submodules https://github.com/hy5528/Vue-xun_My_music.git app
 
 WORKDIR /app
 
@@ -35,6 +35,7 @@ COPY --from=builder /app/dist /usr/share/nginx/html
 EXPOSE 80
 
 CMD ["nginx", "-g", "daemon off;"]
+
 
 
 
