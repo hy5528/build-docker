@@ -56,7 +56,7 @@ services:
             - "80:80"
             - "443:443"
         volumes:
-            - /path/www:/var/www
+            - /www:/var/www
             - phpsocket:/run/php
         depends_on:
             - php
