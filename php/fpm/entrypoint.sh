@@ -10,7 +10,7 @@ set -e
 sed -i "s|;*daemonize =.*|daemonize = no|g" /etc/php85/php-fpm.conf
 sed -i "s|;*error_log =.*|error_log = /proc/self/fd/2|g" /etc/php85/php-fpm.conf
 sed -i "s|;*access.log =.*|access.log = /proc/self/fd/1|g" /etc/php85/php-fpm.d/www.conf
-sed -i "s|;*listen\s*=\s*127.0.0.1:9000|listen = /run/php/php8-fpm.sock|g" /etc/php85/php-fpm.d/www.conf
+sed -i "s|;*listen\s*=\s*127.0.0.1:3600|listen = /run/php/php8-fpm.sock|g" /etc/php85/php-fpm.d/www.conf
 sed -i "s|;*listen.mode\s*=\s*0660|listen.mode = 0666|g" /etc/php85/php-fpm.d/www.conf
 sed -i "s|;*chdir =.*|chdir = /var/www|g" /etc/php85/php-fpm.d/www.conf
 sed -i "s|pm.max_children =.*|pm.max_children = ${PM_MAX_CHILDREN}|i" /etc/php85/php-fpm.d/www.conf
