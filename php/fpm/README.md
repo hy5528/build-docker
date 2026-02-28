@@ -31,8 +31,8 @@ Automatically built by Github Actions
         -d \
         --name php-fpm \
         -v /path/www:/var/www \
-        -e UPLOAD_MAX_FILESIZE=128M
-        gists/php
+        -e UPLOAD_MAX_FILESIZE=128M \
+        ghcr.nju.edu.cn/hy5528/phpfpm66:latest
 
 #### Compose example:
 
