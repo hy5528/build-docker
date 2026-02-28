@@ -49,8 +49,7 @@ jobs:
       - name: 构建并推送 Docker 镜像
         uses: docker/build-push-action@v5
         with:
-          context: ./${{ steps.prepare.outputs.image-name }}/fpm
-          file: ./${{ steps.prepare.outputs.image-name }}/fpm/Dockerfile
+          context: "${{ github.server_url }}/${{ github.repository }}.git#${{ github.ref }}:php/fpm"
           platforms:  linux/amd64,linux/arm64,linux/arm/v7
           push: true
           tags: ${{ steps.meta.outputs.tags }}
