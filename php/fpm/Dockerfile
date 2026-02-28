@@ -58,7 +58,7 @@ RUN set -xe && \
         php85-xmlreader \
         php85-zip
 
-COPY entrypoint.sh /usr/bin/entrypoint.sh
+ADD --chmod=755 ./entrypoint.sh /usr/bin/entrypoint.sh
 
 WORKDIR /var/www
 
