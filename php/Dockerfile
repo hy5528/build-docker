@@ -59,7 +59,7 @@ RUN set -xe && \
         php85-zip
 
 ADD --chmod=755 ./entrypoint.sh /usr/bin/entrypoint.sh
-
+EXPOSE 80
 WORKDIR /var/www
 
 VOLUME ["/var/www"]
