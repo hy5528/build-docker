@@ -1,4 +1,4 @@
-name: Build mpd Docker images
+name: Build phpfpm Docker images
 
 on:
   workflow_dispatch:
@@ -42,14 +42,14 @@ jobs:
         id: meta
         uses: docker/metadata-action@v5
         with:
-          images: ghcr.io/hy5528/mpd66
+          images: ghcr.io/hy5528/phpfpm66
           tags: |
             type=raw,value=latest
     
       - name: 构建并推送 Docker 镜像
         uses: docker/build-push-action@v5
         with:
-          context: "${{ github.server_url }}/${{ github.repository }}.git#${{ github.ref }}:mpd"
+          context: "${{ github.server_url }}/${{ github.repository }}.git#${{ github.ref }}:phpfpm"
           platforms:  linux/amd64,linux/arm64,linux/arm/v7
           push: true
           tags: ${{ steps.meta.outputs.tags }}
