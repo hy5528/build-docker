@@ -11,7 +11,7 @@ ENV PYTHONUNBUFFERED=1 \
     TZ=Asia/Shanghai
 
 # 复制依赖文件
-COPY requirements.txt .
+ADD --chmod=755 ./requirements.txt /requirements.txt
 
 # 安装 Python 依赖
 RUN pip install --no-cache-dir -r requirements.txt
