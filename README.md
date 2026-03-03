@@ -195,6 +195,18 @@ docker run -d \
   ghcr.nju.edu.cn/hy5528/flask_maccms66:latest
 
 ```
+# maccms-parser
+http://你的IP:5500
+
+```text
+docker run -d \
+  --name cmsmovie \
+  -p 5500:5000 \
+  --restart=always \
+  -v /opt/maccms/data:/app/data  \
+  ghcr.nju.edu.cn/hy5528/maccms-parser66:latest
+
+```
 
 # splayer
 ```text
