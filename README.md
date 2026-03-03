@@ -200,7 +200,7 @@ http://你的IP:5500
 
 ```text
 docker run -d \
-  --name cmsmovie \
+  --name maccms-parser \
   -p 5500:5000 \
   --restart=always \
   -v /opt/maccms/data:/app/data  \
