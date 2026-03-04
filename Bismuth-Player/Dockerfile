@@ -1,7 +1,7 @@
 # 第一阶段：构建Vue项目
 FROM --platform=$BUILDPLATFORM node:20-alpine AS builder
 RUN corepack enable && corepack prepare pnpm@latest --activate
-RUN apk add --no-cache python3 npm 
+RUN apk add --no-cache python3 npm bun
 
 WORKDIR /
 
@@ -12,12 +12,12 @@ WORKDIR /app
 COPY package*.json ./
 
 # 安装依赖（使用淘宝镜像加速）
-RUN npm install
+RUN bun install
     
 
 # 复制源代码并构建
 COPY . .
-RUN npm run build
+RUN bun run build
 
 # 第二阶段：生产环境
 FROM nginx:1.29.3-alpine3.22-slim AS app
