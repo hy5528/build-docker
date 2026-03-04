@@ -1,5 +1,6 @@
 # 第一阶段：构建Vue项目
 FROM --platform=$BUILDPLATFORM node:22-alpine AS builder
+RUN corepack enable && corepack prepare pnpm@latest --activate
 RUN apk add --no-cache python3 npm 
 
 WORKDIR /
