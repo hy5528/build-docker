@@ -1,4 +1,4 @@
-name: Build Bismuth-Player Docker images
+name: Build maccm-mcp Docker images
 
 on:
   workflow_dispatch:
@@ -47,17 +47,17 @@ jobs:
         id: meta
         uses: docker/metadata-action@v5
         with:
-          images: ghcr.io/hy5528/Bismuth-Player66
+          images: ghcr.io/hy5528/maccm-mcp66
           tags: |
             type=raw,value=latest
       - name: Clone Overleaf Gitlab Repo
         run: |
-          git clone https://github.com/Eq52/Bismuth-Player.git app
+          git clone https://github.com/wbsu2003/maccmsv10-api-mcp.git app
 
       - name: "Copy userpatches to build folder"
         shell: bash
         run: |
-          rsync -av Bismuth-Player/. ./app    
+          rsync -av maccm-mcp/. ./app    
           
       - name: 构建并推送 Docker 镜像
         uses: docker/build-push-action@v5
