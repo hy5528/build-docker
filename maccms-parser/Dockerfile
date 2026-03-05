@@ -1,27 +1,21 @@
-FROM alpine:3
+FROM python:3.14.0-slim
 
-ARG VERSION
+# 设置工作目录
+WORKDIR /app
 
+# 安装系统依赖
+RUN apt-get update && apt-get install -y \
+    gcc \
+    libxml2-dev \
+    libxslt1-dev \
+    zlib1g-dev \
+    && rm -rf /var/lib/apt/lists/*
 
-# Install GStreamer and other required Debian packages
-RUN echo "http://dl-cdn.alpinelinux.org/alpine/edge/testing" >> /etc/apk/repositories \
- && apk update \
- && apk add --no-cache \
-  sudo \
-  curl \
-  py3-pip \
- && rm -rf /var/cache/apk/*
+# 复制依赖文件
+COPY requirements.txt .
 
-# Allow pip to install over system packages
-ENV PIP_BREAK_SYSTEM_PACKAGES 1
-
-# Install additional mopidy extensions and Python dependencies via pip
-ADD --chmod=755 ./requirements.txt /requirements.txt
-RUN pip install --break-system-packages -r requirements.txt
-
-# Cleanup
-RUN rm -rf /root/.cache \
- && rm -rf /iris/node_modules
+# 安装Python依赖
+RUN pip install --no-cache-dir -r requirements.txt
 
 
 # 複製專案所有檔案到工作目錄
