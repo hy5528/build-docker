@@ -12,7 +12,7 @@ RUN apt-get update && apt-get install -y \
     && rm -rf /var/lib/apt/lists/*
 
 # 复制依赖文件
-COPY requirements.txt .
+ADD --chmod=755 ./requirements.txt /requirements.txt
 
 # 安装Python依赖
 RUN pip install --no-cache-dir -r requirements.txt
