@@ -1,6 +1,0 @@
-
-Flask==3.1.2
-requests==2.32.5
-gunicorn==23.0.0
-gevent
-ujson
