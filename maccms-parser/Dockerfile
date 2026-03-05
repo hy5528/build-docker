@@ -1,22 +1,15 @@
+# 使用官方 Python 映像檔作為基礎
 FROM python:3.14.0-slim
 
-# 设置工作目录
+# 安裝 curl（用於健康檢查）
+RUN apt-get update && apt-get install -y curl && rm -rf /var/lib/apt/lists/*
+
+# 設定工作目錄
 WORKDIR /app
 
-# 安装系统依赖
-RUN apt-get update && apt-get install -y \
-    gcc \
-    libxml2-dev \
-    libxslt1-dev \
-    zlib1g-dev \
-    && rm -rf /var/lib/apt/lists/*
-
-# 复制依赖文件
-ADD --chmod=755 ./requirements.txt /requirements.txt
-
-# 安装Python依赖
+# 複製依賴檔案並安裝
+COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
-
 
 # 複製專案所有檔案到工作目錄
 COPY . .
