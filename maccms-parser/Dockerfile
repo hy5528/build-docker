@@ -8,8 +8,9 @@ RUN apt-get update && apt-get install -y curl && rm -rf /var/lib/apt/lists/*
 WORKDIR /app
 
 # 複製依賴檔案並安裝
+ENV PIP_BREAK_SYSTEM_PACKAGES 1
 ADD --chmod=755 ./requirements.txt /requirements.txt
-RUN pip install --no-cache-dir -r requirements.txt
+RUN pip install --break-system-packages -r requirements.txt
 
 # 複製專案所有檔案到工作目錄
 COPY . .
