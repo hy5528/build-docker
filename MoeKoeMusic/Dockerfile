@@ -1,7 +1,7 @@
 # Stage 1: Build Frontend
 FROM --platform=$BUILDPLATFORM node:20-alpine AS frontend-builder
 WORKDIR /app
-COPY package.json ./
+COPY package*.json ./
 # Remove electron and electron-builder from package.json
 RUN node -e "const fs = require('fs'); const filePath = './package.json'; \
              let rawdata = fs.readFileSync(filePath); let packageJson = JSON.parse(rawdata); \
@@ -28,7 +28,7 @@ RUN apk add --no-cache nginx
 COPY ./api ./api
 # Install API dependencies
 WORKDIR /app/api
-RUN npm install 
+RUN npm install --production
 # Reset WORKDIR to /app
 WORKDIR /app 
 
