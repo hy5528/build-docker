@@ -1,5 +1,5 @@
 # Stage 1: Build Frontend
-FROM --platform=$BUILDPLATFORM node:20-alpine AS frontend-builder
+FROM --platform=$BUILDPLATFORM node:22-alpine AS frontend-builder
 WORKDIR /app
 COPY package*.json ./
 # Remove electron and electron-builder from package.json
@@ -18,14 +18,17 @@ COPY . .
 RUN npm run build:docker
 
 # Stage 2: Setup Combined App
-FROM nginx:1.29.3-alpine3.22-slim 
+FROM node:22-alpine
 WORKDIR /app
+
+# Install Nginx
+RUN apk add --no-cache nginx
 
 # Copy API code
 COPY ./api ./api
 # Install API dependencies
 WORKDIR /app/api
-RUN npm install 
+RUN npm install --production
 # Reset WORKDIR to /app
 WORKDIR /app 
 
