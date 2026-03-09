@@ -25,7 +25,7 @@ WORKDIR /app
 COPY ./api ./api
 # Install API dependencies
 WORKDIR /app/api
-RUN npm install --production
+RUN npm install 
 # Reset WORKDIR to /app
 WORKDIR /app 
 
