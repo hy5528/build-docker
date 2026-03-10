@@ -4,7 +4,7 @@ RUN apk add --no-cache git python3 make g++
 COPY package.json ./
 
 # skip postinstall
-RUN pnpm install 
+RUN npm install 
 
 COPY . .
 
