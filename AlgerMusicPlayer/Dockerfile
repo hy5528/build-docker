@@ -1,11 +1,15 @@
 ﻿FROM node:20-alpine as builder
 
 RUN apk add --no-cache git python3 make g++
+COPY package.json ./
 
+# skip postinstall
+RUN pnpm install 
 
+COPY . .
 
 WORKDIR /app
-RUN npm install && npm run build
+RUN npm run build
 
 
 FROM nginx:alpine
