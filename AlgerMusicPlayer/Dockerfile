@@ -16,9 +16,9 @@ RUN apk add --no-cache nodejs npm supervisor curl && \
 COPY --from=builder /app/frontend/dist /usr/share/nginx/html
 COPY --from=builder /app/api /app/api
 
-COPY nginx.conf /etc/nginx/nginx.conf
-COPY supervisord.prod.conf /etc/supervisor/conf.d/supervisord.conf
-COPY entrypoint.prod.sh /entrypoint.sh
+ADD --chmod=755 ./nginx.conf /etc/nginx/nginx.conf
+ADD --chmod=755 ./supervisord.prod.conf /etc/supervisor/conf.d/supervisord.conf
+ADD --chmod=755 ./entrypoint.sh /entrypoint.sh
 
 RUN mkdir -p /var/log/supervisor /data && \
     chmod +x /entrypoint.sh
