@@ -1,25 +1,36 @@
-FROM --platform=$BUILDPLATFORM node:22-alpine AS build
+﻿FROM node:18-alpine as builder
 
-# install pnpm
-
+RUN apk add --no-cache git python3 make g++
 
 WORKDIR /app
 
-COPY package.json ./
-
-# skip postinstall
-RUN npm install 
-
-COPY . .
-
-RUN npm run build 
-# app
-
-FROM nginx:1.29.3-alpine3.22-slim AS app
+RUN git clone https://github.com/algerkong/AlgerMusicPlayer.git frontend
+WORKDIR /app/frontend
+RUN npm ci && npm run build
 
 
-COPY --from=build /app/dist /usr/share/nginx/html
+FROM nginx:alpine
 
-EXPOSE 80 
+RUN apk add --no-cache nodejs npm supervisor curl && \
+    rm -rf /var/cache/apk/*
 
-CMD ["nginx", "-g", "daemon off;"]
+COPY --from=builder /app/frontend/dist /usr/share/nginx/html
+COPY --from=builder /app/api /app/api
+
+COPY nginx.conf /etc/nginx/nginx.conf
+COPY supervisord.prod.conf /etc/supervisor/conf.d/supervisord.conf
+COPY entrypoint.prod.sh /entrypoint.sh
+
+RUN mkdir -p /var/log/supervisor /data && \
+    chmod +x /entrypoint.sh
+
+ENV NODE_ENV=production
+
+EXPOSE 80
+
+HEALTHCHECK --interval=30s --timeout=10s --start-period=30s --retries=3 \
+  CMD curl -f http://localhost || exit 1
+
+VOLUME ["/data"]
+
+CMD ["/entrypoint.sh"]
