@@ -4,7 +4,6 @@ RUN apk add --no-cache git python3 make g++
 
 WORKDIR /app
 
-RUN git clone https://github.com/algerkong/AlgerMusicPlayer.git frontend
 WORKDIR /app/frontend
 RUN npm ci && npm run build
 
