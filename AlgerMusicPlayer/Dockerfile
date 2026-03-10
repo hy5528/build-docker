@@ -17,8 +17,8 @@ FROM nginx:alpine
 RUN apk add --no-cache nodejs npm supervisor curl && \
     rm -rf /var/cache/apk/*
 
-COPY --from=builder /app/dist /usr/share/nginx/html
-COPY --from=builder /app/api /app/api
+COPY --from=builder /app/out/renderer /usr/share/nginx/html
+
 
 ADD --chmod=755 ./nginx.conf /etc/nginx/nginx.conf
 ADD --chmod=755 ./supervisord.prod.conf /etc/supervisor/conf.d/supervisord.conf
