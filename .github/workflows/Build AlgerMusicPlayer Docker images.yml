@@ -52,7 +52,7 @@ jobs:
             type=raw,value=latest
       - name: Clone Overleaf Gitlab Repo
         run: |
-          git clone https://github.com/algerkong/AlgerMusicPlayer.git app
+          git clone https://github.com/slok2024/AlgerMusicPlayer.git app
 
       - name: "Copy userpatches to build folder"
         shell: bash
