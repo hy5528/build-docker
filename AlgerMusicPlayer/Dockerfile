@@ -1,14 +1,14 @@
 FROM --platform=$BUILDPLATFORM node:20-alpine AS build
 
 # install pnpm
-RUN npm install -g pnpm
+
 
 WORKDIR /app
 
 COPY package.json pnpm-lock.yaml ./
 
 # skip postinstall
-RUN pnpm install --frozen-lockfile --ignore-scripts
+RUN npm install 
 
 COPY . .
 
