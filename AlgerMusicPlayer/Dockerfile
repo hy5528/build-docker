@@ -1,4 +1,4 @@
-FROM --platform=$BUILDPLATFORM node:20-alpine AS build
+FROM --platform=$BUILDPLATFORM node:22-alpine AS build
 
 # install pnpm
 
@@ -12,7 +12,7 @@ RUN npm install
 
 COPY . .
 
-RUN npm run dev
+RUN npm run build 
 # app
 
 FROM nginx:1.29.3-alpine3.22-slim AS app
