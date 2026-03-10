@@ -1,4 +1,4 @@
-﻿FROM node:20-alpine as builder
+﻿FROM --platform=$BUILDPLATFORM node:20-alpine as builder
 
 RUN apk add --no-cache git python3 make g++
 COPY package.json ./
