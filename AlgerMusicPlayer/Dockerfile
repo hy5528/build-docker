@@ -2,9 +2,9 @@
 
 RUN apk add --no-cache git python3 make g++
 
-WORKDIR /app
 
-WORKDIR /app/frontend
+
+WORKDIR /app
 RUN npm ci && npm run build
 
 
@@ -13,7 +13,7 @@ FROM nginx:alpine
 RUN apk add --no-cache nodejs npm supervisor curl && \
     rm -rf /var/cache/apk/*
 
-COPY --from=builder /app/frontend/dist /usr/share/nginx/html
+COPY --from=builder /app/dist /usr/share/nginx/html
 COPY --from=builder /app/api /app/api
 
 ADD --chmod=755 ./nginx.conf /etc/nginx/nginx.conf
