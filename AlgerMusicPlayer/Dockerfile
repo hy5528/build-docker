@@ -5,7 +5,7 @@ RUN apk add --no-cache git python3 make g++
 
 
 WORKDIR /app
-RUN npm ci && npm run build
+RUN npm install && npm run build
 
 
 FROM nginx:alpine
