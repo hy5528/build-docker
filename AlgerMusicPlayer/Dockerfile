@@ -5,7 +5,7 @@ FROM --platform=$BUILDPLATFORM node:20-alpine AS build
 
 WORKDIR /app
 
-COPY package.json pnpm-lock.yaml ./
+COPY package.json ./
 
 # skip postinstall
 RUN npm install 
