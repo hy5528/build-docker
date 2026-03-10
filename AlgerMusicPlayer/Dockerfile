@@ -1,14 +1,18 @@
 FROM --platform=$BUILDPLATFORM node:20-alpine AS build
 
+# install pnpm
+RUN npm install -g pnpm
 
 WORKDIR /app
 
+COPY package.json pnpm-lock.yaml ./
+
+# skip postinstall
+RUN pnpm install --frozen-lockfile --ignore-scripts
+
 COPY . .
 
-RUN apk add --no-cache python3 make g++ git \
-    && yarn install --frozen-lockfile \
-    && yarn build
-
+RUN npm run dev
 # app
 
 FROM nginx:1.29.3-alpine3.22-slim AS app
