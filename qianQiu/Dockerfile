@@ -1,14 +1,4 @@
-FROM python:3.11-slim
-
-# 安裝 curl（用於健康檢查）
-# 安装系统依赖
-RUN apt-get update && apt-get install -y \
-    gcc \
-    curl \
-    libxml2-dev \
-    libxslt1-dev \
-    zlib1g-dev \
-    && rm -rf /var/lib/apt/lists/*
+FROM --platform=$BUILDPLATFORM python:3.11-slim
 
 # 设置工作目录
 WORKDIR /app
