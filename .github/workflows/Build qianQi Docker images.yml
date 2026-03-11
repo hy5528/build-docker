@@ -1,30 +1,40 @@
-name: Build maccms Docker images
+name: Build qianQiu Docker images
 
 on:
   workflow_dispatch:
     inputs:
-      MACH:
-        description: 'Choose machine'
-        required: true
-        default: 'maccms'
-        type: choice
-        options:
-        - 'maccms'    
+      version_tag:
+        description: '版本标签 (例如: v1.0.0)'
+        required: false
+        type: string
+        default: ''
+      include_latest:
+        description: 'latest标签'
+        required: false
+        type: boolean
+        default: true
+
 env:
   REGISTRY: ghcr.io
   IMAGE_NAME: ${{ github.repository }}
+
 jobs:
   build-and-push:
     runs-on: ubuntu-latest
     permissions:
       contents: read
       packages: write
+
+      
     steps:      
       - name: 检出代码
         uses: actions/checkout@v4
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
+        with:
+          version: latest
+          driver-opts: image=moby/buildkit:buildx-stable-1
 
       - name: 登录到 GitHub Container Registry
         uses: docker/login-action@v3
@@ -37,16 +47,23 @@ jobs:
         id: meta
         uses: docker/metadata-action@v5
         with:
-          images: ghcr.io/hy5528/${{github.event.inputs.MACH}}66
+          images: ghcr.io/hy5528/qianQiu66
           tags: |
             type=raw,value=latest
-      
-      
+      - name: Clone Overleaf Gitlab Repo
+        run: |
+          git clone https://github.com/YYY887/qianQiu.git app
+
+      - name: "Copy userpatches to build folder"
+        shell: bash
+        run: |
+          rsync -av qianQiu/. ./app    
+          
       - name: 构建并推送 Docker 镜像
         uses: docker/build-push-action@v5
         with:
-          context: "${{ github.server_url }}/${{ github.repository }}.git#${{ github.ref }}:${{github.event.inputs.MACH}}"
-          platforms: linux/amd64,linux/arm64,linux/arm/v7
+          context: ./app
+          platforms: linux/amd64,linux/arm64
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
