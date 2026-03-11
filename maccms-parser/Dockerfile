@@ -9,7 +9,7 @@ WORKDIR /app
 
 # 複製依賴檔案並安裝
 ADD --chmod=755 ./requirements.txt /requirements.txt
-RUN pip install --no-cache-dir -r requirements.txt
+RUN pip install -r requirements.txt
 
 # 複製專案所有檔案到工作目錄
 COPY . .
