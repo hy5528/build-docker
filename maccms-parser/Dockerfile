@@ -1,5 +1,5 @@
 # 使用官方 Python 映像檔作為基礎
-FROM FROM python:3.14.0-slim
+FROM python:3.14.0-slim
 
 # 安裝 curl（用於健康檢查）
 # 安装系统依赖
