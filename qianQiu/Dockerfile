@@ -1,4 +1,4 @@
-FROM python:3.14.0-slim
+FROM python:3.11-slim
 
 # 安裝 curl（用於健康檢查）
 # 安装系统依赖
