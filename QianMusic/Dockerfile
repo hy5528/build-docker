@@ -16,7 +16,7 @@ RUN npm install
 
 # 复制源代码并构建
 COPY . .
-RUN npm run build
+RUN npm run start
 
 # 第二阶段：生产环境
 FROM nginx:1.29.3-alpine3.22-slim AS app
