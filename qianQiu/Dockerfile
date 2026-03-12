@@ -26,9 +26,21 @@ RUN mkdir -p public
 # 暴露端口
 EXPOSE 8000
 
-# 健康检查
-HEALTHCHECK --interval=30s --timeout=3s --start-period=10s --retries=3 \
-    CMD python -c "import urllib.request; urllib.request.urlopen('http://localhost:8000/api/info')" || exit 1
+
 
 # 启动命令
-CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
+CMD ["gunicorn", \
+     "--worker-class", "sync", \
+     "--workers", "2", \
+     "--timeout", "120", \
+     "--graceful-timeout", "25", \
+     "--max-requests", "800", \
+     "--max-requests-jitter", "80", \
+     "--keep-alive", "4", \
+     "--preload", \
+     "uvicorn", \
+     "--bind", "0.0.0.0:8000", \
+     "--access-logfile", "-", \
+     "--error-logfile", "-", \
+     "main:app"]
+
