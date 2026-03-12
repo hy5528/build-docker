@@ -52,7 +52,7 @@ jobs:
             type=raw,value=latest
       - name: Clone Overleaf Gitlab Repo
         run: |
-          git clone https://github.com/EdNovas/dongguaTV.git app
+          git clone https://github.com/hy5528/dongguaTV.git app
 
       - name: "Copy userpatches to build folder"
         shell: bash
