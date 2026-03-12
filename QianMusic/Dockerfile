@@ -1,4 +1,4 @@
-FROM --platform=$BUILDPLATFORM node:lts-alpine
+FROM --platform=$BUILDPLATFORM node:22-alpine
 
 RUN apk add --no-cache tini
 
