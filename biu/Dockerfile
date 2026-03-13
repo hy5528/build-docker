@@ -15,7 +15,7 @@ RUN pnpm install
 
 # 复制源代码并构建
 COPY . .
-RUN pnpm run build
+RUN npm run build
 
 # 第二阶段：生产环境
 FROM nginx:1.29.3-alpine3.22-slim AS app
@@ -31,6 +31,6 @@ COPY --from=builder /app/dist /usr/share/nginx/html
 
 
 
-EXPOSE 80
+EXPOSE 5678
 
 CMD ["nginx", "-g", "daemon off;"]
