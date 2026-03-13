@@ -23,6 +23,7 @@ FROM nginx:1.29.3-alpine3.22-slim AS app
 WORKDIR /app
 
 # 从构建阶段复制打包结果
+COPY --from=build /app/docker/nginx.conf.example /etc/nginx/http.d/default.conf
 COPY --from=builder /app/dist /usr/share/nginx/html
 
 # 复制自定义nginx配置（如有需要）
