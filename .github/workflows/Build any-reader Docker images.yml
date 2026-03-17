@@ -1,4 +1,4 @@
-name: Build lx Docker images
+name: Build any-reader Docker images
 
 on:
   workflow_dispatch:
@@ -47,17 +47,17 @@ jobs:
         id: meta
         uses: docker/metadata-action@v5
         with:
-          images: ghcr.io/hy5528/lx66
+          images: ghcr.io/hy5528/any-reader66
           tags: |
             type=raw,value=latest
       - name: Clone Overleaf Gitlab Repo
         run: |
-          git clone https://github.com/lyswhut/lx-music-desktop.git app
+          git clone https://github.com/aooiuu/any-reader.git app
 
       - name: "Copy userpatches to build folder"
         shell: bash
         run: |
-          rsync -av lx/. ./app    
+          rsync -av any-reader/. ./app    
           
       - name: 构建并推送 Docker 镜像
         uses: docker/build-push-action@v5
