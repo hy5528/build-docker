@@ -21,12 +21,6 @@ COPY . /app
 RUN pnpm install -r --offline
 
 RUN pnpm run build && pnpm run web:build-b
-# 第二阶段：生产环境
-FROM nginx:1.29.3-alpine3.22-slim AS app
 
-WORKDIR /app
-
-# 从构建阶段复制打包结果
-COPY --from=builder /dist /usr/share/nginx/html
 EXPOSE 8899
 CMD ["pnpm", "run", "server"]
