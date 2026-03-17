@@ -27,6 +27,6 @@ FROM nginx:1.29.3-alpine3.22-slim AS app
 WORKDIR /app
 
 # 从构建阶段复制打包结果
-COPY --from=builder /app/dist /usr/share/nginx/html
+COPY --from=builder /dist /usr/share/nginx/html
 EXPOSE 8899
 CMD ["pnpm", "run", "server"]
