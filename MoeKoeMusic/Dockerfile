@@ -1,8 +1,7 @@
 # Stage 1: Build Frontend
 FROM --platform=$BUILDPLATFORM node:20-alpine AS frontend-builder
-RUN apk add --no-cache python3 npm git
 WORKDIR /app
-COPY package.json ./
+COPY package*.json ./
 # Remove electron and electron-builder from package.json
 RUN node -e "const fs = require('fs'); const filePath = './package.json'; \
              let rawdata = fs.readFileSync(filePath); let packageJson = JSON.parse(rawdata); \
