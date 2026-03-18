@@ -47,12 +47,12 @@ jobs:
         id: meta
         uses: docker/metadata-action@v5
         with:
-          images: ghcr.io/hy5528/MoeKoeMusic66
+          images: ghcr.io/hy5528/MoeKoeMusicweb66
           tags: |
             type=raw,value=latest
       - name: Clone Overleaf Gitlab Repo
         run: |
-          git clone https://github.com/MoeKoeMusic/MoeKoeMusic.git app
+          git clone https://github.com/MoeKoeMusic/MoeKoeMusicWeb.git app
 
       - name: "Copy userpatches to build folder"
         shell: bash
