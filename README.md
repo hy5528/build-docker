@@ -88,7 +88,7 @@ services:
       - moontv-redis
 
   moontv-redis:
-    image: redis
+    image: redis:alpine
     container_name: moontv-redis
     restart: always
     command: redis-server --save 60 1 --loglevel warning
