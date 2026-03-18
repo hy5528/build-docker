@@ -52,7 +52,7 @@ jobs:
             type=raw,value=latest
       - name: Clone Overleaf Gitlab Repo
         run: |
-          git clone https://github.com/Stardm0/MoonTV.git app
+          git clone https://github.com/laboratorys/LunaTV.git app
 
       - name: "Copy userpatches to build folder"
         shell: bash
