@@ -1,5 +1,6 @@
 # ---- 第 1 阶段：安装依赖 ----
 FROM --platform=$BUILDPLATFORM node:20-alpine AS base
+RUN apk update && apk add --no-cache bun 
 
 # 启用 corepack 并激活 pnpm（Node20 默认提供 corepack）
 RUN corepack enable && corepack prepare pnpm@latest --activate
