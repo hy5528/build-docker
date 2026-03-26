@@ -1,5 +1,5 @@
 # ---- 第 1 阶段：安装依赖 ----
-FROM --platform=$BUILDPLATFORM node:20-alpine AS deps
+FROM --platform=$BUILDPLATFORM node:20-alpine AS base
 
 # 启用 corepack 并激活 pnpm（Node20 默认提供 corepack）
 RUN corepack enable && corepack prepare pnpm@latest --activate
@@ -8,7 +8,7 @@ WORKDIR /app
 
 
 # Install dependencies with bun
-
+FROM base AS deps
 COPY package.json bun.lock* ./
 RUN bun install --no-save --frozen-lockfile
 
