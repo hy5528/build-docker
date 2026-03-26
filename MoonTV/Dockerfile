@@ -1,20 +1,19 @@
-# -----------------------------------------------------------------------------
-# This Dockerfile.bun is specifically configured for projects using Bun
-# For npm/pnpm or yarn, refer to the Dockerfile instead
-# -----------------------------------------------------------------------------
+# ---- 第 1 阶段：安装依赖 ----
+FROM --platform=$BUILDPLATFORM node:20-alpine AS deps
 
-# Use Bun's official image
-FROM oven/bun:1 AS base
+# 启用 corepack 并激活 pnpm（Node20 默认提供 corepack）
+RUN corepack enable && corepack prepare pnpm@latest --activate
 
 WORKDIR /app
 
+
 # Install dependencies with bun
-FROM base AS deps
+
 COPY package.json bun.lock* ./
 RUN bun install --no-save --frozen-lockfile
 
 # Rebuild the source code only when needed
-FROM base AS builder
+FROM FROM --platform=$BUILDPLATFORM node:20-alpine AS builder
 WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
@@ -27,7 +26,7 @@ COPY . .
 RUN bun run build
 
 # Production image, copy all the files and run next
-FROM base AS runner
+FROM node:20-alpine AS runner
 WORKDIR /app
 
 # Uncomment the following line in case you want to disable telemetry during runtime.
