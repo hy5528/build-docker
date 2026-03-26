@@ -13,7 +13,7 @@ COPY package.json bun.lock* ./
 RUN bun install --no-save --frozen-lockfile
 
 # Rebuild the source code only when needed
-FROM FROM --platform=$BUILDPLATFORM node:20-alpine AS builder
+FROM base AS builder
 WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
@@ -26,7 +26,7 @@ COPY . .
 RUN bun run build
 
 # Production image, copy all the files and run next
-FROM node:20-alpine AS runner
+FROM base AS runner
 WORKDIR /app
 
 # Uncomment the following line in case you want to disable telemetry during runtime.
