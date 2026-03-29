@@ -101,77 +101,7 @@ networks:
   moontv-network:
     driver: bridge
 ```
-# DecoTV
-kvrocks储存
-```text
-services:
-  moontv-core:
-    image: ghcr.nju.edu.cn/hy5528/decotv66:latest
-    container_name: moontv-core
-    restart: always
-    ports:
-      - '3000:3000'
-    environment:
-      - USERNAME=admin
-      - PASSWORD=123456
-      - NEXT_PUBLIC_STORAGE_TYPE=kvrocks
-      - KVROCKS_URL=redis://moontv-kvrocks:6666
-    networks:
-      - moontv-network
-    depends_on:
-      - moontv-kvrocks
 
-  moontv-kvrocks:
-    image: apache/kvrocks
-    container_name: moontv-kvrocks
-    restart: always
-    volumes:
-      - kvrocks-data:/var/lib/kvrocks
-    networks:
-      - moontv-network
-
-networks:
-  moontv-network:
-    driver: bridge
-
-volumes:
-  kvrocks-data:
-
-```
-redis储存
-```text
-services:
-  moontv-core:
-    image: ghcr.nju.edu.cn/hy5528/decotv66:latest
-    container_name: moontv-core
-    restart: always
-    ports:
-      - '3000:3000'
-    environment:
-      - USERNAME=admin
-      - PASSWORD=123456
-      - NEXT_PUBLIC_STORAGE_TYPE=redis
-      - REDIS_URL=redis://moontv-redis:6379
-    networks:
-      - moontv-network
-    depends_on:
-      - moontv-redis
-
-  moontv-redis:
-    image: redis
-    container_name: moontv-redis
-    restart: always
-    command: redis-server --save 60 1 --loglevel warning
-    volumes:
-      - ./data:/data
-    networks:
-      - moontv-network
-
-networks:
-  moontv-network:
-    driver: bridge
-
-```
 # cmsmovie
 前台: http://localhost:5000/
 后台: http://localhost:5000/admin/login
@@ -195,16 +125,11 @@ docker run -d \
   ghcr.nju.edu.cn/hy5528/flask_maccms66:latest
 
 ```
-# maccms-parser
+# NextTV
 http://你的IP:5500
 
 ```text
-docker run -d \
-  --name maccms-parser \
-  -p 5500:5000 \
-  --restart=always \
-  -v /opt/maccms/data:/app/data  \
-  ghcr.nju.edu.cn/hy5528/maccms-parser66:latest
+docker run -d --name NextTV --restart=always -p 3800:3000 ghcr.nju.edu.cn/hy5528/nexttv66:latest
 
 ```
 
