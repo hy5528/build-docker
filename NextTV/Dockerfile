@@ -4,7 +4,7 @@
 # -----------------------------------------------------------------------------
 
 # Use Bun's official image
-FROM  --platform=$BUILDPLATFORM oven/bun:1 AS base
+FROM oven/bun:1 AS base
 
 WORKDIR /app
 
