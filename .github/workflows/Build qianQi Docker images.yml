@@ -1,4 +1,4 @@
-name: Build qianQiu Docker images
+name: Build simplecms Docker images
 
 on:
   workflow_dispatch:
@@ -47,12 +47,12 @@ jobs:
         id: meta
         uses: docker/metadata-action@v5
         with:
-          images: ghcr.io/hy5528/qianQiu66
+          images: ghcr.io/hy5528/simplecms66
           tags: |
             type=raw,value=latest
       - name: Clone Overleaf Gitlab Repo
         run: |
-          git clone https://github.com/YYY887/qianQiu.git app
+          git clone https://github.com/NotPeppa/simplecms.git app
 
       - name: "Copy userpatches to build folder"
         shell: bash
@@ -63,7 +63,7 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           context: ./app
-          platforms: linux/amd64,linux/arm64
+          platforms: linux/amd64,linux/arm64,linux/arm/v7
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
