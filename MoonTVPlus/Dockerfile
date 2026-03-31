@@ -1,49 +1,16 @@
 # ---- 第 1 阶段：安装依赖 ----
-FROM node:24-alpine AS deps
+FROM --platform=$BUILDPLATFORM node:24-alpine AS deps
 
-# 启用 corepack 并激活 pnpm（Node20 默认提供 corepack）
 RUN corepack enable && corepack prepare pnpm@latest --activate
 
 WORKDIR /app
 
-# 仅复制依赖清单，提高构建缓存利用率
 COPY package.json pnpm-lock.yaml ./
 
-# 安装所有依赖（含 devDependencies，后续会裁剪）
 RUN pnpm install --frozen-lockfile
 
 # ---- 第 2 阶段：构建项目 ----
 FROM --platform=$BUILDPLATFORM node:24-alpine AS builder
-RUN corepack enable && corepack prepare pnpm@latest --activate
-WORKDIR /app
-
-# 复制依赖
-COPY --from=deps /app/node_modules ./node_modules
-# 复制全部源代码
-COPY . .
-
-# 在构建阶段也显式设置 DOCKER_ENV，
-ENV DOCKER_ENV=true
-
-# 生成生产构建
-RUN pnpm run build
-
-# 使用 pnpm deploy 提取生产依赖到独立目录
-RUN pnpm deploy --filter=. --prod --legacy /tmp/prod-deps
-
-# ---- 第 1 阶段：安装依赖 ----
-FROM node:24-alpine AS deps
-
-RUN corepack enable && corepack prepare pnpm@latest --activate
-
-WORKDIR /app
-
-COPY package.json pnpm-lock.yaml ./
-
-RUN pnpm install --frozen-lockfile
-
-# ---- 第 2 阶段：构建项目 ----
-FROM node:24-alpine AS builder
 RUN corepack enable && corepack prepare pnpm@latest --activate
 WORKDIR /app
 
