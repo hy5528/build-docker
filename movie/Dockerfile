@@ -1,5 +1,5 @@
 # 使用一个轻量级的 Node.js 镜像作为基础
-FROM node:20-alpine
+FROM --platform=$BUILDPLATFORM node:20-alpine
 
 # 设置工作目录
 WORKDIR /app
