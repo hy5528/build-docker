@@ -23,4 +23,4 @@ ENV PASSWORD=123456
 ENV SETTINGS_PASSWORD=123456
 
 # 容器启动时运行的命令
-CMD ["node", "server.js"]
+CMD ["node", "server.js", "start"]
