@@ -22,7 +22,7 @@ COPY . .
 # Learn more here: https://nextjs.org/telemetry
 # Uncomment the following line in case you want to disable telemetry during the build.
 # ENV NEXT_TELEMETRY_DISABLED=1
-
+ADD --chmod=755 ./.env.local /.env.local
 RUN bun run build
 
 # Production image, copy all the files and run next
@@ -39,7 +39,7 @@ ENV NODE_ENV=production \
 RUN groupadd --system --gid 1001 nodejs && \
     useradd --system --uid 1001 --no-log-init -g nodejs nextjs
 
-COPY --from=builder --chown=nextjs:nodejs /app/public ./ppublic
+COPY --from=builder --chown=nextjs:nodejs /app/public ./public
 # Automatically leverage output traces to reduce image size
 # https://nextjs.org/docs/advanced-features/output-file-tracing
 COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
