@@ -5,7 +5,7 @@
 
 # Use Bun's official image
 FROM oven/bun:1 AS base
-ENV SESSION_SECRET=UvjJe/Fqz6qSmkC4d8H2OQ2BuHtPYsMPdocnFjpzpUM=
+ENV SESSION_SECRET=iqsmELMC/Q9rD4/j5RZQV2q2e1yeMvKLLeWCXX9DY/U=
 ENV PASSWORD=123456
 WORKDIR /app
 
