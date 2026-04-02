@@ -5,7 +5,8 @@
 
 # Use Bun's official image
 FROM oven/bun:1 AS base
-
+ENV SESSION_SECRET=UvjJe/Fqz6qSmkC4d8H2OQ2BuHtPYsMPdocnFjpzpUM=
+ENV PASSWORD=123456
 WORKDIR /app
 
 # Install dependencies with bun
