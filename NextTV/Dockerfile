@@ -5,8 +5,6 @@
 
 # Use Bun's official image
 FROM oven/bun:1 AS base
-ENV SESSION_SECRET=iqsmELMC/Q9rD4/j5RZQV2q2e1yeMvKLLeWCXX9DY/U=
-ENV PASSWORD=123456
 WORKDIR /app
 
 # Install dependencies with bun
@@ -24,7 +22,7 @@ COPY . .
 # Learn more here: https://nextjs.org/telemetry
 # Uncomment the following line in case you want to disable telemetry during the build.
 # ENV NEXT_TELEMETRY_DISABLED=1
-
+ADD --chmod=755 ./.env.local /.env.local
 RUN bun run build
 
 # Production image, copy all the files and run next
