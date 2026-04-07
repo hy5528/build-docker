@@ -1,6 +1,6 @@
 # 多阶段构建
 # 第一阶段：构建应用
-FROM node:20-alpine AS builder
+FROM --platform=$BUILDPLATFORM node:20-alpine AS builder
 
 # 构建参数
 ARG BUILD_DATE
