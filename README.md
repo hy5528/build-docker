@@ -133,7 +133,7 @@ docker run -d \
     --restart=unless-stopped \
     --name="nexttv" \
     -p 3000:3000 \
-    -e SESSION_SECRET=<your secret> \
+    -e SESSION_SECRET=nexttv123456 \
     -e PASSWORD=<your passwrod> \
     ghcr.nju.edu.cn/hy5528/nexttv66:latest
 
