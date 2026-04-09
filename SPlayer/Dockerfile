@@ -21,7 +21,7 @@ ENV SKIP_NATIVE_BUILD=true
 RUN npx electron-vite build
 
 # nginx
-FROM nginx:1.29.3-alpine3.22-slim AS app
+FROM nginx:1.27-alpine-slim AS app
 
 COPY --from=builder /app/out/renderer /usr/share/nginx/html
 
