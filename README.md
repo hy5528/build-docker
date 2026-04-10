@@ -179,6 +179,7 @@ docker run -d \
 ```
 # NextTV
 使用 Next.JS 重构LibreTV。
+
 http://你的IP:5500
 
 ```text
@@ -189,7 +190,8 @@ docker run -d --name NextTV --restart=always -p 5500:3000 ghcr.nju.edu.cn/hy5528
 
 # splayer
 简约的跨平台音乐播放器。
-api:http://ip:25884/api/netease
+
+api:http://你的IP:25884/api/netease
 ```text
 docker run -d --name SPlayer --restart=always -p 25884:25884 ghcr.nju.edu.cn/hy5528/splayer66:latest
 
