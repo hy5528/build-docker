@@ -33,6 +33,8 @@ services:
 ```
 
 # lunatv
+基于 MoonTV 深度二次开发的全功能影视聚合播放平台。
+
 kvrocks储存
 ```text
 services:
