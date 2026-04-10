@@ -1,7 +1,7 @@
 # 第一阶段：构建Vue项目
 FROM --platform=$BUILDPLATFORM node:22-alpine AS builder
 RUN apk add --no-cache python3 npm git
-ENV VUE_APP_NETEASE_API_URL=https://api-music.cenguigui.cn
+
 WORKDIR /
 
 RUN git clone --recurse-submodules https://github.com/lixu33011/mmplayer.git app
@@ -17,6 +17,7 @@ RUN npm install
 
 # 复制源代码并构建
 COPY . .
+ADD --chmod=755 ./.env /.env
 RUN npm run build
 
 # 第二阶段：生产环境
