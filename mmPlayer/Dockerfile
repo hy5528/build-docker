@@ -4,7 +4,7 @@ RUN apk add --no-cache python3 npm git
 
 WORKDIR /
 
-RUN git clone --recurse-submodules https://github.com/Lrht-llw/Vue-xun_My_music.git app
+RUN git clone --recurse-submodules https://github.com/lixu33011/mmplayer.git app
 
 WORKDIR /app
 
