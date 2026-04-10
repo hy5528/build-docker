@@ -1,6 +1,6 @@
 FROM --platform=$BUILDPLATFORM node:16.13.1-alpine AS build
 
-ENV VUE_APP_NETEASE_API_URL=http://192.168.2.135:25884/api/netease
+ENV VUE_APP_NETEASE_API_URL=https://api-music.cenguigui.cn
 
 WORKDIR /app
 
