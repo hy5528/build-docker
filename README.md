@@ -100,8 +100,54 @@ services:
 networks:
   moontv-network:
     driver: bridge
-```
 
+```
+# simplecms
+```text
+services:
+  app:
+    image: ghcr.nju.edu.cn/hy5528/simplecms66:latest
+    container_name: simplecms-app
+    restart: unless-stopped
+    ports:
+      - "3800:3000"
+    environment:
+      PORT: 3000
+      DB_HOST: mysql
+      DB_PORT: 3306
+      DB_NAME: simplecms
+      DB_USER: simplecms
+      DB_PASSWORD: simplecms123
+      SESSION_SECRET: change-me
+      INIT_ADMIN_USERNAME: admin
+      INIT_ADMIN_PASSWORD: admin123
+    depends_on:
+      mysql:
+        condition: service_healthy
+
+  mysql:
+    image: mysql:8.0
+    container_name: simplecms-mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: simplecms
+      MYSQL_USER: simplecms
+      MYSQL_PASSWORD: simplecms123
+      MYSQL_ROOT_PASSWORD: root123456
+    expose:
+      - "3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "127.0.0.1", "-uroot", "-proot123456"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 20s
+
+volumes:
+  mysql_data:
+```  
 # cmsmovie
 前台: http://localhost:5000/
 后台: http://localhost:5000/admin/login
