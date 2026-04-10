@@ -1,6 +1,7 @@
 自用镜像,测试用。
 ---
 # mopidy-docker
+‌Mopidy‌ 是一款用 Python 编写的‌可扩展音乐服务器‌。
 
 Run Mopidy in Docker
 
