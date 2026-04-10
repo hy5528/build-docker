@@ -188,6 +188,7 @@ docker run -d --name NextTV --restart=always -p 5500:3000 ghcr.nju.edu.cn/hy5528
 ```
 
 # splayer
+简约的跨平台音乐播放器。
 ```text
 docker run -d --name SPlayer --restart=always -p 25884:25884 ghcr.nju.edu.cn/hy5528/splayer66:latest
 
