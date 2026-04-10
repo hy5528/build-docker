@@ -175,6 +175,7 @@ docker run -d \
 
 ```
 # NextTV
+使用 Next.JS 重构LibreTV。
 http://你的IP:5500
 
 ```text
