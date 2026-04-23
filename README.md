@@ -105,52 +105,84 @@ networks:
     driver: bridge
 
 ```
-# simplecms
+# GoFilm
 第三方maccms
 ```text
 services:
-  app:
-    image: ghcr.nju.edu.cn/hy5528/simplecms66:latest
-    container_name: simplecms-app
-    restart: unless-stopped
+  nginx:
+    container_name: film_nginx
+    image: nginx
+    restart: always
     ports:
-      - "3800:3000"
-    environment:
-      PORT: 3000
-      DB_HOST: mysql
-      DB_PORT: 3306
-      DB_NAME: simplecms
-      DB_USER: simplecms
-      DB_PASSWORD: simplecms123
-      SESSION_SECRET: change-me
-      INIT_ADMIN_USERNAME: admin
-      INIT_ADMIN_PASSWORD: admin123
+      - 3600:80
+    volumes:
+      - /opt/film/data/nginx/html:/usr/share/nginx/html
+      - /opt/film/data/nginx/nginx.conf:/etc/nginx/nginx.conf
+      - /opt/film/data/nginx/logs:/var/log/nginx
+    networks:
+      - film-network
     depends_on:
-      mysql:
-        condition: service_healthy
+      - film
+
+  film:
+    image: ghcr.nju.edu.cn/hy5528/film66:latest
+    container_name: film_api
+    restart: always
+    environment:
+      MYSQL_HOST: mysql
+      MYSQL_PORT: 3661
+      MYSQL_USER: root
+      MYSQL_PASSWORD: root
+      MYSQL_DBNAME: FilmSite
+      REDIS_HOST: redis
+      REDIS_PORT: 3662
+    ports:
+      - 3601:3601
+    networks:
+      - film-network
+    depends_on:
+      - mysql
+      - redis
+    command: [
+          './main',
+    ]
 
   mysql:
-    image: mysql:8.0
-    container_name: simplecms-mysql
-    restart: unless-stopped
+    container_name: film_mysql
+    image: scotty1701d/mariadb:10.11
+    restart: always
+    ports:
+    - 3610:3306
     environment:
-      MYSQL_DATABASE: simplecms
-      MYSQL_USER: simplecms
-      MYSQL_PASSWORD: simplecms123
-      MYSQL_ROOT_PASSWORD: root123456
-    expose:
-      - "3306"
-    volumes:
-      - mysql_data:/var/lib/mysql
-    healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "127.0.0.1", "-uroot", "-proot123456"]
-      interval: 10s
-      timeout: 5s
-      retries: 10
-      start_period: 20s
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: FilmSite
+    networks:
+      - film-network
+    command: [
+          'mysqld',
+          '--default-storage-engine=INNODB',
+          # '--innodb-buffer-pool-size=128M',
+          # '--character-set-server=utf8mb4',
+          # '--collation-server=utf8mb4_unicode_ci',
+          '--default-time-zone=+8:00',
+          '--lower-case-table-names=1'
+        ]
 
-volumes:
-  mysql_data:
+  redis:
+    container_name: film_redis
+    image: redis:alpine
+    restart: always
+    ports:
+      - 3620:6379
+    volumes:
+      - /opt/film/data/redis/redis.conf:/etc/redis/redis.conf
+      - /opt/film/data/redis/data:/data
+    networks:
+      - film-network
+    command: redis-server /etc/redis/redis.conf
+networks:
+  film-network:
+    driver: bridge
 ```  
 # cmsmovie
 实现了maccms10的视频功能
