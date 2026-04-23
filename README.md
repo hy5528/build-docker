@@ -107,9 +107,9 @@ networks:
 ```
 # GoFilm
 第三方maccms
-
+```
 浏览器中访问前台地址:http://xxx.xxx.xxx/index
-
+```
 浏览器中访问管理后台: http://xxx.xxx.xxx/manage
 ```text
 services:
