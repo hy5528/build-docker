@@ -1,0 +1,75 @@
+services:
+  nginx:
+    container_name: film_nginx
+    image: nginx
+    restart: always
+    ports:
+      - 3600:80
+    volumes:
+      - /opt/film/data/nginx/html:/usr/share/nginx/html
+      - /opt/film/data/nginx/nginx.conf:/etc/nginx/nginx.conf
+      - /opt/film/data/nginx/logs:/var/log/nginx
+    networks:
+      - film-network
+    depends_on:
+      - film
+
+  film:
+    image: ghcr.nju.edu.cn/hy5528/film66:latest
+    container_name: film_api
+    restart: always
+    environment:
+      MYSQL_HOST: mysql
+      MYSQL_PORT: 3661
+      MYSQL_USER: root
+      MYSQL_PASSWORD: root
+      MYSQL_DBNAME: FilmSite
+      REDIS_HOST: redis
+      REDIS_PORT: 3662
+    ports:
+      - 3601:3601
+    networks:
+      - film-network
+    depends_on:
+      - mysql
+      - redis
+    command: [
+          './main',
+    ]
+
+  mysql:
+    container_name: film_mysql
+    image: dpvduncan/mariadb:latest
+    restart: always
+    ports:
+    - 3610:3306
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: FilmSite
+    networks:
+      - film-network
+    command: [
+          'mysqld',
+          '--default-storage-engine=INNODB',
+          # '--innodb-buffer-pool-size=128M',
+          # '--character-set-server=utf8mb4',
+          # '--collation-server=utf8mb4_unicode_ci',
+          '--default-time-zone=+8:00',
+          '--lower-case-table-names=1'
+        ]
+
+  redis:
+    container_name: film_redis
+    image: redis:alpine
+    restart: always
+    ports:
+      - 3620:6379
+    volumes:
+      - /opt/film/data/redis/redis.conf:/etc/redis/redis.conf
+      - /opt/film/data/redis/data:/data
+    networks:
+      - film-network
+    command: redis-server /etc/redis/redis.conf
+networks:
+  film-network:
+    driver: bridge
