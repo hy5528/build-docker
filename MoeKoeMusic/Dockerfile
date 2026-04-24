@@ -18,11 +18,11 @@ COPY . .
 RUN npm run build:docker
 
 # Stage 2: Setup Combined App
-FROM node:22-alpine
+FROM node:lts-alpine
 WORKDIR /app
 
 # Install Nginx
-RUN apk add --no-cache nginx
+RUN apk add --no-cache nginx tini
 
 # Copy API code
 COPY ./api ./api
