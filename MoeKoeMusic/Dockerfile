@@ -18,7 +18,7 @@ COPY . .
 RUN npm run build:docker
 
 # Stage 2: Setup Combined App
-FROM node:20-alpine
+FROM node:22-alpine
 WORKDIR /app
 
 # Install Nginx
