@@ -1,18 +1,20 @@
-FROM --platform=$BUILDPLATFORM node:22-alpine
-
-# 启用 corepack 并激活 pnpm（Node20 默认提供 corepack）
-RUN apk add --no-cache python3 \
-    python3-dev \
-    python3-pip \
-    make \
-    g++ \
-    && rm -rf /var/lib/apt/lists/*
-
-RUN ln -sf /usr/bin/python3 /usr/bin/python
-RUN npm install -g node-gyp
-
+# Stage 1: Build Frontend
+FROM --platform=$BUILDPLATFORM node:22-alpine AS frontend-builder
+WORKDIR /app
 COPY package*.json ./
-RUN npm install 
+# Remove electron and electron-builder from package.json
+RUN node -e "const fs = require('fs'); const filePath = './package.json'; \
+             let rawdata = fs.readFileSync(filePath); let packageJson = JSON.parse(rawdata); \
+             if (packageJson.devDependencies) { \
+               delete packageJson.devDependencies.electron; \
+               delete packageJson.devDependencies['electron-builder']; \
+             } \
+             if (packageJson.dependencies) { \
+               delete packageJson.dependencies.electron; \
+             } \
+             fs.writeFileSync(filePath, JSON.stringify(packageJson, null, 2));"
+             
+RUN npm install
 
 COPY . .
 RUN npm run build
