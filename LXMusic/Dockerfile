@@ -1,7 +1,7 @@
-FROM --platform=$BUILDPLATFORM node:22-slim
+FROM --platform=$BUILDPLATFORM node:22-alpine
 
-RUN apt-get update && apt-get install -y \
-    python3 \
+# 启用 corepack 并激活 pnpm（Node20 默认提供 corepack）
+RUN apk add --no-cache python3 \
     python3-dev \
     python3-pip \
     make \
