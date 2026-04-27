@@ -1,6 +1,6 @@
 # 第一阶段：构建Vue项目
 FROM --platform=$BUILDPLATFORM node:22-alpine AS builder
-RUN apk add --no-cache python3 better-sqlite3
+RUN apk add --no-cache python3 
 
 
 WORKDIR /app
@@ -9,7 +9,8 @@ WORKDIR /app
 COPY package.json ./
 
 # 安装依赖（使用淘宝镜像加速）
-RUN npm cache clean --force
+npm cache clean --force
+npm install better-sqlite3
 RUN npm install
     
 
