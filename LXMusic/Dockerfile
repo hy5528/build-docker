@@ -6,7 +6,7 @@ RUN apk add --no-cache python3
 WORKDIR /app
 
 # 复制package文件
-COPY package.json ./
+COPY package.json package-lock.json ./
 
 # 安装依赖（使用淘宝镜像加速）
 npm cache clean --force
