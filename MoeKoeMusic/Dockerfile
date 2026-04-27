@@ -28,6 +28,7 @@ RUN apk add --no-cache nginx tini
 COPY ./api ./api
 # Install API dependencies
 WORKDIR /app/api
+RUN npm cache clean --force
 RUN npm install --production
 # Reset WORKDIR to /app
 WORKDIR /app 
