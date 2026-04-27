@@ -16,6 +16,9 @@
     "vite": "^8.0.1",
     "vue": "^3.5.30"
   },
+  "scripts": {
+  "tauri": "tauri"
+},
   "dependencies": {
     "@tauri-apps/api": "^2.10.1",
     "@tauri-apps/plugin-dialog": "^2.6.0",
