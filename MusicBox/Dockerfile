@@ -14,7 +14,7 @@ RUN npm install
 
 # 复制源代码并构建
 COPY . .
-RUN npm install @tauri-apps/cli
+ADD --chmod=755 ./package.json /package.json
 
 RUN npm run tauri build
 
