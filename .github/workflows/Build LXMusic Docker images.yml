@@ -1,4 +1,4 @@
-name: Build MusicBox Docker images
+name: Build LXMusic Docker images
 
 on:
   workflow_dispatch:
@@ -47,17 +47,17 @@ jobs:
         id: meta
         uses: docker/metadata-action@v5
         with:
-          images: ghcr.io/hy5528/musicbox66
+          images: ghcr.io/hy5528/lxmusic66
           tags: |
             type=raw,value=latest
       - name: Clone Overleaf Gitlab Repo
         run: |
-          git clone https://github.com/ion-lgb/MusicBox.git app
+          git clone https://github.com/Tabris-Ayanami/LX-Music-TAchanged.git app
 
       - name: "Copy userpatches to build folder"
         shell: bash
         run: |
-          rsync -av MusicBox/. ./app    
+          rsync -av LXMusic/. ./app    
           
       - name: 构建并推送 Docker 镜像
         uses: docker/build-push-action@v5
