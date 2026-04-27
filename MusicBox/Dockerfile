@@ -1,6 +1,6 @@
 # 第一阶段：构建Vue项目
 FROM --platform=$BUILDPLATFORM node:22-alpine AS builder
-RUN apk add --no-cache python3 npm tauri
+RUN apk add --no-cache python3 npm 
 
 
 WORKDIR /app
@@ -15,7 +15,7 @@ RUN npm install
 # 复制源代码并构建
 COPY . .
 
-RUN npm run build
+RUN npm run tauri build
 
 # 第二阶段：生产环境
 FROM nginx:1.29.3-alpine3.22-slim AS app
