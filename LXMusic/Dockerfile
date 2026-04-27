@@ -12,7 +12,7 @@ RUN ln -sf /usr/bin/python3 /usr/bin/python
 RUN npm install -g node-gyp
 
 COPY package*.json ./
-RUN npm install --production --no-optional
+RUN npm install 
 
 COPY . .
 RUN npm run build
