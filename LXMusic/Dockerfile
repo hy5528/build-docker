@@ -9,8 +9,8 @@ WORKDIR /app
 COPY package.json package-lock.json ./
 
 # 安装依赖（使用淘宝镜像加速）
-npm cache clean --force
-npm install better-sqlite3
+RUN npm cache clean --force
+RUN npm install better-sqlite3
 RUN npm install
     
 
