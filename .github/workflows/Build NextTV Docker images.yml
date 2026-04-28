@@ -47,7 +47,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@v5
         with:
-          images: ghcr.io/hy5528/nexttv66
+          images: ${{ env.REGISTRY }}/${{ github.actor }}/nexttv66
           tags: |
             type=raw,value=latest
       - name: Clone Overleaf Gitlab Repo
