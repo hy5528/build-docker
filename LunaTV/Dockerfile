@@ -13,7 +13,7 @@ COPY package.json pnpm-lock.yaml ./
 RUN pnpm store prune && pnpm install --frozen-lockfile
 
 # ---- 第 2 阶段：构建项目 ----
-FROM --platform=$BUILDPLATFORM node:20-alpine AS builder
+FROM --platform=$BUILDPLATFORM node:22-alpine AS builder
 # 安装构建工具以编译原生模块
 RUN apk add --no-cache python3 make g++
 RUN corepack enable && corepack prepare pnpm@latest --activate
@@ -37,14 +37,25 @@ RUN pnpm run build
 # ---- 第 3 阶段：生成运行时镜像 ----
 FROM node:20-alpine AS runner
 
+# 安装 CA 证书以支持 HTTPS 请求
+RUN apk add --no-cache ca-certificates \
+    && rm -rf /var/cache/apk/* \
+    && rm -rf /tmp/*
+
 # 创建非 root 用户
 RUN addgroup -g 1001 -S nodejs && adduser -u 1001 -S nextjs -G nodejs
 
 WORKDIR /app
+
+# 创建视频缓存目录并设置权限
+RUN mkdir -p /app/video-cache && chown -R nextjs:nodejs /app/video-cache
 ENV NODE_ENV=production
 ENV HOSTNAME=0.0.0.0
 ENV PORT=3000
 ENV DOCKER_BUILD=true
+# Puppeteer 配置：使用系统安装的 Chromium（已禁用）
+# ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true
+# ENV PUPPETEER_EXECUTABLE_PATH=/usr/bin/chromium-browser
 
 # 从构建器中复制 standalone 输出
 COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
