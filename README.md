@@ -39,7 +39,7 @@ kvrocks储存
 ```text
 services:
   moontv-core:
-    image: ghcr.nju.edu.cn/hy5528/lunatv66:latest
+    image: ghcr.io/hy5528/lunatv66:latest
     container_name: moontv-core
     restart: always
     ports:
@@ -75,7 +75,7 @@ redis储存
 ```text
 services:
   moontv-core:
-    image: ghcr.nju.edu.cn/hy5528/lunatv66:latest
+    image: ghcr.io/hy5528/lunatv66:latest
     container_name: moontv-core
     restart: always
     ports:
@@ -128,7 +128,7 @@ docker run -d \
   -v /opt/maccms/logs:/app/logs \
   -e ADMIN_USERNAME=admin \
   -e ADMIN_PASSWORD=123456 \
-  ghcr.nju.edu.cn/hy5528/flask_maccms66:latest
+  ghcr.io/hy5528/flask_maccms66:latest
 
 ```
 # NextTV
@@ -138,7 +138,7 @@ http://你的IP:5500
 
 ```text
 
-docker run -d --name NextTV --restart=always -p 5500:3000 ghcr.nju.edu.cn/hy5528/nexttv66:latest
+docker run -d --name NextTV --restart=always -p 5500:3000 ghcr.io/hy5528/nexttv66:latest
 
 ```
 
@@ -147,24 +147,24 @@ docker run -d --name NextTV --restart=always -p 5500:3000 ghcr.nju.edu.cn/hy5528
 
 api:http://你的IP:25884/api/netease
 ```text
-docker run -d --name SPlayer --restart=always -p 25884:25884 ghcr.nju.edu.cn/hy5528/splayer66:latest
+docker run -d --name SPlayer --restart=always -p 25884:25884 ghcr.io/hy5528/splayer66:latest
 
 ```
 # moekoemusic
 ```text
-docker run -d --name moekoemusic --restart=always -p 8650:8080 ghcr.nju.edu.cn/hy5528/moekoemusic66:latest
+docker run -d --name moekoemusic --restart=always -p 8650:8080 ghcr.io/hy5528/moekoemusic66:latest
 
 ```
 # yesplaymusic
 高颜值的第三方网易云播放器。
 ```text
-docker run -d --name yesplaymusic --restart=always -p 5300:80 ghcr.nju.edu.cn/hy5528/yesplaymusic66:latest
+docker run -d --name yesplaymusic --restart=always -p 5300:80 ghcr.io/hy5528/yesplaymusic66:latest
 
 ```
 
 # mmPlayer
 由茂茂开源的一款在线音乐播放器。
 ```text
-docker run -d --name mmPlayer --restart=always -v /home/docker/music/cache:/var/www/html/cache -v /home/docker/music/temp:/var/www/html/temp -p 268:80 ghcr.nju.edu.cn/hy5528/mmplayer66:latest
+docker run -d --name mmPlayer --restart=always -v /home/docker/music/cache:/var/www/html/cache -v /home/docker/music/temp:/var/www/html/temp -p 268:80 ghcr.io/hy5528/mmplayer66:latest
 
 ```
