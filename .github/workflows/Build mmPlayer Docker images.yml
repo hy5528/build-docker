@@ -42,7 +42,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@v5
         with:
-          images: ghcr.io/hy5528/mmPlayer66
+          images: ${{ env.REGISTRY }}/${{ github.actor }}/mmPlayer66
           tags: |
             type=raw,value=latest
     
