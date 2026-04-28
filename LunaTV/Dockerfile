@@ -13,7 +13,7 @@ COPY package.json pnpm-lock.yaml ./
 RUN pnpm store prune && pnpm install --frozen-lockfile
 
 # ---- 第 2 阶段：构建项目 ----
-FROM --platform=$BUILDPLATFORM node:20-alpine AS builder
+FROM --platform=$BUILDPLATFORM node:22-alpine AS builder
 # 安装构建工具以编译原生模块
 RUN apk add --no-cache python3 make g++
 RUN corepack enable && corepack prepare pnpm@latest --activate
@@ -32,7 +32,7 @@ COPY . .
 ENV DOCKER_BUILD=true
 
 # 生成生产构建
-RUN pnpm run build run build
+RUN npm run build run build
 
 # ---- 第 3 阶段：生成运行时镜像 ----
 FROM node:20-alpine AS runner
