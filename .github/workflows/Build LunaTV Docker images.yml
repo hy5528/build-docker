@@ -47,7 +47,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@v5
         with:
-          images: ${{ env.REGISTRY }}/${{ github.actor }}/lunatv66
+          images: ${{ env.REGISTRY }}/${{ github.actor }}/lunatv
           tags: |
             type=raw,value=latest
       - name: Clone Overleaf Gitlab Repo
