@@ -141,7 +141,25 @@ http://你的IP:5500
 docker run -d --name NextTV --restart=always -p 5500:3000 ghcr.io/hy5528/nexttv66:latest
 
 ```
+# lxserver
+LX Music 数据同步服务端，包含Web 播放器。
 
+前台Web 播放器: http://localhost:9527/music
+
+后台: http://localhost:9527
+
+```text
+docker run -d \
+  -p 9527:9527 \
+  -v /home/lx/data:/server/data \
+  -v /home/lx/logs:/server/logs \
+  -v /home/lx/cache:/server/cache \
+  -v /mnt/music:/server/music \
+  --name lx-sync-server \
+  --restart unless-stopped \
+  ghcr.io/hy5528/lxserver66:latest
+
+```
 # splayer
 简约的跨平台音乐播放器。
 
