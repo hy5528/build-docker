@@ -156,7 +156,7 @@ docker run -d \
   -v /home/lx/cache:/server/cache \
   -v /mnt/music:/server/music \
   --name lx-sync-server \
-  --restart unless-stopped \
+  --restart=always \
   ghcr.io/hy5528/lxserver66:latest
 
 ```
