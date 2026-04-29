@@ -142,7 +142,7 @@ docker run -d --name NextTV --restart=always -p 5500:3000 ghcr.io/hy5528/nexttv6
 
 ```
 # lxserver
-LX Music 数据同步服务端，包含Web 播放器。
+LX Music 数据同步服务端和Web 播放器。
 
 前台Web 播放器: http://localhost:9527/music
 
