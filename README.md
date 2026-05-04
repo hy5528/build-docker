@@ -154,7 +154,7 @@ docker run -d \
   -v /home/lx/data:/server/data \
   -v /home/lx/logs:/server/logs \
   -v /home/lx/cache:/server/cache \
-  -v /mnt/music:/server/music \
+  -v /opt/music:/server/music \
   --name lx-sync-server \
   --restart=always \
   ghcr.io/hy5528/lxserver66:latest
