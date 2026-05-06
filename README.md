@@ -135,7 +135,7 @@ services:
       - film
 
   film:
-    image: ghcr.nju.edu.cn/hy5528/film66:latest
+    image: ghcr.io/hy5528/film66:latest
     container_name: film_api
     restart: always
     environment:
