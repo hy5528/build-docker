@@ -113,8 +113,9 @@ networks:
 - 登录 默认 用户名 密码: `admin admin`
 - 使用后台功能中的采集管理功能进行影视数据采集 (采集任务开启后需等待一段时间)
 - 浏览器中访问前台地址查看效果, 例: [http://xxx.xxx.xxx/index](http://xxx.xxx.xxx/index) (点击管理后台的logo菜单可直接跳转到前台页面)
-- 也可以到https://github.com/ProudMuBai/GoFilm.git下载。
-- 下载后用下面的docker-compose.yml代替film中的docker-compose.yml，然后在 `/opt/film/` 目录下执行命令 `docker compose up -d` 。
+- 也可以到原项目https://github.com/ProudMuBai/GoFilm.git下载。
+- 下载后用下面的docker-compose.yml代替film中的docker-compose.yml，然后将film 文件夹完整的上传到服务器的 ` /opt/` 目录，在 `/opt/film/` 目录下执行命令 `docker compose up -d` 。
+- 以上操作减少本地构建相关docker镜像时出错的可能。
 
 ```text
 services:
