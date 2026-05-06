@@ -258,11 +258,6 @@ api:http://你的IP:25884/api/netease
 docker run -d --name SPlayer --restart=always -p 25884:25884 ghcr.io/hy5528/splayer66:latest
 
 ```
-# moekoemusic
-```text
-docker run -d --name moekoemusic --restart=always -p 8650:8080 ghcr.io/hy5528/moekoemusic66:latest
-
-```
 # yesplaymusic
 高颜值的第三方网易云播放器。
 ```text
