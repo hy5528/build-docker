@@ -3,14 +3,7 @@ FROM --platform=$BUILDPLATFORM node:20-alpine AS builder
 RUN apk add --no-cache python3 npm git
 
 
-WORKDIR /app
-
-# 复制package文件
-COPY package.json ./
-
-# 安装依赖（使用淘宝镜像加速）
-RUN npm install
-    
+WORKDIR /app   
 
 # 复制源代码并构建
 COPY . .
