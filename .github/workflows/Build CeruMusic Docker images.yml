@@ -1,4 +1,4 @@
-name: Build otter-music Docker images
+name: Build CeruMusic Docker images
 
 on:
   workflow_dispatch:
@@ -52,12 +52,12 @@ jobs:
             type=raw,value=latest
       - name: Clone Overleaf Gitlab Repo
         run: |
-          git clone https://github.com/DJChanahCJD/otter-music.git app
+          git clone https://github.com/timeshiftsauce/CeruMusic.git app
 
       - name: "Copy userpatches to build folder"
         shell: bash
         run: |
-          rsync -av otter-music/. ./app    
+          rsync -av CeruMusic/. ./app    
           
       - name: 构建并推送 Docker 镜像
         uses: docker/build-push-action@v5
