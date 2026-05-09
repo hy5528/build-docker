@@ -2,7 +2,8 @@ FROM --platform=$BUILDPLATFORM node:22-alpine AS build
 
 
 WORKDIR /app
-
+# 复制package文件
+COPY package*.json ./
 COPY . .
 
 RUN yarn install \
