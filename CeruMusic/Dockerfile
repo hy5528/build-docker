@@ -5,8 +5,7 @@ WORKDIR /app
 
 COPY . .
 
-RUN apk add --no-cache python3 make g++ git \
-    && yarn install \
+RUN yarn install \
     && yarn build
 
 # app
