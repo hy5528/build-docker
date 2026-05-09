@@ -6,7 +6,7 @@ WORKDIR /app
 COPY . .
 
 RUN apk add --no-cache python3 make g++ git \
-    && yarn install --frozen-lockfile \
+    && yarn install \
     && yarn build
 
 # app
