@@ -1,6 +1,6 @@
 FROM --platform=$BUILDPLATFORM node:16.13.1-alpine AS build
 
-ENV VUE_APP_NETEASE_API_URL=https://netease-cloud-music-api.ikkai.me
+ENV VUE_APP_NETEASE_API_URL=0.0.0.0:25884/api/netease
 
 WORKDIR /app
 
