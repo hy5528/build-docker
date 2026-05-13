@@ -30,7 +30,7 @@ COPY ./api ./api
 # Install API dependencies
 WORKDIR /app/api
 ADD --chmod=755 ./package.json /package.json
-RUN npm install
+RUN npm install --production
 # Reset WORKDIR to /app
 WORKDIR /app 
 
