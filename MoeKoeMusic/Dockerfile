@@ -27,7 +27,7 @@ RUN apk add --no-cache nginx
 
 # Copy API code
 WORKDIR /app
-git clone https://github.com/MakcRe/KuGouMusicApi.git api
+RUN git clone https://github.com/MakcRe/KuGouMusicApi.git api
 
 COPY ./api ./api
 
