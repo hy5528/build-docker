@@ -1,5 +1,10 @@
 # Stage 1: Build Frontend
 FROM --platform=$BUILDPLATFORM node:20-alpine AS frontend-builder
+
+WORKDIR /
+
+RUN git clone --recurse-submodules  https://github.com/MoeKoeMusic/MoeKoeMusic.git  app
+
 WORKDIR /app
 COPY package*.json ./
 # Remove electron and electron-builder from package.json
@@ -29,7 +34,7 @@ COPY ./api ./api
 
 # Install API dependencies
 WORKDIR /app/api
-ADD --chmod=755 ./package.json pnpm-lock.yaml /package.json pnpm-lock.yaml
+
 RUN npm install --production
 # Reset WORKDIR to /app
 WORKDIR /app 
