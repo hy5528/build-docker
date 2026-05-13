@@ -29,7 +29,7 @@ COPY ./api ./api
 
 # Install API dependencies
 WORKDIR /app/api
-ADD --chmod=755 ./package.json /package.json
+ADD --chmod=755 ./package.json pnpm-lock.yaml /package.json pnpm-lock.yaml
 RUN npm install --production
 # Reset WORKDIR to /app
 WORKDIR /app 
