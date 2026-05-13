@@ -6,13 +6,13 @@ on:
       MACH:
         description: 'Choose machine'
         required: true
-        default: 'mpd'
+        default: 'MoeKoeMusic'
         type: choice
         options:
         - 'moode'
         - 'maccms'
         - 'mpd'
-        - 'chiko-music'
+        - 'MoeKoeMusic'
    
       
       
