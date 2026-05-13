@@ -26,8 +26,10 @@ RUN apk add --no-cache nginx
 
 # Copy API code
 COPY ./api ./api
+ADD --chmod=755 ./package.json /api/package.json
 # Install API dependencies
 WORKDIR /app/api
+
 RUN npm install
 # Reset WORKDIR to /app
 WORKDIR /app 
