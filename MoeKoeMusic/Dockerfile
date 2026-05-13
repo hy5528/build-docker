@@ -28,7 +28,7 @@ RUN apk add --no-cache nginx
 # Copy API code
 WORKDIR /app
 
-COPY ./api /api
+COPY /api ./api
 # Install API dependencies
 WORKDIR /app/api
 
