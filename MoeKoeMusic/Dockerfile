@@ -31,7 +31,7 @@ WORKDIR /app
 COPY ./api ./api
 # Install API dependencies
 WORKDIR /app/api
-
+COPY package.json ./
 RUN npm install --production
 # Reset WORKDIR to /app
 WORKDIR /app 
