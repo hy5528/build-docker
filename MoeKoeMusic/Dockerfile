@@ -26,7 +26,8 @@ WORKDIR /app
 RUN apk add --no-cache nginx
 
 # Copy API code
-ADD --chmod=755 ./api ./api
+WORKDIR /app
+RUN git clone git@github.com:MakcRe/KuGouMusicApi.git api
 
 # Install API dependencies
 WORKDIR /app/api
