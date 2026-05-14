@@ -1,4 +1,4 @@
-FROM --platform=$BUILDPLATFORM node:20
+FROM --platform=$BUILDPLATFORM node:20-alpine
 RUN apt update && apt install -y jq && apt clean
 
 WORKDIR /cyp
