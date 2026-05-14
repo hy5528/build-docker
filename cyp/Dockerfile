@@ -5,5 +5,5 @@ COPY package.json .
 RUN npm i
 COPY index.js .
 COPY app ./app
-EXPOSE 8580
+EXPOSE 8080
 ENTRYPOINT ["node", "."]
