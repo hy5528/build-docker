@@ -53,7 +53,7 @@
            -v /音乐文件夹:/config/music \
            -v /配置文件位置/bluetooth:/var/lib/bluetooth \
            --restart unless-stopped \
-           johngong/mpd:latest
+           hy5528/mpd:latest
 
 3. 运行
 
