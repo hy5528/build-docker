@@ -2,7 +2,7 @@
 
 ### GitHub:
 
-[https://github.com/gshang2017/docker](https://github.com/gshang2017/docker)
+[https://github.com/hy5528/build-docker](https://github.com/hy5528/build-docker)
 
 ### 感谢以下项目:
 
@@ -30,8 +30,8 @@
 
     |镜像源|命令|
     |:-|:-|
-    |DockerHub|docker pull johngong/mpd:latest|
-    |GitHub|docker pull ghcr.io/gshang2017/mpd:latest|
+    |DockerHub|docker pull hy5528/mpd:latest|
+    |GitHub|docker pull ghcr.io/hy5528/mpd66:latest|
 
 2. 创建mpd容器
 
@@ -69,7 +69,7 @@
 
 6. 删除镜像
 
-       docker image rm johngong/mpd:latest
+       docker image rm hy5528/mpd:latest
 
 ### docker-compose：
 
