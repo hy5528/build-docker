@@ -5,7 +5,7 @@ kvrocks储存
 ```text
 services:
   moontv-core:
-    image: ghcr.io/hy5528/lunatv66:latest
+    image: ghcr.io/hy5528/moontvplus66:latest
     container_name: moontv-core
     restart: always
     ports:
@@ -41,7 +41,7 @@ redis储存
 ```text
 services:
   moontv-core:
-    image: ghcr.io/hy5528/lunatv66:latest
+    image: ghcr.io/hy5528/moontvplus66:latest
     container_name: moontv-core
     restart: always
     ports:
