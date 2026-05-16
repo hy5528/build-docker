@@ -297,8 +297,8 @@
             </div>
         </div>
         
-        <div class="glass-modern rounded-2xl p-6 md:p-7 mb-6">
-            <div class="flex flex-col md:flex-row gap-4 mb-5">
+        <div class="glass-modern rounded-2xl p-6 md:p-7 mb-,
+              <div class="flex flex-col md:flex-row gap-4 mb-5">
                 <div class="flex-1 relative">
                     <div class="absolute left-4 top-1/2 transform -translate-y-1/2 text-purple-400 text-lg">🔍</div>
                     <input v-model="keyword" @keyup.enter="searchMusic" type="text" 
@@ -467,7 +467,7 @@
                     method: "DoSearchForQQMusicDesktop",
                     module: "music.search.SearchCgiService",
                     param: {
-                        num_per_page: 25,
+                        num_per_page: 100,
                         page_num: page,
                         query: query,
                         search_type: 0,
