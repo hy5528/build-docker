@@ -7,8 +7,6 @@ WORKDIR /app
 # 安装依赖（使用淘宝镜像加速）
 RUN pnpm install -y
 
-    
-npm init -y
 
 # 复制源代码并构建
 COPY . .
