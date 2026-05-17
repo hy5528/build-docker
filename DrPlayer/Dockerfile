@@ -4,16 +4,12 @@ RUN apk add --no-cache python3 npm
 
 WORKDIR /app
 
-# 复制package文件
-COPY package*.json ./
-
 # 安装依赖（使用淘宝镜像加速）
 RUN npm install
     
 
 # 复制源代码并构建
 COPY . .
-ADD --chmod=755 ./.env /.env
 RUN npm run build
 
 # 第二阶段：生产环境
