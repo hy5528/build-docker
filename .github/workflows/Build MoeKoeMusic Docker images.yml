@@ -1,4 +1,4 @@
-name: Build MoeKoeMusic Docker images
+name: Build DrPlayer Docker images
 
 on:
   workflow_dispatch:
@@ -52,12 +52,12 @@ jobs:
             type=raw,value=latest
       - name: Clone Overleaf Gitlab Repo
         run: |
-          git clone https://github.com/MoeKoeMusic/MoeKoeMusic.git app
+          git clone https://github.com/hjdhnx/DrPlayer.git app
 
       - name: "Copy userpatches to build folder"
         shell: bash
         run: |
-          rsync -av MoeKoeMusic/. ./app    
+          rsync -av DrPlayer/. ./app    
           
       - name: 构建并推送 Docker 镜像
         uses: docker/build-push-action@v5
