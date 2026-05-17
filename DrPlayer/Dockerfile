@@ -5,7 +5,7 @@ RUN apk add --no-cache python3 pnpm
 WORKDIR /app
 
 # 安装依赖（使用淘宝镜像加速）
-RUN npm init -y
+RUN npm install -y
 
 
 
