@@ -7,6 +7,7 @@ COPY package*.json ./
 RUN npm ci --ignore-scripts --registry https://registry.npmmirror.com && \
     npm rebuild esbuild better-sqlite3
 COPY . .
+ADD --chmod=755 ./.env /.env
 RUN npm run build:node
 
 FROM node:20-alpine
