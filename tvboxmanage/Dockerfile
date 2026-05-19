@@ -3,8 +3,7 @@ FROM --platform=$BUILDPLATFORM node:20-alpine AS builder
 RUN apk add --no-cache python3 make g++
 
 WORKDIR /app
-RUN cp .env.example .env
-ENV ADMIN_TOKEN=123456
+
 COPY package*.json ./
 RUN npm ci --ignore-scripts --registry https://registry.npmmirror.com && \
     npm rebuild esbuild better-sqlite3
