@@ -5,7 +5,7 @@
 - MoonTV/LunaTV源配置：1、 https://github.com/hafrey1/LunaTV-config。
   2、https://github.com/oooopera/moontv_config。
 - 广西移动源：1、https://github.com/Healer-sys/Home/blob/main/iptv/gx.m3u。
-- TVBox相关：1、https://github.com/yoursmile66/TVBox。2、
+- TVBox相关：1、https://github.com/yoursmile66/TVBox。
 - 阅读APP书源相关：1、https://github.com/aoaostar/legado。
   2、https://github.com/XIU2/Yuedu
 - Docker镜像源汇总：https://github.com/dongyubin/DockerHub
