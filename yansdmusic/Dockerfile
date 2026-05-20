@@ -11,10 +11,12 @@ WORKDIR /app
 RUN rm /etc/nginx/conf.d/default.conf
 
 # 复制自定义 nginx 配置
+
 COPY nginx.conf /etc/nginx/conf.d/
 
 # 从构建好的文件复制到 nginx 目录
-COPY /dist /usr/share/nginx/html
+WORKDIR /app
+COPY /app/dist /usr/share/nginx/html
 
 # 暴露端口
 EXPOSE 80
