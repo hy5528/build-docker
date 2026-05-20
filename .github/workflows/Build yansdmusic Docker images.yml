@@ -55,15 +55,12 @@ jobs:
       run: |
         git clone https://github.com/FistBaoZi/yansd-music-web.git app
 
-      - name: "Copy userpatches to build folder"
-        shell: bash
-        run: |
-          rsync -av yansdmusic/. ./app 
+  
     - name: 构建并推送 Docker 镜像
       uses: docker/build-push-action@v5
       with:
         context: .
-        file: ./Dockerfile
+        file: /app/Dockerfile
         push: true
         tags: |
           ${{ env.IMAGE_TAG }}
