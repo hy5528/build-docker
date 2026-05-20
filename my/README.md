@@ -2,10 +2,10 @@
 -  Android TV电视盒子应用：https://github.com/youhunwl/TVAPP
 - lxmusic(洛雪音乐)全网最新最全音源：https://github.com/guoyue2010/lxmusic-
 - 裤佬分享各类型空壳软件与接口：https://github.com/Jsnzkpg/Jsnzkpg.github.io
-- 在浏览器中访问管理后台: http://xxx.xxx.xxx/manage  , 
-- 登录 默认 用户名 密码: `admin admin`
-- 使用后台功能中的采集管理功能进行影视数据采集 (采集任务开启后需等待一段时间)
-- 浏览器中访问前台地址查看效果, 例: [http://xxx.xxx.xxx/index](http://xxx.xxx.xxx/index) (点击管理后台的logo菜单可直接跳转到前台页面)
+- MoonTV/LunaTV源配置：1、 https://github.com/hafrey1/LunaTV-config。2、https://github.com/oooopera/moontv_config。
+- 广西移动源：1、https://github.com/Healer-sys/Home/blob/main/iptv/gx.m3u。
+- TVBox相关：1、https://github.com/yoursmile66/TVBox。2、
+- 阅读APP书源相关：1、https://github.com/aoaostar/legado。
 - 也可以到原项目https://github.com/ProudMuBai/GoFilm.git下载。
-- 下载后用下面的docker-compose.yml代替film中的docker-compose.yml，然后将film 文件夹完整的上传到服务器的 ` /opt/` 目录，在 `/opt/film/` 目录下执行命令 `docker compose up -d` 。
-- IPTV直播源：1、https://ghfast.top/https://raw.githubusercontent.com/develop202/migu_video/refs/heads/main/interface.txt，https://ghfast.top/https://raw.githubusercontent.com/develop202/migu_video/refs/heads/main/interfaceTXT.txt
+- Docker镜像源汇总：https://github.com/dongyubin/DockerHub
+- IPTV直播源：1、https://ghfast.top/https://raw.githubusercontent.com/develop202/migu_video/refs/heads/main/interface.txt，https://ghfast.top/https://raw.githubusercontent.com/develop202/migu_video/refs/heads/main/interfaceTXT.txt。
