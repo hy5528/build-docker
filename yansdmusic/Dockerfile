@@ -1,7 +1,5 @@
 # 第一阶段：构建Vue项目
 FROM --platform=$BUILDPLATFORM node:22-alpine AS builder
-RUN apk add --no-cache python3 wget
-
 
 WORKDIR /app
 
@@ -28,14 +26,6 @@ COPY --from=builder /app/dist /usr/share/nginx/html
 # 复制自定义nginx配置（如有需要）
 # COPY nginx.conf /etc/nginx/nginx.con
 
-# 暴露端口
 EXPOSE 80
 
-
-# 健康检查
-HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
-  CMD wget --no-verbose --tries=1 --spider http://localhost:80/health || exit 1
-
-# 启动 nginx
 CMD ["nginx", "-g", "daemon off;"]
-
