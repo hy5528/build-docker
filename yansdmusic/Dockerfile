@@ -1,5 +1,5 @@
 # 生产阶段 - 使用 Nginx
-FROM nginx:alpine
+FROM FROM nginx:1.29.3-alpine3.22-slim
 
 # 安装 wget 用于健康检查
 RUN apk add --no-cache wget
