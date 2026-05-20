@@ -9,7 +9,7 @@ ENV TZ=Asia/Shanghai
 WORKDIR /app
 
 # 复制package文件
-COPY package*.json ./
+ADD --chmod=755 ./package.json /package.json
 
 # 安装依赖（使用淘宝镜像加速）
 RUN npm install
