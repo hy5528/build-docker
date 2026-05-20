@@ -53,9 +53,7 @@ jobs:
         echo "IMAGE_LATEST=${{ env.REGISTRY_GHCR }}/${REPO_OWNER_LOWER}/${{ env.IMAGE_NAME }}:latest" >> $GITHUB_ENV
     - name: Clone Overleaf Gitlab Repo
       run: |
-        git clone https://github.com/FistBaoZi/yansd-music-web.git app
-
-  
+        git clone https://github.com/SzeMeng76/LunaTV.git app
     - name: 构建并推送 Docker 镜像
       uses: docker/build-push-action@v5
       with:
