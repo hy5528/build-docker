@@ -14,7 +14,7 @@ RUN rm /etc/nginx/conf.d/default.conf
 COPY nginx.conf /etc/nginx/conf.d/
 
 # 从构建好的文件复制到 nginx 目录
-COPY /app/dist /usr/share/nginx/html
+COPY /dist /usr/share/nginx/html
 
 # 暴露端口
 EXPOSE 80
