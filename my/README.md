@@ -11,3 +11,4 @@
 - Docker镜像源汇总：https://github.com/dongyubin/DockerHub
 - IPTV直播源：1、https://ghfast.top/https://raw.githubusercontent.com/develop202/migu_video/refs/heads/main/interface.txt https://ghfast.top/https://raw.githubusercontent.com/develop202/migu_video/refs/heads/main/interfaceTXT.txt
   2、https://github.com/Supprise0901/TVBox_live/blob/main/live.txt
+-  全能接口解密:https://fty.888484.xyz/jm/
