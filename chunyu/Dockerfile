@@ -1,7 +1,7 @@
 # 第一阶段：构建Vue项目
 FROM --platform=$BUILDPLATFORM node:22-alpine AS builder
 
-WORKDIR /app
+WORKDIR /app/chunyu-cms-web
 
 # 复制package文件
 COPY package*.json ./
@@ -12,12 +12,12 @@ RUN npm install
 
 # 复制源代码并构建
 COPY . .
-RUN npm run build:single
+RUN npm run build
 
 # 第二阶段：生产环境
 FROM nginx:1.29.3-alpine3.22-slim AS app
 
-WORKDIR /app
+WORKDIR /app/chunyu-cms-web
 
 # 从构建阶段复制打包结果
 COPY --from=builder /app/dist /usr/share/nginx/html
