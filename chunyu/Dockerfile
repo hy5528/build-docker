@@ -9,13 +9,13 @@ COPY package.json ./
 COPY chunyu-cms-web/package.json ./chunyu-cms-web
 
 # 安装依赖（使用淘宝镜像加速）
-RUN pnpm install
+RUN npm install
     
 WORKDIR /app
 # 复制源代码并构建
 COPY chunyu-cms-web/ ./chunyu-cms-web
 WORKDIR /app/chunyu-cms-web
-RUN pnpm build
+RUN npm run build
 
 
 # 第二阶段：生产环境
