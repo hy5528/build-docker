@@ -4,11 +4,12 @@ FROM --platform=$BUILDPLATFORM node:22-alpine AS builder
 WORKDIR /app
 
 # 复制package文件
-COPY package.json ./
+
 
 COPY /chunyu-cms-web/package.json ./chunyu-cms-web
 
 # 安装依赖（使用淘宝镜像加速）
+WORKDIR /app/chunyu-cms-web
 RUN npm install
     
 WORKDIR /app
