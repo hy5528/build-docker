@@ -3,7 +3,7 @@ FROM --platform=$BUILDPLATFORM node:22-alpine AS builder
 RUN apk add --no-cache python3 
 
 
-WORKDIR /app/
+WORKDIR /app
 COPY  /app/chunyu-cms-web ./app
 # 复制package文件
 COPY package*.json ./
