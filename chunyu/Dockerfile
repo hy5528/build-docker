@@ -6,14 +6,14 @@ WORKDIR /app
 # 复制package文件
 COPY package.json ./
 
-COPY chunyu-cms-web/package.json ./chunyu-cms-web
+COPY /chunyu-cms-web/package.json ./chunyu-cms-web
 
 # 安装依赖（使用淘宝镜像加速）
 RUN npm install
     
 WORKDIR /app
 # 复制源代码并构建
-COPY chunyu-cms-web/ ./chunyu-cms-web
+COPY /chunyu-cms-web ./chunyu-cms-web
 WORKDIR /app/chunyu-cms-web
 RUN npm run build
 
