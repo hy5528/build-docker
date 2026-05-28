@@ -13,7 +13,7 @@ ARG VITE_DISABLE_ANALYTICS
 WORKDIR /app
 
 # 安装 pnpm
-RUN npm install -g pnpm@10.15.1 --registry=https://registry.npmmirror.com
+RUN npm install -g pnpm@10.15.1
 
 # 复制依赖声明及 .npmrc（确保私有源/registry 配置在安装时生效）
 COPY package.json pnpm-lock.yaml .npmrc ./
@@ -29,7 +29,7 @@ ENV VITE_INITIAL_VIDEO_SOURCES=${VITE_INITIAL_VIDEO_SOURCES}
 ENV VITE_DISABLE_ANALYTICS=${VITE_DISABLE_ANALYTICS:-true}
 
 # 构建应用
-RUN npm run build 
+RUN pnpm build
 
 # 第二阶段：运行时环境
 FROM node:20-alpine AS production
