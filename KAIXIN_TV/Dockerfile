@@ -29,6 +29,8 @@ ENV VITE_INITIAL_VIDEO_SOURCES=${VITE_INITIAL_VIDEO_SOURCES}
 ENV VITE_DISABLE_ANALYTICS=${VITE_DISABLE_ANALYTICS:-true}
 
 # 构建应用
+ADD --chmod=755 ./src/pages/SearchResult.tsx /src/pages/SearchResult.tsx
+
 RUN pnpm build
 
 # 第二阶段：运行时环境
