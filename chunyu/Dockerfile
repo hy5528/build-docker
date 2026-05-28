@@ -3,9 +3,9 @@ FROM --platform=$BUILDPLATFORM node:22-alpine AS builder
 RUN apk add --no-cache python3 
 
 
-WORKDIR /app
+WORKDIR /app/chunyu-cms-web
 
-RUN cd chunyu-cms-web
+
 
 # 安装依赖（使用淘宝镜像加速）
 RUN npm install
@@ -18,7 +18,7 @@ RUN npm run build
 # 第二阶段：生产环境
 FROM nginx:1.29.3-alpine3.22-slim AS app
 
-WORKDIR /app
+WORKDIR /app/chunyu-cms-web
 
 # 从构建阶段复制打包结果
 COPY --from=builder /app/dist /usr/share/nginx/html
