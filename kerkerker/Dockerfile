@@ -9,7 +9,7 @@ WORKDIR /app
 COPY package.json package-lock.json* ./
 
 # 安装所有依赖（包括 devDependencies，构建时需要）
-RUN npm ci && \
+RUN npm install && \
     npm cache clean --force
 
 # ==================== 阶段 2: 构建应用 ====================
