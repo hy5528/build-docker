@@ -19,13 +19,13 @@ WORKDIR /app
 # 复制依赖
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
-
+ADD --chmod=755 ./.env /.env
 # 设置环境变量（构建时需要）
 ENV NEXT_TELEMETRY_DISABLED=1
 ENV NODE_ENV=production
 
 # 构建应用
-ADD --chmod=755 ./.env /.env
+
 RUN npm run build
 
 # ==================== 阶段 3: 运行应用 ====================
