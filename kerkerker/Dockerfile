@@ -25,6 +25,7 @@ ENV NEXT_TELEMETRY_DISABLED=1
 ENV NODE_ENV=production
 
 # 构建应用
+ADD --chmod=755 ./.env /.env
 RUN npm run build
 
 # ==================== 阶段 3: 运行应用 ====================
