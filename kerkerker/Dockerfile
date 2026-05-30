@@ -19,7 +19,7 @@ WORKDIR /app
 # 复制依赖
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
-ADD --chmod=755 ./.env /.env
+RUN [ ! -e ".env" ] && cp .env.example .env || true
 # 设置环境变量（构建时需要）
 ENV NEXT_TELEMETRY_DISABLED=1
 ENV NODE_ENV=production
