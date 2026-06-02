@@ -1,4 +1,4 @@
-name: Build videosweb Docker images
+name: Build lvideosa Docker images
 
 on:
   workflow_dispatch:
@@ -47,17 +47,17 @@ jobs:
         id: meta
         uses: docker/metadata-action@v5
         with:
-          images: ${{ env.REGISTRY }}/${{ github.actor }}/videosweb66
+          images: ${{ env.REGISTRY }}/${{ github.actor }}/lvideosa66
           tags: |
             type=raw,value=latest
       - name: Clone Overleaf Gitlab Repo
         run: |
-          git clone https://github.com/mylazily/videosweb.git app
+          git clone https://github.com/mylazily/lvideosa.git app
 
       - name: "Copy userpatches to build folder"
         shell: bash
         run: |
-          rsync -av videosweb/. ./app    
+          rsync -av lvideosa/. ./app    
           
       - name: 构建并推送 Docker 镜像
         uses: docker/build-push-action@v5
