@@ -15,7 +15,7 @@ RUN pnpm install --frozen-lockfile --ignore-scripts
 # 复制源代码并构建
 COPY . .
 
-RUN npm run build
+RUN pnpm build
 
 # 第二阶段：生产环境
 FROM nginx:1.29.3-alpine3.22-slim AS app
