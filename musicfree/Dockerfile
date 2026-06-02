@@ -10,7 +10,7 @@ WORKDIR /app
 COPY package.json pnpm-lock.yaml ./
 
 # 验证依赖完整性，如果不匹配则重新安装
-RUN pnpm install --frozen-lockfile --offline 
+RUN pnpm install --frozen-lockfile --ignore-scripts
 
 
 # 复制源代码并构建
