@@ -85,7 +85,31 @@ COPY --from=builder /app/dist /usr/share/nginx/html
 
 # 复制配置文件
 COPY nginx.conf /etc/nginx/nginx.conf
-COPY supervisord.conf /etc/supervisord.conf
+# 创建 supervisor 配置
+RUN echo "[supervisord]" > /etc/supervisord.conf && \
+  echo "nodaemon=true" >> /etc/supervisord.conf && \
+  echo "logfile=/var/log/supervisor/supervisord.log" >> /etc/supervisord.conf && \
+  echo "pidfile=/var/run/supervisord.pid" >> /etc/supervisord.conf && \
+  echo "" >> /etc/supervisord.conf && \
+  echo "[program:nginx]" >> /etc/supervisord.conf && \
+  echo "command=nginx -g 'daemon off;'" >> /etc/supervisord.conf && \
+  echo "autostart=true" >> /etc/supervisord.conf && \
+  echo "autorestart=true" >> /etc/supervisord.conf && \
+  echo "stdout_logfile=/dev/stdout" >> /etc/supervisord.conf && \
+  echo "stdout_logfile_maxbytes=0" >> /etc/supervisord.conf && \
+  echo "stderr_logfile=/dev/stderr" >> /etc/supervisord.conf && \
+  echo "stderr_logfile_maxbytes=0" >> /etc/supervisord.conf && \
+  echo "" >> /etc/supervisord.conf && \
+  echo "[program:proxy]" >> /etc/supervisord.conf && \
+  echo "command=node /app/proxy-server.js" >> /etc/supervisord.conf && \
+  echo "directory=/app" >> /etc/supervisord.conf && \
+  echo "autostart=true" >> /etc/supervisord.conf && \
+  echo "autorestart=true" >> /etc/supervisord.conf && \
+  echo "stdout_logfile=/dev/stdout" >> /etc/supervisord.conf && \
+  echo "stdout_logfile_maxbytes=0" >> /etc/supervisord.conf && \
+  echo "stderr_logfile=/dev/stderr" >> /etc/supervisord.conf && \
+  echo "stderr_logfile_maxbytes=0" >> /etc/supervisord.conf
+
 
 # 暴露端口
 EXPOSE 80
