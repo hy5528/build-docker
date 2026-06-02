@@ -71,7 +71,7 @@ WORKDIR /app
 
 # 复制代理服务器文件和共享模块
 COPY proxy-server.js ./
-COPY shared/ ./shared/
+
 
 # 创建最小 package.json 确保 Node.js 以 ESM 模式解析 .js 文件
 RUN echo '{"type":"module"}' > package.json
