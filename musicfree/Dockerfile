@@ -1,20 +1,23 @@
 # build
 FROM --platform=$BUILDPLATFORM node:22-alpine AS builder
 
-
-
+RUN pnpm store prune && pnpm install --frozen-lockfile
+RUN apk add --no-cache python3 make g++
+RUN corepack enable && corepack prepare pnpm@latest --activate
 WORKDIR /app
 
-COPY package.json ./
+# 复制package files先，确保依赖版本一致
+COPY package.json pnpm-lock.yaml ./
 
-# skip postinstall
-RUN npm install 
+# 验证依赖完整性，如果不匹配则重新安装
+RUN pnpm install --frozen-lockfile --offline || pnpm install --frozen-lockfile
 
 
 # 复制源代码并构建
 COPY . .
 
-RUN npm run build
+# 生成生产构建
+RUN npm run build 
 
 # 第二阶段：生产环境
 FROM nginx:1.29.3-alpine3.22-slim AS app
