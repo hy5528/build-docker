@@ -1,4 +1,4 @@
-FROM --platform=$BUILDPLATFORM node:20-slim
+FROM --platform=$BUILDPLATFORM node:22-alpine
 
 WORKDIR /app
 
