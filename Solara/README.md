@@ -1,7 +1,7 @@
 # solara
 
 
-http://你的IP:5500
+http://你的IP:3001
 
 ```text
 
