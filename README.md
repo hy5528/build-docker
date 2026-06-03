@@ -197,14 +197,11 @@ networks:
 ```
 
 # cmsmovie
-实现了maccms10的视频功能
-
-前台: http://localhost:5000/
-后台: http://localhost:5000/admin/login
-
-管理员账户
-
-默认账户配置在 config.py 中:
+- 实现了maccms10的视频功能
+- 前台: http://localhost:5000/
+- 后台: http://localhost:5000/admin/login
+- 管理员账户
+- 默认账户配置在 config.py 中:
 用户名: admin
 密码: 123456
 ```text
