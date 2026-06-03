@@ -3,7 +3,7 @@ FROM --platform=$BUILDPLATFORM node:22-alpine
 WORKDIR /app
 
 # 安装必要的 CA 证书，避免 HTTPS 请求报 TLS 错误
-RUN apt-get update && apt-get install -y ca-certificates && rm -rf /var/lib/apt/lists/*
+RUN apk add  ca-certificates && rm -rf /var/lib/apt/lists/*
 
 # 安装 wrangler 和 npm
 RUN npm install -g wrangler@latest
