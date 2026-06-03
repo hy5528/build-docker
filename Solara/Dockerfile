@@ -1,5 +1,5 @@
 # 第一阶段：构建Vue项目
-FROM --platform=$BUILDPLATFORM node:22-alpine 
+FROM node:22-alpine 
 
 # 安装必要的 CA 证书，避免 HTTPS 请求报 TLS 错误
 RUN apk add ca-certificates && rm -rf /var/lib/apt/lists/*
