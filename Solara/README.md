@@ -16,6 +16,8 @@ services:
       - PORT=3001
       - SOLARA_PASSWORD=123456
       - SESSION_SECRET=KLmlKDruIBRYjrT5ct7B3xqG25ZF2p59
+    volumes:
+      - ./logs:/app/logs
    
 
 ```
