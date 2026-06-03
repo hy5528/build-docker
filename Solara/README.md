@@ -8,7 +8,7 @@ services:
   solara-music:
     image: ghcr.io/hy5528/solara66:latest
     container_name: solara-music
-    restart: unless-stopped
+    restart: always
     ports:
       - "3001:3001"
     environment:
