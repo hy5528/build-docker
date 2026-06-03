@@ -222,9 +222,8 @@ docker run -d \
 
 ```
 # NextTV
-使用 Next.JS 重构LibreTV。
-
-http://你的IP:5500
+- 使用 Next.JS 重构LibreTV。
+- http://你的IP:5500
 
 ```text
 
@@ -232,11 +231,9 @@ docker run -d --name NextTV --restart=always -p 5500:3000 ghcr.io/hy5528/nexttv6
 
 ```
 # lxserver
-LX Music 数据同步服务端和Web 播放器。
-
-前台Web 播放器: http://localhost:9527/music
-
-后台: http://localhost:9527
+- LX Music 数据同步服务端和Web 播放器。
+- 前台Web 播放器: http://localhost:9527/music
+- 后台: http://localhost:9527
 
 ```text
 docker run -d \
@@ -251,9 +248,8 @@ docker run -d \
 
 ```
 # splayer
-简约的跨平台音乐播放器。
-
-api:http://你的IP:25884/api/netease
+- 简约的跨平台音乐播放器。
+- api:http://你的IP:25884/api/netease
 ```text
 docker run -d --name SPlayer --restart=always -p 25884:25884 ghcr.io/hy5528/splayer66:latest
 
