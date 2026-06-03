@@ -52,7 +52,7 @@ jobs:
             type=raw,value=latest
       - name: Clone Overleaf Gitlab Repo
         run: |
-          git clone https://github.com/matsuts/Solara-Apple-Music-Version.git app
+          git clone https://github.com/vthe/solara-arm.git app
 
       - name: "Copy userpatches to build folder"
         shell: bash
