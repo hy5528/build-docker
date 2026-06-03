@@ -5,7 +5,7 @@
 
 # --- Stage 1: Builder (构建阶段) ---
 # 使用官方 Node.js 18 Alpine 镜像作为基础
-FROM node:18-alpine AS builder
+FROM node:22-alpine AS builder
 
 WORKDIR /app
 
