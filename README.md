@@ -1,4 +1,4 @@
-构建lunatv、moontv、GoFilm、splayer、LX Music 、Mopidy等自用镜像，测试用。
+构建lunatv、moontv、GoFilm、splayer、LX Music 、solara-music、Mopidy等自用镜像，测试用。
 ---
 # mopidy-docker
 ‌Mopidy‌ 是一款用 Python 编写的‌可扩展音乐服务器‌。
