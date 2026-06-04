@@ -5,8 +5,6 @@ RUN corepack enable && corepack prepare pnpm@latest --activate
 
 WORKDIR /app
 
-# 安装必要的 CA 证书，避免 HTTPS 请求报 TLS 错误
-RUN apk add --no-cache  ca-certificates && rm -rf /var/lib/apt/lists/*
 
 COPY package.json pnpm-lock.yaml ./
 
