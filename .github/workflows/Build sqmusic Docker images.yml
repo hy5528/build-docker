@@ -52,17 +52,17 @@ jobs:
             type=raw,value=latest
       - name: Clone Overleaf Gitlab Repo
         run: |
-          git clone https://github.com/bohe-bike/simple_sq_music_plus_web.git app
+          git clone https://github.com/59799517/simple_sq_music_plus_web.git app
 
       - name: "Copy userpatches to build folder"
         shell: bash
         run: |
-          rsync -av sqmusic/. ./app/vue    
+          rsync -av sqmusic/. ./app
           
       - name: 构建并推送 Docker 镜像
         uses: docker/build-push-action@v5
         with:
-          context: ./app/vue 
+          context: ./app
           platforms: linux/amd64,linux/arm64,linux/arm/v7
           push: true
           tags: ${{ steps.meta.outputs.tags }}
