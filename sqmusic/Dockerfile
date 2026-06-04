@@ -1,5 +1,5 @@
 # 使用 Node.js 镜像进行构建
-FROM node:16 AS builder
+FROM --platform=$BUILDPLATFORM node:16 AS builder
 
 # 设置工作目录
 WORKDIR /app
