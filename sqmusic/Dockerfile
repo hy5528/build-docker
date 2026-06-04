@@ -1,7 +1,7 @@
 # 第一阶段：构建Vue项目
 FROM --platform=$BUILDPLATFORM node:22-alpine AS builder
 
-WORKDIR /build
+WORKDIR /app/vue
 
 # 复制package文件
 COPY package*.json ./
