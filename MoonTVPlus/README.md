@@ -1,7 +1,7 @@
 # MoonTVPlus
 
 
-kvrocks储存
+kvrocks储存,（若指定kvrocks-data目录，需要将所挂载的数据目录权限调整为777否则会导致创建数据库失败）
 ```text
 services:
   moontv-core:
