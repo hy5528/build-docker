@@ -5,19 +5,25 @@
 ```text
 
 services:
-  solara-music:
+  solara:
     image: ghcr.io/hy5528/solara66:latest
     container_name: solara-music
     restart: always
     ports:
-      - "3001:3001"
+      - "3001:3000"
+    volumes:
+      - ./data:/app/data
+      - /www/downloads:/app/downloads # 改成你想要下载到nas的目录
     environment:
       - NODE_ENV=production
-      - PORT=3001
-      - SOLARA_PASSWORD=123456
-      - SESSION_SECRET=KLmlKDruIBRYjrT5ct7B3xqG25ZF2p59
-    volumes:
-      - ./logs:/app/logs
+      - PORT=3000
+      - DB_PATH=/app/data/solara.db
+      - NAS_DOWNLOAD_DIR=/app/downloads
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"    
    
 
 ```
