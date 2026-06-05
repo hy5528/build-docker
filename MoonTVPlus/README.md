@@ -42,14 +42,14 @@ SQLite 存储
 ```text
 services:
   moontv-core:
-    image: ghcr.io/mtvpls/moontvplus:latest
+    image: ghcr.io/hy5528/moontvplus66:latest
     container_name: moontv-core
     restart: on-failure
     ports:
       - '3000:3000'
     environment:
       - USERNAME=admin
-      - PASSWORD=admin_password
+      - PASSWORD=123456
       - NEXT_PUBLIC_STORAGE_TYPE=d1
       - SQLITE_DB_PATH=/app/.data/moontv.db
     volumes:
