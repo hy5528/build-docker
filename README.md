@@ -248,6 +248,7 @@ services:
       options:
         max-size: "10m"
         max-file: "3"    
+```
 
 # splayer
 - 简约的跨平台音乐播放器。
