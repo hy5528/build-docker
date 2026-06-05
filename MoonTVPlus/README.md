@@ -53,7 +53,7 @@ services:
       - NEXT_PUBLIC_STORAGE_TYPE=d1
       - SQLITE_DB_PATH=/app/.data/moontv.db
     volumes:
-      - ./data:/app/.data
+      - /www/moontv/data:/app/.data
 ```
 ```
 redis储存
