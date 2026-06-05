@@ -13,7 +13,7 @@ COPY package*.json ./
 RUN npm install
 
 # --- 阶段 2: 运行阶段 ---
-FROM node:20-alpin
+FROM node:18-alpine AS runner
 
 WORKDIR /app
 
