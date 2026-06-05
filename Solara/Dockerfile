@@ -1,8 +1,12 @@
 # --- 阶段 1: 构建阶段 ---
-FROM node:20-alpine AS builder
+FROM node:20-slim AS builder
 
 # 安装编译 better-sqlite3 所需的工具
-RUN apk add --no-cache libc6-compat python3 make g++
+RUN apt-get update && apt-get install -y \
+    python3 \
+    make \
+    g++ \
+    && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
 
@@ -13,7 +17,7 @@ COPY package*.json ./
 RUN npm install
 
 # --- 阶段 2: 运行阶段 ---
-FROM node:18-alpine AS runner
+FROM node:20-slim
 
 WORKDIR /app
 
@@ -26,8 +30,7 @@ COPY . .
 # 设置环境变量默认值
 ENV NODE_ENV=production
 ENV PORT=3000
-ENV DB_PATH=/app/data/solara.db
-ENV NAS_DOWNLOAD_DIR=/app/downloads
+
 
 # 创建数据和下载目录
 RUN mkdir -p /app/data /app/downloads
