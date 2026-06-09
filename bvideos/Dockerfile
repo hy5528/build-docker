@@ -1,9 +1,12 @@
-# 第一阶段：构建Vue项目
-FROM --platform=$BUILDPLATFORM node:22-alpine AS builder
-ENV GOPROXY=https://goproxy.cn,direct
-RUN apk add --no-cache python3  git
+# --- 阶段 1: 构建阶段 ---
+FROM node:20-slim AS builder
 
-WORKDIR /
+# 安装编译 better-sqlite3 所需的工具
+RUN apt-get update && apt-get install -y \
+    python3 \
+    make \
+    g++ \
+    && rm -rf /var/lib/apt/lists/*
 
 
 WORKDIR /app
