@@ -192,7 +192,7 @@ services:
     command: redis-server /etc/redis/redis.conf
 networks:
   film-network:
-    driver: bridgetest
+  driver: bridge
 
 ```
 
