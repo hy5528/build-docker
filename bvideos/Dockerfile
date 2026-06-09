@@ -4,6 +4,8 @@ FROM node:22-slim AS builder
 # 安装编译 better-sqlite3 所需的工具
 RUN apt-get update && apt-get install -y \
     python3 \
+    make \
+    g++ \
     && rm -rf /var/lib/apt/lists/*
 
 
