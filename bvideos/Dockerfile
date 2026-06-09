@@ -1,12 +1,12 @@
-# --- 阶段 1: 构建阶段 ---
-FROM node:24-slim AS builder
+# --- Stage 1: Builder (构建阶段) ---
+# 使用官方 Node.js 18 Alpine 镜像作为基础
+FROM node:22-alpine AS builder
 
-# 安装编译 better-sqlite3 所需的工具
-RUN apt-get update && apt-get install -y \
-    python3 \
-    make \
-    g++ \
-    && rm -rf /var/lib/apt/lists/*
+
+# 安装构建依赖 (关键步骤)
+# python3, make, g++ 是编译原生 Node.js 模块所必需的
+# 这解决了 ARM64 架构下缺少预编译二进制文件导致 npm install 失败的问题
+RUN apk add --no-cache libc6-compat python3 make g++
 
 
 WORKDIR /app
