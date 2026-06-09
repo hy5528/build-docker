@@ -1,5 +1,5 @@
 # --- 阶段 1: 构建阶段 ---
-FROM node:22-slim AS builder
+FROM node:20-slim AS builder
 
 # 安装编译 better-sqlite3 所需的工具
 RUN apt-get update && apt-get install -y \
