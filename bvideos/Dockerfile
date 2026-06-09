@@ -1,6 +1,6 @@
 # --- Stage 1: Builder (构建阶段) ---
 # 使用官方 Node.js 18 Alpine 镜像作为基础
-FROM node:22-alpine AS builder
+FROM node:20-alpine AS builder
 
 
 # 安装构建依赖 (关键步骤)
