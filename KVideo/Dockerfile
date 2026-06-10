@@ -1,5 +1,6 @@
 FROM --platform=$BUILDPLATFORM node:22-alpine AS base
-
+ENV SUBSCRIPTION_SOURCES='https://ghfast.top/https://github.com/hy5528/build-docker/blob/main/KVideo/config.json' \
+    IPTV_SOURCES='https://gh-proxy.org/https://raw.githubusercontent.com/Jsnzkpg/Jsnzkpg/Jsnzkpg/Jsnzkpg1.m3u'
 # Install dependencies only when needed
 FROM base AS deps
 # Check https://github.com/nodejs/docker-node/tree/b4117f9333da4138b03a546ec926ef50a31506c3#nodealpine to understand why libc6-compat might be needed.
