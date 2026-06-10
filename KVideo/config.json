@@ -1,6 +1,4 @@
-{
-  "cache_time": 7200,
-  "api_site": {
+[
      "kgzy": {
      "name": "🎬聚合资源",
      "api": "https://vod.7na7.com/",
@@ -72,5 +70,4 @@
       "api": "https://wwzy.tv/api.php/provide/vod",
       "detail": "https://wwzy.tv"
     }   
-  }
-}
+ ]
