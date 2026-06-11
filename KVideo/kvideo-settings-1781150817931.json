@@ -1,0 +1,91 @@
+{
+  "settings": {
+    "sources": [
+      {
+        "id": "7nzy",
+        "name": "聚合资源",
+        "baseUrl": "https://vod.7na7.com/",
+        "searchPath": "",
+        "detailPath": "",
+        "enabled": true,
+        "priority": 1,
+        "group": "normal"
+      },
+      {
+        "id": "ryzy",
+        "name": "如意资源",
+        "baseUrl": "https://cj.rycjapi.com/api.php/provide/vod",
+        "searchPath": "",
+        "detailPath": "",
+        "enabled": true,
+        "priority": 2,
+        "group": "normal"
+      },
+      {
+        "id": "zdzy",
+        "name": "最大资源",
+        "baseUrl": "https://api.zuidapi.com/api.php/provide/vod",
+        "searchPath": "",
+        "detailPath": "",
+        "enabled": true,
+        "priority": 2,
+        "group": "normal"
+      },
+      {
+        "id": "lzzy",
+        "name": "量子资源",
+        "baseUrl": "https://cj.lzcaiji.com/api.php/provide/vod",
+        "searchPath": "",
+        "detailPath": "",
+        "enabled": true,
+        "priority": 2,
+        "group": "normal"
+      }
+    ],
+    "premiumSources": [],
+    "subscriptions": [
+      {
+        "id": "sub_1781146981385_v5fdce",
+        "name": "系统预设源",
+        "url": "https://ghfast.top/https://github.com/hy5528/build-docker/blob/main/KVideo/config.json",
+        "lastUpdated": 0,
+        "autoRefresh": true
+      },
+      {
+        "id": "sub_1781149385643_u1djw6",
+        "name": "系统预设源",
+        "url": "https://gh-proxy.org/https://github.com/hy5528/build-docker/blob/main/KVideo/config.json",
+        "lastUpdated": 1781150617394,
+        "autoRefresh": true
+      }
+    ],
+    "sortBy": "default",
+    "searchHistory": true,
+    "watchHistory": true,
+    "autoNextEpisode": true,
+    "autoSkipIntro": false,
+    "skipIntroSeconds": 0,
+    "autoSkipOutro": false,
+    "skipOutroSeconds": 0,
+    "seekStepSeconds": 10,
+    "showModeIndicator": false,
+    "adFilter": false,
+    "adFilterMode": "heuristic",
+    "adKeywords": [],
+    "realtimeLatency": false,
+    "searchDisplayMode": "normal",
+    "episodeReverseOrder": false,
+    "fullscreenType": "auto",
+    "proxyMode": "retry",
+    "rememberScrollPosition": true,
+    "personalizedRecommendations": true,
+    "videoTogetherEnabled": false,
+    "danmakuEnabled": false,
+    "danmakuApiUrl": "",
+    "danmakuOpacity": 0.7,
+    "danmakuFontSize": 20,
+    "danmakuDisplayArea": 0.5,
+    "locale": "zh-CN",
+    "blockedCategories": []
+  }
+}
