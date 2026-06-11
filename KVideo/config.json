@@ -12,5 +12,19 @@
     "baseUrl": "https://cj.rycjapi.com/api.php/provide/vod",
     "group": "normal",
     "priority": 2
+  },
+  {
+    "id": "zdzy",
+    "name": "最大资源",
+    "baseUrl": "https://api.zuidapi.com/api.php/provide/vod",
+    "group": "normal",
+    "priority": 2
+  },
+  {
+    "id": "lzzy",
+    "name": "量子资源",
+    "baseUrl": "https://cj.lzcaiji.com/api.php/provide/vod",
+    "group": "normal",
+    "priority": 2
   }
  ]
