@@ -1,7 +1,7 @@
 # =============================================================================
 # Stage 1: Frontend Build
 # =============================================================================
-FROM --platform=$BUILDPLATFORM node:22-alpine AS frontend-builder
+FROM --platform=$BUILDPLATFORM node:20-alpine AS frontend-builder
 LABEL org.opencontainers.image.description="VideoX - Powerful Video Navigation and Streaming Plugin"
 LABEL org.opencontainers.image.licenses=MIT
 WORKDIR /app/frontend
@@ -15,7 +15,7 @@ RUN npm run build
 # =============================================================================
 # Stage 2: Backend Build (Obfuscation)
 # =============================================================================
-FROM --platform=$BUILDPLATFORM node:22-alpine AS backend-builder
+FROM --platform=$BUILDPLATFORM node:20-alpine AS backend-builder
 WORKDIR /app/backend
 
 # 安装全量依赖 (包含混淆引擎)
