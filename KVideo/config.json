@@ -1,13 +1,13 @@
 [
      {
-    "id": "kgzy",
+    "id": "my_source_1",
     "name": "聚合资源",
     "baseUrl": "https://vod.7na7.com/",
     "group": "normal",
     "priority": 1
   },
      {
-    "id": "ryzy",
+    "id": "my_source_2",
     "name": "如意资源",
     "baseUrl": "https://cj.rycjapi.com/api.php/provide/vod",
     "group": "normal",
