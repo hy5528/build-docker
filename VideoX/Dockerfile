@@ -46,7 +46,7 @@ COPY --from=backend-builder /app/backend-build ./
 # 静态资源服务 (从前端构建阶段复制)
 # 注意：server.js 在混淆后已位于当前目录
 COPY --from=frontend-builder /app/frontend/dist /app/frontend/dist
-
+RUN chmod +x /start_videox.sh
 # 设置运行时环境
 ENV NODE_ENV=production
 ENV PORT=3100
@@ -54,4 +54,4 @@ ENV PORT=3100
 EXPOSE 3100
 
 # 运行混淆后的入口文件
-CMD ["node", "server.js"]
+CMD ["node", "/start_videox.sh","server.js"]
