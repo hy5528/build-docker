@@ -17,7 +17,7 @@ RUN npm install
 FROM --platform=$BUILDPLATFORM node:22-alpine AS builder
 # 安装构建工具以编译原生模块
 RUN apk add --no-cache python3 make g++
-RUN corepack enable && corepack prepare pnpm@latest --activate
+
 WORKDIR /app
 
 # 复制package files先，确保依赖版本一致
@@ -25,7 +25,7 @@ COPY package.json package-lock.json* ./
 # 复制依赖
 COPY --from=deps /app/node_modules ./node_modules
 # 验证依赖完整性，如果不匹配则重新安装
-RUN npm install --frozen-lockfile --offline || npm install --frozen-lockfile
+RUN npm install
 # 复制全部源代码
 COPY . .
 
