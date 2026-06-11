@@ -24,8 +24,7 @@ WORKDIR /app
 COPY package.json package-lock.json* ./
 # 复制依赖
 COPY --from=deps /app/node_modules ./node_modules
-# 验证依赖完整性，如果不匹配则重新安装
-RUN npm install
+
 # 复制全部源代码
 COPY . .
 
