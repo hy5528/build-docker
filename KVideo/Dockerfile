@@ -7,13 +7,8 @@ RUN apk add --no-cache libc6-compat
 WORKDIR /app
 
 # Install dependencies based on the preferred package manager
-COPY package.json yarn.lock* package-lock.json* pnpm-lock.yaml* .npmrc* ./
-RUN \
-  if [ -f yarn.lock ]; then yarn --frozen-lockfile; \
-  elif [ -f package-lock.json ]; then npm ci; \
-  elif [ -f pnpm-lock.yaml ]; then corepack enable pnpm && pnpm i --frozen-lockfile; \
-  else echo "Lockfile not found." && exit 1; \
-  fi
+COPY package.json  package-lock.json ./
+RUN npm install
 
 
 # Rebuild the source code only when needed
@@ -40,16 +35,7 @@ RUN echo "=== Build Environment ===" && \
   npm --version
 
 # Build Next.js application
-RUN set -ex && \
-  if [ -f yarn.lock ]; then \
-    echo "Building with Yarn..." && yarn run build 2>&1; \
-  elif [ -f package-lock.json ]; then \
-    echo "Building with NPM..." && npm run build 2>&1; \
-  elif [ -f pnpm-lock.yaml ]; then \
-    echo "Building with PNPM..." && corepack enable pnpm && pnpm run build 2>&1; \
-  else \
-    echo "ERROR: Lockfile not found." && exit 1; \
-  fi
+RUN npm run build
 
 # Production image, copy all the files and run next
 FROM base AS runner
@@ -59,8 +45,6 @@ ENV NODE_ENV=production
 # Uncomment the following line in case you want to disable telemetry during runtime.
 # ENV NEXT_TELEMETRY_DISABLED 1
 
-RUN addgroup --system --gid 1001 nodejs
-RUN adduser --system --uid 1001 nextjs
 
 COPY --from=builder /app/public ./public
 
