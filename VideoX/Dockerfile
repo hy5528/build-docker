@@ -1,7 +1,7 @@
 # =============================================================================
 # Stage 1: Frontend Build
 # =============================================================================
-FROM node:20-slim AS frontend-builder
+FROM node:22-slim AS frontend-builder
 LABEL org.opencontainers.image.description="VideoX - Powerful Video Navigation and Streaming Plugin"
 LABEL org.opencontainers.image.licenses=MIT
 WORKDIR /app/frontend
@@ -15,7 +15,7 @@ RUN npm run build
 # =============================================================================
 # Stage 2: Backend Build (Obfuscation)
 # =============================================================================
-FROM node:20-slim AS backend-builder
+FROM node:22-slim AS backend-builder
 WORKDIR /app/backend
 
 # 安装全量依赖 (包含混淆引擎)
@@ -29,7 +29,7 @@ RUN npm run build
 # =============================================================================
 # Stage 3: Runtime
 # =============================================================================
-FROM node:20-slim
+FROM node:22-slim
 WORKDIR /app
 
 # 安装运行时工具 (curl 用于下载，xz-utils 用于解压 ffmpeg.tar.xz)
