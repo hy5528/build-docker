@@ -1,46 +1,39 @@
-FROM --platform=$BUILDPLATFORM node:22-alpine AS base
+# ---- 第 1 阶段：安装依赖 ----
+FROM --platform=$BUILDPLATFORM node:22-alpine AS deps
 
-# Install dependencies only when needed
-FROM base AS deps
-# Check https://github.com/nodejs/docker-node/tree/b4117f9333da4138b03a546ec926ef50a31506c3#nodealpine to understand why libc6-compat might be needed.
-RUN apk add --no-cache libc6-compat
+# 启用 corepack 并激活 pnpm（Node20 默认提供 corepack）
+RUN corepack enable && corepack prepare pnpm@latest --activate
+
 WORKDIR /app
 
-# Install dependencies based on the preferred package manager
-COPY package.json yarn.lock* package-lock.json* pnpm-lock.yaml* .npmrc* ./
-RUN \
-  if [ -f yarn.lock ]; then yarn --frozen-lockfile; \
-  elif [ -f package-lock.json ]; then npm ci; \
-  elif [ -f pnpm-lock.yaml ]; then corepack enable pnpm && pnpm i --frozen-lockfile; \
-  else echo "Lockfile not found." && exit 1; \
-  fi
 
+# 仅复制依赖清单，提高构建缓存利用率
+COPY package.json pnpm-lock.yaml ./
 
-# Rebuild the source code only when needed
+# 清理任何潜在的缓存并安装所有依赖（包括可选的原生模块）
+RUN pnpm store prune && pnpm install --frozen-lockfile
+
+# ---- 第 2 阶段：构建项目 ----
 FROM --platform=$BUILDPLATFORM node:22-alpine AS builder
+# 安装构建工具以编译原生模块
+RUN apk add --no-cache python3 make g++
+RUN corepack enable && corepack prepare pnpm@latest --activate
 WORKDIR /app
+
+# 复制package files先，确保依赖版本一致
+COPY package.json package-lock.json ./
+# 复制依赖
 COPY --from=deps /app/node_modules ./node_modules
+# 验证依赖完整性，如果不匹配则重新安装
+RUN pnpm install --frozen-lockfile --offline || pnpm install --frozen-lockfile
+# 复制全部源代码
 COPY . .
 
-# Next.js collects completely anonymous telemetry data about general usage.
-# Learn more here: https://nextjs.org/telemetry
-# Uncomment the following line in case you want to disable telemetry during the build.
-# ENV NEXT_TELEMETRY_DISABLED 1
+# 在构建阶段设置 DOCKER_BUILD，启用 standalone 输出
+ENV DOCKER_BUILD=true
 
-# Debug: Show build environment
-RUN echo "=== Build Environment ===" && \
-  pwd && \
-  echo "=== Files in /app ===" && \
-  ls -la && \
-  echo "=== Lockfiles ===" && \
-  ls -la | grep -E "lock|yarn" || echo "No lockfiles" && \
-  echo "=== Node version ===" && \
-  node --version && \
-  echo "=== NPM version ===" && \
-  npm --version
-
-# Build Next.js application
-RUN npm run build
+# 生成生产构建
+RUN pnpm run build
 
 # Production image, copy all the files and run next
 FROM base AS runner
