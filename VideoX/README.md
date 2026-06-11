@@ -6,9 +6,11 @@
 管理权限密码：用于锁定管理后台、收藏及播放历史记录
 ```text
 docker run -d \
-  --name kvideo \
+  --name videox \
   --restart=always \
-  -p 3050:3000 \
-  ghcr.io/hy5528/kvideo66:latest
+  -p 3100:3100 \
+  -v /www/videox-data:/app/backend/data \
+  -v /www/media:/media \
+  ghcr.io/hy5528/videox66:latest
 
 ```
