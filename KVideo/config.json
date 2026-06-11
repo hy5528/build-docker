@@ -11,6 +11,6 @@
     "name": "如意资源",
     "baseUrl": "https://cj.rycjapi.com/api.php/provide/vod",
     "group": "normal",
-    "priority": 1
+    "priority": 2
   }
  ]
