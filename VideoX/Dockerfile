@@ -46,6 +46,7 @@ COPY --from=backend-builder /app/backend-build ./
 # 静态资源服务 (从前端构建阶段复制)
 # 注意：server.js 在混淆后已位于当前目录
 COPY --from=frontend-builder /app/frontend/dist /app/frontend/dist
+COPY start_videox.sh /start_videox.sh
 RUN chmod +x /start_videox.sh
 # 设置运行时环境
 ENV NODE_ENV=production
