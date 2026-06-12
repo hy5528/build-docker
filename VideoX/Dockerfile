@@ -1,8 +1,7 @@
 # =============================================================================
 # Stage 1: Frontend Build
 # =============================================================================
-FROM node:20-slim AS frontend-builder
-LABEL org.opencontainers.image.source="https://github.com/txwebroot/VideoX"
+FROM --platform=$BUILDPLATFORM node:22-alpine AS frontend-builder
 LABEL org.opencontainers.image.description="VideoX - Powerful Video Navigation and Streaming Plugin"
 LABEL org.opencontainers.image.licenses=MIT
 WORKDIR /app/frontend
@@ -16,7 +15,7 @@ RUN npm run build
 # =============================================================================
 # Stage 2: Backend Build (Obfuscation)
 # =============================================================================
-FROM node:20-slim AS backend-builder
+FROM --platform=$BUILDPLATFORM node:22-alpine AS backend-builder
 WORKDIR /app/backend
 
 # 安装全量依赖 (包含混淆引擎)
@@ -30,12 +29,14 @@ RUN npm run build
 # =============================================================================
 # Stage 3: Runtime
 # =============================================================================
-FROM node:20-slim
+FROM alpine:3
 WORKDIR /app
 
 # 安装运行时工具 (curl 用于下载，xz-utils 用于解压 ffmpeg.tar.xz)
-RUN apt-get update && apt-get install -y curl xz-utils tar && rm -rf /var/lib/apt/lists/*
-
+RUN apk add curl xz-utils tar  \
+    && rm -rf /var/cache/apk/* \
+    && rm -rf /tmp/*
+    
 # 复制后端生产依赖 (不含混淆引擎，减小体积)
 WORKDIR /app/backend
 COPY backend-nodejs/package*.json ./
