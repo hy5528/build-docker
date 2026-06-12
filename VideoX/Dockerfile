@@ -35,6 +35,7 @@ WORKDIR /app
 # 安装运行时工具 (curl 用于下载，xz-utils 用于解压 ffmpeg.tar.xz)
 RUN apk add --no-cache \
     curl \
+    python3 \
     npm \
     unzip \   
      && rm -rf /var/cache/apk/*
