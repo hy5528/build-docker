@@ -35,12 +35,13 @@ WORKDIR /app
 # 安装运行时工具 (curl 用于下载，xz-utils 用于解压 ffmpeg.tar.xz)
 RUN apk add --no-cache \
     curl \
+    npm \
     unzip \   
      && rm -rf /var/cache/apk/*
 # 复制后端生产依赖 (不含混淆引擎，减小体积)
 WORKDIR /app/backend
 COPY backend-nodejs/package*.json ./
-RUN npm install 
+RUN npm install --production
 
 # ⚠️ 关键点：仅从构建阶段复制混淆后的代码 (backend-build)
 COPY --from=backend-builder /app/backend-build ./
