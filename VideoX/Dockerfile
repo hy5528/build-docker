@@ -40,7 +40,7 @@ RUN apk add --no-cache \
 # 复制后端生产依赖 (不含混淆引擎，减小体积)
 WORKDIR /app/backend
 COPY backend-nodejs/package*.json ./
-RUN npm install --production
+RUN npm install 
 
 # ⚠️ 关键点：仅从构建阶段复制混淆后的代码 (backend-build)
 COPY --from=backend-builder /app/backend-build ./
