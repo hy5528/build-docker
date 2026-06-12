@@ -33,9 +33,7 @@ FROM alpine:3
 WORKDIR /app
 
 # 安装运行时工具 (curl 用于下载，xz-utils 用于解压 ffmpeg.tar.xz)
-RUN apk add curl xz-utils tar  \
-    && rm -rf /var/cache/apk/* \
-    && rm -rf /tmp/*
+RUN apk add --no-cache curl xz-utils tar 
     
 # 复制后端生产依赖 (不含混淆引擎，减小体积)
 WORKDIR /app/backend
