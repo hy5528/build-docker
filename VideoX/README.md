@@ -12,5 +12,4 @@ docker run -d \
   -v /www/videox-data:/app/backend/data \
   -v /www/media:/media \
   ghcr.io/hy5528/videox66:latest
-
 ```
