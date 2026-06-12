@@ -33,7 +33,7 @@ FROM alpine:3
 WORKDIR /app
 
 # 安装运行时工具 (curl 用于下载，xz-utils 用于解压 ffmpeg.tar.xz)
-RUN apk add --no-cache curl unzip python3 make g++ npm config set python python3
+RUN apk add --no-cache curl unzip python3 make g++ npm 
  
 # 复制后端生产依赖 (不含混淆引擎，减小体积)
 WORKDIR /app/backend
