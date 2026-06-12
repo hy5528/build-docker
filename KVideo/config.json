@@ -26,5 +26,29 @@
     "baseUrl": "https://cj.lzcaiji.com/api.php/provide/vod",
     "group": "normal",
     "priority": 2
-  }
+  },
+  {
+        "id": "baofeng",
+        "name": "暴风资源",
+        "baseUrl": "https://bfzyapi.com/api.php/provide/vod",
+        "group": "normal",
+        "enabled": true,
+        "priority": 5
+    },
+   {
+        "id": "feifanapi",
+        "name": "非凡API",
+        "baseUrl": "https://api.ffzyapi.com/api.php/provide/vod",
+        "group": "normal",
+        "enabled": true,
+        "priority": 25
+    },
+  {
+        "id": "wangwang",
+        "name": "旺旺资源",
+        "baseUrl": "https://wwzy.tv/api.php/provide/vod",
+        "group": "normal",
+        "enabled": true,
+        "priority": 13
+    },
  ]
