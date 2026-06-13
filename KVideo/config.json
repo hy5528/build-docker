@@ -1,27 +1,27 @@
 [
      {
-    "id": "7nzy",
+    "id": "juhe",
     "name": "聚合资源",
     "baseUrl": "https://vod.7na7.com/",
     "group": "normal",
     "priority": 1
   },
      {
-    "id": "ryzy",
+    "id": "ruyi",
     "name": "如意资源",
     "baseUrl": "https://cj.rycjapi.com/api.php/provide/vod",
     "group": "normal",
     "priority": 2
   },
   {
-    "id": "zdzy",
+    "id": "zuida",
     "name": "最大资源",
     "baseUrl": "https://api.zuidapi.com/api.php/provide/vod",
     "group": "normal",
     "priority": 2
   },
   {
-    "id": "lzzy",
+    "id": "lezi",
     "name": "量子资源",
     "baseUrl": "https://cj.lzcaiji.com/api.php/provide/vod",
     "group": "normal",
@@ -46,7 +46,7 @@
   {
         "id": "wangwang",
         "name": "旺旺资源",
-        "baseUrl": "https://wwzy.tv/api.php/provide/vod",
+        "baseUrl": "https://api.wwzy.tv/api.php/provide/vod",
         "group": "normal",
         "enabled": true,
         "priority": 13
