@@ -5,9 +5,9 @@ RUN corepack enable && corepack prepare pnpm@latest --activate
 
 WORKDIR /app
 
-COPY package.json pnpm-lock.yaml ./
+COPY package.json ./
 
-RUN pnpm install --frozen-lockfile
+RUN pnpm install --no-frozen-lockfile
 
 # ---- 第 2 阶段：构建项目 ----
 FROM --platform=$BUILDPLATFORM node:24-alpine AS builder
@@ -26,7 +26,7 @@ ENV OFFLINE_DOWNLOAD_DIR=/data
 RUN pnpm run build
 
 # ---- 第 3 阶段：生成 lite 运行时镜像 ----
-FROM node:22-alpine AS runner
+FROM node:24-alpine AS runner
 
 RUN addgroup -g 1001 -S nodejs && adduser -u 1001 -S nextjs -G nodejs
 
