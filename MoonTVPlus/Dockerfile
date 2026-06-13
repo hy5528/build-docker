@@ -26,7 +26,7 @@ ENV OFFLINE_DOWNLOAD_DIR=/data
 RUN pnpm run build
 
 # ---- 第 3 阶段：生成 lite 运行时镜像 ----
-FROM node:24-alpine AS runner
+FROM node:22-alpine AS runner
 
 RUN addgroup -g 1001 -S nodejs && adduser -u 1001 -S nextjs -G nodejs
 
