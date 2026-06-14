@@ -12,8 +12,6 @@ COPY package.json yarn.lock* package-lock.json* pnpm-lock.yaml* .npmrc* ./
 
 # 清理任何潜在的缓存并安装所有依赖（包括可选的原生模块）
 RUN npm install 
-RUN npm i express-session
-RUN npm i express
 
 # ---- 第 2 阶段：构建项目 ----
 FROM --platform=$BUILDPLATFORM node:22-alpine AS builder
