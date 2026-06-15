@@ -18,18 +18,11 @@ COPY . .
 
 RUN npm run build
 
-# 第二阶段：生产环境
-FROM nginx:1.29.3-alpine3.22-slim AS app
+# 运行阶段
+FROM nginx:alpine
 
-WORKDIR /app
-
-# 从构建阶段复制打包结果
 COPY --from=builder /app/dist /usr/share/nginx/html
-
-# 复制自定义nginx配置（如有需要）
 COPY nginx.conf /etc/nginx/conf.d/default.conf
-
-
 
 EXPOSE 80
 
