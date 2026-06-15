@@ -45,8 +45,8 @@
     },
   {
         "id": "tianyazy",
-        "name": "天涯资源",
-        "baseUrl": "https://tyyszyapi.com/api.php/provide/vod/?ac=list",
+        "name": "魔都资源",
+        "baseUrl": "https://www.mdzyapi.com/api.php/provide/vod",
         "group": "normal",
         "enabled": true,
         "priority": 32
