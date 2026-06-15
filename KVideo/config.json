@@ -44,6 +44,14 @@
         "priority": 25
     },
   {
+        "id": "tianyazy",
+        "name": "天涯资源",
+        "baseUrl": "https://tyyszyapi.com/api.php/provide/vod/?ac=list",
+        "group": "normal",
+        "enabled": true,
+        "priority": 32
+    },
+  {
         "id": "wangwang",
         "name": "旺旺资源",
         "baseUrl": "https://api.wwzy.tv/api.php/provide/vod",
