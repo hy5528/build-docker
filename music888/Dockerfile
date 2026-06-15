@@ -27,7 +27,7 @@ WORKDIR /app
 COPY --from=builder /app/dist /usr/share/nginx/html
 
 # 复制自定义nginx配置（如有需要）
-# COPY nginx.conf /etc/nginx/nginx.con
+COPY nginx.conf /etc/nginx/conf.d/default.conf
 
 
 
