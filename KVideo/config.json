@@ -1,17 +1,17 @@
 [
      {
-    "id": "7nzy",
-    "name": "聚合资源",
-    "baseUrl": "https://vod.7na7.com/",
-    "group": "normal",
-    "priority": 1
-  },
-     {
     "id": "ruyi",
     "name": "如意资源",
     "baseUrl": "https://cj.rycjapi.com/api.php/provide/vod",
     "group": "normal",
     "priority": 2
+  },
+  {
+    "id": "7nzy",
+    "name": "聚合资源",
+    "baseUrl": "https://vod.7na7.com/",
+    "group": "normal",
+    "priority": 1
   },
   {
     "id": "zuida",
