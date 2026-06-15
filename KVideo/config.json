@@ -43,13 +43,13 @@
         "enabled": true,
         "priority": 25
     },
-  {
-        "id": "tianyazy",
-        "name": "魔都资源",
-        "baseUrl": "https://www.mdzyapi.com/api.php/provide/vod",
+   {
+        "id": "baofeng",
+        "name": "暴风资源",
+        "baseUrl": "https://bfzyapi.com/api.php/provide/vod",
         "group": "normal",
         "enabled": true,
-        "priority": 32
+        "priority": 5
     },
   {
         "id": "wangwang",
