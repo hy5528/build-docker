@@ -1,4 +1,4 @@
-name: Build OuonnkiTV Docker images
+name: Build home Docker images
 
 on:
   workflow_dispatch:
@@ -47,17 +47,17 @@ jobs:
         id: meta
         uses: docker/metadata-action@v5
         with:
-          images: ${{ env.REGISTRY }}/${{ github.actor }}/ouonnkitv66
+          images: ${{ env.REGISTRY }}/${{ github.actor }}/home66
           tags: |
             type=raw,value=latest
       - name: Clone Overleaf Gitlab Repo
         run: |
-          git clone https://github.com/SuperheroerN/KAIXIN_TV.git app
+          git clone https://github.com/rswcdcbxc/home.git app
 
       - name: "Copy userpatches to build folder"
         shell: bash
         run: |
-          rsync -av OuonnkiTV/. ./app    
+          rsync -av home/. ./app    
           
       - name: 构建并推送 Docker 镜像
         uses: docker/build-push-action@v5
