@@ -34,6 +34,9 @@ RUN apk add --no-cache --virtual build-dependencies python3-dev gcc libc-dev \
     && python3 -m pip install --no-cache-dir "setuptools<71" \
     && python3 -m pip install --no-cache-dir \
         Mopidy-MPD \
+        Mopidy-Muse \
+        Mopidy-Local \
+        Mopidy-Iris \
         Mopidy-YouTube \
         ytmusicapi \
         pytube \
