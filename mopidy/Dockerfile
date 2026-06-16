@@ -20,7 +20,8 @@ RUN --mount=type=bind,source=requirements.txt,target=requirements.txt \
     && apk del build-dependencies \
     ;
 
-COPY docker-entrypoint.sh .
+#COPY docker-entrypoint.sh .
+ADD --chmod=755 ./docker-entrypoint.sh /docker-entrypoint.sh
 
 ENTRYPOINT [ "/usr/local/src/mopidy/docker-entrypoint.sh" ]
 CMD [ "/usr/local/bin/mopidy", "--config", "/mopidy/config" ]
