@@ -6,10 +6,10 @@ on:
       MACH:
         description: 'Choose machine'
         required: true
-        default: 'mopidy1'
+        default: 'mopidy'
         type: choice
         options:
-        - 'mopidy1'
+        - 'mopidy'
 
         
          
