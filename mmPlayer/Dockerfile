@@ -1,6 +1,6 @@
 # 第一阶段：构建Vue项目
 FROM --platform=$BUILDPLATFORM node:22-alpine AS builder
-ENV GOPROXY=https://goproxy.cn,direct
+
 RUN apk add --no-cache python3 npm git
 
 WORKDIR /
