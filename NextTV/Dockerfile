@@ -25,7 +25,7 @@ ENV OFFLINE_DOWNLOAD_DIR=/data
 RUN npm run build
 
 # ---- 第 3 阶段：生成 lite 运行时镜像 ----
-FROM nginx:1.29.3-alpine3.22-slim AS runner
+FROM nginx:1.29.3-alpine3.22-slim AS app
 
 RUN addgroup -g 1001 -S nodejs && adduser -u 1001 -S nextjs -G nodejs
 
@@ -40,7 +40,7 @@ ENV WATCH_ROOM_SERVER_TYPE=external
 ENV OFFLINE_DOWNLOAD_DIR=/data
 
 # 从构建阶段复制打包结果
-
+COPY --from=builder /app/out/renderer /usr/share/nginx/html
 COPY --from=builder --chown=nextjs:nodejs /app/public ./public
 
 # Automatically leverage output traces to reduce image size
