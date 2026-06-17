@@ -16,12 +16,6 @@ WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 
-ENV DOCKER_ENV=true
-ENV MOONTV_LITE=true
-ENV WATCH_ROOM_ENABLED=false
-ENV WATCH_ROOM_SERVER_TYPE=external
-ENV OFFLINE_DOWNLOAD_DIR=/data
-
 RUN npm run build
 
 # ---- 第 3 阶段：生成 lite 运行时镜像 ----
