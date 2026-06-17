@@ -1,49 +1,77 @@
-# 第一阶段：构建Vue项目
-FROM --platform=$BUILDPLATFORM node:22-alpine AS base
+# ---- 第 1 阶段：安装依赖 ----
+FROM --platform=$BUILDPLATFORM node:22-alpine AS deps
 
-RUN apk add --no-cache python3 nginx
-
+# 启用 corepack 并激活 pnpm（Node20 默认提供 corepack）
+RUN corepack enable && corepack prepare pnpm@latest --activate
 
 WORKDIR /app
 
-# 复制package文件
-FROM base AS deps
-COPY package*.json ./
 
-# 安装依赖（使用淘宝镜像加速）
-RUN npm install
-    
+# 仅复制依赖清单，提高构建缓存利用率
+COPY package.json pnpm-lock.yaml ./
 
-# 复制源代码并构建
-FROM base AS builder
+# 清理任何潜在的缓存并安装所有依赖（包括可选的原生模块）
+RUN pnpm store prune && pnpm install --frozen-lockfile
+
+# ---- 第 2 阶段：构建项目 ----
+FROM --platform=$BUILDPLATFORM node:22-alpine AS builder
+# 安装构建工具以编译原生模块
+RUN apk add --no-cache python3 make g++
+RUN corepack enable && corepack prepare pnpm@latest --activate
 WORKDIR /app
+
+# 复制package files先，确保依赖版本一致
+COPY package.json pnpm-lock.yaml ./
+# 复制依赖
 COPY --from=deps /app/node_modules ./node_modules
+# 验证依赖完整性，如果不匹配则重新安装
+RUN pnpm install --frozen-lockfile --offline || pnpm install --frozen-lockfile
+# 复制全部源代码
 COPY . .
-RUN npm run build
 
-# 第二阶段：生产环境
+# 在构建阶段设置 DOCKER_BUILD，启用 standalone 输出
+ENV DOCKER_BUILD=true
+
+# 生成生产构建
+RUN pnpm run build
+
+# ---- 第 3 阶段：生成运行时镜像 ----
 FROM node:22-alpine AS runner
 
-WORKDIR /app
+# 安装 CA 证书以支持 HTTPS 请求
+RUN apk add --no-cache ca-certificates \
+    && rm -rf /var/cache/apk/* \
+    && rm -rf /tmp/*
 
-ENV NODE_ENV=production \
-    PORT=3000 \
-    HOSTNAME="0.0.0.0"
-
+# 创建非 root 用户
 RUN addgroup -g 1001 -S nodejs && adduser -u 1001 -S nextjs -G nodejs
 
+WORKDIR /app
 
-COPY --from=builder --chown=nextjs:nodejs /app/public ./public
+# 创建视频缓存目录并设置权限
+RUN mkdir -p /app/video-cache && chown -R nextjs:nodejs /app/video-cache
+ENV NODE_ENV=production
+ENV HOSTNAME=0.0.0.0
+ENV PORT=3000
+ENV DOCKER_BUILD=true
+# Puppeteer 配置：使用系统安装的 Chromium（已禁用）
+# ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true
+# ENV PUPPETEER_EXECUTABLE_PATH=/usr/bin/chromium-browser
 
-# Automatically leverage output traces to reduce image size
-# https://nextjs.org/docs/advanced-features/output-file-tracing
+# 从构建器中复制 standalone 输出
 COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
+# 从构建器中复制 scripts 目录
+COPY --from=builder --chown=nextjs:nodejs /app/scripts ./scripts
+# 从构建器中复制 start.js
+COPY --from=builder --chown=nextjs:nodejs /app/start.js ./start.js
+# 从构建器中复制 public 和 .next/static 目录
+COPY --from=builder --chown=nextjs:nodejs /app/public ./public
 COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
 
-
+# 切换到非特权用户
 USER nextjs
-
 
 EXPOSE 3000
 
-CMD ["nginx", "-g", "daemon off;"]
+# 使用自定义启动脚本，先预加载配置再启动服务器
+CMD ["node", "start.js"] 
