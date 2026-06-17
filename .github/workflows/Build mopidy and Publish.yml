@@ -1,4 +1,4 @@
-name:  Build mopidy and Publish
+name: Build mopidy Docker images
 
 on:
   workflow_dispatch:
@@ -9,20 +9,20 @@ on:
         default: 'mopidy'
         type: choice
         options:
-        - 'mopidy'
-
-        
-
-  
+        - 'mopidy'     
+      
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: ${{ github.repository }}
 jobs:
   build-and-push:
     runs-on: ubuntu-latest
-    steps:
-      - name: Checkout repository
+    permissions:
+      contents: read
+      packages: write
+    steps:      
+      - name: 检出代码
         uses: actions/checkout@v4
-
-      - name: Set up QEMU
-        uses: docker/setup-qemu-action@v3
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
@@ -32,16 +32,18 @@ jobs:
         with:
           registry: ${{ env.REGISTRY }}
           username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }
+          password: ${{ secrets.GITHUB_TOKEN }}
+
       - name: 提取 Docker 元数据
         id: meta
         uses: docker/metadata-action@v5
         with:
-          images: ${{ env.REGISTRY }}/${{ github.actor }}/mopidy66
+          images: ghcr.io/hy5528/${{github.event.inputs.MACH}}66
           tags: |
             type=raw,value=latest
-
-      - name: Build and push
+      
+      
+      - name: 构建并推送 Docker 镜像
         uses: docker/build-push-action@v5
         with:
           context: "${{ github.server_url }}/${{ github.repository }}.git#${{ github.ref }}:${{github.event.inputs.MACH}}"
@@ -52,22 +54,19 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
-      - name: Create GitHub Release
-        if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/')
-        uses: softprops/action-gh-release@v1
-        with:
-          tag_name: ${{ github.ref }}
-          name: Release ${{ github.ref }}
-          body: |
-            Docker image built and pushed to Docker Hub:
-            hy5528/${{github.event.inputs.MACH}}:latest
-
       - name: 输出镜像信息
         run: |
-          run: |
           echo "### 🐳 Docker镜像构建成功！" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "**镜像标签：**" >> $GITHUB_STEP_SUMMARY
-          echo 'hy5528' >> $GITHUB_STEP_SUMMARY
-          echo "hy5528/${{github.event.inputs.MACH}}:latest" >> $GITHUB_STEP_SUMMARY
-          
+          echo '```' >> $GITHUB_STEP_SUMMARY
+          echo "${{ steps.meta.outputs.tags }}" >> $GITHUB_STEP_SUMMARY
+          echo '```' >> $GITHUB_STEP_SUMMARY
+          if [ -n "${{ inputs.version_tag }}" ]; then
+            echo "**版本标签：** ${{ inputs.version_tag }}" >> $GITHUB_STEP_SUMMARY
+          fi
+          if [ "${{ inputs.include_latest }}" == "true" ]; then
+            echo "**包含latest标签：** 是" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "**包含latest标签：** 否" >> $GITHUB_STEP_SUMMARY
+          fi
