@@ -1,4 +1,4 @@
-name: Build nav Docker images
+name: Build sun-panel Docker images
 
 on:
   workflow_dispatch:
@@ -47,17 +47,17 @@ jobs:
         id: meta
         uses: docker/metadata-action@v5
         with:
-          images: ${{ env.REGISTRY }}/${{ github.actor }}/nav66
+          images: ${{ env.REGISTRY }}/${{ github.actor }}/sun-panel66
           tags: |
             type=raw,value=latest
       - name: Clone Overleaf Gitlab Repo
         run: |
-          git clone https://github.com/GuangYu-yu/search-nav.git app
+          git clone https://github.com/75412701/sun-panel-v2.git app
 
       - name: "Copy userpatches to build folder"
         shell: bash
         run: |
-          rsync -av nav/. ./app    
+          rsync -av sun-panel/. ./app    
           
       - name: 构建并推送 Docker 镜像
         uses: docker/build-push-action@v5
