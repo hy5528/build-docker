@@ -10,16 +10,7 @@ on:
         type: choice
         options:
         - 'mopidy'
-      version_tag:
-        description: '版本标签 (例如: v1.0.0)'
-        required: false
-        type: string
-        default: ''
-      include_latest:
-        description: 'latest标签'
-        required: false
-        type: boolean
-        default: true
+    
 
 env:
   REGISTRY: ghcr.io
