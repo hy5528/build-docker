@@ -19,9 +19,6 @@ WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 
-ARG EXTERNAL_CONSTANTS_URL="https://alist.xiaohanys.top/d/cloudflare/constants.js"
-RUN npm -e 'const url = process.env.EXTERNAL_CONSTANTS_URL; const res = await fetch(url, { redirect: "follow" }); if (!res.ok) throw new Error(`Failed to download constants.js: ${res.status} ${res.statusText}`); const text = await res.text(); if (!text.includes("DEFAULT_VIDEO_SOURCES")) throw new Error("Downloaded constants.js does not look like the expected module"); await Bun.write("/app/lib/constants.js", text);'
-
 # Next.js collects completely anonymous telemetry data about general usage.
 # Learn more here: https://nextjs.org/telemetry
 # Uncomment the following line in case you want to disable telemetry during the build.
