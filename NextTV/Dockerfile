@@ -22,12 +22,21 @@ FROM nginx:1.29.3-alpine3.22-slim AS app
 
 WORKDIR /app
 
-# 从构建阶段复制打包结果
-COPY --from=builder /app/dist /usr/share/nginx/html
+ENV NODE_ENV=production \
+    PORT=3000 \
+    HOSTNAME="0.0.0.0"
 
-# 复制自定义nginx配置（如有需要）
-# COPY nginx.conf /etc/nginx/nginx.con
+RUN groupadd --system --gid 1001 nodejs && \
+    useradd --system --uid 1001 --no-log-init -g nodejs nextjs
 
+COPY --from=builder --chown=nextjs:nodejs /app/public ./public
+
+# Automatically leverage output traces to reduce image size
+# https://nextjs.org/docs/advanced-features/output-file-tracing
+COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
+COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
+
+USER nextjs
 
 
 EXPOSE 3000
