@@ -4,33 +4,33 @@
 # -----------------------------------------------------------------------------
 
 # Use Bun's official image
-FROM oven/bun:1 AS base
+FROM --platform=$BUILDPLATFORM node:22-alpine AS base
 
 WORKDIR /app
 
 # Install dependencies with bun
-FROM base AS deps
+FROM --platform=$BUILDPLATFORM node:22-alpine AS deps
 COPY package.json bun.lock* ./
-RUN bun install --no-save --frozen-lockfile
+RUN npm install --no-save --frozen-lockfile
 
 # Rebuild the source code only when needed
-FROM base AS builder
+FROM --platform=$BUILDPLATFORM node:22-alpine AS builder
 WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 
 ARG EXTERNAL_CONSTANTS_URL="https://alist.xiaohanys.top/d/cloudflare/constants.js"
-RUN bun -e 'const url = process.env.EXTERNAL_CONSTANTS_URL; const res = await fetch(url, { redirect: "follow" }); if (!res.ok) throw new Error(`Failed to download constants.js: ${res.status} ${res.statusText}`); const text = await res.text(); if (!text.includes("DEFAULT_VIDEO_SOURCES")) throw new Error("Downloaded constants.js does not look like the expected module"); await Bun.write("/app/lib/constants.js", text);'
+RUN npm -e 'const url = process.env.EXTERNAL_CONSTANTS_URL; const res = await fetch(url, { redirect: "follow" }); if (!res.ok) throw new Error(`Failed to download constants.js: ${res.status} ${res.statusText}`); const text = await res.text(); if (!text.includes("DEFAULT_VIDEO_SOURCES")) throw new Error("Downloaded constants.js does not look like the expected module"); await Bun.write("/app/lib/constants.js", text);'
 
 # Next.js collects completely anonymous telemetry data about general usage.
 # Learn more here: https://nextjs.org/telemetry
 # Uncomment the following line in case you want to disable telemetry during the build.
 # ENV NEXT_TELEMETRY_DISABLED=1
 
-RUN bun run build
+RUN npm run build
 
 # Production image, copy all the files and run next
-FROM base AS runner
+FROM oven/bun:1  AS runner
 WORKDIR /app
 
 # Uncomment the following line in case you want to disable telemetry during runtime.
