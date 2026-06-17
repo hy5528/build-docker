@@ -36,7 +36,7 @@ ENV NODE_ENV=production \
     PORT=3000 \
     HOSTNAME="0.0.0.0"
 
-RUN addgroup -g 1001 -S nodejs && adduser -u 1001 -S nextjs -G nodejs
+# RUN addgroup -g 1001 -S nodejs && adduser -u 1001 -S nextjs -G nodejs
 
 COPY --from=builder --chown=nextjs:nodejs /app/public ./public
 # Automatically leverage output traces to reduce image size
