@@ -2,6 +2,13 @@ name: Build mopidy1 Docker images
 
 on:
   workflow_dispatch:
+    MACH:
+        description: 'Choose machine'
+        required: true
+        default: 'mopidy'
+        type: choice
+        options:
+        - 'mopidy'
     inputs:
       version_tag:
         description: '版本标签 (例如: v1.0.0)'
