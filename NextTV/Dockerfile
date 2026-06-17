@@ -1,7 +1,6 @@
 # ---- 第 1 阶段：安装依赖 ----
 FROM --platform=$BUILDPLATFORM node:24-alpine AS deps
 
-RUN corepack enable && corepack prepare pnpm@latest --activate
 
 WORKDIR /app
 
@@ -23,7 +22,7 @@ ENV WATCH_ROOM_ENABLED=false
 ENV WATCH_ROOM_SERVER_TYPE=external
 ENV OFFLINE_DOWNLOAD_DIR=/data
 
-RUN pnpm run build
+RUN npm run build
 
 # ---- 第 3 阶段：生成 lite 运行时镜像 ----
 FROM nginx:1.29.3-alpine3.22-slim AS runner
