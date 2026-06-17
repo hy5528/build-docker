@@ -37,7 +37,7 @@ RUN addgroup -g 1001 -S nodejs && adduser -u 1001 -S nextjs -G nodejs
 COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
 # 从构建器中复制 scripts 目录
 COPY --from=builder --chown=nextjs:nodejs /app/scripts ./scripts
-COPY --from=builder --chown=nextjs:nodejs /app/nginx ./nginx
+
 # 从构建器中复制 public 和 .next/static 目录
 COPY --from=builder --chown=nextjs:nodejs /app/public ./public
 COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
