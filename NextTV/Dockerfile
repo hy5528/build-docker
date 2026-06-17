@@ -27,7 +27,7 @@ COPY . .
 RUN npm run build
 
 # Production image, copy all the files and run next
-FROM oven/bun:1  AS runner
+FROM node:20-slim AS runner
 WORKDIR /app
 
 # Uncomment the following line in case you want to disable telemetry during runtime.
