@@ -33,13 +33,11 @@ ENV NODE_ENV=production \
 RUN addgroup -g 1001 -S nodejs && adduser -u 1001 -S nextjs -G nodejs
 
 
-# 从构建器中复制 standalone 输出
-COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
-# 从构建器中复制 scripts 目录
-COPY --from=builder --chown=nextjs:nodejs /app/scripts ./scripts
-
-# 从构建器中复制 public 和 .next/static 目录
 COPY --from=builder --chown=nextjs:nodejs /app/public ./public
+
+# Automatically leverage output traces to reduce image size
+# https://nextjs.org/docs/advanced-features/output-file-tracing
+COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
 COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
 
 
