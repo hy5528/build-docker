@@ -40,7 +40,7 @@ ENV WATCH_ROOM_SERVER_TYPE=external
 ENV OFFLINE_DOWNLOAD_DIR=/data
 
 # 从构建阶段复制打包结果
-COPY --from=builder /app/dist /usr/share/nginx/html
+
 COPY --from=builder --chown=nextjs:nodejs /app/public ./public
 
 # Automatically leverage output traces to reduce image size
