@@ -9,7 +9,7 @@ FROM --platform=$BUILDPLATFORM node:22-alpine AS base
 WORKDIR /app
 
 # Install dependencies with bun
-FROM --platform=$BUILDPLATFORM node:22-alpine AS deps
+FROM base AS deps
 COPY package.json bun.lock* ./
 RUN npm install --no-save --frozen-lockfile
 
