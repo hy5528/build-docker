@@ -12,7 +12,7 @@ RUN git clone https://github.com/laboratorys/backup2gh.git .
 RUN CGO_ENABLED=0 GOOS=linux go build -o backup2gh .
 
 # 第二阶段：获取 lunatv 源码
-FROM ghcr.io/hy5528/moontvplus66:latest AS lunatv-source
+FROM ghcr.io/hy5528/nexttv66:latest AS lunatv-source
 
 # 第三阶段：最终运行环境
 FROM node:22-alpine AS runner
