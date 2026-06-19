@@ -1,16 +1,7 @@
 
-# Single stage for combining and extracting app parts
-FROM alpine as builder
-WORKDIR /
-COPY app.tar.gz .
-# 合并并解压app.part_*文件到/app目录
-RUN mkdir -p /app && \
-    tar -xzf app.tar.gz -C /app && \
-    rm app.tar.gz
 
 # Stage 3: Copy app to final image
-FROM node:20-alpine
-COPY --from=builder /app /app
+FROM node:22-alpine
 WORKDIR /app
 
 ENV NODE_ENV=production
