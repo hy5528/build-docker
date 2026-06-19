@@ -1,3 +1,5 @@
+# 第二阶段：获取 daoliyu 源码
+FROM msmkls/daoliyu-music:latest AS base
 
 
 # Stage 3: Copy app to final image
