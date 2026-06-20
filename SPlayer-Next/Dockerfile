@@ -17,13 +17,14 @@ RUN pnpm install --frozen-lockfile
 FROM --platform=$BUILDPLATFORM node:22-alpine AS builder
 # 安装构建工具以编译原生模块
 RUN apk add --no-cache python3 make g++
-RUN corepack enable && corepack prepare pnpm@latest --activate
+
 WORKDIR /app
 
 # 复制package files先，确保依赖版本一致
-# COPY package.json pnpm-lock.yaml ./
+COPY package.json package-lock.json* ./
 # 复制依赖
-# RUN pnpm install --frozen-lockfile --offline || pnpm install --frozen-lockfile
+COPY --from=deps /app/node_modules ./node_modules
+
 # 复制全部源代码
 COPY . .
 
