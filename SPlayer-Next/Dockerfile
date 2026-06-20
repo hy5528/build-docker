@@ -15,6 +15,7 @@ RUN pnpm install --frozen-lockfile --ignore-scripts
     
 
 # 复制源代码并构建
+COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 # 启用 corepack 并激活 pnpm（Node20 默认提供 corepack）
 RUN corepack enable && corepack prepare pnpm@latest --activate
