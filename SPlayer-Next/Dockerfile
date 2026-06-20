@@ -1,6 +1,6 @@
 # 构建阶段
 FROM --platform=$BUILDPLATFORM node:22-alpine AS builder
-RUN npm install -g pnpm Rust
+RUN npm install -g pnpm 
 WORKDIR /app
 COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./ ./
 RUN pnpm install
