@@ -3,7 +3,7 @@ FROM msmkls/daoliyu-music:latest
 
 
 # Stage 2
-FROM --platform=$BUILDPLATFORM node:22-alpine AS runner
+FROM --platform=$BUILDPLATFORM node:22-alpine
 WORKDIR /app
 
 ENV NODE_ENV=production
