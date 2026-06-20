@@ -20,21 +20,13 @@ RUN [ ! -e ".env" ] && cp .env.example .env || true
 ENV SKIP_NATIVE_BUILD=true
 RUN npx electron-vite build
 
-# nginx
-FROM nginx:1.27-alpine-slim AS app
+# 运行阶段
+FROM nginx:alpine
 
-COPY --from=builder /app/out/renderer /usr/share/nginx/html
-
-
-
-RUN apk add --no-cache npm python3 \
-    && npm install -g @unblockneteasemusic/server @neteasecloudmusicapienhanced/api 
-
-ENV NODE_TLS_REJECT_UNAUTHORIZED=0
-
-
+COPY --from=builder /app/dist /usr/share/nginx/html
 
 
 EXPOSE 80
 
-CMD ["nginx", "-g", "npx", "@neteasecloudmusicapienhanced/api","daemon off;"]
+CMD ["nginx", "npx", "daemon off;"]
+
