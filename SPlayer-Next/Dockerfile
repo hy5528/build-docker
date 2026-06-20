@@ -23,6 +23,7 @@ COPY . .
 RUN corepack enable && corepack prepare pnpm@latest --activate
 
 WORKDIR /app
+COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
 RUN pnpm run build
 
 # 第二阶段：生产环境
