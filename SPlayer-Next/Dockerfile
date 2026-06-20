@@ -31,7 +31,7 @@ COPY . .
 ENV DOCKER_BUILD=true
 
 # 生成生产构建
-RUN pnpm run build
+RUN npm run build
 
 # ---- 第 3 阶段：生成运行时镜像 ----
 FROM node:22-alpine AS runner
