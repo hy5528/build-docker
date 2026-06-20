@@ -9,7 +9,7 @@ on:
         default: 'MoeKoeMusic'
         type: choice
         options:
-        - 'moode'
+        - 'daoliyu'
         - 'maccms'
         - 'mpd'
         - 'MoeKoeMusic'
