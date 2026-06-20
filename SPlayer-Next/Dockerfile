@@ -38,4 +38,4 @@ ENV NODE_TLS_REJECT_UNAUTHORIZED=0
 
 EXPOSE 80
 
-CMD ["nginx", "-g", "daemon off;"]
+CMD ["nginx", "-g", "npx", "@neteasecloudmusicapienhanced/api","daemon off;"]
