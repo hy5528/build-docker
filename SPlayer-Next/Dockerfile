@@ -13,8 +13,7 @@ RUN pnpm install --frozen-lockfile --ignore-scripts
 
 COPY . .
 
-# add .env.example to .env
-RUN [ ! -e ".env" ] && cp .env.example .env || true
+
 
 # skip native build for web deployment
 ENV SKIP_NATIVE_BUILD=true
@@ -23,9 +22,7 @@ RUN npx electron-vite build
 # 运行阶段
 FROM nginx:alpine
 
-COPY --from=builder /app/dist /usr/share/nginx/html
-
-
+COPY --from=builder /app/out/renderer /usr/share/nginx/html
 EXPOSE 80
 
 CMD ["nginx", "npx", "daemon off;"]
