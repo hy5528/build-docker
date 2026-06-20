@@ -6,7 +6,7 @@ WORKDIR /app
 RUN pnpm run build
 
 # Stage 3
-FROM --platform=$BUILDPLATFORM node:22-alpine
+FROM node:20-alpine
 WORKDIR /app
 
 ENV NODE_ENV=production
