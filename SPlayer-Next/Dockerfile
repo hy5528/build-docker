@@ -31,6 +31,7 @@ RUN pnpm build
 FROM nginx:1.29.3-alpine3.22-slim AS app
 
 WORKDIR /app
+COPY --from=builder /app/out/renderer /app/out/renderer
 # COPY --from=builder /app/dist /usr/share/nginx/html
 COPY --from=builder /app/out/renderer /usr/share/nginx/html
 EXPOSE 80
