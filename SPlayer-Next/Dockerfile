@@ -23,9 +23,7 @@ WORKDIR /app
 # 复制package files先，确保依赖版本一致
 COPY package.json pnpm-lock.yaml ./
 # 复制依赖
-COPY --from=deps /app/node_modules ./node_modules
-# 验证依赖完整性，如果不匹配则重新安装
-RUN pnpm install
+RUN pnpm install --frozen-lockfile --offline || pnpm install --frozen-lockfile
 # 复制全部源代码
 COPY . .
 
