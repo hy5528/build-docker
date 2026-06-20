@@ -7,7 +7,7 @@ RUN apk add --no-cache python3
 RUN corepack enable && corepack prepare pnpm@latest --activate
 
 # install pnpm
-RUN npm install -g pnpm
+# RUN npm install -g pnpm
 
 WORKDIR /app
 
@@ -18,6 +18,9 @@ RUN pnpm install --frozen-lockfile --ignore-scripts
 
 COPY . .
 
+RUN apk add --no-cache python3 make g++
+RUN corepack enable && corepack prepare pnpm@latest --activate
+WORKDIR /app
 
 
 # skip native build for web deployment
