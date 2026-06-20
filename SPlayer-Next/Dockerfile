@@ -1,11 +1,11 @@
 # 构建阶段
 FROM --platform=$BUILDPLATFORM node:22-alpine AS builder
-
+RUN npm install -g pnpm Rust
 WORKDIR /app
-COPY package*.json ./
-RUN npm install
+COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./ ./
+RUN pnpm install
 COPY . .
-RUN npm run build
+RUN pnpm run build
 
 # 运行阶段
 FROM nginx:alpine
