@@ -16,8 +16,8 @@ COPY . .
 
 
 # skip native build for web deployment
-ENV SKIP_NATIVE_BUILD=true
-RUN npx electron-vite build
+# ENV SKIP_NATIVE_BUILD=true
+RUN pnpm build
 
 # 运行阶段
 FROM nginx:alpine
