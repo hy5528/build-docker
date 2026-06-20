@@ -1,7 +1,8 @@
 # build
-FROM --platform=$BUILDPLATFORM node:22-alpine AS builder
+FROM --platform=$BUILDPLATFORM node:22-alpine AS base
 
 # install pnpm
+FROM base AS deps
 RUN npm install -g pnpm
 
 WORKDIR /app
