@@ -17,12 +17,12 @@ RUN pnpm install --frozen-lockfile --ignore-scripts
 
 # 复制源代码并构建
 FROM base AS builder
-COPY --from=deps /app/node_modules ./node_modules
-COPY . .
-# 启用 corepack 并激活 pnpm（Node20 默认提供 corepack）
-RUN corepack enable && corepack prepare pnpm@latest --activate
-
 WORKDIR /app
+COPY --from=deps /app/node_modules ./node_modules
+
+COPY . .
+
+
 COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
 RUN pnpm run build
 
