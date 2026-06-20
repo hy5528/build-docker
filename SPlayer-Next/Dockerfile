@@ -25,7 +25,7 @@ WORKDIR /app
 
 # skip native build for web deployment
 ENV SKIP_NATIVE_BUILD=true
-RUN pnpm build
+RUN pnpm run build
 
 # 第二阶段：生产环境
 FROM nginx:1.29.3-alpine3.22-slim AS app
