@@ -19,8 +19,10 @@ COPY . .
 ENV SKIP_NATIVE_BUILD=true
 RUN pnpm build
 
-# 运行阶段
-FROM nginx:alpine
+# 第二阶段：生产环境
+FROM nginx:1.29.3-alpine3.22-slim AS app
+
+WORKDIR /app
 # COPY --from=builder /app/dist /usr/share/nginx/html
 COPY --from=builder /app/out/renderer /usr/share/nginx/html
 EXPOSE 80
