@@ -1,36 +1,18 @@
-# 第一阶段：构建Vue项目
-FROM --platform=$BUILDPLATFORM node:22-alpine AS builder
-
-RUN apk add --no-cache python3  git
-
+# 构建阶段
+FROM node:18-alpine AS builder
 
 WORKDIR /app
-
-# 复制package文件
 COPY package*.json ./
-
-# 安装依赖（使用淘宝镜像加速）
-RUN npm install
-    
-
-# 复制源代码并构建
+RUN npm ci
 COPY . .
-
 RUN npm run build
 
-# 第二阶段：生产环境
-FROM nginx:1.29.3-alpine3.22-slim AS app
-
-WORKDIR /app
+# 运行阶段
+FROM nginx:alpine
 
 COPY --from=builder /app/dist /usr/share/nginx/html
-
+COPY nginx.conf /etc/nginx/conf.d/default.conf
 
 EXPOSE 80
 
 CMD ["nginx", "-g", "daemon off;"]
-
-
-
-
-
