@@ -18,8 +18,10 @@ COPY . .
 
 RUN npm run build
 
-# 运行阶段
-FROM nginx:alpine
+# 第二阶段：生产环境
+FROM nginx:1.29.3-alpine3.22-slim AS app
+
+WORKDIR /app
 
 COPY --from=builder /app/dist /usr/share/nginx/html
 
