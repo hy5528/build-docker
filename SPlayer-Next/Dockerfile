@@ -17,13 +17,12 @@ COPY . .
 
 # skip native build for web deployment
 ENV SKIP_NATIVE_BUILD=true
-RUN pnpm typecheck
+RUN pnpm build
 
 # 运行阶段
 FROM nginx:alpine
-COPY --from=builder /app/dist /usr/share/nginx/html
-
-# COPY --from=builder /app/out/renderer /usr/share/nginx/html
+# COPY --from=builder /app/dist /usr/share/nginx/html
+COPY --from=builder /app/out/renderer /usr/share/nginx/html
 EXPOSE 80
 
 
