@@ -16,7 +16,7 @@ COPY . .
 
 
 # skip native build for web deployment
-# ENV SKIP_NATIVE_BUILD=true
+ENV SKIP_NATIVE_BUILD=true
 RUN npx electron-vite build
 
 # 运行阶段
