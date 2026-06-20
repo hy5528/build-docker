@@ -21,9 +21,9 @@ RUN corepack enable && corepack prepare pnpm@latest --activate
 WORKDIR /app
 
 # 复制package files先，确保依赖版本一致
-COPY package.json pnpm-lock.yaml ./
+# COPY package.json pnpm-lock.yaml ./
 # 复制依赖
-RUN pnpm install --frozen-lockfile --offline || pnpm install --frozen-lockfile
+# RUN pnpm install --frozen-lockfile --offline || pnpm install --frozen-lockfile
 # 复制全部源代码
 COPY . .
 
