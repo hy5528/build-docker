@@ -17,7 +17,7 @@ COPY . .
 
 # skip native build for web deployment
 # ENV SKIP_NATIVE_BUILD=true
-RUN pnpm build
+RUN npm run build
 
 # 运行阶段
 FROM nginx:alpine
