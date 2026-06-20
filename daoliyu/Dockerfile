@@ -8,7 +8,7 @@ WORKDIR /app
 
 ENV NODE_ENV=production
 ENV HOSTNAME=0.0.0.0
-ENV PORT=3000
+ENV PORT=4000
 ENV DOCKER_ENV=true
 
 # 创建非 root 用户
