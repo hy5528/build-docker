@@ -7,16 +7,17 @@ RUN apk add --no-cache python3
 
 # 启用 corepack 并激活 pnpm（Node20 默认提供 corepack）
 RUN corepack enable && corepack prepare pnpm@latest --activate
+# install pnpm
+RUN npm install -g pnpm
 
 WORKDIR /app
 
-
-# 仅复制依赖清单，提高构建缓存利用率
 COPY package.json pnpm-lock.yaml ./
 
+# skip postinstall
+RUN pnpm install --frozen-lockfile --ignore-scripts
 
-# 安装依赖（使用淘宝镜像加速）
-RUN pnpm install
+
     
 
 # 复制源代码并构建
