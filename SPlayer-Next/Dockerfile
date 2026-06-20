@@ -17,6 +17,7 @@ RUN pnpm install --frozen-lockfile --ignore-scripts
 
 # 复制源代码并构建
 FROM base AS builder
+RUN apk add --no-cache python3 make g++ Rust
 RUN npm install -g pnpm
 WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
