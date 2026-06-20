@@ -1,8 +1,11 @@
 # 第一阶段：获取 daoliyu 源码
 FROM msmkls/daoliyu-music:latest 
+FROM --platform=$BUILDPLATFORM node:22-alpine AS builder
+WORKDIR /app
+# 生成生产构建
+RUN pnpm run build
 
-
-# Stage 2
+# Stage 3
 FROM --platform=$BUILDPLATFORM node:22-alpine
 WORKDIR /app
 
