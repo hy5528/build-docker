@@ -15,10 +15,28 @@ COPY . .
 
 # add .env.example to .env
 # RUN [ ! -e ".env" ] && cp .env.example .env || true
+# ---- 第 2 阶段：构建项目 ----
+FROM --platform=$BUILDPLATFORM node:22-alpine AS builder
+# 安装构建工具以编译原生模块
+RUN apk add --no-cache python3 make g++
+RUN corepack enable && corepack prepare pnpm@latest --activate
+WORKDIR /app
 
-# skip native build for web deployment
+# 复制package files先，确保依赖版本一致
+COPY package.json pnpm-lock.yaml ./
+# 复制依赖
+COPY --from=deps /app/node_modules ./node_modules
+# 验证依赖完整性，如果不匹配则重新安装
+RUN pnpm install --frozen-lockfile --offline || pnpm install --frozen-lockfile
+# 复制全部源代码
+COPY . .
+
+# 在构建阶段设置 DOCKER_BUILD，启用 standalone 输出
 ENV SKIP_NATIVE_BUILD=true
-RUN pnpm build
+
+# 生成生产构建
+RUN pnpm run build
+
 
 # nginx
 FROM nginx:1.27-alpine-slim 
