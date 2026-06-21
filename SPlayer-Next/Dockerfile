@@ -63,7 +63,7 @@ ENV DOCKER_BUILD=true
 # ENV PUPPETEER_EXECUTABLE_PATH=/usr/bin/chromium-browser
 
 # 从构建器中复制 standalone 输出
-COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
+# COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
 # 从构建器中复制 scripts 目录
 COPY --from=builder --chown=nextjs:nodejs /app/scripts ./scripts
 # 从构建器中复制 start.js
