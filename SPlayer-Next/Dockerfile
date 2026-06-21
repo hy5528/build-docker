@@ -80,4 +80,4 @@ EXPOSE 80
 # 使用自定义启动脚本，先预加载配置再启动服务器
 
 
-CMD ["node"]
+CMD ["node", "start"]
