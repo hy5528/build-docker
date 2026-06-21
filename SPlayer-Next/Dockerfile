@@ -7,7 +7,7 @@ RUN apt-get update && apt-get install -y \
     make \
     g++ \
     && rm -rf /var/lib/apt/lists/*
-# RUN npm install -g pnpm
+RUN npm install -g pnpm
 WORKDIR /app
 
 # 仅复制依赖相关文件
