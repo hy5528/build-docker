@@ -3,6 +3,8 @@ FROM --platform=$BUILDPLATFORM node:22-alpine AS builder
 RUN apk add --no-cache npm python3
 # install pnpm
 RUN npm install -g pnpm
+# 启用 corepack 并激活 pnpm（Node20 默认提供 corepack）
+RUN corepack enable && corepack prepare pnpm@latest --activate
 
 WORKDIR /app
 
