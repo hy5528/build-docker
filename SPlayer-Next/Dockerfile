@@ -66,7 +66,7 @@ ENV DOCKER_BUILD=true
 # 从构建器中复制 standalone 输出
 # COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
 
-COPY --from=builder --chown=nextjs:nodejs /app/dist /usr/share/nginx/html
+COPY --from=builder --chown=nextjs:nodejs /app/out/renderer /usr/share/nginx/html
 
 
 # 从构建器中复制 scripts 目录
