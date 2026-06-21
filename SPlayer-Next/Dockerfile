@@ -1,7 +1,4 @@
-COPYild
 FROM --platform=$BUILDPLATFORM node:22-alpine AS deps
-# install pnpm
-# RUN npm install -g pnpm
 # 启用 corepack 并激活 pnpm（Node20 默认提供 corepack）
 RUN corepack enable && corepack prepare pnpm@latest --activate
 
