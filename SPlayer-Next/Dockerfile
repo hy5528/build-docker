@@ -1,5 +1,5 @@
 # build
-FROM --platform=$BUILDPLATFORM node:22-alpine AS builder
+FROM --platform=$BUILDPLATFORM node:22-alpine AS deps
 # install pnpm
 # RUN npm install -g pnpm
 # 启用 corepack 并激活 pnpm（Node20 默认提供 corepack）
@@ -24,7 +24,7 @@ RUN corepack enable && corepack prepare pnpm@latest --activate
 WORKDIR /app
 
 # 复制package files先，确保依赖版本一致
-# COPY package.json pnpm-lock.yaml ./
+COPY package.json pnpm-lock.yaml ./
 # 复制依赖
 COPY --from=deps /app/node_modules ./node_modules
 # 验证依赖完整性，如果不匹配则重新安装
