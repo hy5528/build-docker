@@ -21,7 +21,7 @@ FROM --platform=$BUILDPLATFORM node:22-alpine AS builder
 # 安装构建工具以编译原生模块
 
 RUN apk add --no-cache python3 make g++ curl
-RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+# RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
 RUN corepack enable && corepack prepare pnpm@latest --activate
 WORKDIR /app
 
@@ -35,6 +35,7 @@ RUN pnpm install --frozen-lockfile
 COPY . .
 
 # 在构建阶段设置 DOCKER_BUILD，启用 standalone 输出
+ENV SKIP_NATIVE_BUILD=true
 ENV DOCKER_BUILD=true
 
 
