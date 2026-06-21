@@ -15,7 +15,7 @@ COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
 
 # 安装所有依赖（包括原生模块编译）
 RUN npm install
-RUN pnpm build
+# RUN pnpm build
 
 # --- 阶段 2: 运行阶段 ---
 FROM node:22-slim
