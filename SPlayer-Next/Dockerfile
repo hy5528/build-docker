@@ -7,15 +7,15 @@ RUN apt-get update && apt-get install -y \
     make \
     g++ \
     && rm -rf /var/lib/apt/lists/*
-RUN npm install -g pnpm
+# RUN npm install -g pnpm
 WORKDIR /app
 
 # 仅复制依赖相关文件
 COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
 
 # 安装所有依赖（包括原生模块编译）
-RUN pnpm install
-RUN pnpm run build
+RUN npm install
+RUN npm run build
 
 # --- 阶段 2: 运行阶段 ---
 FROM node:20-slim
