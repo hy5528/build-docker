@@ -1,40 +1,32 @@
-# --- 阶段 1: 构建阶段 ---
-FROM node:22-slim AS builder
+# build
+FROM --platform=$BUILDPLATFORM node:22-alpine AS builder
 
-# 安装编译 better-sqlite3 所需的工具
-RUN apt-get update && apt-get install -y \
-    python3 \
-    make \
-    g++ \
-    && rm -rf /var/lib/apt/lists/*
+# install pnpm
 RUN npm install -g pnpm
-WORKDIR /app
-
-# 仅复制依赖相关文件
-COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
-
-# 安装所有依赖（包括原生模块编译）
-RUN npm install
-# RUN pnpm build
-
-# --- 阶段 2: 运行阶段 ---
-FROM node:22-slim
 
 WORKDIR /app
 
-# 从构建阶段复制 node_modules
-COPY --from=builder /app/node_modules ./node_modules
+COPY package.json pnpm-lock.yaml ./
 
-# 复制项目源代码
+# skip postinstall
+RUN pnpm install --frozen-lockfile --ignore-scripts
+
 COPY . .
 
-# 设置环境变量默认值
-ENV NODE_ENV=production
-ENV PORT=80
+# add .env.example to .env
+# RUN [ ! -e ".env" ] && cp .env.example .env || true
+
+# skip native build for web deployment
+ENV SKIP_NATIVE_BUILD=true
+RUN pnpm build
+
+# nginx
+FROM nginx:1.27-alpine-slim 
+COPY --from=builder /app/node_modules ./node_modules
+
+COPY --from=builder /app/out/renderer /usr/share/nginx/html
 
 
-# 暴露端口
-EXPOSE 3000
+ENV NODE_TLS_REJECT_UNAUTHORIZED=0
 
-# 启动应用
 CMD ["npm", "start"]
