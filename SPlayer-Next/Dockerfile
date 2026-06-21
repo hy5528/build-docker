@@ -33,19 +33,51 @@ RUN pnpm install --frozen-lockfile
 COPY . .
 
 # 在构建阶段设置 DOCKER_BUILD，启用 standalone 输出
-ENV SKIP_NATIVE_BUILD=true
+ENV DOCKER_BUILD=true
+
 
 # 生成生产构建
 RUN pnpm run build
 
+# ---- 第 3 阶段：生成运行时镜像 ----
+FROM node:22-alpine AS runner
 
-# nginx
-FROM nginx:1.29.3-alpine3.22-slim AS app
-# COPY --from=builder /app/node_modules ./node_modules
+# 安装 CA 证书以支持 HTTPS 请求
+RUN apk add --no-cache ca-certificates \
+    && rm -rf /var/cache/apk/* \
+    && rm -rf /tmp/*
 
-COPY --from=builder /app/out/renderer /usr/share/nginx/html
+# 创建非 root 用户
+RUN addgroup -g 1001 -S nodejs && adduser -u 1001 -S nextjs -G nodejs
+
+WORKDIR /app
+
+# 创建视频缓存目录并设置权限
+RUN mkdir -p /app/video-cache && chown -R nextjs:nodejs /app/video-cache
+ENV NODE_ENV=production
+ENV HOSTNAME=0.0.0.0
+ENV PORT=80
+ENV DOCKER_BUILD=true
+# Puppeteer 配置：使用系统安装的 Chromium（已禁用）
+# ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true
+# ENV PUPPETEER_EXECUTABLE_PATH=/usr/bin/chromium-browser
+
+# 从构建器中复制 standalone 输出
+COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
+# 从构建器中复制 scripts 目录
+COPY --from=builder --chown=nextjs:nodejs /app/scripts ./scripts
+# 从构建器中复制 start.js
+COPY --from=builder --chown=nextjs:nodejs /app/start.js ./start.js
+# 从构建器中复制 public 和 .next/static 目录
+COPY --from=builder --chown=nextjs:nodejs /app/public ./public
+COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
+
+# 切换到非特权用户
+USER nextjs
+
+EXPOSE 80
+
+# 使用自定义启动脚本，先预加载配置再启动服务器
 
 
-ENV NODE_TLS_REJECT_UNAUTHORIZED=0
-
-CMD ["nginx", "-g", "daemon off;"]
+CMD ["node", "-g", "daemon off;"]
