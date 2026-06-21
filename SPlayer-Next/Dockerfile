@@ -1,5 +1,5 @@
 # --- 阶段 1: 构建阶段 ---
-FROM node:20-slim AS builder
+FROM node:22-slim AS builder
 
 # 安装编译 better-sqlite3 所需的工具
 RUN apt-get update && apt-get install -y \
@@ -15,10 +15,10 @@ COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
 
 # 安装所有依赖（包括原生模块编译）
 RUN npm install
-RUN npm run build
+RUN pnpm run build
 
 # --- 阶段 2: 运行阶段 ---
-FROM node:20-slim
+FROM node:22-slim
 
 WORKDIR /app
 
