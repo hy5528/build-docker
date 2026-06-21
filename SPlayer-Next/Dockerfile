@@ -1,6 +1,6 @@
 # build
 FROM --platform=$BUILDPLATFORM node:22-alpine AS builder
-
+RUN apk add --no-cache npm python3
 # install pnpm
 RUN npm install -g pnpm
 
