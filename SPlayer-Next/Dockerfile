@@ -1,6 +1,5 @@
 # build
 FROM --platform=$BUILDPLATFORM node:22-alpine AS builder
-RUN apk add --no-cache npm python3
 # install pnpm
 # RUN npm install -g pnpm
 # 启用 corepack 并激活 pnpm（Node20 默认提供 corepack）
@@ -41,7 +40,7 @@ RUN pnpm run build
 
 
 # nginx
-FROM nginx:alpine
+FROM nginx:1.29.3-alpine3.22-slim AS app
 # COPY --from=builder /app/node_modules ./node_modules
 
 COPY --from=builder /app/out/renderer /usr/share/nginx/html
