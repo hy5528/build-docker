@@ -6,9 +6,8 @@ RUN apt-get update && apt-get install -y \
     python3 \
     make \
     g++ \
-    pnpm \
     && rm -rf /var/lib/apt/lists/*
-
+RUN npm install -g pnpm
 WORKDIR /app
 
 # 仅复制依赖相关文件
