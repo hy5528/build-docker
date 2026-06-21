@@ -42,7 +42,7 @@ RUN pnpm run build
 
 # nginx
 FROM nginx:alpine
-COPY --from=builder /app/node_modules ./node_modules
+# COPY --from=builder /app/node_modules ./node_modules
 
 COPY --from=builder /app/out/renderer /usr/share/nginx/html
 
