@@ -39,13 +39,19 @@ ENV DOCKER_BUILD=true
 # 生成生产构建
 RUN pnpm run build
 
-# ---- 第 3 阶段：生成运行时镜像 ----
-FROM node:22-alpine AS runner
+FROM nginx:1.29.3-alpine3.22-slim AS app
 
-# 安装 CA 证书以支持 HTTPS 请求
-RUN apk add --no-cache ca-certificates \
-    && rm -rf /var/cache/apk/* \
-    && rm -rf /tmp/*
+WORKDIR /app
+
+# 从构建阶段复制打包结果
+COPY --from=builder /app/dist /usr/share/nginx/html
+
+# 复制自定义nginx配置（如有需要）
+# COPY nginx.conf /etc/nginx/nginx.con
+
+
+
+
 
 # 创建非 root 用户
 RUN addgroup -g 1001 -S nodejs && adduser -u 1001 -S nextjs -G nodejs
@@ -64,6 +70,8 @@ ENV DOCKER_BUILD=true
 
 # 从构建器中复制 standalone 输出
 # COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
+
+
 # 从构建器中复制 scripts 目录
 COPY --from=builder --chown=nextjs:nodejs /app/scripts ./scripts
 # 从构建器中复制 start.js
@@ -77,7 +85,6 @@ USER nextjs
 
 EXPOSE 80
 
-# 使用自定义启动脚本，先预加载配置再启动服务器
 
 
-CMD ["node", "start"]
+CMD ["nginx", "-g", "daemon off;"]
