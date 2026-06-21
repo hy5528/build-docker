@@ -19,7 +19,9 @@ COPY . .
 # ---- 第 2 阶段：构建项目 ----
 FROM --platform=$BUILDPLATFORM node:22-alpine AS builder
 # 安装构建工具以编译原生模块
-RUN apk add --no-cache python3 make g++
+
+RUN apk add --no-cache python3 make g++ curl
+RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
 RUN corepack enable && corepack prepare pnpm@latest --activate
 WORKDIR /app
 
