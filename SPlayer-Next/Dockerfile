@@ -44,11 +44,6 @@ FROM nginx:1.29.3-alpine3.22-slim AS app
 WORKDIR /app
 
 # 从构建阶段复制打包结果
-COPY --from=builder /app/dist /usr/share/nginx/html
-
-# 复制自定义nginx配置（如有需要）
-# COPY nginx.conf /etc/nginx/nginx.con
-
 
 
 
@@ -70,6 +65,8 @@ ENV DOCKER_BUILD=true
 
 # 从构建器中复制 standalone 输出
 # COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
+
+COPY --from=builder --chown=nextjs:nodejs /app/dist /usr/share/nginx/html
 
 
 # 从构建器中复制 scripts 目录
