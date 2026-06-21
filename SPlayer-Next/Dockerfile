@@ -1,4 +1,4 @@
-# build
+COPYild
 FROM --platform=$BUILDPLATFORM node:22-alpine AS deps
 # install pnpm
 # RUN npm install -g pnpm
@@ -73,7 +73,7 @@ COPY --from=builder --chown=nextjs:nodejs /app/scripts ./scripts
 COPY --from=builder --chown=nextjs:nodejs /app/start.js ./start.js
 # 从构建器中复制 public 和 .next/static 目录
 COPY --from=builder --chown=nextjs:nodejs /app/public ./public
-COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
+# COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
 
 # 切换到非特权用户
 USER nextjs
