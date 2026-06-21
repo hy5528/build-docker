@@ -1,18 +1,41 @@
-# 构建阶段
-FROM --platform=$BUILDPLATFORM node:22-alpine AS builder
-RUN npm install -g pnpm 
+# --- 阶段 1: 构建阶段 ---
+FROM node:20-slim AS builder
+
+# 安装编译 better-sqlite3 所需的工具
+RUN apt-get update && apt-get install -y \
+    python3 \
+    make \
+    g++ \
+    pnpm \
+    && rm -rf /var/lib/apt/lists/*
+
 WORKDIR /app
-COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./ ./
+
+# 仅复制依赖相关文件
+COPY package*.json ./
+
+# 安装所有依赖（包括原生模块编译）
 RUN pnpm install
-COPY . .
 RUN pnpm run build
 
-# 运行阶段
-FROM nginx:alpine
+# --- 阶段 2: 运行阶段 ---
+FROM node:20-slim
 
-COPY --from=builder /app/dist /usr/share/nginx/html
-# COPY nginx.conf /etc/nginx/conf.d/default.conf
+WORKDIR /app
 
-EXPOSE 80
+# 从构建阶段复制 node_modules
+COPY --from=builder /app/node_modules ./node_modules
 
-CMD ["nginx", "-g", "daemon off;"]
+# 复制项目源代码
+COPY . .
+
+# 设置环境变量默认值
+ENV NODE_ENV=production
+ENV PORT=80
+
+
+# 暴露端口
+EXPOSE 3000
+
+# 启动应用
+CMD ["npm", "start"]
