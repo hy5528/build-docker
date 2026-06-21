@@ -2,7 +2,7 @@
 FROM --platform=$BUILDPLATFORM node:22-alpine AS builder
 RUN apk add --no-cache npm python3
 # install pnpm
-RUN npm install -g pnpm
+# RUN npm install -g pnpm
 # 启用 corepack 并激活 pnpm（Node20 默认提供 corepack）
 RUN corepack enable && corepack prepare pnpm@latest --activate
 
@@ -25,7 +25,7 @@ RUN corepack enable && corepack prepare pnpm@latest --activate
 WORKDIR /app
 
 # 复制package files先，确保依赖版本一致
-COPY package.json pnpm-lock.yaml ./
+# COPY package.json pnpm-lock.yaml ./
 # 复制依赖
 # COPY --from=deps /app/node_modules ./node_modules
 # 验证依赖完整性，如果不匹配则重新安装
@@ -41,7 +41,7 @@ RUN pnpm run build
 
 
 # nginx
-FROM nginx:1.27-alpine-slim 
+FROM nginx-alpine
 COPY --from=builder /app/node_modules ./node_modules
 
 COPY --from=builder /app/out/renderer /usr/share/nginx/html
@@ -49,4 +49,4 @@ COPY --from=builder /app/out/renderer /usr/share/nginx/html
 
 ENV NODE_TLS_REJECT_UNAUTHORIZED=0
 
-CMD ["npm", "start"]
+CMD ["nginx", "-g", "daemon off;"]
