@@ -67,7 +67,7 @@ ENV DOCKER_BUILD=true
 # 从构建器中复制 scripts 目录
 COPY --from=builder --chown=nextjs:nodejs /app/scripts ./scripts
 # 从构建器中复制 start.js
-COPY --from=builder --chown=nextjs:nodejs /app/start.js ./start.js
+# COPY --from=builder --chown=nextjs:nodejs /app/start.js ./start.js
 # 从构建器中复制 public 和 .next/static 目录
 COPY --from=builder --chown=nextjs:nodejs /app/public ./public
 # COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
