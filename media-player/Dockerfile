@@ -8,6 +8,7 @@ RUN npm run build
 
 # Python backend
 FROM python:3.11-slim
+RUN apk add --no-cache python3 make g++
 WORKDIR /app
 
 # Install dependencies
