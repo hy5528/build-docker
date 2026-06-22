@@ -8,11 +8,7 @@ RUN npm run build
 
 # Python backend
 FROM python:3.11-slim
-# 更新包索引并安装gcc
-RUN apt-get update && apt-get install -y gcc
 
-# 清理apt缓存以减少镜像大小
-RUN apt-get clean && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
 
