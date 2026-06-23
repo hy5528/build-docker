@@ -6,3 +6,4 @@ Mopidy-MPD==4.0.0
 Mopidy-Iris==3.69.3
 # https://github.com/mopidy/mopidy-local/releases
 Mopidy-Local==4.0.0
+Mopidy-Muse
