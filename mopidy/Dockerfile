@@ -20,7 +20,8 @@ RUN --mount=type=bind,source=requirements.txt,target=requirements.txt \
     && apk del build-dependencies \
     ;
 
-RUN python3 -m pip install --break-system-packages mopidy-mpd \
+RUN python3 -m pip install --no-cache-dir --upgrade pip \
+        mopidy-mpd \
         Mopidy-Iris \
         Mopidy-Mobile \
         Mopidy-Local \
