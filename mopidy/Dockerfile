@@ -15,7 +15,7 @@ RUN --mount=type=bind,source=requirements.txt,target=requirements.txt \
         gst-plugins-bad \
         gst-plugins-good \
         gst-plugins-ugly \
-    && sudo python3 -m pip install --no-cache-dir --upgrade pip \
+    &&  python3 -m pip install --no-cache-dir --upgrade pip \
     && sudo python3 -m pip install --no-cache-dir --requirement requirements.txt \
     && apk del build-dependencies \
     ;
