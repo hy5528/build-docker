@@ -37,7 +37,6 @@ RUN apt-get update && \
     apt-get install -y --no-install-recommends \
         mopidy \
         mopidy-local \
-        mopidy-scrobbler
 
 RUN python3 -m pip install --break-system-packages \
         Mopidy-Iris
