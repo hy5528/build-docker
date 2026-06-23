@@ -10,15 +10,9 @@ RUN apt-get update && \
         gstreamer1.0-libav \
         gstreamer1.0-alsa
 
-# For a list of extensions, see:
-#   https://mopidy.com/ext/
-RUN apt-get update && \
-    apt-get upgrade -y --no-install-recommends && \
-    apt-get install -y --no-install-recommends \
-        mopidy \
-        mopidy-local 
-
 RUN python3 -m pip install --break-system-packages \
+        mopidy \
+        mopidy-local \ 
         Mopidy-Iris
 
 # Create needed folders, see:
