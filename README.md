@@ -191,15 +191,7 @@ docker run -d \
   ghcr.io/hy5528/kvideo66:latest
 
 ```
-# NextTV
-- 使用 Next.JS 重构LibreTV。
-- http://你的IP:5500
 
-```text
-
-docker run -d --name NextTV --restart=always -p 5500:3000 ghcr.io/hy5528/nexttv66:latest
-
-```
 # lxserver
 - LX Music 数据同步服务端和Web 播放器。
 - 前台Web 播放器: http://localhost:9527/music
