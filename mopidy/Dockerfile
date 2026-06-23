@@ -19,7 +19,7 @@ RUN --mount=type=bind,source=requirements.txt,target=requirements.txt \
     && python3 -m pip install --no-cache-dir --requirement requirements.txt \
     && apk del build-dependencies \
     ;
-
+RUN python3 -m pip install --break-system-packages mopidy-iris
 ENV XDG_CACHE_DIR=/root/.cache
 ENV XDG_CONFIG_DIR=/root/.config
 ENV XDG_DATA_DIR=/root/.local/share
