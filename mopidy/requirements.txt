@@ -8,4 +8,4 @@ Mopidy-MPD
 # Mopidy-Local
 # https://github.com/cristianpb/muse
 # Mopidy-Muse
-mopidy-mpris
+
