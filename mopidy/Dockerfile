@@ -1,41 +1,65 @@
-FROM python:3.13-alpine AS base
+FROM ghcr.io/linuxserver/baseimage-debian:bookworm
 
-WORKDIR /usr/local/src/mopidy
+# set version label
+ARG BUILD_DATE
+ARG VERSION
 
-# Install Mopidy requirements
-RUN --mount=type=bind,source=requirements.txt,target=requirements.txt \
-    apk add --no-cache --virtual build-dependencies python3-dev gcc libc-dev \
-    cairo-dev gobject-introspection gobject-introspection-dev \
-    && apk add --no-cache \
-        git \
-        gstreamer \
-        py3-gobject3 \
-        py3-gst \
-        su-exec \
-        gst-plugins-bad \
-        gst-plugins-good \
-        gst-plugins-ugly \
-    && python3 -m pip install --no-cache-dir --upgrade pip \
-    && python3 -m pip install --no-cache-dir --requirement requirements.txt \
-    && apk del build-dependencies \
-    ;
+LABEL build_version="Linuxserver.io version:- ${VERSION} Build-date:- ${BUILD_DATE}"
+LABEL maintainer="sweisgerber"
 
-#COPY docker-entrypoint.sh .
-ADD --chmod=755 docker-entrypoint.sh .
+# environment settings
+ARG DEBIAN_FRONTEND="noninteractive"
+#
+# Official Mopidy install for Debian/Ubuntu along with some extensions #################################################
+#
+RUN set -ex \
+ echo "**** install runtime packages ****" \
+ && apt-get update \
+ && apt-get install -y \
+      alsa-utils \
+      sudo \
+      gir1.2-gst-plugins-base-1.0 \
+      gir1.2-gstreamer-1.0 \
+      gstreamer1.0-plugins-good \
+      gstreamer1.0-plugins-ugly \
+      gstreamer1.0-tools \
+      libcairo2-dev \
+      libgirepository-2.0-dev \
+      python3-gst-1.0
+      python3 \
+      python3-pip \
+ && mkdir -p /etc/apt/keyrings/ \
+ && curl -L https://apt.mopidy.com/mopidy.gpg -o /etc/apt/keyrings/mopidy-archive-keyring.gpg \
+ && curl -L https://apt.mopidy.com/mopidy.list -o /etc/apt/sources.list.d/mopidy.list \
+ && apt-get update \
+ && apt-get install -y \
+      mopidy \
+      mopidy-mpd \
+ && pip install --no-cache-dir --upgrade pip wheel \
+ && pip install --no-cache-dir --upgrade \
+      Mopidy-Iris \
+      Mopidy-Local \
+      Mopidy-Mobile \
+      Mopidy-SomaFM \
+  && echo "**** cleanup ****" \
+  && apt-get -y autoremove \
+  && apt-get clean  \
+  && rm -rf \
+    /tmp/* \
+    /var/lib/apt/lists/* \
+    /var/tmp/* \
+    /var/log/* \
+    /usr/share/man
+# ^ Official Mopidy install for Debian/Ubuntu along with some extensions ^
+#   (see https://docs.mopidy.com/en/latest/installation/debian/)
+#
+# copy defaults & s6-overlay stuff
+COPY root/ /
 
-ENTRYPOINT [ "/usr/local/src/mopidy/docker-entrypoint.sh" ]
-CMD [ "/usr/local/bin/mopidy", "--config", "/mopidy/config" ]
-
-FROM base AS youtube
-
-RUN apk add --no-cache --virtual build-dependencies python3-dev gcc libc-dev \
-        cairo-dev gobject-introspection gobject-introspection-dev \
-    && apk add --no-cache deno \
-    && python3 -m pip install --no-cache-dir --upgrade pip \
-    && python3 -m pip install --no-cache-dir "setuptools<71" \
-    && python3 -m pip install --no-cache-dir \
-        Mopidy-MPD \
-    && apk del build-dependencies \
-    ;
-
-FROM base AS core
+# ports ###########################################################################################
+# mopidy-http default port
+EXPOSE 6680
+# mpd plugin default port
+EXPOSE 6600
+# volumes #########################################################################################
+VOLUME /config /music /data
