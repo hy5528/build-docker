@@ -40,4 +40,4 @@ RUN mkdir /cache && \
 EXPOSE 8088
 
 # See https://docs.mopidy.com/latest/command/
-CMD ["/usr/bin/mopidy"]
+ENTRYPOINT ["mopidy"]
