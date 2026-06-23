@@ -49,7 +49,7 @@ RUN mkdir /cache && \
     ln -s /iris ${XDG_DATA_DIR}/iris
 
 # Port that mopidy listens on
-EXPOSE ${EXPOSE_PORT}
+EXPOSE 8088
 
 # See https://docs.mopidy.com/latest/command/
 CMD ["/usr/bin/mopidy"]
