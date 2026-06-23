@@ -1,4 +1,4 @@
-FROM ghcr.io/linuxserver/baseimage-debian:bullseye
+FROM ghcr.io/linuxserver/baseimage-debian:bookworm
 
 # set version label
 ARG BUILD_DATE
