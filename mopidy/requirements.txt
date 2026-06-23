@@ -5,6 +5,6 @@ Mopidy-MPD==4.0.0
 # https://github.com/jaedb/Iris/releases
 # Mopidy-Iris==3.69.3
 # https://github.com/mopidy/mopidy-local/releases
-Mopidy-Local==4.0.0
+# Mopidy-Local==4.0.0
 # https://github.com/cristianpb/muse
-Mopidy-Muse
+
