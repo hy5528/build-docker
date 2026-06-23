@@ -9,5 +9,5 @@ Mopidy-MPD
 # https://github.com/cristianpb/muse
 # Mopidy-Muse
 Mopidy-Mobile
-Mopidy-MPRIS
+# Mopidy-MPRIS
 
