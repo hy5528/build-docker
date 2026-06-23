@@ -16,8 +16,6 @@ RUN set -ex \
  echo "**** install runtime packages ****" \
  && apt-get update \
  && apt-get install -y \
-      alsa-utils \
-      sudo \
       gir1.2-gst-plugins-base-1.0 \
       gir1.2-gstreamer-1.0 \
       gstreamer1.0-plugins-good \
@@ -26,17 +24,14 @@ RUN set -ex \
       libcairo2-dev \
       libgirepository-2.0-dev \
       python3-gst-1.0
-      python3 \
+      build-essential \
+      python3-dev \
       python3-pip \
- && mkdir -p /etc/apt/keyrings/ \
- && curl -L https://apt.mopidy.com/mopidy.gpg -o /etc/apt/keyrings/mopidy-archive-keyring.gpg \
- && curl -L https://apt.mopidy.com/mopidy.list -o /etc/apt/sources.list.d/mopidy.list \
- && apt-get update \
- && apt-get install -y \
-      mopidy \
-      mopidy-mpd \
+
  && pip install --no-cache-dir --upgrade pip wheel \
  && pip install --no-cache-dir --upgrade \
+      mopidy \
+      mopidy-mpd \
       Mopidy-Iris \
       Mopidy-Local \
       Mopidy-Mobile \
