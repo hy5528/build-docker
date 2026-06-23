@@ -2,7 +2,6 @@ FROM ghcr.io/linuxserver/baseimage-alpine:3.24
 
 # set version label
 ARG BUILD_DATE
-ARG VERSION
 ARG MOPIDY_RELEASE
 
 LABEL build_version="version:- ${VERSION} Build-date:- ${BUILD_DATE}"
