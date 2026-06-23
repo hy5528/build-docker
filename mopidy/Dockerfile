@@ -10,14 +10,6 @@ RUN apt-get update && \
         gstreamer1.0-libav \
         gstreamer1.0-alsa
 
-# For mopidy installion instructions, see:
-#   https://docs.mopidy.com/stable/installation/debian
-RUN mkdir -p /etc/apt/keyrings && \
-    wget -q -O /etc/apt/keyrings/mopidy-archive-keyring.gpg \
-        https://apt.mopidy.com/mopidy.gpg && \
-    wget -q -O /etc/apt/sources.list.d/mopidy.list \
-        https://apt.mopidy.com/${DISTRO_VERSION}.list
-
 # For a list of extensions, see:
 #   https://mopidy.com/ext/
 RUN apt-get update && \
