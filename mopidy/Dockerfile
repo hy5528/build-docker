@@ -20,13 +20,6 @@ RUN --mount=type=bind,source=requirements.txt,target=requirements.txt \
     && apk del build-dependencies \
     ;
 
-RUN python3 -m pip install --no-cache-dir --upgrade pip \
-        mopidy-mpd \
-        Mopidy-Iris \
-        Mopidy-Mobile \
-        Mopidy-Local \
-    && apk del build-dependencies \
-    ;
 
 ENV XDG_CACHE_DIR=/root/.cache
 ENV XDG_CONFIG_DIR=/root/.config
