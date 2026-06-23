@@ -20,13 +20,7 @@ RUN --mount=type=bind,source=requirements.txt,target=requirements.txt \
     && apk del build-dependencies \
     ;
 
-RUN apk add --no-cache --virtual build-dependencies python3-dev gcc libc-dev \
-        cairo-dev gobject-introspection gobject-introspection-dev \
-    && apk add --no-cache deno \
-    && python3 -m pip install --no-cache-dir --upgrade pip \
-    && python3 -m pip install --no-cache-dir "setuptools<71" \
-    && python3 -m pip install --no-cache-dir \
-        Mopidy-MPD \
+RUN python3 -m pip install --break-system-packages mopidy-mpd \
         Mopidy-Iris \
         Mopidy-Mobile \
         Mopidy-Local \
