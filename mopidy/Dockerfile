@@ -35,12 +35,6 @@ RUN apk add --no-cache --virtual build-dependencies python3-dev gcc libc-dev \
     && python3 -m pip install --no-cache-dir "setuptools<71" \
     && python3 -m pip install --no-cache-dir \
         Mopidy-MPD \
-        pytube \
-        "yt-dlp[default]" \
-    && if [ "$(python3 -c 'import mopidy_youtube; print(mopidy_youtube.__version__)')" = "4.0" ]; then \
-        # mopidy-youtube 4.0 uses deprecated Pydantic v2 arg `by_aliases`.
-        sed -i 's/by_aliases=True/by_alias=True/g' /usr/local/lib/python3.13/site-packages/mopidy_youtube/youtube.py; \
-    fi \
     && apk del build-dependencies \
     ;
 
