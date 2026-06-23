@@ -27,7 +27,7 @@ services:
       - 6600:6600
     volumes:
       - /run/udev:/run/udev:ro
-      - /opt/config:/root/.config
+      - /opt/config:/root/.config/mopidy
       - /opt/local:/root/.local
       - /media/music:/music
     restart: always
