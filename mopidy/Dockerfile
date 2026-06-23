@@ -35,8 +35,6 @@ RUN apk add --no-cache --virtual build-dependencies python3-dev gcc libc-dev \
     && python3 -m pip install --no-cache-dir "setuptools<71" \
     && python3 -m pip install --no-cache-dir \
         Mopidy-MPD \
-        Mopidy-YouTube \
-        ytmusicapi \
         pytube \
         "yt-dlp[default]" \
     && if [ "$(python3 -c 'import mopidy_youtube; print(mopidy_youtube.__version__)')" = "4.0" ]; then \
