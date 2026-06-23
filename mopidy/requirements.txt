@@ -1,5 +1,5 @@
 # https://github.com/mopidy/mopidy/releases
-Mopidy==4.0.0
+Mopidy==4.0.1
 # https://github.com/mopidy/mopidy-mpd/releases
 Mopidy-MPD==4.0.0
 # https://github.com/jaedb/Iris/releases
