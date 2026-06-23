@@ -18,7 +18,7 @@ A simple docker-compose.yaml file.
 
 services:
   mopidy:
-    image: ghcr.nju.edu.cn/hy5528/mopidy:latest
+    image: ghcr.nju.edu.cn/hy5528/mopidy66:latest
     container_name: mopidy
     devices:
       - /dev/snd:/dev/snd
