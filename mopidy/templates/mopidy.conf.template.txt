@@ -1,0 +1,65 @@
+# For a guide, see https://docs.mopidy.com/latest/config/
+# This file must be placed into the volume mounted to /config as mopidy.conf
+# All <VARIABLES> must be replaced with correct values
+
+[audio]
+# Use default audio device
+output = alsasink
+# Set specific adio device. Get card name using aplay -l
+#output = alsasink device=hw:<CARD_NAME>
+
+[http]
+enabled = true
+hostname = 0.0.0.0
+# Replace <EXPOSE_PORT> with port set in docker compose yaml
+port = <EXPOSE_PORT>
+zeroconf = Mopidy HTTP server on $hostname
+csrf_protection = true
+# uncomment to use iris as default client
+#default_app = iris
+
+[file]
+enabled = true
+# Use container mount points defined in docker compose yaml
+media_dirs =
+   /music
+show_dotfiles = false
+excluded_file_extensions =
+  .directory
+  .html
+  .jpeg
+  .jpg
+  .log
+  .nfo
+  .pdf
+  .png
+  .txt
+  .zip
+follow_symlinks = false
+metadata_timeout = 1000
+
+[local]
+enabled = true
+# Use container mount points defined in docker compose yaml
+media_dir = /music
+scan_timeout = 10000
+album_art_files =
+  cover.png
+  cover.jpg
+
+[scrobbler]
+username = <username>
+password = <password>
+
+[iris]
+# See https://github.com/jaedb/Iris/wiki/Getting-started#configuration
+# Adjust as needed
+#country = nz
+#locale = en_NZ
+#spotify_authorization_url
+#lastfm_authorization_url
+#data_dir -> Dont change this value!
+#snapcast_enabled = true
+#snapcast_host = localhost
+#snapcast_port = 1780
+#snapcast_stream = Default
