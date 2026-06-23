@@ -1,16 +1,15 @@
-# For base image info see: https://hub.docker.com/_/debian
-ARG DISTRO_VERSION=bookworm
-FROM debian:${DISTRO_VERSION}-slim
+FROM ghcr.io/linuxserver/baseimage-debian:bookworm
 
-# Restore arg after from:
-# https://docs.docker.com/reference/dockerfile#understand-how-arg-and-from-interact
-ARG DISTRO_VERSION
+# set version label
+ARG BUILD_DATE
+ARG VERSION
 
+LABEL build_version="Linuxserver.io version:- ${VERSION} Build-date:- ${BUILD_DATE}"
+LABEL maintainer="sweisgerber"
 # Set language
 ENV LANG=C.UTF-8
-
-# Headless apt
-ENV DEBIAN_FRONTEND=noninteractive
+# environment settings
+ARG DEBIAN_FRONTEND="noninteractive"
 
 # Install packages
 RUN apt-get update && \
