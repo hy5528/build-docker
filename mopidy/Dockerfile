@@ -24,7 +24,6 @@ RUN set -ex \
       libcairo2-dev \
       libgirepository-2.0-dev \
       python3-gst-1.0
-      build-essential \
       python3-dev \
       python3-pip \
  && python3 -m pip install --upgrade mopidy \ 
