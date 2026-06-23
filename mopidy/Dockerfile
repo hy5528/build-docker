@@ -1,58 +1,58 @@
-FROM ghcr.io/linuxserver/baseimage-alpine:3.24
+FROM ghcr.io/linuxserver/baseimage-debian:bullseye
 
 # set version label
 ARG BUILD_DATE
-ARG MOPIDY_RELEASE
+ARG VERSION
 
-LABEL build_version="version:- ${VERSION} Build-date:- ${BUILD_DATE}"
+LABEL build_version="Linuxserver.io version:- ${VERSION} Build-date:- ${BUILD_DATE}"
 LABEL maintainer="sweisgerber"
+
+# environment settings
+ARG DEBIAN_FRONTEND="noninteractive"
 #
-# Alpine Mopidy install along with some extensions #################################################
+# Official Mopidy install for Debian/Ubuntu along with some extensions #################################################
 #
 RUN set -ex \
-  echo "**** setup apk testing mirror ****" \
-  && echo "@testing https://nl.alpinelinux.org/alpine/edge/testing/" >> /etc/apk/repositories \
-  && cat /etc/apk/repositories \
-  && echo "**** install runtime packages ****" \
-  && apk add --no-cache -U --upgrade \
-    alsa-utils \
-    build-base \
-    cairo \
-    cairo-dev \
-    dbus \
-    dbus-dev \
-    gobject-introspection \
-    gobject-introspection-dev \
-    gstreamer \
-    gstreamer-dev \
-    gst-plugins-base \
-    gst-plugins-good \
-    gst-plugins-ugly \
-    libxml2 \
-    python3 \
-    python3-dev \
-    py3-pip \
-    py3-virtualenv \
-    sudo
-RUN python3 -m venv /lsiopy \
- && pip install -U --no-cache-dir pip wheel setuptools==81 \
- && echo "**** install mopidy extensions ****" \
+ echo "**** install runtime packages ****" \
+ && apt-get update \
+ && apt-get install -y \
+      alsa-utils \
+      sudo \
+      gstreamer1.0-alsa \
+      gstreamer1.0-plugins-good \
+      gstreamer1.0-plugins-ugly \
+      python3 \
+      python3-pip \
+ && mkdir -p /etc/apt/keyrings/ \
+ && curl -L https://apt.mopidy.com/mopidy.gpg -o /etc/apt/keyrings/mopidy-archive-keyring.gpg \
+ && curl -L https://apt.mopidy.com/mopidy.list -o /etc/apt/sources.list.d/mopidy.list \
+ && apt-get update \
+ && apt-get install -y \
+      mopidy \
+      mopidy-mpd \
+      mopidy-spotify \
+ && pip install --no-cache-dir --upgrade pip wheel \
  && pip install --no-cache-dir --upgrade \
-    Mopidy-Iris \
-    Mopidy-Local \
-    Mopidy-MPD \
-    Mopidy-SomaFM \
-    Mopidy==${MOPIDY_RELEASE} \
-    PyGObject \
-    dbus-python \
-    pip \
-    pycairo \
-    pykka \
-    requests \
-    tornado \
+      Mopidy-Bandcamp \
+      Mopidy-Iris \
+      Mopidy-Jellyfin \
+      Mopidy-Local \
+      Mopidy-Podcast \
+      Mopidy-Scrobbler \
+      Mopidy-SomaFM \
+      Mopidy-Subidy \
   && echo "**** cleanup ****" \
+  && apt-get -y autoremove \
+  && apt-get clean  \
   && rm -rf \
-    /tmp/*
+    /tmp/* \
+    /var/lib/apt/lists/* \
+    /var/tmp/* \
+    /var/log/* \
+    /usr/share/man
+# ^ Official Mopidy install for Debian/Ubuntu along with some extensions ^
+#   (see https://docs.mopidy.com/en/latest/installation/debian/)
+#
 # copy defaults & s6-overlay stuff
 COPY root/ /
 
