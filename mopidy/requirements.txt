@@ -8,3 +8,4 @@ Mopidy-MPD==4.0.0
 # Mopidy-Local==4.0.0
 # https://github.com/cristianpb/muse
 # Mopidy-Muse
+mopidy-mpris
