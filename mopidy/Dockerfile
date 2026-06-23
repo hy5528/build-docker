@@ -36,7 +36,7 @@ RUN apt-get update && \
     apt-get upgrade -y --no-install-recommends && \
     apt-get install -y --no-install-recommends \
         mopidy \
-        mopidy-local \
+        mopidy-local 
 
 RUN python3 -m pip install --break-system-packages \
         Mopidy-Iris
