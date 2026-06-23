@@ -27,10 +27,9 @@ RUN set -ex \
       build-essential \
       python3-dev \
       python3-pip \
-
+ && python3 -m pip install --upgrade mopidy \ 
  && pip install --no-cache-dir --upgrade pip wheel \
  && pip install --no-cache-dir --upgrade \
-      mopidy \
       mopidy-mpd \
       Mopidy-Iris \
       Mopidy-Local \
