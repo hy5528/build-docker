@@ -1,16 +1,4 @@
-# For base image info see: https://hub.docker.com/_/debian
-ARG DISTRO_VERSION=bookworm
-FROM debian:${DISTRO_VERSION}-slim
-
-# Restore arg after from:
-# https://docs.docker.com/reference/dockerfile#understand-how-arg-and-from-interact
-ARG DISTRO_VERSION
-
-# Set language
-ENV LANG=C.UTF-8
-
-# Headless apt
-ENV DEBIAN_FRONTEND=noninteractive
+FROM node:22-slim
 # Install packages
 RUN apt-get update && \
     apt-get upgrade -y --no-install-recommends && \
