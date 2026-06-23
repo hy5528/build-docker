@@ -1,4 +1,4 @@
-构建lunatv、MoonTVPlus、GoFilm、splayer、LX Music 、solara-music等自用镜像，测试用。
+构建lunatv、MoonTVPlus、GoFilm、KVideo、VideoX、splayer、LX Music 、solara-music等自用镜像，测试用。
 ---
 
 # lunatv
