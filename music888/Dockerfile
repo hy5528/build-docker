@@ -5,6 +5,7 @@ WORKDIR /app
 COPY package*.json ./
 RUN npm ci
 COPY . .
+ADD --chmod=755 ./.env /.env
 RUN npm run build
 
 # 运行阶段
