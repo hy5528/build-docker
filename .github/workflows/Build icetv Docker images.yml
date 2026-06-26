@@ -1,4 +1,4 @@
-name: Build moontv Docker images
+name: Build icetv Docker images
 
 on:
   workflow_dispatch:
@@ -47,7 +47,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@v5
         with:
-          images: ${{ env.REGISTRY }}/${{ github.actor }}/moontv66
+          images: ${{ env.REGISTRY }}/${{ github.actor }}/icetv66
           tags: |
             type=raw,value=latest
       - name: Clone Overleaf Gitlab Repo
