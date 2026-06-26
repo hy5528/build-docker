@@ -1,5 +1,5 @@
 # 第一阶段：提取分层 JAR（直接使用预构建 JAR，避免在 Docker 内重复编译）
-FROM amazoncorretto:21-alpine AS extractor
+FROM --platform=$BUILDPLATFORM amazoncorretto:21-alpine AS extractor
 LABEL maintainer="SQ"
 WORKDIR /extractor
 
