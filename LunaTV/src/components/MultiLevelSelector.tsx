@@ -1,4 +1,5 @@
-'use client';
+
+  / client';
 
 import React, { useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
@@ -259,6 +260,26 @@ const MultiLevelSelector: React.FC<MultiLevelSelectorProps> = ({
     }
   };
 
+  // 动态生成年份选项
+  const currentYear = new Date().getFullYear();
+  const currentDecade = Math.floor(currentYear / 10) * 10;
+  const yearOptions: MultiLevelOption[] = [
+    { label: '全部', value: 'all' },
+    { label: `${currentDecade}年代`, value: `${currentDecade}s` },
+  ];
+
+  // 添加当前年份到当前年代的起始年份
+  for (let year = currentYear; year >= currentDecade; year--) {
+    yearOptions.push({ label: String(year), value: String(year) });
+  }
+
+  // 添加历史年代
+  for (let decade = currentDecade - 10; decade >= 1960; decade -= 10) {
+    yearOptions.push({ label: `${decade}年代`, value: `${decade}s` });
+  }
+  yearOptions.push({ label: '更早', value: 'earlier' });
+
+  
   // 分类配置
   const categories: MultiLevelCategory[] = [
     ...(contentType !== 'anime-tv' && contentType !== 'anime-movie'
@@ -284,25 +305,9 @@ const MultiLevelSelector: React.FC<MultiLevelSelectorProps> = ({
     {
       key: 'year',
       label: '年代',
-      options: [
-        { label: '全部', value: 'all' },
-        { label: '2020年代', value: '2020s' },
-        { label: '2025', value: '2025' },
-        { label: '2024', value: '2024' },
-        { label: '2023', value: '2023' },
-        { label: '2022', value: '2022' },
-        { label: '2021', value: '2021' },
-        { label: '2020', value: '2020' },
-        { label: '2019', value: '2019' },
-        { label: '2010年代', value: '2010s' },
-        { label: '2000年代', value: '2000s' },
-        { label: '90年代', value: '1990s' },
-        { label: '80年代', value: '1980s' },
-        { label: '70年代', value: '1970s' },
-        { label: '60年代', value: '1960s' },
-        { label: '更早', value: 'earlier' },
-      ],
+      options: yearOptions,
     },
+    
     // 只在电视剧和综艺时显示平台选项
     ...(contentType === 'tv' ||
       contentType === 'show' ||
