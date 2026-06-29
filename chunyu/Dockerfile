@@ -54,4 +54,4 @@ ENV PORT=3000
 EXPOSE 3000
 
 # 运行混淆后的入口文件
-CMD ["node", "server.js"]
+CMD ["node"]
