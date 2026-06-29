@@ -5,7 +5,7 @@ FROM --platform=$BUILDPLATFORM node:22-alpine AS chunyu-cms-web-builder
 RUN npm install -g pm2 pnpm
 WORKDIR /app/chunyu-cms-web
 
-COPY chunyu-cms-web/package*.json chunyu-cms-web/pnpm-lock.yaml ./
+COPY chunyu-cms-web/package*.json pnpm-lock.yaml ./
 RUN pnpm install
 COPY chunyu-cms-web/ ./
 RUN pnpm run build
@@ -14,11 +14,12 @@ RUN pnpm run build
 # Stage 2: Backend Build (Obfuscation)
 # =============================================================================
 FROM --platform=$BUILDPLATFORM node:22-alpine AS chunyu-cms-admin-builder
+RUN npm install -g  pnpm
 WORKDIR /app/chunyu-cms-admin
 
 # 安装全量依赖 (包含混淆引擎)
-COPY chunyu-cms-admin/package*.json chunyu-cms-admin/pnpm-lock.yaml ./
-RUN npm install -g  pnpm
+COPY chunyu-cms-admin/package*.json pnpm-lock.yaml ./
+
 RUN pnpm install
 
 # 复制后端源码并执行混淆
