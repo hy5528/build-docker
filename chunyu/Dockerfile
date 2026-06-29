@@ -37,9 +37,9 @@ WORKDIR /app
 RUN npm install pm2 -g
 
 # 复制后端生产依赖 (不含混淆引擎，减小体积)
-WORKDIR /app/chunyu-cms-web
-COPY chunyu-cms-web/package*.json ./
-RUN npm run start
+WORKDIR /app/chunyu-cms-admin
+COPY chunyu-cms-admin/package*.json ./
+RUN npm install --production
 
 # ⚠️ 关键点：仅从构建阶段复制混淆后的代码 (backend-build)
 COPY --from=chunyu-cms-web-builder /app/chunyu-cms-web/.output ./
