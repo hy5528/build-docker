@@ -10,6 +10,9 @@ COPY chunyu-cms-web/package.json ./
 RUN npm install
 COPY chunyu-cms-web/ ./
 RUN npm run build
+RUN npm install -g pm2 \
+    pm2 init \
+    pm2 start pm2.config.cjs
 
 # =============================================================================
 # Stage 2: Backend Build (Obfuscation)
