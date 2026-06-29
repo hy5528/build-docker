@@ -5,7 +5,7 @@ FROM --platform=$BUILDPLATFORM node:22-alpine AS chunyu-cms-web-builder
 RUN npm install -g pm2 pnpm
 WORKDIR /app/chunyu-cms-web
 
-COPY chunyu-cms-web/package*.json pnpm-lock.yaml ./
+COPY chunyu-cms-web/package*.json chunyu-cms-web/pnpm-lock.yaml ./
 RUN pnpm install
 COPY chunyu-cms-web/ ./
 RUN pnpm run build
