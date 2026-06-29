@@ -18,7 +18,7 @@ RUN npm install -g  pnpm
 WORKDIR /app/chunyu-cms-admin
 
 # 安装全量依赖 (包含混淆引擎)
-COPY chunyu-cms-admin/package*.json pnpm-lock.yaml ./
+COPY chunyu-cms-admin/package*.json chunyu-cms-admin/pnpm-lock.yaml ./
 
 RUN pnpm install
 
