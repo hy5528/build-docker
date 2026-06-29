@@ -7,9 +7,9 @@ WORKDIR /app/chunyu-cms-web
 
 COPY chunyu-cms-web/package*.jsonl chunyu-cms-web/pnpm-lock.yaml ./
 
-RUN npm install
+RUN pnpm install
 COPY chunyu-cms-web/ ./
-RUN npm run build
+RUN pnpm run build
 
 # =============================================================================
 # Stage 2: Backend Build (Obfuscation)
