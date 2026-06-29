@@ -20,10 +20,10 @@ FROM --platform=$BUILDPLATFORM node:22-alpine AS chunyu-cms-web-builder
 RUN npm install -g pm2
 WORKDIR /app/chunyu-cms-web
 
-COPY chunyu-cms-web/package*.json ./
-RUN npm install
+COPY chunyu-cms-web/package*.json chunyu-cms-web/pnpm-lock.yaml ./
+RUN pnpm install
 COPY chunyu-cms-web/ ./
-RUN npm run build
+RUN pnpm run build
 
 # =============================================================================
 # Stage 2: Backend Build (Obfuscation)
