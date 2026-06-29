@@ -1,4 +1,4 @@
-name: Build music_plus Docker images
+name: Build chunyu Docker images
 
 on:
   workflow_dispatch:
@@ -47,17 +47,17 @@ jobs:
         id: meta
         uses: docker/metadata-action@v5
         with:
-          images: ${{ env.REGISTRY }}/${{ github.actor }}/music_plus66
+          images: ${{ env.REGISTRY }}/${{ github.actor }}/chunyu66
           tags: |
             type=raw,value=latest
       - name: Clone Overleaf Gitlab Repo
         run: |
-          git clone -b 3.0 https://github.com/59799517/simple_sq_music_plus.git app
+          git clone -b main https://github.com/yinMrsir/chunyu-cms-v2.git app
 
       - name: "Copy userpatches to build folder"
         shell: bash
         run: |
-          rsync -av music_plus/. ./app    
+          rsync -av chunyu/. ./app    
           
       - name: 构建并推送 Docker 镜像
         uses: docker/build-push-action@v5
