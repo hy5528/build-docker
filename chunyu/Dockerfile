@@ -1,20 +1,5 @@
 # =============================================================================
-# Stage 1: Backend Build (Obfuscation)
-# =============================================================================
-FROM --platform=$BUILDPLATFORM node:22-alpine AS chunyu-cms-admin-builder
-WORKDIR /app/chunyu-cms-admin
-
-# 安装全量依赖 (包含混淆引擎)
-COPY chunyu-cms-admin/package*.json ./
-RUN npm install
-
-# 复制后端源码并执行混淆
-COPY chunyu-cms-admin/ ./
-RUN npm run build:prod
-
-
-# =============================================================================
-# Stage 2: Frontend Build
+# Stage 1: Frontend Build
 # =============================================================================
 FROM --platform=$BUILDPLATFORM node:22-alpine AS chunyu-cms-web-builder
 RUN npm install -g pm2
