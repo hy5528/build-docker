@@ -6,9 +6,9 @@ RUN npm install -g pm2 pnpm
 WORKDIR /app/chunyu-cms-web
 
 COPY chunyu-cms-web/package*.json chunyu-cms-web/pnpm-lock.yaml ./
-RUN pnpm install
+RUN npm install
 COPY chunyu-cms-web/ ./
-RUN pnpm run build
+RUN npm run build
 
 # =============================================================================
 # Stage 2: Backend Build (Obfuscation)
