@@ -2,6 +2,7 @@
 # Stage 1: Frontend Build
 # =============================================================================
 FROM --platform=$BUILDPLATFORM node:22-alpine AS chunyu-cms-web-builder
+
 WORKDIR /app/chunyu-cms-web
 
 COPY chunyu-cms-web/package*.json ./
