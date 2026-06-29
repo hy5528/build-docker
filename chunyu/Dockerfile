@@ -24,7 +24,7 @@ RUN npm install
 
 # 复制后端源码并执行混淆
 COPY chunyu-cms-admin/ ./
-RUN pnpm run build:prod
+RUN npm run build:prod
 
 # =============================================================================
 # Stage 3: Runtime
