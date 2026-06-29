@@ -5,8 +5,8 @@ FROM --platform=$BUILDPLATFORM node:22-alpine AS chunyu-cms-web-builder
 RUN npm install -g pm2 pnpm
 WORKDIR /app/chunyu-cms-web
 
-COPY chunyu-cms-web/package*.jsonl ./
-COPY chunyu-cms-web/pnpm-lock.yaml ./
+COPY chunyu-cms-web/package*.jsonl chunyu-cms-web/pnpm-lock.yaml ./
+
 RUN pnpm install
 COPY chunyu-cms-web/ ./
 RUN pnpm run build
@@ -19,8 +19,8 @@ RUN npm install -g  pnpm
 WORKDIR /app/chunyu-cms-admin
 
 # 安装全量依赖 (包含混淆引擎)
-COPY chunyu-cms-admin/package*.json ./
-COPY chunyu-cms-admin/pnpm-lock.yaml ./
+COPY chunyu-cms-admin/package*.json chunyu-cms-admin/pnpm-lock.yaml ./
+
 RUN pnpm install
 
 # 复制后端源码并执行混淆
@@ -42,11 +42,11 @@ COPY chunyu-cms-admin/package*.json ./
 RUN npm install --production
 
 # ⚠️ 关键点：仅从构建阶段复制混淆后的代码 (backend-build)
-COPY --from=chunyu-cms-admin-builder /app/chunyu-cms-admin ./
+COPY --from=chunyu-cms-web-builder /app/chunyu-cms-web ./
 
 # 静态资源服务 (从前端构建阶段复制)
 # 注意：server.js 在混淆后已位于当前目录
-COPY --from=chunyu-cms-web-builder /app/chunyu-cms-web/dist /app/frontend/dist
+COPY --from=chunyu-cms-admin-builder /app/chunyu-cms-admin/dist /app/chunyu-cms-admin/dist
 
 # 设置运行时环境
 ENV NODE_ENV=production
