@@ -17,12 +17,12 @@ FROM --platform=$BUILDPLATFORM node:22-alpine AS chunyu-cms-admin-builder
 WORKDIR /app/chunyu-cms-admin
 
 # 安装全量依赖 (包含混淆引擎)
-COPY chunyu-cms-admin/package*.json ./
-RUN npm install
+COPY chunyu-cms-admin/package*.json chunyu-cms-admin/pnpm-lock.yaml ./
+RUN pnpm install
 
 # 复制后端源码并执行混淆
 COPY chunyu-cms-admin/ ./
-RUN npm run build
+RUN pnpm run build:prod
 
 # =============================================================================
 # Stage 3: Runtime
