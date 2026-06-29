@@ -10,9 +10,7 @@ COPY chunyu-cms-web/package.json ./
 RUN npm install
 COPY chunyu-cms-web/ ./
 RUN npm run build
-RUN npm install -g pm2 \
-    pm2 init \
-    pm2 start pm2.config.cjs
+
 
 # =============================================================================
 # Stage 2: Backend Build (Obfuscation)
@@ -34,7 +32,7 @@ RUN npm run build:prod
 # =============================================================================
 FROM node:20-slim
 WORKDIR /app
-RUN npm install pm2 -g
+
 
 # 复制后端生产依赖 (不含混淆引擎，减小体积)
 WORKDIR /app/chunyu-cms-admin
