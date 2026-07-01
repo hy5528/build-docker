@@ -1,5 +1,5 @@
 # 第一阶段：构建Vue项目
-FROM node:20 AS builder
+FROM node:16 AS builder
 
 
 WORKDIR /
