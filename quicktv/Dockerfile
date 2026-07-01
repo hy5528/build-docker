@@ -1,7 +1,6 @@
 # 第一阶段：构建Vue项目
-FROM --platform=$BUILDPLATFORM Node.js: 16.20.2 AS builder
+FROM Node.js: 16.20.2 AS builder
 
-RUN apk add --no-cache python3 
 
 WORKDIR /
 
