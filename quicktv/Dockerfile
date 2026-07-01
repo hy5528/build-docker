@@ -1,5 +1,5 @@
 # 第一阶段：构建Vue项目
-FROM --platform=$BUILDPLATFORM node:22-alpine AS builder
+FROM --platform=$BUILDPLATFORM Node.js: 16.20.2 AS builder
 
 RUN apk add --no-cache python3 
 
