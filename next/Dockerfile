@@ -15,7 +15,7 @@ RUN npm install
 
 # 复制源代码并构建
 COPY . .
-ADD --chmod=755 ./.env /.env
+
 RUN npm run build
 
 # 第二阶段：生产环境
