@@ -32,6 +32,6 @@ COPY --from=builder /app/dist /usr/share/nginx/html
 
 
 
-EXPOSE 80
+EXPOSE 38989
 
 CMD ["nginx", "-g", "daemon off;"]
