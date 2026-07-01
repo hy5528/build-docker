@@ -15,8 +15,13 @@ COPY package*.json ./
 RUN npm install --legacy-peer-deps
     
 
-# 复制源代码并构建
+# 复制源代码
 COPY . .
+
+# add .env.example to .env
+RUN [ ! -e ".env" ] && cp .env.development .env || true
+
+# 构建
 RUN npm run build
 
 # 第二阶段：生产环境
