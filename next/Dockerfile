@@ -1,7 +1,7 @@
 # 第一阶段：构建Vue项目
 FROM --platform=$BUILDPLATFORM node:22-alpine AS builder
 
-RUN npm install -g pnpm
+RUN apk add --no-cache python3 make g++
 
 
 WORKDIR /app
@@ -10,13 +10,13 @@ WORKDIR /app
 COPY package*.json pnpm-lock.yaml ./
 
 # 安装依赖（使用淘宝镜像加速）
-RUN pnpm install
+RUN npm install
     
 
 # 复制源代码并构建
 COPY . .
 
-RUN pnpm run build
+RUN npm run build
 
 # 第二阶段：生产环境
 FROM nginx:1.29.3-alpine3.22-slim AS app
