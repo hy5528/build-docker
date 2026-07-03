@@ -1,4 +1,4 @@
-FROM shinsenter/php:dev-8.2-fpm
+FROM shinsenter/phpfpm-apache:dev-php7.4
 
 WORKDIR /var/www/html
 RUN apt-get update && apt-get install -y \
