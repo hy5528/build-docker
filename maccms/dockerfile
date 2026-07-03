@@ -6,11 +6,10 @@ RUN apt-get update && apt-get install -y \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 WORKDIR /
-RUN wget -O maccms10.zip https://github.com/clyde3/maccms10Ultra/archive/refs/heads/main.zip \
-    && unzip maccms10.zip \
-    && mv maccms10Ultra-main/* . \
-    && mv maccms10Ultra-main/.* . 2>/dev/null || true \
-    && rm -rf maccms10Ultra-main maccms10.zip
+RUN git clone https://github.com/clyde3/maccms10Ultra.git
+    && mv maccms10Ultra/* . \
+    && mv maccms10Ultra/.* . 2>/dev/null || true 
+    
 
 RUN chmod -R 755 /var/www/html \
     && chown -R www-data:www-data /var/www/html
