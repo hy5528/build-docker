@@ -1,6 +1,6 @@
 services:
     maccms:
-        image: esme518/docker-maccms10
+        image: ghcr.nju.edu.cn/hy5528/maccms66:latest
         container_name: maccms
         restart: always
         volumes:
