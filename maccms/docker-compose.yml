@@ -3,7 +3,7 @@
 services:
   # PHP-FPM
   app:
-    image: risedog/maccms10-m:latest
+    image: ghcr.nju.edu.cn/hy5528/maccms66:latest
     container_name: maccms_app
     restart: unless-stopped
     volumes:
