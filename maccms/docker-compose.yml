@@ -1,3 +1,5 @@
+#version: '3.8'
+
 services:
   # PHP-FPM
   app:
@@ -13,12 +15,12 @@ services:
       - maccms_network
 
   # Nginx Web
-   web:
+  web:
     image: nginx:latest
     container_name: maccms_web
     restart: unless-stopped
     ports:
-      - "3680:80"
+      - "80:80"
       - "443:443"
     volumes:
       - ./html:/var/www/html
@@ -36,8 +38,8 @@ services:
     restart: unless-stopped
     environment:
       MYSQL_ROOT_PASSWORD: 123456
-      MYSQL_DATABASE: cms
-      MYSQL_USER: cms
+      MYSQL_DATABASE: maccms
+      MYSQL_USER: maccms
       MYSQL_PASSWORD: 123456
     volumes:
       - db_data:/var/lib/mysql
