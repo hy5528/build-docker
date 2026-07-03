@@ -33,7 +33,7 @@ services:
 
   # MySQL
   db:
-    image: yobasystems/alpine-mariadb:latest 
+    image: dpvduncan/mariadb:latest
     container_name: maccms_db
     restart: unless-stopped
     environment:
