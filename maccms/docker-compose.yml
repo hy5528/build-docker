@@ -4,7 +4,7 @@ services:
         container_name: maccms
         restart: always
         volumes:
-            - /www/data:/var/www/html
+            - /www/cms:/var/www/html
         ports:
             - 3600:80
     maccms-db:
