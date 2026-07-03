@@ -1,4 +1,4 @@
-FROM php:8.5.0-fpm
+FROM shinsenter/php:dev-8.2-fpm
 
 WORKDIR /var/www/html
 
