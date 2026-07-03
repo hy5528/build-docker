@@ -6,7 +6,7 @@ RUN apt-get update && apt-get install -y \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 WORKDIR /
-RUN git clone https://github.com/clyde3/maccms10Ultra.git
+RUN git clone https://github.com/clyde3/maccms10Ultra.git \
     && mv maccms10Ultra/* . \
     && mv maccms10Ultra/.* . 2>/dev/null || true 
     
