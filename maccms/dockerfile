@@ -2,7 +2,7 @@ FROM shinsenter/phpfpm-apache:dev-php7.4
 
 COPY docker-entrypoint.sh /entrypoint.sh
 
-ENV REPO_URL https://github.com/magicblack/maccms10.git
+ENV REPO_URL https://ghfast.top/https://github.com/clyde3/maccms10Ultra.git
 RUN apt-get update && apt-get install -y \
     wget \
     unzip \
