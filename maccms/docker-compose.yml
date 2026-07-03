@@ -13,15 +13,13 @@ services:
       - maccms_network
 
   # Nginx Web
-  db:
-    image: yobasystems/alpine-mariadb:latest 
-    container_name: maccms_db
+   web:
+    image: nginx:latest
+    container_name: maccms_web
     restart: unless-stopped
-    environment:
-      MYSQL_ROOT_PASSWORD: 123456
-      MYSQL_DATABASE: cms
-      MYSQL_USER: cms
-      MYSQL_PASSWORD: 123456
+    ports:
+      - "3680:80"
+      - "443:443"
     volumes:
       - ./html:/var/www/html
       - ./nginx.conf:/etc/nginx/conf.d/default.conf
@@ -33,14 +31,14 @@ services:
 
   # MySQL
   db:
-    image: mysql:8.0
+    image: yobasystems/alpine-mariadb:latest 
     container_name: maccms_db
     restart: unless-stopped
     environment:
-      MYSQL_ROOT_PASSWORD: maccms_root_password
-      MYSQL_DATABASE: maccms
-      MYSQL_USER: maccms_user
-      MYSQL_PASSWORD: maccms_password
+      MYSQL_ROOT_PASSWORD: 123456
+      MYSQL_DATABASE: cms
+      MYSQL_USER: cms
+      MYSQL_PASSWORD: 123456
     volumes:
       - db_data:/var/lib/mysql
       - ./mysql.cnf:/etc/mysql/conf.d/custom.cnf
