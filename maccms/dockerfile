@@ -4,11 +4,6 @@ WORKDIR /var/www/html
 RUN apt-get update && apt-get install -y \
     wget \
     unzip \
-    libzip-dev \
-    libwebp-dev \
-    libjpeg-dev \
-    libpng-dev \
-    libfreetype6-dev \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
