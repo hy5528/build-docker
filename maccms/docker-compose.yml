@@ -4,7 +4,7 @@ services:
         container_name: maccms
         restart: always
         volumes:
-            - ./data:/var/www/html
+            - /www/data:/var/www/html
         ports:
             - 3600:80
     maccms-db:
@@ -12,6 +12,6 @@ services:
         container_name: maccms-db
         restart: always
         volumes:
-            - ./mysql:/var/lib/mysql
+            - /www/mysql:/var/lib/mysql
         environment:
             - MARIADB_ROOT_PASSWORD=123456
