@@ -17,6 +17,6 @@ RUN chmod -R 755 /var/www/html \
 RUN mkdir -p /var/www/html/datas \
     && chmod -R 777 /var/www/html/datas
 
-EXPOSE 9000
+EXPOSE 80
 
 CMD ["php-fpm"]
