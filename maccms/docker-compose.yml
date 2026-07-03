@@ -7,7 +7,7 @@ services:
     container_name: maccms_app
     restart: unless-stopped
     volumes:
-      - /www/cms/html:/var/www/html
+      - /www/cms:/var/www/html
       - /www/php_data:/var/www/html/datas
     environment:
       - TZ=Asia/Shanghai
