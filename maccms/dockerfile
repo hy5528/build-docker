@@ -1,0 +1,19 @@
+FROM shinsenter/phpfpm-apache:dev-php7.4-alpine
+
+WORKDIR /var/www/html
+
+RUN wget -O maccms10.zip https://github.com/clyde3/maccms10Ultra/archive/refs/heads/main.zip \
+    && unzip maccms10.zip \
+    && mv maccms10-master/* . \
+    && mv maccms10-master/.* . 2>/dev/null || true \
+    && rm -rf maccms10-master maccms10.zip
+
+RUN chmod -R 755 /var/www/html \
+    && chown -R www-data:www-data /var/www/html
+
+RUN mkdir -p /var/www/html/datas \
+    && chmod -R 777 /var/www/html/datas
+
+EXPOSE 9000
+
+CMD ["php-fpm"]
