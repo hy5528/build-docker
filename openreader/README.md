@@ -9,6 +9,7 @@ services:
     ports:
       - "8680:8080"
     environment:
+      OPENREADER_JWT_SECRET: 123456
       OPENREADER_LOCAL_STORE_DIR: /app/library/localStore
     volumes:
       - ./data:/app/data
