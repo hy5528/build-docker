@@ -14,7 +14,7 @@
 services:
   nginx:
     container_name: film_nginx
-    image: nginx
+    image: nginx:alpine
     restart: always
     ports:
       - 3600:80
