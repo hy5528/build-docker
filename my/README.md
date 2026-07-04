@@ -8,6 +8,7 @@
 - TVBox相关：1、https://github.com/yoursmile66/TVBox
 - 阅读APP书源相关：1、https://github.com/aoaostar/legado。
   2、https://github.com/XIU2/Yuedu
+  3、https://www.yckceo.com/yuedu/index/index.html
 - Docker镜像源汇总：https://github.com/dongyubin/DockerHub
 - IPTV直播源：1、https://ghfast.top/https://raw.githubusercontent.com/develop202/migu_video/refs/heads/main/interface.txt https://ghfast.top/https://raw.githubusercontent.com/develop202/migu_video/refs/heads/main/interfaceTXT.txt
   2、https://github.com/Supprise0901/TVBox_live/blob/main/live.txt 3、https://ghfast.top/raw.githubusercontent.com/Supprise0901/TVBox_live/main/live.txt
