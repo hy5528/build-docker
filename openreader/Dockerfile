@@ -38,6 +38,7 @@ ENV OPENREADER_ADDR=:8080 \
     OPENREADER_LIBRARY_DIR=/app/library \
     OPENREADER_LOCAL_STORE_DIR=/app/library/localStore \
     OPENREADER_DB=/app/data/openreader.db \
+    OPENREADER_JWT_SECRET=123456 ＼
     OPENREADER_PUBLIC_DIR=/app/public \
     GIN_MODE=release
 COPY --from=backend-builder /out/openreader /app/openreader
