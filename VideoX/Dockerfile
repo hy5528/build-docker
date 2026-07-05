@@ -1,5 +1,5 @@
 # 继承官方镜像
-FROM ghcr.io/txwebroot/videox:latest
+FROM --platform=$BUILDPLATFORM ghcr.io/txwebroot/videox:latest
 
 # 设置 Heroku 使用的端口环境变量（Heroku 将自动注入 $PORT）
 ENV PORT=${PORT:-3000}
