@@ -6,10 +6,10 @@ on:
       MACH:
         description: 'Choose machine'
         required: true
-        default: 'MoeKoeMusic'
+        default: 'VideoX'
         type: choice
         options:
-        - 'daoliyu'
+        - 'VideoX'
         - 'maccms'
         - 'mpd'
         - 'MoeKoeMusic'
