@@ -7,4 +7,4 @@ ENV PORT=${PORT:-3000}
 EXPOSE 3100
 
 # 使用镜像的默认启动机制：运行 node start.js
-CMD ["node", "start.js"]
+CMD ["node", "server.js"]
