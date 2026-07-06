@@ -1,0 +1,81 @@
+{
+  "settings": {
+    "network": {
+      "defaultTimeout": 3000,
+      "defaultRetry": 3,
+      "concurrencyLimit": 3,
+      "isProxyEnabled": true,
+      "proxyUrl": "/proxy?url="
+    },
+    "search": {
+      "isSearchHistoryEnabled": true,
+      "isSearchHistoryVisible": true,
+      "maxSearchHistoryCount": 20
+    },
+    "playback": {
+      "isViewingHistoryEnabled": true,
+      "isViewingHistoryVisible": true,
+      "isAutoPlayEnabled": false,
+      "defaultEpisodeOrder": "asc",
+      "defaultVolume": 0.7,
+      "playerThemeColor": "#ef4444",
+      "maxViewingHistoryCount": 50,
+      "tmdbMatchCacheTTLHours": 24,
+      "isLoopEnabled": false,
+      "isPipEnabled": true,
+      "isAutoMiniEnabled": true,
+      "isScreenshotEnabled": true,
+      "isMobileGestureEnabled": true,
+      "longPressPlaybackRate": 2,
+      "isFullscreenProgressHidden": false
+    },
+    "system": {
+      "tmdbEnabled": true,
+      "tmdbApiToken": "",
+      "tmdbApiBaseUrl": "https://api.tmdb.org",
+      "tmdbImageBaseUrl": "https://image.tmdb.org",
+      "isUpdateLogEnabled": false,
+      "isScrollChromeAnimationEnabled": false,
+      "tmdbLanguage": "zh-CN",
+      "tmdbImageQuality": "medium"
+    }
+  },
+  "videoSources": [
+    {
+      "id": "dac28274-211c-482e-a6e7-da2de19b1c4a",
+      "name": "如意资源",
+      "url": "https://cj.rycjapi.com/api.php/provide/vod",
+      "detailUrl": "",
+      "timeout": 3000,
+      "retry": 3,
+      "updatedAt": "2026-07-06T09:01:57.299Z",
+      "isEnabled": true
+    },
+    {
+      "id": "f7b4d690-4f07-4b4a-99ec-687d9d0e6035",
+      "name": "量子资源",
+      "url": "https://cj.lzcaiji.com/api.php/provide/vod",
+      "detailUrl": "",
+      "timeout": 3000,
+      "retry": 3,
+      "updatedAt": "2026-07-06T09:00:43.754Z",
+      "isEnabled": true
+    },
+    {
+      "id": "f5ff3e4d-0508-4b99-9598-09e673f451b9",
+      "name": "聚合资源",
+      "url": "https://vod.7na7.com/",
+      "detailUrl": "",
+      "timeout": 3000,
+      "retry": 3,
+      "updatedAt": "2026-04-16T07:53:29.910Z",
+      "isEnabled": true
+    }
+  ],
+  "subscriptions": [],
+  "adFilteringEnabled": true,
+  "meta": {
+    "version": "3.0",
+    "exportDate": "2026-07-06T09:49:06.364Z"
+  }
+}
