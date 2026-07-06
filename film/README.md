@@ -1,7 +1,7 @@
 # GoFilm
 - 下载https://github.com/hy5528/build-docker/blob/main/film/film.zip
 - 将film 文件夹完整的上传到服务器的 ` /opt/` 目录下 (放在其他目录下时需同步修改 `Dockerfile` 以及 `docker-compose.yml` 文件中的相关路径)
-- 在 `/opt/film/` 目录下执行命令 `docker compose up -d` (后台运行服务)
+- 在 `/opt/film/` 目录下执行命令 `docker-compose up -d` 
 - 在浏览器中访问管理后台: http://xxx.xxx.xxx/manage  , 
 - 登录 默认 用户名 密码: `admin admin`
 - 使用后台功能中的采集管理功能进行影视数据采集 (采集任务开启后需等待一段时间)
