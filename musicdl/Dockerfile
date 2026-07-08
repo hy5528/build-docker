@@ -20,7 +20,7 @@ FROM alpine:3.21 AS musicdl-trimmer
 
 WORKDIR /build/musicdl
 COPY musicdl/ ./
-ADD --chmod=755 ./requirements.txt /requirements.txt
+
 # 从 requirements.txt 中移除 YouTube / TIDAL / Apple 三个源的专属重型依赖
 # ┌──────────────┬──────────────────────────────┐
 # │ 移除的包      │ 仅被谁使用                    │
