@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>musicdl HTTP API 文档</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #f5f7fa; color: #333; line-height: 1.6; }
+        .container { max-width: 960px; margin: 0 auto; padding: 20px; }
+        h1 { text-align: center; margin: 30px 0; color: #1a73e8; font-size: 2em; }
+        h1 small { display: block; font-size: 0.5em; color: #666; font-weight: normal; margin-top: 5px; }
+        .api-group { margin-bottom: 30px; }
+        .api-group h2 { color: #1a73e8; border-bottom: 2px solid #1a73e8; padding-bottom: 8px; margin-bottom: 15px; font-size: 1.3em; }
+        .api-card { background: #fff; border-radius: 8px; padding: 20px; margin-bottom: 15px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+        .api-card h3 { font-size: 1.1em; margin-bottom: 10px; display: flex; align-items: center; gap: 10px; }
+        .method { display: inline-block; padding: 2px 10px; border-radius: 4px; font-size: 0.8em; font-weight: bold; color: #fff; }
+        .method.get { background: #61affe; }
+        .method.post { background: #49cc90; }
+        .method.delete { background: #f93e3e; }
+        .url { font-family: 'SFMono-Regular', Consolas, monospace; color: #555; font-size: 0.95em; }
+        .desc { color: #666; margin-bottom: 10px; }
+        pre { background: #2d2d2d; color: #f8f8f2; padding: 15px; border-radius: 6px; overflow-x: auto; font-size: 0.85em; margin-top: 10px; }
+        code { font-family: 'SFMono-Regular', Consolas, monospace; }
+        .params { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 0.9em; }
+        .params th { background: #f0f4f8; text-align: left; padding: 8px 12px; border: 1px solid #e0e0e0; }
+        .params td { padding: 8px 12px; border: 1px solid #e0e0e0; }
+        .tag { display: inline-block; padding: 1px 6px; border-radius: 3px; font-size: 0.75em; }
+        .tag.required { background: #ffeaea; color: #d32f2f; }
+        .tag.optional { background: #e8f5e9; color: #388e3c; }
+        .nav { background: #fff; border-radius: 8px; padding: 20px; margin-bottom: 30px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+        .nav ul { list-style: none; display: flex; flex-wrap: wrap; gap: 8px; }
+        .nav a { text-decoration: none; color: #1a73e8; padding: 4px 12px; border: 1px solid #1a73e8; border-radius: 20px; font-size: 0.85em; transition: all 0.2s; }
+        .nav a:hover { background: #1a73e8; color: #fff; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>🎵 musicdl HTTP API 文档 <small>基于 musicdl v2.10.2 | 支持 40+ 音乐源</small></h1>
+
+    <div class="nav">
+        <ul>
+            <li><a href="#sources">音乐源列表</a></li>
+            <li><a href="#search">搜索音乐</a></li>
+            <li><a href="#search-async">异步搜索</a></li>
+            <li><a href="#download">下载音乐</a></li>
+            <li><a href="#search-download">搜索并下载</a></li>
+            <li><a href="#playlist-parse">解析歌单</a></li>
+            <li><a href="#playlist-download">歌单下载</a></li>
+            <li><a href="#lyrics">搜索歌词</a></li>
+            <li><a href="#tasks">任务管理</a></li>
+            <li><a href="#files">文件管理</a></li>
+            <li><a href="#health">健康检查</a></li>
+        </ul>
+    </div>
+
+    <!-- 1. 音乐源 -->
+    <div class="api-group" id="sources">
+        <h2>📋 音乐源</h2>
+        <div class="api-card">
+            <h3><span class="method get">GET</span> <span class="url">/api/sources</span></h3>
+            <p class="desc">获取所有已注册的音乐源列表及默认音乐源。</p>
+            <pre><code>curl http://localhost:8866/api/sources</code></pre>
+            <p style="margin-top:10px;font-weight:bold;">响应示例：</p>
+            <pre><code>{
+  "success": true,
+  "data": {
+    "sources": ["QQMusicClient", "NeteaseMusicClient", ...],
+    "default_sources": ["MiguMusicClient", "NeteaseMusicClient", ...],
+    "total": 43
+  }
+}</code></pre>
+        </div>
+    </div>
+
+    <!-- 2. 搜索音乐 -->
+    <div class="api-group" id="search">
+        <h2>🔍 搜索音乐（同步）</h2>
+        <div class="api-card">
+            <h3><span class="method post">POST</span> <span class="url">/api/search</span></h3>
+            <p class="desc">同步搜索音乐，阻塞等待所有音乐源返回结果。</p>
+            <table class="params">
+                <tr><th>参数</th><th>类型</th><th>必填</th><th>说明</th></tr>
+                <tr><td>keyword</td><td>string</td><td><span class="tag required">必填</span></td><td>搜索关键词</td></tr>
+                <tr><td>music_sources</td><td>string[]</td><td><span class="tag optional">可选</span></td><td>指定音乐源列表，如 ["NeteaseMusicClient"]</td></tr>
+                <tr><td>init_music_clients_cfg</td><td>object</td><td><span class="tag optional">可选</span></td><td>客户端初始化配置（work_dir 等）</td></tr>
+                <tr><td>clients_threadings</td><td>object</td><td><span class="tag optional">可选</span></td><td>各客户端搜索线程数</td></tr>
+                <tr><td>requests_overrides</td><td>object</td><td><span class="tag optional">可选</span></td><td>HTTP 请求参数覆盖（headers、proxies 等）</td></tr>
+                <tr><td>search_rules</td><td>object</td><td><span class="tag optional">可选</span></td><td>搜索规则</td></tr>
+            </table>
+            <pre><code>curl -X POST http://localhost:8866/api/search \
+  -H "Content-Type: application/json" \
+  -d '{"keyword": "周杰伦 晴天", "music_sources": ["NeteaseMusicClient"]}'</code></pre>
+        </div>
+    </div>
+
+    <!-- 3. 异步搜索 -->
+    <div class="api-group" id="search-async">
+        <h2>🔍 搜索音乐（异步）</h2>
+        <div class="api-card">
+            <h3><span class="method post">POST</span> <span class="url">/api/search/async</span></h3>
+            <p class="desc">异步搜索音乐，立即返回 task_id，通过 <code>/api/tasks/{task_id}</code> 查询结果。参数同同步搜索接口。</p>
+            <pre><code>curl -X POST http://localhost:8866/api/search/async \
+  -H "Content-Type: application/json" \
+  -d '{"keyword": "周杰伦 晴天"}'
+
+# 查询结果
+curl http://localhost:8866/api/tasks/{task_id}</code></pre>
+        </div>
+    </div>
+
+    <!-- 4. 下载音乐 -->
+    <div class="api-group" id="download">
+        <h2>⬇️ 下载音乐</h2>
+        <div class="api-card">
+            <h3><span class="method post">POST</span> <span class="url">/api/download</span></h3>
+            <p class="desc">下载指定歌曲（异步任务）。song_infos 从搜索结果中获取。</p>
+            <table class="params">
+                <tr><th>参数</th><th>类型</th><th>必填</th><th>说明</th></tr>
+                <tr><td>song_infos</td><td>object[]</td><td><span class="tag required">必填</span></td><td>SongInfo 字典列表（从搜索结果的 song_info 字段获取）</td></tr>
+                <tr><td>music_sources</td><td>string[]</td><td><span class="tag optional">可选</span></td><td>指定音乐源</td></tr>
+                <tr><td>init_music_clients_cfg</td><td>object</td><td><span class="tag optional">可选</span></td><td>客户端配置</td></tr>
+                <tr><td>clients_threadings</td><td>object</td><td><span class="tag optional">可选</span></td><td>下载线程数</td></tr>
+                <tr><td>requests_overrides</td><td>object</td><td><span class="tag optional">可选</span></td><td>请求参数覆盖</td></tr>
+            </table>
+            <pre><code>curl -X POST http://localhost:8866/api/download \
+  -H "Content-Type: application/json" \
+  -d '{"song_infos": [从搜索结果中获取的 song_info]}'</code></pre>
+        </div>
+    </div>
+
+    <!-- 5. 搜索并下载 -->
+    <div class="api-group" id="search-download">
+        <h2>🎯 搜索并下载</h2>
+        <div class="api-card">
+            <h3><span class="method post">POST</span> <span class="url">/api/search_and_download</span></h3>
+            <p class="desc">一键搜索并自动下载（异步任务）。自动筛选有效下载链接的歌曲。</p>
+            <table class="params">
+                <tr><th>参数</th><th>类型</th><th>必填</th><th>说明</th></tr>
+                <tr><td>keyword</td><td>string</td><td><span class="tag required">必填</span></td><td>搜索关键词</td></tr>
+                <tr><td>max_download</td><td>int</td><td><span class="tag optional">可选</span></td><td>最多下载数量（默认 5）</td></tr>
+                <tr><td>music_sources</td><td>string[]</td><td><span class="tag optional">可选</span></td><td>指定音乐源</td></tr>
+            </table>
+            <pre><code>curl -X POST http://localhost:8866/api/search_and_download \
+  -H "Content-Type: application/json" \
+  -d '{"keyword": "周杰伦 晴天", "max_download": 3}'</code></pre>
+        </div>
+    </div>
+
+    <!-- 6. 解析歌单 -->
+    <div class="api-group" id="playlist-parse">
+        <h2>📜 解析歌单</h2>
+        <div class="api-card">
+            <h3><span class="method post">POST</span> <span class="url">/api/playlist/parse</span></h3>
+            <p class="desc">解析歌单 URL，返回歌曲列表（同步）。</p>
+            <table class="params">
+                <tr><th>参数</th><th>类型</th><th>必填</th><th>说明</th></tr>
+                <tr><td>playlist_url</td><td>string</td><td><span class="tag required">必填</span></td><td>歌单链接</td></tr>
+                <tr><td>music_sources</td><td>string[]</td><td><span class="tag optional">可选</span></td><td>指定音乐源</td></tr>
+            </table>
+            <pre><code>curl -X POST http://localhost:8866/api/playlist/parse \
+  -H "Content-Type: application/json" \
+  -d '{"playlist_url": "https://music.163.com/#/playlist?id=7583298906"}'</code></pre>
+        </div>
+    </div>
+
+    <!-- 7. 歌单下载 -->
+    <div class="api-group" id="playlist-download">
+        <h2>📜 歌单下载</h2>
+        <div class="api-card">
+            <h3><span class="method post">POST</span> <span class="url">/api/playlist/download</span></h3>
+            <p class="desc">解析歌单并下载所有歌曲（异步任务）。</p>
+            <table class="params">
+                <tr><th>参数</th><th>类型</th><th>必填</th><th>说明</th></tr>
+                <tr><td>playlist_url</td><td>string</td><td><span class="tag required">必填</span></td><td>歌单链接</td></tr>
+                <tr><td>max_download</td><td>int</td><td><span class="tag optional">可选</span></td><td>最多下载数量，0=不限制（默认 0）</td></tr>
+            </table>
+            <pre><code>curl -X POST http://localhost:8866/api/playlist/download \
+  -H "Content-Type: application/json" \
+  -d '{"playlist_url": "https://music.163.com/#/playlist?id=7583298906", "max_download": 10}'</code></pre>
+        </div>
+    </div>
+
+    <!-- 8. 歌词搜索 -->
+    <div class="api-group" id="lyrics">
+        <h2>📝 搜索歌词</h2>
+        <div class="api-card">
+            <h3><span class="method post">POST</span> <span class="url">/api/lyrics/search</span></h3>
+            <p class="desc">搜索歌词，支持多个歌词 API 源。</p>
+            <table class="params">
+                <tr><th>参数</th><th>类型</th><th>必填</th><th>说明</th></tr>
+                <tr><td>track_name</td><td>string</td><td><span class="tag required">必填</span></td><td>歌曲名</td></tr>
+                <tr><td>artist_name</td><td>string</td><td><span class="tag required">必填</span></td><td>歌手名</td></tr>
+                <tr><td>allowed_lyric_apis</td><td>string[]</td><td><span class="tag optional">可选</span></td><td>歌词 API 列表，如 ["searchbylrclibapig", "searchbylrclibapis"]</td></tr>
+            </table>
+            <pre><code>curl -X POST http://localhost:8866/api/lyrics/search \
+  -H "Content-Type: application/json" \
+  -d '{"track_name": "晴天", "artist_name": "周杰伦"}'</code></pre>
+        </div>
+    </div>
+
+    <!-- 9. 任务管理 -->
+    <div class="api-group" id="tasks">
+        <h2>📊 任务管理</h2>
+        <div class="api-card">
+            <h3><span class="method get">GET</span> <span class="url">/api/tasks</span></h3>
+            <p class="desc">获取所有任务列表。</p>
+            <table class="params">
+                <tr><th>参数 (Query)</th><th>类型</th><th>必填</th><th>说明</th></tr>
+                <tr><td>status</td><td>string</td><td><span class="tag optional">可选</span></td><td>按状态过滤: pending / running / completed / failed</td></tr>
+                <tr><td>type</td><td>string</td><td><span class="tag optional">可选</span></td><td>按类型过滤: search / download / search_and_download / playlist_download</td></tr>
+                <tr><td>limit</td><td>int</td><td><span class="tag optional">可选</span></td><td>返回数量限制（默认 50）</td></tr>
+            </table>
+        </div>
+        <div class="api-card">
+            <h3><span class="method get">GET</span> <span class="url">/api/tasks/{task_id}</span></h3>
+            <p class="desc">查询指定任务的详细状态和结果。</p>
+        </div>
+        <div class="api-card">
+            <h3><span class="method delete">DELETE</span> <span class="url">/api/tasks/{task_id}</span></h3>
+            <p class="desc">删除指定任务记录。</p>
+        </div>
+    </div>
+
+    <!-- 10. 文件管理 -->
+    <div class="api-group" id="files">
+        <h2>📁 文件管理</h2>
+        <div class="api-card">
+            <h3><span class="method get">GET</span> <span class="url">/api/files/list</span></h3>
+            <p class="desc">列出工作目录下已下载的音频文件。</p>
+            <table class="params">
+                <tr><th>参数 (Query)</th><th>类型</th><th>必填</th><th>说明</th></tr>
+                <tr><td>work_dir</td><td>string</td><td><span class="tag optional">可选</span></td><td>工作目录路径（默认 musicdl_outputs）</td></tr>
+                <tr><td>recursive</td><td>bool</td><td><span class="tag optional">可选</span></td><td>是否递归遍历子目录（默认 false）</td></tr>
+            </table>
+        </div>
+        <div class="api-card">
+            <h3><span class="method get">GET</span> <span class="url">/api/files/download?path={file_path}</span></h3>
+            <p class="desc">下载指定路径的音频文件。</p>
+            <table class="params">
+                <tr><th>参数 (Query)</th><th>类型</th><th>必填</th><th>说明</th></tr>
+                <tr><td>path</td><td>string</td><td><span class="tag required">必填</span></td><td>文件绝对路径（从任务结果中获取）</td></tr>
+            </table>
+        </div>
+    </div>
+
+    <!-- 11. 健康检查 -->
+    <div class="api-group" id="health">
+        <h2>💚 健康检查</h2>
+        <div class="api-card">
+            <h3><span class="method get">GET</span> <span class="url">/api/health</span></h3>
+            <p class="desc">检查服务健康状态。</p>
+            <pre><code>curl http://localhost:8866/api/health</code></pre>
+        </div>
+    </div>
+
+    <p style="text-align:center;color:#999;margin:30px 0;">musicdl HTTP API — Powered by Flask</p>
+</div>
+</body>
+</html>
