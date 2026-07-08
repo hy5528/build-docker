@@ -1,3 +1,0 @@
-# HTTP 服务依赖（musicdl 的依赖由 Dockerfile 中 pip install . 自动安装，无需重复声明）
-flask>=3.0.0
-flask-cors>=4.0.0
