@@ -61,11 +61,11 @@ RUN apk add --no-cache \
 WORKDIR /app
 
 COPY --from=musicdl-trimmer /app/musicdl /app/musicdl
-RUN pip install --no-cache-dir --prefix=/install /build/musicdl/ \
+RUN pip install --no-cache-dir --prefix=/install /app/musicdl/ \
     && pip install --no-cache-dir --prefix=/install pycryptodomex
-
-COPY http_server/requirements.txt /app/
-RUN pip install --no-cache-dir --prefix=/install -r /build/requirements.txt
+WORKDIR /app/http_server
+COPY requirements.txt /app/
+RUN pip install --no-cache-dir --prefix=/install -r /app/requirements.txt
 
 # 瘦身
 RUN set -eux; \
