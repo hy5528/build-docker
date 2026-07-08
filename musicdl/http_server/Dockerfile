@@ -18,7 +18,7 @@ RUN npm run build
 # ── Stage 2: 裁剪 musicdl 依赖 ──
 FROM alpine:3.21 AS musicdl-trimmer
 
-WORKDIR /app/musicdl
+WORKDIR /app
 COPY musicdl/ ./
 
 # 从 requirements.txt 中移除 YouTube / TIDAL / Apple 三个源的专属重型依赖
