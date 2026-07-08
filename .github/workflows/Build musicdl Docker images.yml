@@ -57,12 +57,12 @@ jobs:
       - name: "Copy userpatches to build folder"
         shell: bash
         run: |
-          rsync -av musicdl/http_server/. ./app/http_server
+          rsync -av musicdl/. ./app
           
       - name: 构建并推送 Docker 镜像
         uses: docker/build-push-action@v5
         with:
-          context: ./app/http_server/Dockerfile.tiny
+          context: ./app
           platforms: linux/amd64,linux/arm64
           push: true
           tags: ${{ steps.meta.outputs.tags }}
