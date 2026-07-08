@@ -9,16 +9,16 @@
 # ── Stage 1: 前端构建 ──
 FROM node:20-alpine AS frontend-builder
 
-WORKDIR /build/frontend
-COPY http_server/frontend/package.json http_server/frontend/package-lock.json ./
+WORKDIR /app/http_server/frontend
+COPY package*.json ./
 RUN npm ci --no-audit --no-fund
-COPY http_server/frontend/ ./
+COPY . .
 RUN npm run build
 
 # ── Stage 2: 裁剪 musicdl 依赖 ──
 FROM alpine:3.21 AS musicdl-trimmer
 
-WORKDIR /build/musicdl
+WORKDIR /app/musicdl
 COPY musicdl/ ./
 
 # 从 requirements.txt 中移除 YouTube / TIDAL / Apple 三个源的专属重型依赖
@@ -58,13 +58,13 @@ FROM python:3.12-alpine AS python-builder
 RUN apk add --no-cache \
         gcc g++ musl-dev libffi-dev curl-dev openssl-dev
 
-WORKDIR /build
+WORKDIR /app
 
-COPY --from=musicdl-trimmer /build/musicdl /build/musicdl
+COPY --from=musicdl-trimmer /app/musicdl /app/musicdl
 RUN pip install --no-cache-dir --prefix=/install /build/musicdl/ \
     && pip install --no-cache-dir --prefix=/install pycryptodomex
 
-COPY http_server/requirements.txt /build/
+COPY http_server/requirements.txt /app/
 RUN pip install --no-cache-dir --prefix=/install -r /build/requirements.txt
 
 # 瘦身
@@ -86,10 +86,10 @@ RUN apk add --no-cache \
 
 COPY --from=python-builder /install /usr/local
 
-WORKDIR /app
-COPY http_server/server.py http_server/api_handler.py ./
-COPY http_server/templates/ ./templates/
-COPY --from=frontend-builder /build/static/dist/ ./static/dist/
+WORKDIR /app/http_server
+COPY server.py api_handler.py ./
+COPY templates/ ./templates/
+COPY --from=frontend-builder /app/static/dist/ ./static/dist/
 
 ENV PYTHONUNBUFFERED=1 \
     MUSICDL_WORK_DIR=/app/workdir
