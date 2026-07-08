@@ -8,9 +8,7 @@
 
 # ── Stage 1: 前端构建 ──
 FROM node:20-alpine AS frontend-builder
-WORKDIR /
 
-RUN git clone --recurse-submodules https://github.com/hellowzsg/musicdl_panel.git
 WORKDIR /build/frontend
 COPY http_server/frontend/package.json http_server/frontend/package-lock.json ./
 RUN npm ci --no-audit --no-fund
