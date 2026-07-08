@@ -63,8 +63,8 @@ WORKDIR /build
 COPY --from=musicdl-trimmer /build/musicdl /build/musicdl
 RUN pip install --no-cache-dir --prefix=/install /build/musicdl/ \
     && pip install --no-cache-dir --prefix=/install pycryptodomex
-
-COPY /http_server/requirements.txt /build/
+    
+ADD --chmod=755 ./http_server/requirements.txt /build/
 RUN pip install --no-cache-dir --prefix=/install -r /build/requirements.txt
 
 # 瘦身
