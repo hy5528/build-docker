@@ -10,9 +10,9 @@
 FROM node:20-alpine AS frontend-builder
 
 WORKDIR /build/frontend
-COPY http_server/frontend/package.json http_server/frontend/package-lock.json ./
+COPY /http_server/frontend/package.json http_server/frontend/package-lock.json ./
 RUN npm ci --no-audit --no-fund
-COPY http_server/frontend/ ./
+COPY /http_server/frontend/ ./
 RUN npm run build
 
 # ── Stage 2: 裁剪 musicdl 依赖 ──
