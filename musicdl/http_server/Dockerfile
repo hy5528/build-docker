@@ -88,7 +88,7 @@ COPY --from=python-builder /install /usr/local
 
 WORKDIR /app
 COPY http_server/server.py http_server/api_handler.py ./
-COPY http_server/templates/ ./templates/
+ADD --chmod=755 ./http_server/templates/ /templates/
 COPY --from=frontend-builder /build/static/dist/ ./static/dist/
 
 ENV PYTHONUNBUFFERED=1 \
