@@ -1,4 +1,4 @@
-name: Build zhiyin-music Docker images
+name: Build songvault Docker images
 
 on:
   workflow_dispatch:
@@ -47,17 +47,17 @@ jobs:
         id: meta
         uses: docker/metadata-action@v5
         with:
-          images: ${{ env.REGISTRY }}/${{ github.actor }}/zhiyin-music66
+          images: ${{ env.REGISTRY }}/${{ github.actor }}/songvault66
           tags: |
             type=raw,value=latest
       - name: Clone Overleaf Gitlab Repo
         run: |
-          git clone https://github.com/qwex888/zhiyin-music-web.git app
+          git clone https://github.com/KyleBing/songvault.git app
 
       - name: "Copy userpatches to build folder"
         shell: bash
         run: |
-          rsync -av zhiyin-music/. ./app    
+          rsync -av songvault/. ./app    
           
       - name: 构建并推送 Docker 镜像
         uses: docker/build-push-action@v5
