@@ -44,7 +44,7 @@ COPY --from=builder /usr/local/bin/ffprobe /usr/local/bin/ffprobe
 # 复制应用和启动脚本
 WORKDIR /app
 COPY --from=builder /app/qm-music-app/target/*.jar ./app.jar
-ADD --chmod=755 ./.env /.env
+ADD --chmod=755 ./entrypoint.sh /entrypoint.sh
 
 
 # 默认环境变量
