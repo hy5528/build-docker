@@ -15,10 +15,10 @@ RUN mvn package -DskipTests && \
 
 
 
-
+WORKDIR /app
 # 下载静态FFmpeg（需提前准备 download-ffmpeg.sh）
 ARG TARGETARCH
-COPY docker/download-ffmpeg.sh .
+ADD --chmod=755 ./download-ffmpeg.sh /download-ffmpeg.sh
 RUN chmod +x download-ffmpeg.sh && \
     ./download-ffmpeg.sh ${TARGETARCH} && \
     rm download-ffmpeg.sh
