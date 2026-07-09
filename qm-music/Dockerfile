@@ -1,6 +1,6 @@
 # docker/Dockerfile
 # 第一阶段：构建Java应用及准备FFmpeg
-FROM --platform=$BUILDPLATFORM eclipse-temurin:25-jdk-jammy AS builder
+FROM --platform=$BUILDPLATFORM eclipse-temurin:24-jdk-jammy AS builder
 
 # 安装构建工具
 RUN apt-get update && \
