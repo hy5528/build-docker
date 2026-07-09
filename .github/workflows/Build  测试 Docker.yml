@@ -6,13 +6,13 @@ on:
       MACH:
         description: 'Choose machine'
         required: true
-        default: 'qm-music'
+        default: 'zhiyin-music'
         type: choice
         options:
         - 'qm-music'
         - 'maccms'
         - 'mpd'
-        - 'musicdl'
+        - 'zhiyin-music'
    
       
       
