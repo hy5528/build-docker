@@ -6,10 +6,10 @@ on:
       MACH:
         description: 'Choose machine'
         required: true
-        default: 'VideoX'
+        default: 'qm-music'
         type: choice
         options:
-        - 'VideoX'
+        - 'qm-music'
         - 'maccms'
         - 'mpd'
         - 'musicdl'
