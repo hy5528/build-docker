@@ -1,4 +1,4 @@
-name: Build 测试 Docker images
+name: Build qm-music Docker images
 
 on:
   workflow_dispatch:
