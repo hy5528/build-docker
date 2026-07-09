@@ -4,11 +4,11 @@ RUN apk add --no-cache python3 make g++
 WORKDIR /app
 COPY package.json ./
 
-RUN yarn install 
+RUN npm install
 
 COPY . .
 
-RUN yarn build
+RUN npm run build
 
 # app
 
