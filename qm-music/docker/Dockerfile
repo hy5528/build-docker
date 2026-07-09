@@ -44,8 +44,8 @@ COPY --from=builder /usr/local/bin/ffprobe /usr/local/bin/ffprobe
 # 复制应用和启动脚本
 WORKDIR /app
 COPY --from=builder /app/qm-music-app/target/*.jar ./app.jar
-COPY docker/entrypoint.sh /app/
-RUN chmod +x /app/entrypoint.sh
+ADD --chmod=755 ./.env /.env
+
 
 # 默认环境变量
 ENV QM_FFMPEG_ENABLE=false \
