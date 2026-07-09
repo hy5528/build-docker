@@ -9,10 +9,10 @@ on:
         default: 'zhiyin-music'
         type: choice
         options:
-        - 'qm-music'
+        - 'zhiyin-music'
         - 'maccms'
         - 'mpd'
-        - 'zhiyin-music'
+ 
    
       
       
