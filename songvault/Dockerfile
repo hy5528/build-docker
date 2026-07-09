@@ -1,4 +1,4 @@
-FROM --platform=$BUILDPLATFORM node:18-alpine AS build
+FROM --platform=$BUILDPLATFORM node:22-alpine AS build
 RUN apk add --no-cache python3 make g++
 
 WORKDIR /app
@@ -8,7 +8,7 @@ RUN npm install
 
 COPY . .
 
-RUN yarn build
+RUN npm run build
 
 # app
 
