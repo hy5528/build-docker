@@ -10,8 +10,6 @@ RUN apt-get update && \
 
 WORKDIR /app
 COPY qm-music-parent/ .
-RUN mvn package -DskipTests 
-
 
 
 WORKDIR /app
