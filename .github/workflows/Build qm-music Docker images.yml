@@ -9,7 +9,7 @@ on:
         default: 'qm-music'
         type: choice
         options:
-        - 'musicdl'
+        - 'qm-music'
    
       
       
