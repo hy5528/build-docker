@@ -9,7 +9,7 @@ RUN apt-get update && \
     rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
-COPY qm-music-parent/ .
+COPY ./qm-music-parent/ .
 RUN mvn package -DskipTests && \
     rm -rf ~/.m2/repository  # 清理 Maven 本地仓库缓存
 
