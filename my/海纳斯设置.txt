@@ -59,6 +59,11 @@ sudo systemctl restart docker
 
 docker info | grep "Docker Root Dir"
 
+# 清理无用资源
+docker system prune -a --volumes
+
+# 查看磁盘使用情况
+docker system df
 
 
 --graph=/mnt/mmcblk1p5/docker
