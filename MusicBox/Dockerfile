@@ -1,7 +1,7 @@
 # 第一阶段：构建Vue项目
 FROM --platform=$BUILDPLATFORM node:22-alpine AS builder
 
-RUN apk add --no-cache python3 python3-pip
+RUN apk add --no-cache python3 py3-pip
 
 
 WORKDIR /app
