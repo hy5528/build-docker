@@ -10,7 +10,7 @@ WORKDIR /app
 COPY package*.json ./
 
 # 安装依赖（使用淘宝镜像加速）
-pip install -r requirements.txt
+RUN pip install -r requirements.txt
     
 
 # 复制源代码并构建
