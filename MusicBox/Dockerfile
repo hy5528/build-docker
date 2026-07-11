@@ -1,17 +1,20 @@
-# 第一阶段：构建Vue项目
-FROM --platform=$BUILDPLATFORM node:24-alpine AS builder
+# --- 阶段 1: 构建阶段 ---
+FROM node:22-slim AS builder
 
-RUN apk add --no-cache python3 py3-pip 
-
+# 安装编译 better-sqlite3 所需的工具
+RUN apt-get update && apt-get install -y \
+    python3 \
+    make \
+    g++ \
+    && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
 
-# 复制package文件
+# 仅复制依赖相关文件
 COPY package*.json ./
 
-# 安装依赖（使用淘宝镜像加速）
-RUN pip install -r requirements.txt
-    
+# 安装所有依赖（包括原生模块编译）
+RUN npm install
 
 # 复制源代码并构建
 COPY . .
