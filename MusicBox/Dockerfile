@@ -9,7 +9,7 @@ WORKDIR /app
 COPY package*.json ./
 
 # 安装依赖（使用淘宝镜像加速）
-RUN npm install
+RUN npm run install:renderer
     
 
 # 复制源代码并构建
