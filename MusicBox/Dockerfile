@@ -2,7 +2,7 @@
 FROM --platform=$BUILDPLATFORM node:22-alpine AS builder
 
 RUN apk add --no-cache python3 
-RUN python3 -m pip install --upgrade pip
+RUN pip3 install --upgrade pip
 
 WORKDIR /app
 
