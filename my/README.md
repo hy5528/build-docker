@@ -14,4 +14,4 @@
   2、https://gh-proxy.org/https://github.com/Supprise0901/TVBox_live/blob/main/live.txt 3、https://gh-proxy.org/raw.githubusercontent.com/Supprise0901/TVBox_live/main/live.txt
 -  全能接口解密:https://fty.888484.xyz/jm/
   
--ventoy： https://www.ventoy.net/cn/download.html
+- ventoy： https://www.ventoy.net/cn/download.html
