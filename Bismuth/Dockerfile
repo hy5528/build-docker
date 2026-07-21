@@ -32,7 +32,7 @@ WORKDIR /app
 COPY --from=base /app/node_modules ./node_modules
 COPY --from=base /app/package.json ./package.json
 COPY --from=base /app/bun.lockb ./bun.lockb
-COPY --from=base /app/src ./src
+
 # 如果有构建产物，取消下面注释
 # COPY --from=base /app/dist ./dist
 
