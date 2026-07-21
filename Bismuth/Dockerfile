@@ -3,7 +3,7 @@ FROM --platform=$BUILDPLATFORM node:22-alpine AS builder
 
 RUN apk add --no-cache python3 make g++
 
-
+RUN npm install @radix-ui/react-accordion
 WORKDIR /app
 
 # 复制package文件
