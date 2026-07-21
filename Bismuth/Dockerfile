@@ -1,27 +1,31 @@
 
-# 阶段 1: 依赖安装与构建
+# Use Bun's official image
 FROM oven/bun:1 AS base
 WORKDIR /app
+# Install dependencies with bun
+FROM base AS deps
+COPY package.json bun.lock* ./
+RUN bun install --no-save --frozen-lockfile
 
-# 复制依赖配置文件
-COPY package.json ./
-
-# 安装依赖 (利用 Bun 的高速安装特性)
-# --frozen-lockfile 确保使用锁文件中的确切版本，保证构建一致性
-RUN bun install --frozen-lockfile
-
-# 复制源代码
+# Rebuild the source code only when needed
+FROM base AS builder
+WORKDIR /app
+COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 
-# 如果有构建步骤(如 TypeScript 编译)，在此执行
+# Next.js collects completely anonymous telemetry data about general usage.
+# Learn more here: https://nextjs.org/telemetry
+# Uncomment the following line in case you want to disable telemetry during the build.
+# ENV NEXT_TELEMETRY_DISABLED=1
 RUN bun run build
 
-# 阶段 2: 生产环境运行
-FROM oven/bun:1-slim AS production
+# Production image, copy all the files and run next
+FROM base AS runner
+
+
 WORKDIR /app
 
-# 创建非 root 用户以增强安全性
-RUN addgroup -S appgroup && adduser -S appuser -G appgroup
+
 
 # 从 base 阶段复制已安装的 node_modules 和源代码
 # 注意：如果进行了编译，这里应该复制 dist/ 或 build/ 目录
@@ -32,11 +36,8 @@ COPY --from=base /app/src ./src
 # 如果有构建产物，取消下面注释
 # COPY --from=base /app/dist ./dist
 
-# 设置文件所有权
-RUN chown -R appuser:appgroup /app
 
-# 切换到非 root 用户
-USER appuser
+
 
 # 暴露端口 (假设应用运行在 3000 端口，请根据实际情况修改)
 EXPOSE 3000
