@@ -3,14 +3,13 @@ FROM --platform=$BUILDPLATFORM node:22-alpine AS builder
 
 RUN apk add --no-cache python3 make g++
 
-RUN npm install @radix-ui/react-accordion
 WORKDIR /app
 
 # 复制package文件
 COPY package*.json ./
 
 # 安装依赖（使用淘宝镜像加速）
-RUN npm install @radix-ui/react-accordion
+
 RUN npm install
     
 
