@@ -4,7 +4,7 @@ FROM oven/bun:1 AS base
 WORKDIR /app
 # Install dependencies with bun
 FROM base AS deps
-COPY package.json bun.lock* ./
+COPY package.json ./
 RUN bun install --no-save --frozen-lockfile
 
 # Rebuild the source code only when needed
@@ -30,11 +30,11 @@ WORKDIR /app
 # 从 base 阶段复制已安装的 node_modules 和源代码
 # 注意：如果进行了编译，这里应该复制 dist/ 或 build/ 目录
 COPY --from=base /app/node_modules ./node_modules
-COPY --from=base /app/package.json ./package.json
+
 
 
 # 如果有构建产物，取消下面注释
-# COPY --from=base /app/dist ./dist
+COPY --from=base /app/dist ./dist
 
 
 
