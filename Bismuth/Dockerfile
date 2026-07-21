@@ -1,7 +1,13 @@
+# -----------------------------------------------------------------------------
+# This Dockerfile.bun is specifically configured for projects using Bun
+# For npm/pnpm or yarn, refer to the Dockerfile instead
+# -----------------------------------------------------------------------------
 
 # Use Bun's official image
 FROM oven/bun:1 AS base
+
 WORKDIR /app
+
 # Install dependencies with bun
 FROM base AS deps
 COPY package.json ./
@@ -17,32 +23,32 @@ COPY . .
 # Learn more here: https://nextjs.org/telemetry
 # Uncomment the following line in case you want to disable telemetry during the build.
 # ENV NEXT_TELEMETRY_DISABLED=1
+
 RUN bun run build
 
 # Production image, copy all the files and run next
 FROM base AS runner
-
-
 WORKDIR /app
 
+# Uncomment the following line in case you want to disable telemetry during runtime.
+# ENV NEXT_TELEMETRY_DISABLED=1
 
+ENV NODE_ENV=production \
+    PORT=3000 \
+    HOSTNAME="0.0.0.0"
 
-# 从 base 阶段复制已安装的 node_modules 和源代码
-# 注意：如果进行了编译，这里应该复制 dist/ 或 build/ 目录
-COPY --from=base /app/node_modules ./node_modules
+RUN groupadd --system --gid 1001 nodejs && \
+    useradd --system --uid 1001 --no-log-init -g nodejs nextjs
 
+COPY --from=builder --chown=nextjs:nodejs /app/public ./public
 
+# Automatically leverage output traces to reduce image size
+# https://nextjs.org/docs/advanced-features/output-file-tracing
+COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
+COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
 
+USER nextjs
 
-
-
-# 暴露端口 (假设应用运行在 3000 端口，请根据实际情况修改)
 EXPOSE 3000
 
-# 健康检查
-HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
-  CMD curl -f http://localhost:3000/health || exit 1
-
-# 启动命令
-# 如果是 TypeScript 项目，Bun 可以直接运行 ts 文件，或者运行编译后的 js
-CMD ["bun", "run", "start"]
+CMD ["bun", "server.js"]
