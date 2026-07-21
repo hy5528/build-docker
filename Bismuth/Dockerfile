@@ -31,7 +31,7 @@ WORKDIR /app
 # 注意：如果进行了编译，这里应该复制 dist/ 或 build/ 目录
 COPY --from=base /app/node_modules ./node_modules
 COPY --from=base /app/package.json ./package.json
-COPY --from=base /app/bun.lockb ./bun.lockb
+
 
 # 如果有构建产物，取消下面注释
 # COPY --from=base /app/dist ./dist
