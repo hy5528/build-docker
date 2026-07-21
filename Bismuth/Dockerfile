@@ -10,6 +10,7 @@ WORKDIR /app
 COPY package*.json ./
 
 # 安装依赖（使用淘宝镜像加速）
+RUN npm install @radix-ui/react-accordion
 RUN npm install
     
 
