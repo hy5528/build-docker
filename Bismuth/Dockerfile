@@ -33,9 +33,6 @@ COPY --from=base /app/node_modules ./node_modules
 
 
 
-# 如果有构建产物，取消下面注释
-COPY --from=base /app/dist ./dist
-
 
 
 
