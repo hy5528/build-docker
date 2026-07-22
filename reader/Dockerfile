@@ -5,7 +5,7 @@ WORKDIR /app/web
 RUN yarn && yarn build
 
 # Build jar
-FROM gradle:9.6.1 AS build-env
+FROM gradle:8.14.2-jdk8 AS build-env
 ADD --chown=gradle:gradle . /app
 WORKDIR /app
 COPY --from=build-web /app/web/dist /app/src/main/resources/web
