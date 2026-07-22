@@ -1,39 +1,16 @@
-FROM node:lts-alpine3.14 AS build-web
-ADD . /app
-WORKDIR /app/web
-# Build web
-RUN yarn && yarn build
-
-# Build jar
-FROM gradle:8.14.2-jdk8 AS build-env
-ADD --chown=gradle:gradle . /app
-WORKDIR /app
-COPY --from=build-web /app/web/dist /app/src/main/resources/web
-RUN \
-    rm src/main/java/com/htmake/reader/ReaderUIApplication.kt; \
-    gradle -b cli.gradle assemble --info; \
-    mv ./build/libs/*.jar ./build/libs/reader.jar
-
-FROM amazoncorretto:8-alpine-jre
+FROM ibm-semeru-runtimes:open-8-jre
 # Install base packages
 RUN \
-    # apk update; \
-    # apk upgrade; \
-    # Add CA certs tini tzdata
-    apk add --no-cache ca-certificates tini tzdata; \
+    apt-get update; \
+    apt-get install -y ca-certificates tini tzdata; \
     update-ca-certificates; \
-    # Clean APK cache
-    rm -rf /var/cache/apk/*;
+    # Clean apt cache
+    rm -rf /var/lib/apt/lists/*
 
 # 时区
 ENV TZ=Asia/Shanghai
 
-#RUN ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime \
-#  && echo Asia/Shanghai > /etc/timdezone \
-#  && dpkg-reconfigure -f noninteractive tzdata
-
 EXPOSE 8080
-ENTRYPOINT ["/sbin/tini", "--"]
-# COPY --from=hengyunabc/arthas:latest /opt/arthas /opt/arthas
-COPY --from=build-env /app/build/libs/reader.jar /app/bin/reader.jar
+ENTRYPOINT ["/usr/bin/tini", "--"]
+ADD ./reader.jar /app/bin/reader.jar
 CMD ["java", "-jar", "/app/bin/reader.jar" ]
