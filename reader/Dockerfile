@@ -1,32 +1,28 @@
 FROM node:16-alpine AS build-web
 ADD . /app
 WORKDIR /app/web
-# Build web
 RUN yarn install --ignore-engines && yarn build
 
 # Build jar
 FROM gradle:7-jdk8 AS build-env
+ENV JAVA_TOOL_OPTIONS="-Dhttps.protocols=TLSv1,TLSv1.1,TLSv1.2,TLSv1.3"
 ADD --chown=gradle:gradle . /app
 WORKDIR /app
 COPY --from=build-web /app/web/dist /app/src/main/resources/web
-ENV JAVA_TOOL_OPTIONS="-Dhttps.protocols=TLSv1,TLSv1.1,TLSv1.2,TLSv1.3"
 RUN \
     rm src/main/java/com/htmake/reader/ReaderUIApplication.kt; \
     gradle -b cli.gradle assemble --info; \
     mv ./build/libs/*.jar ./build/libs/reader.jar
 
 FROM jackkke/openjdk:8-jdk-alpine
-# Install base packages
 RUN \
-    apt-get update; \
-    apt-get install -y --no-install-recommends ca-certificates tini tzdata; \
+    apk add --no-cache ca-certificates tini tzdata; \
     update-ca-certificates; \
-    rm -rf /var/lib/apt/lists/*;
+    rm -rf /var/cache/apk/*;
 
-# 时区
 ENV TZ=Asia/Shanghai
 
 EXPOSE 8080
-ENTRYPOINT ["/usr/bin/tini", "--"]
+ENTRYPOINT ["/sbin/tini", "--"]
 COPY --from=build-env /app/build/libs/reader.jar /app/bin/reader.jar
-CMD ["java", "-jar", "/app/bin/reader.jar" ]
+CMD ["java", "-jar", "/app/bin/reader.jar"]
