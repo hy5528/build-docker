@@ -1,6 +1,6 @@
 FROM --platform=$BUILDPLATFORM node:22-alpine AS build-web
 
-RUN apk add --no-cache python3 git
+RUN apk add --no-cache python3
 ADD . /app
 WORKDIR /app/web
 COPY package*.json ./
