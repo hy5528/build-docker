@@ -1,8 +1,16 @@
-FROM node:18-alpine AS build-web
+FROM --platform=$BUILDPLATFORM node:22-alpine AS build-web
+
+RUN apk add --no-cache python3 git
 ADD . /app
 WORKDIR /app/web
-# Build web
-RUN yarn && yarn build
+COPY package*.json ./
+
+# 安装依赖（使用淘宝镜像加速）
+RUN npm install
+    
+# 复制源代码并构建
+COPY . .
+RUN npm run build
 
 # Build jar
 FROM gradle:6-jdk8 AS build-env
