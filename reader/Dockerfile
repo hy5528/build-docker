@@ -1,4 +1,4 @@
-FROM node:18-alpine AS build-web
+FROM --platform=$BUILDPLATFORM node:18-alpine AS build-web
 ADD . /app
 WORKDIR /app/web
 # 忽略引擎检查以兼容旧依赖
