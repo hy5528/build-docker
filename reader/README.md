@@ -1,9 +1,9 @@
 # reader
-http://你的IP:8080
+http://你的IP:4396
 单用户
 ```text
 
-docker run -d --name=reader -v /Volumes/Public/DockerHome/reader/storage:/reader/storage -v /Volumes/Public/DockerHome/reader/logs:/reader/logs -p 8080:8080 ghcr.nju.edu.cn/hy5528/reader66:latest
+docker run -d --name=reader -v /Volumes/Public/DockerHome/reader/storage:/reader/storage -v /Volumes/Public/DockerHome/reader/logs:/reader/logs -p 4396:8080 ghcr.nju.edu.cn/hy5528/reader66:latest
 
 ```
 多用户
