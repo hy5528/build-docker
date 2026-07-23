@@ -1,24 +1,11 @@
-# 第一阶段：构建Vue项目
-FROM --platform=$BUILDPLATFORM node:22-alpine AS builder
-
-RUN apk add --no-cache python3
-
+FROM node:18-alpine AS build-web
+ADD . /app
 WORKDIR /app/web
+# 忽略引擎检查以兼容旧依赖
+RUN yarn --ignore-engines && yarn build --ignore-engines
 
-# 复制package文件
-COPY package*.json ./
-
-# 安装依赖（使用淘宝镜像加速）
-RUN npm install
-    
-
-# 复制源代码并构建
-COPY . .
-RUN npm run build
-
-# Build jar
-FROM gradle:7-jdk8 AS build-env
-ENV JAVA_TOOL_OPTIONS="-Dhttps.protocols=TLSv1,TLSv1.1,TLSv1.2,TLSv1.3"
+# Build jar - 使用支持多平台的Gradle镜像
+FROM gradle:7.6-jdk8 AS build-env
 ADD --chown=gradle:gradle . /app
 WORKDIR /app
 COPY --from=build-web /app/web/dist /app/src/main/resources/web
@@ -32,10 +19,8 @@ RUN \
     apk add --no-cache ca-certificates tini tzdata; \
     update-ca-certificates; \
     rm -rf /var/cache/apk/*;
-
 ENV TZ=Asia/Shanghai
-
 EXPOSE 8080
 ENTRYPOINT ["/sbin/tini", "--"]
 COPY --from=build-env /app/build/libs/reader.jar /app/bin/reader.jar
-CMD ["java", "-jar", "/app/bin/reader.jar"]
+CMD ["java", "-jar", "/app/bin/reader.jar" ]
