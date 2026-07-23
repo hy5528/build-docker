@@ -1,4 +1,4 @@
-FROM node:lts-alpine AS build-web
+FROM node:18-alpine AS build-web
 ADD . /app
 WORKDIR /app/web
 # Build web
