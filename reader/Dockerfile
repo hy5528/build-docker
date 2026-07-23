@@ -1,7 +1,20 @@
-FROM node:16-alpine AS build-web
-ADD . /app
+# 第一阶段：构建Vue项目
+FROM --platform=$BUILDPLATFORM node:22-alpine AS builder
+
+RUN apk add --no-cache python3
+
 WORKDIR /app/web
-RUN yarn install --ignore-engines && yarn build
+
+# 复制package文件
+COPY package*.json ./
+
+# 安装依赖（使用淘宝镜像加速）
+RUN npm install
+    
+
+# 复制源代码并构建
+COPY . .
+RUN npm run build
 
 # Build jar
 FROM gradle:7-jdk8 AS build-env
