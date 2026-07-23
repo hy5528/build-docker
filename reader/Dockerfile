@@ -2,8 +2,8 @@ FROM node:18-alpine AS build-web
 ADD . /app
 WORKDIR /app/web
 # 忽略引擎检查以兼容旧依赖
-RUN apk add --no-cache python3 make g++ git \
-    && yarn install --frozen-lockfile \
+RUN apk add --no-cache python3 make g++
+RUN yarn install --frozen-lockfile \
     && yarn build
 
 # Build jar - 使用支持多平台的Gradle镜像
