@@ -13,7 +13,7 @@ COPY . .
 RUN npm run build
 
 # Build jar
-FROM gradle:6-jdk8 AS build-env
+FROM gradle:7-jdk8 AS build-env
 ADD --chown=gradle:gradle . /app
 WORKDIR /app
 COPY --from=build-web /app/web/dist /app/src/main/resources/web
