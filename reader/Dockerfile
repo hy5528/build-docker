@@ -1,4 +1,4 @@
-FROM snowdreamtech/openjdk:20260722-alpine
+FROM jackkke/openjdk:8-jdk-alpine
 # Install base packages
 RUN \
     # apk update; \
