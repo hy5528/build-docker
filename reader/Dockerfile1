@@ -22,7 +22,7 @@ RUN \
     gradle -b cli.gradle assemble --info; \
     mv ./build/libs/*.jar ./build/libs/reader.jar
 
-FROM amazoncorretto:8-alpine-jre
+FROM amazoncorretto:8u332-alpine-jre
 # Install base packages
 RUN \
     # apk update; \
