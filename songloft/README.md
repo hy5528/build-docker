@@ -9,6 +9,6 @@ docker run -d \
   -v /path/to/music:/app/music \
   -v /path/to/data:/app/data \
   -e ADMIN_USERNAME=admin \
-  -e ADMIN_PASSWORD='your_strong_password' \
-  songloft/songloft:latest
+  -e ADMIN_PASSWORD='123456' \
+  ghcr.io/hy5528/songloft66:latest
 ```
