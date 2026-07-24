@@ -92,6 +92,7 @@ COPY --link --from=hanxi/ffmpeg:latest /ffprobe /bin/ffprobe
 # 启动脚本小、极少变动（--chmod 合并原独立 chmod 层）
 COPY --link --chmod=0755 scripts/docker-entrypoint.sh /app/docker-entrypoint.sh
 
+WORKDIR /app
 # 主程序二进制每次构建都变 → 放在最后一个 content 层，更新时仅此层需重新下载
 COPY --link --from=go-builder /app/songloft /app/songloft
 
