@@ -15,7 +15,7 @@ RUN \
     gradle -b cli.gradle assemble --info; \
     mv ./build/libs/*.jar ./build/libs/reader.jar
 
-FROM --platform=$BUILDPLATFORM ibm-semeru-runtimes:open-8-jre
+FROM jackkke/openjdk:8-jdk-alpine
 # Install base packages
 RUN \
     apt-get update; \
