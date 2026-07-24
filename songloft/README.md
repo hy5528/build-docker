@@ -6,9 +6,10 @@
 docker run -d \
   --name songloft \
   -p 58091:58091 \
-  -v /path/to/music:/app/music \
-  -v /path/to/data:/app/data \
+  -v /mnt/music:/app/music \
+  -v /wwww/data:/app/data \
   -e ADMIN_USERNAME=admin \
   -e ADMIN_PASSWORD='123456' \
+  --restart unless-stopped \
   ghcr.io/hy5528/songloft66:latest
 ```
