@@ -57,7 +57,7 @@ RUN --mount=type=cache,target=/go/pkg/mod \
 # base 层与 apk 解析结果一起变，用户被迫重拉 ~8MiB 的 apk 层。pin 到 3.24 分支后，
 # 该层仅在分支内偶发安全补丁时才变，长期命中本地缓存。
 # 刷新方式：docker pull alpine:3.24 && docker inspect --format '{{index .RepoDigests 0}}' alpine:3.24
-FROM alpine:3.24@sha256:28bd5fe8b56d1bd048e5babf5b10710ebe0bae67db86916198a6eec434943f8b
+FROM alpine:3.24
 
 # 分层顺序按「变更频率」由低到高排列：越少变动的层越靠前，配合上面的 base pin，
 # 保证用户 docker pull 更新时只需下载末尾变动的二进制层，前面的大层命中本地缓存。
