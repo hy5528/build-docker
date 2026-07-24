@@ -49,26 +49,7 @@ COPY . .
 ARG LITE_BUILD=false
 ARG VERSION
 RUN --mount=type=cache,target=/go/pkg/mod \
-    --mount=type=cache,target=/root/.cache/go-build \
-    set -x && \
-    echo "VERSION=[${VERSION}] LITE_BUILD=[${LITE_BUILD}] TARGET=[${TARGETOS}/${TARGETARCH}/${TARGETVARIANT}]" && \
-    case "${TARGETVARIANT}" in v7) GOARM=7;; v6) GOARM=6;; *) GOARM=;; esac && \
-    if [ "$LITE_BUILD" = "true" ]; then \
-        make build-cross GOOS="${TARGETOS}" GOARCH="${TARGETARCH}" GOARM="${GOARM}" OUTPUT=songloft \
-            EXTRA_TAGS=lite BUILD_TYPE=lite \
-            GIT_COMMIT="${GIT_COMMIT}" BUILD_TIME="${BUILD_TIME}" \
-            TRACELY_APP_ID="${TRACELY_APP_ID}" \
-            TRACELY_APP_SECRET="${TRACELY_APP_SECRET}" \
-            TRACELY_HOST="${TRACELY_HOST}" \
-            ${VERSION:+VERSION=${VERSION}}; \
-    else \
-        make build-cross GOOS="${TARGETOS}" GOARCH="${TARGETARCH}" GOARM="${GOARM}" OUTPUT=songloft \
-            GIT_COMMIT="${GIT_COMMIT}" BUILD_TIME="${BUILD_TIME}" \
-            TRACELY_APP_ID="${TRACELY_APP_ID}" \
-            TRACELY_APP_SECRET="${TRACELY_APP_SECRET}" \
-            TRACELY_HOST="${TRACELY_HOST}" \
-            ${VERSION:+VERSION=${VERSION}}; \
-    fi
+    --mount=type=cache,target=/root/.cache/go-build 
 
 # 固定 base 到具体版本 + digest（不用 alpine:latest）：
 # docker pull 更新是按 layer digest 去重、与层顺序无关，所以「大层命中缓存」的前提
