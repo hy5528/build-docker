@@ -44,9 +44,9 @@
         "priority": 25
     },
    {
-        "id": "baofeng",
-        "name": "暴风资源",
-        "baseUrl": "https://bfzyapi.com/api.php/provide/vod",
+        "id": "360zy",
+        "name": "360资源",
+        "baseUrl": "https://360zyzz.com/api.php/provide/vod",
         "group": "normal",
         "enabled": true,
         "priority": 5
