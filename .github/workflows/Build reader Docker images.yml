@@ -52,7 +52,7 @@ jobs:
             type=raw,value=latest
       - name: Clone Overleaf Gitlab Repo
         run: |
-          git clone --recurse-submodules https://github.com/changshengyu/reader-dev.git app
+          git clone --recurse-submodules https://github.com/qaz617/reader-dev.git app
 
       - name: "Copy userpatches to build folder"
         shell: bash
