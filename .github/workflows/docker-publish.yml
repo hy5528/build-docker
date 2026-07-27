@@ -33,7 +33,14 @@ jobs:
           node-version: '20'
           cache: 'npm'
           cache-dependency-path: web/package-lock.json
+      - name: Clone Overleaf Gitlab Repo
+        run: |
+          git clone --recurse-submodules https://github.com/qaz617/reader-dev.git app
 
+      - name: "Copy userpatches to build folder"
+        shell: bash
+        run: |
+          rsync -av reader/. ./app    
       - name: Build web frontend
         run: |
           npm ci
