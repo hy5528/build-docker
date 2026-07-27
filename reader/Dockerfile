@@ -1,4 +1,4 @@
-FROM jackkke/openjdk:8-jdk-alpine
+FROM eclipse-temurin:8u492-b09-jre-resolute
 
 ENV TZ=Asia/Shanghai \
     READER_APP_STORAGEPATH=/storage \
