@@ -1,4 +1,4 @@
-name: Build Nianyu Docker images
+name: Build reader-rust Docker images
 
 on:
   workflow_dispatch:
@@ -47,17 +47,17 @@ jobs:
         id: meta
         uses: docker/metadata-action@v6
         with:
-          images: ${{ env.REGISTRY }}/${{ github.actor }}/Nianyu66
+          images: ${{ env.REGISTRY }}/${{ github.actor }}/reader-rust66
           tags: |
             type=raw,value=latest
       - name: Clone Overleaf Gitlab Repo
         run: |
-          git clone --recurse-submodules https://github.com/lidachui1998/Nianyu.git app
+          git clone --recurse-submodules https://github.com/givenge/reader-rust.git app
 
       - name: "Copy userpatches to build folder"
         shell: bash
         run: |
-          rsync -av Nianyu/. ./app    
+          rsync -av reader-rust/. ./app    
           
       - name: 构建并推送 Docker 镜像
         uses: docker/build-push-action@v7
