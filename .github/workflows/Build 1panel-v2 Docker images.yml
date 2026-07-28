@@ -1,4 +1,4 @@
-name: Build reader-rust Docker images
+name: Build 1panel-v2 Docker images
 
 on:
   workflow_dispatch:
@@ -47,23 +47,23 @@ jobs:
         id: meta
         uses: docker/metadata-action@v6
         with:
-          images: ${{ env.REGISTRY }}/${{ github.actor }}/reader-rust66
+          images: ${{ env.REGISTRY }}/${{ github.actor }}/1panel-v2
           tags: |
             type=raw,value=latest
       - name: Clone Overleaf Gitlab Repo
         run: |
-          git clone --recurse-submodules https://github.com/givenge/reader-rust.git app
+          git clone --recurse-submodules https://github.com/purainity/docker-1panel-v2.git app
 
       - name: "Copy userpatches to build folder"
         shell: bash
         run: |
-          rsync -av reader-rust/. ./app    
+          rsync -av 1panel-v2/. ./app    
           
       - name: 构建并推送 Docker 镜像
         uses: docker/build-push-action@v7
         with:
           context: ./app
-          platforms: linux/amd64,linux/arm64,linux/arm/v7
+          platforms: linux/amd64,linux/arm64,linux/arm/v7,linux/ppc64le,linux/s390x,linux/riscv64 
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
