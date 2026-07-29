@@ -9,7 +9,7 @@ docker run -d \
   --name songloft \
   -p 58091:58091 \
   -v /mnt/music:/app/music \
-  -v /wwww/data:/app/data \
+  -v /www/data:/app/data \
   -e ADMIN_USERNAME=admin \
   -e ADMIN_PASSWORD='123456' \
   --restart unless-stopped \
