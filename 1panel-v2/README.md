@@ -12,8 +12,8 @@ docker run \
 -e PANEL_BASE_DIR=/www/1Panel/data \
 -e PANEL_PORT=9999 \
 -e PANEL_ENTRANCE=entrance \
--e PANEL_USERNAME=1panel \
--e PANEL_PASSWORD=1panel321 \
+-e PANEL_USERNAME=admin \
+-e PANEL_PASSWORD=admin123456 \
 ghcr.io/hy5528/1panel-v2:latest
 
 ```
