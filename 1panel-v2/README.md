@@ -13,7 +13,6 @@ docker run \
 -e PANEL_ENTRANCE=entrance \
 -e PANEL_USERNAME=admin \
 -e PANEL_PASSWORD=123456 \
---restart unless-stopped \
 ghcr.io/hy5528/1panel-v2:latest
 
 ```
