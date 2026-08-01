@@ -15,3 +15,4 @@
 -  全能接口解密:https://fty.888484.xyz/jm/
   
 - ventoy： https://www.ventoy.net/cn/download.html
+- 王二小第三代接口： 1、 https://9280.kstore.vip/aiwex.json 2、 https://9280.kstore.space/aiwex.json
