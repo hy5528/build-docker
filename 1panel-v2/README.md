@@ -6,7 +6,7 @@
 docker run \
 --name 1panel \
 --network host \
---restart unless-stopped \
+--restart always \
 -v /var/run/docker.sock:/var/run/docker.sock \
 -v /www/1Panel/data:/path/to/your/data \
 -e PANEL_BASE_DIR=/www/1Panel/data \
