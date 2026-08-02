@@ -21,23 +21,23 @@ install-docker.sh
 sudo nano /etc/docker/daemon.json
 
 {
-    "registry-mirrors": [
-       "https://docker.1panel.dev",
+     "registry-mirrors": [
+        "https://docker.1ms.run",
+        "https://docker.fnnas.com",
+        "https://docker.1panel.dev",
         "https://docker.1ms.run",
         "https://docker.xuanyuan.me",
         "https://doublezonline.cloud",
         "https://xdark.top",
         "https://hub.rat.dev",
         "https://docker.m.daocloud.io"
-    ],
-    "storage-driver": "overlay2",
-    "exec-opts": ["native.cgroupdriver=systemd"],
-    "log-driver": "json-file",
-    "log-opts": {
-        "max-size": "10m",
-        "max-file": "3"
-    }
+        ],
+    "data-root": "/mnt/dietpi_userdata/docker-data",
+    "log-driver": "journald",
+    "log-level": "warn",
+    "debug": false
 }
+
 
 重启 Docker 服务：
 sudo systemctl restart docker
