@@ -32,7 +32,7 @@ sudo nano /etc/docker/daemon.json
         "https://hub.rat.dev",
         "https://docker.m.daocloud.io"
         ],
-    "data-root": "/mnt/dietpi_userdata/docker-data",
+    "data-root": "/mnt/mmcblk1p5/docker-data",
     "log-driver": "journald",
     "log-level": "warn",
     "debug": false
