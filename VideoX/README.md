@@ -11,5 +11,5 @@ docker run -d \
   -p 3100:3100 \
   -v /www/videox-data:/app/backend/data \
   -v /www/media:/media \
-  ghcr.io/hy5528/videox66:latest
+  ghcr.nju.edu.cn/hy5528/videox66:latest
 ```
