@@ -1,6 +1,5 @@
 # nginx
 
-http://localhost:3600
 
 ```text
 docker run -d \
