@@ -13,5 +13,5 @@ docker run -d \
   -e ADMIN_USERNAME=admin \
   -e ADMIN_PASSWORD='123456' \
   --restart unless-stopped \
-  ghcr.io/hy5528/songloft66:latest
+  ghcr.nju.edu.cn/hy5528/songloft66:latest
 ```
