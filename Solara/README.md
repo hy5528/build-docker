@@ -6,7 +6,7 @@
 
 services:
   solara:
-    image: ghcr.io/hy5528/solara66:latest
+    image: ghcr.nju.edu.cn/hy5528/solara66:latest
     container_name: solara-music
     restart: always
     ports:
