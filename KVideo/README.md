@@ -6,6 +6,6 @@ docker run -d \
   --name kvideo \
   --restart=always \
   -p 3050:3000 \
-  ghcr.io/hy5528/kvideo66:latest
+  ghcr.nju.edu.cn/hy5528/kvideo66:latest
 
 ```
