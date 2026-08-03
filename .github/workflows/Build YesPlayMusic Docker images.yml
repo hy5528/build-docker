@@ -52,7 +52,7 @@ jobs:
             type=raw,value=latest
       - name: Clone Overleaf Gitlab Repo
         run: |
-          git clone https://github.com/qier222/YesPlayMusic.git app
+          git clone --recurse-submodules https://github.com/qier222/YesPlayMusic.git app
       - name: "Copy userpatches to build folder"
         shell: bash
         run: |
