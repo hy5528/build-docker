@@ -11,7 +11,7 @@ docker run -d --name=reader --restart=always -v /www/reader/storage:/storage -v 
 services:
   reader:
 
-    image: ghcr.io/hy5528/reader66:latest
+    image: ghcr.nju.edu.cn/hy5528/reader66:latest
     container_name: reader #容器名 可自行修改
     restart: always
     ports:
