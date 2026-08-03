@@ -14,6 +14,6 @@ docker run \
 -e PANEL_ENTRANCE=entrance \
 -e PANEL_USERNAME=admin \
 -e PANEL_PASSWORD=admin123 \
-ghcr.io/hy5528/1panel-v2:latest
+ghcr.nju.edu.cn/hy5528/1panel-v2:latest
 
 ```
