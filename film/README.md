@@ -14,7 +14,7 @@
 services:
   nginx:
     container_name: film_nginx
-    image: nginx:alpine
+    image: ghcr.nju.edu.cn/hy5528/nginx:alpine
     restart: always
     ports:
       - 3600:80
@@ -28,7 +28,7 @@ services:
       - film
 
   film:
-    image: ghcr.io/hy5528/film66:latest
+    image: ghcr.nju.edu.cn/hy5528/film66:latest
     container_name: film_api
     restart: always
     environment:
@@ -52,7 +52,7 @@ services:
 
   mysql:
     container_name: film_mysql
-    image: dpvduncan/mariadb:latest
+    image: ghcr.nju.edu.cn/hy5528/mariadb:latest
     restart: always
     ports:
     - 3610:3306
@@ -73,7 +73,7 @@ services:
 
   redis:
     container_name: film_redis
-    image: redis:alpine
+    image: ghcr.nju.edu.cn/hy5528/redis:alpine
     restart: always
     ports:
       - 3620:6379
