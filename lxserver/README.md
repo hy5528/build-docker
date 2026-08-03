@@ -14,6 +14,6 @@ docker run -d \
   -v /mnt/music:/server/music \
   --name lx-sync-server \
   --restart=always \
-  ghcr.io/hy5528/lxserver66:latest
+  ghcr.nju.edu.cn/hy5528/lxserver66:latest
 
 ```
