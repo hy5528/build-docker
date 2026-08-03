@@ -52,7 +52,7 @@ jobs:
             type=raw,value=latest
       - name: Clone Overleaf Gitlab Repo
         run: |
-          git clone -b dev https://github.com/SPlayer-Dev/SPlayer-Next.git app
+          git clone --recurse-submodules -b dev https://github.com/SPlayer-Dev/SPlayer-Next.git app
 
       - name: "Copy userpatches to build folder"
         shell: bash
