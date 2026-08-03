@@ -5,7 +5,7 @@ kvrocks储存,（若指定kvrocks-data目录，需要将所挂载的数据目录
 ```text
 services:
   moontv-core:
-    image: ghcr.io/hy5528/moontvplus66:latest
+    image: ghcr.nju.edu.cn/moontvplus66:latest
     container_name: moontv-core
     restart: always
     ports:
@@ -41,7 +41,7 @@ redis储存
 ```text
 services:
   moontv-core:
-    image: ghcr.io/hy5528/moontvplus66:latest
+    image: ghcr.nju.edu.cn/hy5528/moontvplus66:latest
     container_name: moontv-core
     restart: always
     ports:
@@ -57,7 +57,7 @@ services:
       - moontv-redis
 
   moontv-redis:
-    image: redis:alpine
+    image: ghcr.nju.edu.cn/hy5528/redis:alpine
     container_name: moontv-redis
     restart: always
     command: redis-server --save 60 1 --loglevel warning
