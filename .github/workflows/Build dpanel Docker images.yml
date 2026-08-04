@@ -6,10 +6,10 @@ on:
       MACH:
         description: 'Choose machine'
         required: true
-        default: 'mariadb'
+        default: 'dpanel'
         type: choice
         options:
-        - 'mariadb'    
+        - 'dpanel'    
       
 env:
   REGISTRY: ghcr.io
