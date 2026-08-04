@@ -1,4 +1,4 @@
-FROM ubuntu:26.04
+FROM debian:13-slim
 
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
