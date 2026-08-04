@@ -1,40 +1,56 @@
-name: Build 1panel Docker images
+name: Build mariadb images
 
 on:
-  workflow_dispatch:
-    inputs:
-      version_tag:
-        description: '版本标签 (例如: v1.0.0)'
+   inputs:
+      target:
+        description: "选择构建目标 (Select Build Target)"
+        required: true
+        default: "1panel"
+        type: choice
+        options:
+          - All
+          - 1panel
+      version:
+        description: "指定版本号 (选择单个目标时使用；All 留空则分别获取最新版)"
         required: false
         type: string
-        default: ''
-      include_latest:
-        description: 'latest标签'
-        required: false
+      push_latest:
+        description: "是否附加 latest 标签 (仅对 V2 有效。编译旧版本时请取消勾选！)"
+        required: true
         type: boolean
-        default: true
-
+        default: true    
+      
 env:
   REGISTRY: ghcr.io
   IMAGE_NAME: ${{ github.repository }}
-
 jobs:
   build-and-push:
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - name: "1panel1"
+            context: "./1panel1"
+            dockerfile: "./1panel1/Dockerfile"
+            version_url: "https://resource.fit2cloud.com/1panel/package/stable/latest"
+            is_latest: false
+            
+          - name: "1panel"
+            context: "./1panel"
+            dockerfile: "./1panel/Dockerfile"
+            version_url: "https://resource.fit2cloud.com/1panel/package/v2/stable/latest"
+            is_latest: true
+    
     permissions:
       contents: read
       packages: write
-
-      
     steps:      
       - name: 检出代码
         uses: actions/checkout@v6
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v4
-        with:
-          version: latest
-          driver-opts: image=moby/buildkit:buildx-stable-1
 
       - name: 登录到 GitHub Container Registry
         uses: docker/login-action@v4
@@ -47,22 +63,18 @@ jobs:
         id: meta
         uses: docker/metadata-action@v6
         with:
-          images: ${{ env.REGISTRY }}/${{ github.actor }}/film66
+          images: ghcr.io/hy5528/${{github.event.inputs.MACH}}
           tags: |
             type=raw,value=latest
-      - name: Clone Overleaf Gitlab Repo
-        run: |
-          git clone --recurse-submodules https://github.com/okxlin/docker-1panel.git app
-
-      - name: "Copy userpatches to build folder"
-        shell: bash
-        run: |
-          rsync -av 1panel/. ./app/V2
-          
+      
+      
       - name: 构建并推送 Docker 镜像
         uses: docker/build-push-action@v7
+        if: steps.check_skip.outputs.skip == 'false'
         with:
-          context: ./app/V2
+          push: true
+          context: ${{ matrix.context }}
+          file: ${{ matrix.dockerfile }}
           platforms: linux/amd64,linux/arm64,linux/arm/v7
           push: true
           tags: ${{ steps.meta.outputs.tags }}
