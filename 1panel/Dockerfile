@@ -30,7 +30,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     apt-get install -y --no-install-recommends supervisor && \
     rm -rf /var/lib/apt/lists/*
 
-WORKDIR /app/V2
+WORKDIR /app
 
 COPY ./1pctl /app/1pctl.custom
 COPY ./install-v2.override.sh /app/install-v2.override.sh
