@@ -1,4 +1,4 @@
-FROM dpanel/dpanel:lite
+FROM dpanel/dpanel:latest
 
 EXPOSE 443 80 8080
 
