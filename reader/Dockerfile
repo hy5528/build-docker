@@ -8,7 +8,7 @@ RUN yarn install --ignore-engines && yarn build
 FROM gradle:7.6-jdk8 AS build-env
 ADD --chown=gradle:gradle . /app
 WORKDIR /app
-COPY --from=build-web /app/web/dist /app/src/main/resources/web
+COPY --from=build-web /app/modules/dist /app/src/main/resources/web
 RUN \
     rm src/main/java/com/htmake/reader/ReaderUIApplication.kt; \
     gradle -b cli.gradle assemble --info; \
