@@ -1,21 +1,26 @@
-FROM alpine:3.24
+FROM --platform=$BUILDPLATFORM node:18-alpine AS build-web
+ADD . /app
+WORKDIR /app/web
+# 忽略引擎检查以兼容旧依赖
+RUN yarn install --ignore-engines && yarn build
 
+# Build jar - 使用支持多平台的Gradle镜像
+FROM gradle:7.6-jdk8 AS build-env
+ADD --chown=gradle:gradle . /app
+WORKDIR /app
+COPY --from=build-web /app/web/dist /app/src/main/resources/web
+RUN \
+    rm src/main/java/com/htmake/reader/ReaderUIApplication.kt; \
+    gradle -b cli.gradle assemble --info; \
+    mv ./build/libs/*.jar ./build/libs/reader.jar
 
-# 只安装必要的依赖
-RUN apk add --no-cache wget unzip openjdk8-jre
-
-
-# 安装Gradle
-RUN wget -q https://services.gradle.org/distributions/gradle-8.13-bin.zip -O /tmp/gradle.zip && \
-    unzip -q /tmp/gradle.zip -d /opt/ && \
-    ln -s /opt/gradle-8.13/bin/gradle /usr/local/bin/gradle && \
-    rm /tmp/gradle.zip
-
-# 创建工作目录
-WORKDIR /workspace
-
-# 复制项目文件
-COPY . /workspace/
-
-# 默认命令
-CMD ["./gradlew", "--version"]
+FROM jackkke/openjdk:8-jdk-alpine
+RUN \
+    apk add --no-cache ca-certificates tini tzdata; \
+    update-ca-certificates; \
+    rm -rf /var/cache/apk/*;
+ENV TZ=Asia/Shanghai
+EXPOSE 8080
+ENTRYPOINT ["/sbin/tini", "--"]
+COPY --from=build-env /app/build/libs/reader.jar /app/bin/reader.jar
+CMD ["java", "-jar", "/app/bin/reader.jar" ]
