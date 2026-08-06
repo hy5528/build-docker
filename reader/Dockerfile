@@ -6,8 +6,8 @@ RUN yarn install --ignore-engines && yarn build
 # Build jar
 FROM gradle:7-jdk8 AS build-env
 ENV JAVA_TOOL_OPTIONS="-Dhttps.protocols=TLSv1,TLSv1.1,TLSv1.2,TLSv1.3"
-ADD --chown=gradle:gradle . /app
-WORKDIR /app
+ADD --chown=gradle:gradle . /app/app
+WORKDIR /app/app
 COPY --from=build-web /app/web/dist /app/src/main/resources/web
 RUN \
     rm src/main/java/com/htmake/reader/ReaderUIApplication.kt; \
