@@ -11,7 +11,8 @@ RUN apt-get update && apt-get install -y \
 
 
 # 设置执行权限
-RUN chmod +x /gradlew
+
+ADD --chmod=755 ./gradlew /gradlew
 
 # 默认命令
 CMD ["./gradlew", "--version"]
