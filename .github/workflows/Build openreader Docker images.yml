@@ -1,4 +1,4 @@
-name: Build cyp Docker images
+name: Build openreader Docker images
 
 on:
   workflow_dispatch:
@@ -52,12 +52,12 @@ jobs:
             type=raw,value=latest
       - name: Clone Overleaf Gitlab Repo
         run: |
-          git clone --recurse-submodules https://github.com/ondras/cyp.git app
+          git clone --recurse-submodules https://github.com/changshengyu/openreader.git app
 
       - name: "Copy userpatches to build folder"
         shell: bash
         run: |
-          rsync -av cyp/. ./app    
+          rsync -av openreader/. ./app    
           
       - name: 构建并推送 Docker 镜像
         uses: docker/build-push-action@v7
