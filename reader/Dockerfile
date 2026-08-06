@@ -1,8 +1,8 @@
-FROM alpine:latest
+FROM eclipse-temurin:17-jre-alpine
 
 
 # 只安装必要的依赖
-RUN apk add --no-cache wget unzip openjdk-17-jdk
+RUN apk add --no-cache wget unzip 
 
 
 # 设置执行权限
