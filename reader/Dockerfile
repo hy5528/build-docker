@@ -10,10 +10,10 @@ RUN apt-get update && apt-get install -y \
     && rm -rf /var/lib/apt/lists/*
 
 # 使用项目中已有的gradlew，避免安装Gradle
-WORKDIR /app
+WORKDIR /workspace
 
 # 设置执行权限
-RUN chmod +x ./gradlew
+RUN chmod +x /workspace/gradlew
 
 # 默认命令
 CMD ["./gradlew", "--version"]
