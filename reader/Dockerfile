@@ -1,6 +1,5 @@
-FROM FROM --platform=$BUILDPLATFORM node:22-alpine
+FROM alpine:latest
 
-ENV DEBIAN_FRONTEND=noninteractive
 
 # 只安装必要的依赖
 RUN apk add --no-cache wget unzip openjdk-17-jdk
