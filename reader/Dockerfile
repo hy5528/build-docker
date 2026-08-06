@@ -1,6 +1,6 @@
 FROM node:16-alpine AS build-web
 ADD . /app
-WORKDIR /app/web
+WORKDIR /app/app/web
 RUN yarn install --ignore-engines && yarn build
 
 # Build jar
