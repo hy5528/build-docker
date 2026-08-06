@@ -9,11 +9,9 @@ RUN apt-get update && apt-get install -y \
     openjdk-17-jdk \
     && rm -rf /var/lib/apt/lists/*
 
-# 使用项目中已有的gradlew，避免安装Gradle
-WORKDIR /workspace
 
 # 设置执行权限
-RUN chmod +x /workspace/gradlew
+RUN chmod +x /gradlew
 
 # 默认命令
 CMD ["./gradlew", "--version"]
