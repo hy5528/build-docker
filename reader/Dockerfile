@@ -1,7 +1,7 @@
 FROM node:16-alpine AS build-web
 ADD . /app
 WORKDIR /app/app/web
-RUN yarn install --ignore-engines && yarn build
+RUN yarn install && yarn build
 
 # Build jar
 FROM gradle:7-jdk8 AS build-env
