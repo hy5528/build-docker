@@ -1,4 +1,4 @@
-FROM eclipse-temurin:17-jre-alpine
+FROM alpine:latest
 
 
 # 只安装必要的依赖
