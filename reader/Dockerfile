@@ -1,6 +1,5 @@
 FROM debian:12-slim
 
-FROM ubuntu:22.04
 
 ENV DEBIAN_FRONTEND=noninteractive
 
