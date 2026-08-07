@@ -15,7 +15,7 @@ RUN \
     gradle -b cli.gradle assemble --info; \
     mv ./build/libs/*.jar ./build/libs/reader.jar
 
-FROM amazoncorretto:8u442-alpine3.21-jre
+FROM jackkke/openjdk:8-jdk-alpine
 RUN \
     apk add --no-cache ca-certificates tini tzdata; \
     update-ca-certificates; \
