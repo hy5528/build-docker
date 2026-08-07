@@ -1,4 +1,4 @@
-FROM FROM --platform=$BUILDPLATFORM node:22-alpine
+FROM --platform=$BUILDPLATFORM node:22-alpine
 
 
 
