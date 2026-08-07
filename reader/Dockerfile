@@ -9,10 +9,10 @@ RUN apt-get update && apt-get install -y \
     openjdk-17-jdk \
     && rm -rf /var/lib/apt/lists/*
 
-
+WORKDIR /app
 # 设置执行权限
 
-RUN chmod +x  /gradlew 
+ADD --chmod=755 ./gradlew /gradlew
 
 # 默认命令
 CMD ["./gradlew", "--version"]
