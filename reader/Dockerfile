@@ -3,7 +3,8 @@ FROM --platform=$BUILDPLATFORM node:22-alpine
 
 
 # 只安装必要的依赖
-RUN apk add --no-cache python3 make g++ wget unzip openjdk-17-jdk
+RUN apk update && \
+    apk add --no-cache openjdk17-jdk 
 
 # 安装Gradle
 RUN wget -q https://services.gradle.org/distributions/gradle-8.13-bin.zip -O /tmp/gradle.zip && \
