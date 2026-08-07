@@ -1,26 +1,26 @@
-FROM --platform=$BUILDPLATFORM node:22-alpine AS build-web
+FROM --platform=$BUILDPLATFORM node:18-alpine AS build-web
 ADD . /app
 WORKDIR /app/web
-RUN npm install
-RUN npm run build
+# 忽略引擎检查以兼容旧依赖
+RUN yarn install --ignore-engines && yarn build
 
+# Build jar - 使用支持多平台的Gradle镜像
+FROM gradle:7.6-jdk8 AS build-env
+ADD --chown=gradle:gradle . /app
 WORKDIR /app
-RUN ./build.sh jar
-FROM eclipse-temurin:8-jre
+COPY --from=build-web /app/web/dist /app/src/main/resources/web
+RUN \
+    rm src/main/java/com/htmake/reader/ReaderUIApplication.kt; \
+    gradle -b cli.gradle assemble --info; \
+    mv ./build/libs/*.jar ./build/libs/reader.jar
 
-ENV TZ=Asia/Shanghai \
-    READER_APP_STORAGEPATH=/storage \
-    READER_SERVER_PORT=8080
-
-WORKDIR /app
-COPY build/libs/reader-2.5.4.jar /app/reader.jar
-
-VOLUME /storage
+FROM jackkke/openjdk:8-jdk-alpine
+RUN \
+    apk add --no-cache ca-certificates tini tzdata; \
+    update-ca-certificates; \
+    rm -rf /var/cache/apk/*;
+ENV TZ=Asia/Shanghai
 EXPOSE 8080
-
-# --add-opens 用于 Gson 在 JDK 17+ 上反射访问 java.io.File#path
-CMD ["java", \
-     "--add-opens", "java.base/java.io=ALL-UNNAMED", \
-     "-jar", "/app/reader.jar", \
-     "--reader.server.port=${READER_SERVER_PORT}", \
-     "--reader.app.storagePath=${READER_APP_STORAGEPATH}"]
+ENTRYPOINT ["/sbin/tini", "--"]
+COPY --from=build-env /app/build/libs/reader.jar /app/bin/reader.jar
+CMD ["java", "-jar", "/app/bin/reader.jar" ]
