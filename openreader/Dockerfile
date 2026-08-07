@@ -7,7 +7,7 @@ RUN npm ci
 COPY frontend/ ./
 RUN npm run build
 
-FROM jauderho/golang:latest AS backend-builder
+FROM agrozyme/golang AS backend-builder
 RUN apk add --no-cache build-base
 WORKDIR /src/backend
 ARG TARGETOS=linux
