@@ -3,7 +3,9 @@ ADD . /app
 WORKDIR /app/web
 RUN npm install
 RUN npm run build
-# 忽略引擎检查以兼容旧依赖
+
+WORKDIR /app
+
 FROM eclipse-temurin:8-jre
 
 ENV TZ=Asia/Shanghai \
