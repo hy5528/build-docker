@@ -7,7 +7,7 @@ RUN npm ci
 COPY frontend/ ./
 RUN npm run build
 
-FROM golang:1.24-alpine@sha256:8bee1901f1e530bfb4a7850aa7a479d17ae3a18beb6e09064ed54cfd245b7191 AS backend-builder
+FROM alpinelinux/golang AS backend-builder
 RUN apk add --no-cache build-base
 WORKDIR /src/backend
 ARG TARGETOS=linux
