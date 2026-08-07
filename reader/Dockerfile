@@ -1,7 +1,8 @@
 FROM --platform=$BUILDPLATFORM node:22-alpine AS build-web
 ADD . /app
 WORKDIR /app/web
-
+RUN npm install
+RUN npm run build
 # 忽略引擎检查以兼容旧依赖
 FROM eclipse-temurin:8-jre
 
