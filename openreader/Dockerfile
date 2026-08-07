@@ -1,6 +1,6 @@
 # Pin official base image digests so local builds remain reproducible when a
 # registry's mutable-tag metadata endpoint is temporarily unavailable.
-FROM node:22-alpine@sha256:16e22a550f3863206a3f701448c45f7912c6896a62de43add43bb9c86130c3e2 AS frontend-builder
+FROM --platform=$BUILDPLATFORM node:22-alpine@sha256:16e22a550f3863206a3f701448c45f7912c6896a62de43add43bb9c86130c3e2 AS frontend-builder
 WORKDIR /src/frontend
 COPY frontend/package*.json ./
 RUN npm ci
