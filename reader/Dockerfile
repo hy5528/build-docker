@@ -1,4 +1,4 @@
-FROM node:16-alpine AS build-web
+FROM --platform=$BUILDPLATFORM node:16-alpine AS build-web
 ADD . /app
 WORKDIR /app/web
 RUN yarn install --ignore-engines && yarn build
