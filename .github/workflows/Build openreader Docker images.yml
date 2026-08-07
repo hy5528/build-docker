@@ -47,17 +47,17 @@ jobs:
         id: meta
         uses: docker/metadata-action@v6
         with:
-          images: ${{ env.REGISTRY }}/${{ github.actor }}/cyp66
+          images: ${{ env.REGISTRY }}/${{ github.actor }}/reader
           tags: |
             type=raw,value=latest
       - name: Clone Overleaf Gitlab Repo
         run: |
-          git clone --recurse-submodules https://github.com/changshengyu/openreader.git app
+          git clone --recurse-submodules https://github.com/baich110/Legado-Accessibility.git app
 
       - name: "Copy userpatches to build folder"
         shell: bash
         run: |
-          rsync -av openreader/. ./app    
+          rsync -av reader/. ./app    
           
       - name: 构建并推送 Docker 镜像
         uses: docker/build-push-action@v7
