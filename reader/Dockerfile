@@ -5,7 +5,7 @@ RUN npm install
 RUN npm run build
 
 WORKDIR /app
-
+RUN ./build.sh jar
 FROM eclipse-temurin:8-jre
 
 ENV TZ=Asia/Shanghai \
