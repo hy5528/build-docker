@@ -1,3 +1,8 @@
+FROM --platform=$BUILDPLATFORM node:22-alpine AS build-web
+ADD . /app
+WORKDIR /app/web
+
+# 忽略引擎检查以兼容旧依赖
 FROM eclipse-temurin:8-jre
 
 ENV TZ=Asia/Shanghai \
