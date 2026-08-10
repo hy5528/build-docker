@@ -1,27 +1,37 @@
-FROM --platform=$BUILDPLATFORM node:22-alpine AS build-web
-ADD . /app
+# ---- Build web frontend (npm deps layer cached) ----
+FROM --platform=$BUILDPLATFORM node:16-alpine AS build-web
 WORKDIR /app/web
-# 忽略引擎检查以兼容旧依赖
-RUN npm install
+COPY web/package.json web/package-lock.json ./
+RUN npm ci
+COPY web/ ./
 RUN npm run build
 
-# Build jar - 使用支持多平台的Gradle镜像
-FROM gradle:7.6-jdk8 AS build-env
-ADD --chown=gradle:gradle . /app
+# ---- Build jar (gradle deps layer cached) ----
+FROM gradle:7-jdk8 AS build-env
+ENV JAVA_TOOL_OPTIONS="-Dhttps.protocols=TLSv1,TLSv1.1,TLSv1.2,TLSv1.3"
 WORKDIR /app
+# 先复制构建脚本并预下载依赖，该层可被 docker 层缓存复用
+COPY --chown=gradle:gradle cli.gradle settings.gradle gradle ./
+RUN gradle -b cli.gradle dependencies --no-daemon -Dorg.gradle.vfs.watch=false || true
+# 复制源码与前端产物
+ADD --chown=gradle:gradle . /app
 COPY --from=build-web /app/web/dist /app/src/main/resources/web
 RUN \
     rm src/main/java/com/htmake/reader/ReaderUIApplication.kt; \
-    gradle -b cli.gradle assemble --info; \
+    gradle -b cli.gradle assemble --no-daemon -Dorg.gradle.vfs.watch=false; \
     mv ./build/libs/*.jar ./build/libs/reader.jar
 
+# ---- Runtime ----
 FROM jackkke/openjdk:8-jdk-alpine
 RUN \
+    apk upgrade --no-cache; \
     apk add --no-cache ca-certificates tini tzdata; \
     update-ca-certificates; \
     rm -rf /var/cache/apk/*;
+
 ENV TZ=Asia/Shanghai
+
 EXPOSE 8080
 ENTRYPOINT ["/sbin/tini", "--"]
 COPY --from=build-env /app/build/libs/reader.jar /app/bin/reader.jar
-CMD ["java", "-jar", "/app/bin/reader.jar" ]
+CMD ["java", "-jar", "/app/bin/reader.jar"]
