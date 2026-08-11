@@ -12,7 +12,7 @@ docker run -d \
   -v /home/lx/logs:/server/logs \
   -v /home/lx/cache:/server/cache \
   -v /mnt/music:/server/music \
-  --name lx-sync-server \
+  --name yinyun-lxserver \
   --restart=always \
   ghcr.nju.edu.cn/hy5528/yinyun-lxserver:latest
 
