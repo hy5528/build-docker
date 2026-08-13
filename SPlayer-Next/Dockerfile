@@ -16,7 +16,7 @@ RUN npm install
 
 # 复制源代码并构建
 COPY . .
-
+ENV SKIP_NATIVE_BUILD=true
 RUN npm run build
 
 # 第二阶段：生产环境
