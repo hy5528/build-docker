@@ -16,3 +16,4 @@
   
 - ventoy： https://www.ventoy.net/cn/download.html
 - 王二小第三代接口： 1、 https://9280.kstore.vip/aiwex.json 2、 https://9280.kstore.space/aiwex.json
+-GitHub 加速下载代理 1、 https://www.moretools.app/zh-CN/github-proxy 2、https://gh-proxy.com 3、https://ghproxy.net 4、https://gh.jasonzeng.dev
