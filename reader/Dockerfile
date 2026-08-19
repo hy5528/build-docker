@@ -1,20 +1,37 @@
-FROM --platform=$BUILDPLATFORM node:18-bookworm-slim AS web-builder
-WORKDIR /web
+# ---- Build web frontend (npm deps layer cached) ----
+FROM node:16-alpine AS build-web
+WORKDIR /app/web
 COPY web/package.json web/package-lock.json ./
-RUN npm ci || npm install
-COPY web/ .
+RUN npm ci
+COPY web/ ./
 RUN npm run build
 
-# 第二阶段：运行镜像（复制预编译二进制 + web 产物，无编译）
-FROM --platform=$TARGETPLATFORM debian:bookworm-slim
-ARG TARGETARCH
-ENV TZ=Asia/Shanghai
-RUN apt-get update \
-    && apt-get install -y --no-install-recommends ca-certificates tzdata \
-    && rm -rf /var/lib/apt/lists/*
-COPY --from=web-builder /web/dist /app/src/main/resources/web
-COPY bin/linux-${TARGETARCH}/reader /usr/local/bin/reader
+# ---- Build jar (gradle deps layer cached) ----
+FROM gradle:7-jdk8 AS build-env
+ENV JAVA_TOOL_OPTIONS="-Dhttps.protocols=TLSv1,TLSv1.1,TLSv1.2,TLSv1.3"
 WORKDIR /app
+# 先复制构建脚本并预下载依赖，该层可被 docker 层缓存复用
+COPY --chown=gradle:gradle cli.gradle settings.gradle gradle ./
+RUN gradle -b cli.gradle dependencies --no-daemon -Dorg.gradle.vfs.watch=false || true
+# 复制源码与前端产物
+ADD --chown=gradle:gradle . /app
+COPY --from=build-web /app/web/dist /app/src/main/resources/web
+RUN \
+    rm src/main/java/com/htmake/reader/ReaderUIApplication.kt; \
+    gradle -b cli.gradle assemble --no-daemon -Dorg.gradle.vfs.watch=false; \
+    mv ./build/libs/*.jar ./build/libs/reader.jar
+
+# ---- Runtime ----
+FROM jackkke/openjdk:8-jdk-alpine
+RUN \
+    apk upgrade --no-cache; \
+    apk add --no-cache ca-certificates tini tzdata; \
+    update-ca-certificates; \
+    rm -rf /var/cache/apk/*;
+
+ENV TZ=Asia/Shanghai
+
 EXPOSE 8080
-ENTRYPOINT ["/usr/local/bin/reader"]
-CMD ["--port=8080"]
+ENTRYPOINT ["/sbin/tini", "--"]
+COPY --from=build-env /app/build/libs/reader.jar /app/bin/reader.jar
+CMD ["java", "-jar", "/app/bin/reader.jar"]
