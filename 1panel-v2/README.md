@@ -3,7 +3,7 @@
 - http://你的IP:9999/entrance
 - 不推荐在容器环境使用 1pctl 脚本。如需管理面板，请先执行 docker exec -it 1panel bash 进入容器，再通过 1panel 原生命令进行操
 
-第一步：
+
 ```text
 docker run \
 --name 1panel \
@@ -17,11 +17,6 @@ docker run \
 -e PANEL_USERNAME=admin \
 -e PANEL_PASSWORD=admin123456 \
 ghcr.nju.edu.cn/hy5528/1panel-v2:latest
-
-```
-第二步：容器内安装1panel
-```text
-docker run ghcr.nju.edu.cn/hy5528/1panel-v2:latest
 
 ```
 
