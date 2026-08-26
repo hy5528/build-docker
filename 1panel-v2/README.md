@@ -17,3 +17,9 @@ docker run -d \
 ghcr.nju.edu.cn/hy5528/1panel-v2:latest
 
 ```
+容器内安装1panel
+```text
+docker run ghcr.nju.edu.cn/hy5528/1panel-v2:latest
+
+```
+
