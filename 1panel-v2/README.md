@@ -5,7 +5,7 @@
 
 第一步：
 ```text
-docker run -d \
+docker run \
 --name 1panel \
 --network host \
 --restart always \
