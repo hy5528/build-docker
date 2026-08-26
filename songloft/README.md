@@ -11,7 +11,7 @@ docker run -d \
   -v /mnt/music:/app/music \
   -v /www/data:/app/data \
   -e ADMIN_USERNAME=admin \
-  -e ADMIN_PASSWORD='123456' \
+  -e ADMIN_PASSWORD='ww123456' \
   --restart unless-stopped \
   ghcr.nju.edu.cn/hy5528/songloft66:latest
 ```
