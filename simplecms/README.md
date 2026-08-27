@@ -6,7 +6,7 @@
 ```text
 services:
   app:
-    image: ghcr.io/notpeppa/simplecms:latest
+    image: ghcr.nju.edu.cn/hy5528/simplecms66:latest
     container_name: simplecms-app
     restart: unless-stopped
     ports:
