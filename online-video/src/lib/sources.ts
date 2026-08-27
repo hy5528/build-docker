@@ -6,11 +6,7 @@ export const SOURCES: readonly SourceDefinition[] = [
     name: "量子",
     baseUrl: "https://cj.lziapi.com/api.php/provide/vod/",
   },
-  {
-    id: "jhzy",
-    name: "聚合",
-    baseUrl: "https://api.vodfa.com/api/vod/",
-  },
+  
   {
     id: "ryzy",
     name: "如意",
