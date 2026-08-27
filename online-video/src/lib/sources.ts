@@ -6,11 +6,15 @@ export const SOURCES: readonly SourceDefinition[] = [
     name: "量子",
     baseUrl: "https://cj.lziapi.com/api.php/provide/vod/",
   },
-  
   {
-    id: "ryzy",
+    id: "ruyi",
     name: "如意",
     baseUrl: "https://cj.rycjapi.com/api.php/provide/vod/",
+  },
+  {
+    id: "juhe",
+    name: "聚合",
+    baseUrl: "https://api.vodfa.com/api/vod/",
   },
   {
     id: "360",
@@ -18,7 +22,7 @@ export const SOURCES: readonly SourceDefinition[] = [
     baseUrl: "https://360zyzz.com/api.php/provide/vod/",
   },
   {
-    id: "bfzy",
+    id: "baofeng",
     name: "暴风",
     baseUrl: "https://bfzyapi.com/api.php/provide/vod/",
   },
