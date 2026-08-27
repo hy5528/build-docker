@@ -3,6 +3,7 @@
 - 启动后访问 http://服务器IP:3800。
 - 用户名：admin 密码：ww123456
 
+docker-compose.yml
 ```text
 services:
   app:
