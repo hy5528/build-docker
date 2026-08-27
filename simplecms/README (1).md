@@ -1,15 +1,49 @@
 # VideoX
-- VideoX 是一款专为聚合视频源、电视直播及网盘媒体打造的独立应用。
+-一个专注于“采集资源 + 前台展示播放 + 后台管理采集”的轻量 CMS，基于 Node.js、Express、EJS、MySQL 和 Sequelize 实现。
 - 启动后访问 http://服务器IP:3100。
-- 初始状态下无密码，您可以进入 管理面板 -> 安全设置 来配置：
-全站访问密码：开启后，游客访问主页也需要身份验证。
-管理权限密码：用于锁定管理后台、收藏及播放历史记录
+
 ```text
-docker run -d \
-  --name videox \
-  --restart=always \
-  -p 3100:3100 \
-  -v /www/videox-data:/app/backend/data \
-  -v /www/media:/media \
-  ghcr.nju.edu.cn/hy5528/videox66:latest
+services:
+  app:
+    image: ghcr.io/notpeppa/simplecms:latest
+    container_name: simplecms-app
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      PORT: 3000
+      DB_HOST: mysql
+      DB_PORT: 3306
+      DB_NAME: simplecms
+      DB_USER: simplecms
+      DB_PASSWORD: simplecms123
+      SESSION_SECRET: change-me
+      INIT_ADMIN_USERNAME: admin
+      INIT_ADMIN_PASSWORD: ww123456
+    depends_on:
+      mysql:
+        condition: service_healthy
+
+  mysql:
+    image: ghcr.nju.edu.cn/hy5528/mariadb:latest
+    container_name: simplecms-mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: simplecms
+      MYSQL_USER: simplecms
+      MYSQL_PASSWORD: simplecms123
+      MYSQL_ROOT_PASSWORD: root123456
+    expose:
+      - "3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "127.0.0.1", "-uroot", "-proot123456"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 20s
+
+volumes:
+  mysql_data:
 ```
