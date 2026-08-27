@@ -1,6 +1,6 @@
 # simplecms
 - 一个专注于“采集资源 + 前台展示播放 + 后台管理采集”的轻量 CMS，基于 Node.js、Express、EJS、MySQL 和 Sequelize 实现。
-- 启动后访问 http://服务器IP:3800。
+- 启动后访问 http://服务器IP:3900。
 - 用户名：admin 密码：ww123456
 
 docker-compose.yml
@@ -11,7 +11,7 @@ services:
     container_name: simplecms-app
     restart: unless-stopped
     ports:
-      - "3800:3000"
+      - "3900:3000"
     environment:
       PORT: 3000
       DB_HOST: mysql
