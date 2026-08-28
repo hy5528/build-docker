@@ -22,6 +22,11 @@ export const SOURCES: readonly SourceDefinition[] = [
     baseUrl: "https://360zyzz.com/api.php/provide/vod/",
   },
   {
+    id: "bfzy",
+    name: "暴风",
+    baseUrl: "https://bfzyapi.com/api.php/provide/vod/",
+  },
+  {
     id: "niuniu",
     name: "牛牛",
     baseUrl: "https://api.niuniuzy.me/api.php/provide/vod/",
