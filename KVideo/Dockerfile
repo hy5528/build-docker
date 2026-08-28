@@ -57,7 +57,7 @@ ENV DOCKER_BUILD=true
 # ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true
 # ENV PUPPETEER_EXECUTABLE_PATH=/usr/bin/chromium-browser
 ENV SUBSCRIPTION_SOURCES='https://gh-proxy.org/https://github.com/hy5528/build-docker/blob/main/KVideo/config.json'
-ENV IPTV_SOURCES='[{"name":"mytv","url":"https://github.com/qingtingjjjjjjj/iptv-auto-update/blob/main/my.txt"},{"name":"分享者TV","url":"https://gh-proxy.com/https://raw.githubusercontent.com/maoystv/6/main/TV/live20220813.txt"},{"name":"广西移动","url":"https://gh-proxy.org/https://github.com/Healer-sys/Home/blob/main/iptv/gx.m3u"}]'
+ENV IPTV_SOURCES='[{"name":"mytv","url":"https://gh-proxy.com/https://github.com/qingtingjjjjjjj/config-tv/blob/main/output/ipv4/result.m3u"},{"name":"广西移动","url":"https://gh-proxy.org/https://github.com/Healer-sys/Home/blob/main/iptv/gx.m3u"}]'
 
 COPY --from=builder /app/public ./public
 
