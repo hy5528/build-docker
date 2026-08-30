@@ -2,7 +2,7 @@
 FROM debian:12-slim
 
 # 安裝 curl（用於健康檢查）
-RUN apt-get update && apt-get install -y python3 python3-pip python3-venv curl && rm -rf /var/lib/apt/lists/*
+RUN apt-get update && apt-get install -y python3 python3-pip python3-venv pipx  curl && rm -rf /var/lib/apt/lists/*
 
 # 設定工作目錄
 WORKDIR /app
