@@ -9,7 +9,7 @@ WORKDIR /app
 
 # 複製依賴檔案並安裝
 COPY requirements.txt .
-RUN pip install requirements.txt
+RUN pip --no-cache-dir -r requirements.txt
 
 # 複製專案所有檔案到工作目錄
 COPY . .
