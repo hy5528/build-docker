@@ -1,15 +1,25 @@
-# 使用官方 Python 映像檔作為基礎
-FROM debian:12-slim
+FROM python:3.14.0-slim
 
-# 安裝 curl（用於健康檢查）
-RUN apt-get update && apt-get install -y python3-full python3-pip pipx curl && rm -rf /var/lib/apt/lists/*
+LABEL maintainer="CMS Movie"
+LABEL description="Flask-based video CMS with MacCMS10 collector"
 
-# 設定工作目錄
+# 设置工作目录
 WORKDIR /app
 
-# 複製依賴檔案並安裝
+# 安装系统依赖
+RUN apt-get update && apt-get install -y \
+    gcc \
+    libxml2-dev \
+    libxslt1-dev \
+    zlib1g-dev \
+    && rm -rf /var/lib/apt/lists/*
+
+# 复制依赖文件
 COPY requirements.txt .
+
+# 安装Python依赖
 RUN pip install --no-cache-dir -r requirements.txt
+
 
 # 複製專案所有檔案到工作目錄
 COPY . .
