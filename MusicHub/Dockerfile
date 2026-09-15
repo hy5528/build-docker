@@ -4,18 +4,13 @@
 #   - data / downloads / playlists 为运行时宿主机挂载目录，禁止 COPY 进镜像。
 #   - 后端 Node 依赖在构建时安装进镜像，重启/重建容器不再重新 npm install。
 #   - sqlite3 为原生模块，需 gcc/make/python3 编译，构建阶段安装后打包进镜像。
-FROM node:22-slim
+FROM --platform=$BUILDPLATFORM node:22-alpine
 
-# 使用国内 apt 镜像源（容器内 CA 可能缺失，用 http 源避免证书校验失败）
-RUN echo "deb http://mirrors.tuna.tsinghua.edu.cn/debian bookworm main contrib non-free" > /etc/apt/sources.list \
-    && echo "deb http://mirrors.tuna.tsinghua.edu.cn/debian-security bookworm-security main contrib non-free" >> /etc/apt/sources.list \
-    && rm -f /etc/apt/sources.list.d/debian.sources
+
 
 # 安装编译原生模块所需的工具（sqlite3 需要 gcc/make/python3）
-RUN apt-get update && apt-get install -y \
-    build-essential \
-    python3 \
-    && rm -rf /var/lib/apt/lists/*
+RUN apk add --no-cache python3 make g++ build-essential
+    
 
 WORKDIR /app
 
