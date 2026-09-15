@@ -4,13 +4,22 @@
 #   - data / downloads / playlists 为运行时宿主机挂载目录，禁止 COPY 进镜像。
 #   - 后端 Node 依赖在构建时安装进镜像，重启/重建容器不再重新 npm install。
 #   - sqlite3 为原生模块，需 gcc/make/python3 编译，构建阶段安装后打包进镜像。
-FROM --platform=$BUILDPLATFORM node:22-alpine
-# 启用 corepack 并激活 pnpm（Node20 默认提供 corepack）
-RUN corepack enable && corepack prepare pnpm@latest --activate
+FROM node:22-slim
+
+# 使用国内 apt 镜像源（容器内 CA 可能缺失，用 http 源避免证书校验失败）
+RUN echo "deb http://mirrors.tuna.tsinghua.edu.cn/debian bookworm main contrib non-free" > /etc/apt/sources.list \
+    && echo "deb http://mirrors.tuna.tsinghua.edu.cn/debian-security bookworm-security main contrib non-free" >> /etc/apt/sources.list \
+    && rm -f /etc/apt/sources.list.d/debian.sources
+
+# 安装编译原生模块所需的工具（sqlite3 需要 gcc/make/python3）
+RUN apt-get update && apt-get install -y \
+    build-essential \
+    python3 \
+    && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
 
-
+# node:22-slim 已内置 node 用户 (uid 1000)，直接复用，无需再创建
 # 创建运行时目录（挂载点，不随镜像打包）
 RUN mkdir -p /app/data/plugins /app/data/uploads /app/data/cache /app/data/logs /app/downloads /app/playlists \
     && chown -R node:node /app/data /app/downloads /app/playlists
@@ -34,7 +43,7 @@ WORKDIR /app/backend
 ENV npm_config_build_from_source=true \
     npm_config_disturl=https://registry.npmmirror.com/-/binary/node
 RUN npm install --omit=dev --registry=https://registry.npmmirror.com \
-    && npm install better-sqlite3@latest \
+    && npm rebuild sqlite3 \
     && node -e "require('sqlite3'); console.log('[build] sqlite3 校验通过')" \
     && npm cache clean --force
 
@@ -85,6 +94,3 @@ ENV PGID=1000
 
 # 暴露端口
 EXPOSE 8000
-
-# 启动（默认以 root 启动，由 start.sh 按 PUID/PGID 降权运行）
-CMD ["bash", "/app/start.sh"]
