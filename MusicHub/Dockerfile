@@ -34,7 +34,7 @@ WORKDIR /app/backend
 ENV npm_config_build_from_source=true \
     npm_config_disturl=https://registry.npmmirror.com/-/binary/node
 RUN npm install --omit=dev --registry=https://registry.npmmirror.com \
-    && npm rebuild sqlite3 \
+    && npm update better-sqlite3 \
     && node -e "require('sqlite3'); console.log('[build] sqlite3 校验通过')" \
     && npm cache clean --force
 
