@@ -9,7 +9,7 @@ FROM --platform=$BUILDPLATFORM node:22-alpine
 
 
 # 安装编译原生模块所需的工具（sqlite3 需要 gcc/make/python3）
-RUN apk add --no-cache python3 make g++ build-essential
+RUN apk add --no-cache python3 build-base
     
 
 WORKDIR /app
