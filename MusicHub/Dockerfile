@@ -9,7 +9,7 @@ FROM alpine:3.24
 
 
 # 安装编译原生模块所需的工具（sqlite3 需要 gcc/make/python3）
-RUN apk add --no-cache python3 build-base
+RUN apk add --no-cache python3 build-base npm
     
 
 WORKDIR /app
