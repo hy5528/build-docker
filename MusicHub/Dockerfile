@@ -14,10 +14,6 @@ RUN apk add --no-cache python3 build-base
 
 WORKDIR /app
 
-# node:22-slim 已内置 node 用户 (uid 1000)，直接复用，无需再创建
-# 创建运行时目录（挂载点，不随镜像打包）
-RUN mkdir -p /app/data/plugins /app/data/uploads /app/data/cache /app/data/logs /app/downloads /app/playlists \
-    && chown -R node:node /app/data /app/downloads /app/playlists
 
 # 先复制依赖清单，利用 Docker 层缓存
 # 注意：这里【不复制 package-lock.json】。sqlite3 已升级到 6.x（N-API 重写，支持 Node 22），
