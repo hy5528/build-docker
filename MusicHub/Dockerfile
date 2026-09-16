@@ -4,7 +4,7 @@
 #   - data / downloads / playlists 为运行时宿主机挂载目录，禁止 COPY 进镜像。
 #   - 后端 Node 依赖在构建时安装进镜像，重启/重建容器不再重新 npm install。
 #   - sqlite3 为原生模块，需 gcc/make/python3 编译，构建阶段安装后打包进镜像。
-FROM node:22-slim
+FROM ghcr.io/linuxserver/baseimage-debian:bookworm
 
 # 使用国内 apt 镜像源（容器内 CA 可能缺失，用 http 源避免证书校验失败）
 RUN echo "deb http://mirrors.tuna.tsinghua.edu.cn/debian bookworm main contrib non-free" > /etc/apt/sources.list \
