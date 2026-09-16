@@ -4,7 +4,7 @@
 #   - data / downloads / playlists 为运行时宿主机挂载目录，禁止 COPY 进镜像。
 #   - 后端 Node 依赖在构建时安装进镜像，重启/重建容器不再重新 npm install。
 #   - sqlite3 为原生模块，需 gcc/make/python3 编译，构建阶段安装后打包进镜像。
-FROM --platform=$BUILDPLATFORM linuxserver/docker-baseimage-alpine:3.24-8a13515c-ls10
+FROM --platform=$BUILDPLATFORM linuxserver/docker-baseimage-alpine:3.24
 
 
 
