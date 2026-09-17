@@ -7,7 +7,7 @@ services:
     image: ghcr.nju.edu.cn/hy5528/musichub66:latest
     container_name: musichub
     ports:
-      - "8300:8000"          # 左边端口可自行修改，如 "8080:8000"
+      - "8300:8000"          # 左边端口可自行修改，如 "8390:8000"
     volumes:
       - /www/musichub/data:/app/data         # 数据目录（数据库、插件配置、封面缓存、日志等）
       - /www/musichub/downloads:/app/downloads   # 下载目录
