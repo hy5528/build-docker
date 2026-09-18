@@ -21,8 +21,8 @@ WORKDIR /app
 
 # node:22-slim 已内置 node 用户 (uid 1000)，直接复用，无需再创建
 # 创建运行时目录（挂载点，不随镜像打包）
-RUN mkdir -p /app/data/plugins /app/data/uploads /app/data/cache /app/data/logs /app/downloads /app/playlists \
-    && chown -R node:node /app/data /app/downloads /app/playlists
+RUN mkdir -p /app/data/plugins /app/data/uploads /app/data/cache /app/data/logs /app/downloads \
+    && chown -R node:node /app/data /app/downloads
 
 # 先复制依赖清单，利用 Docker 层缓存
 # 注意：这里【不复制 package-lock.json】。sqlite3 已升级到 6.x（N-API 重写，支持 Node 22），
@@ -75,7 +75,7 @@ RUN printf '%s\n' \
     'USERNAME=$(getent passwd "$PUID" | cut -d: -f1)' \
     '' \
     '# 修正挂载目录归属，避免宿主机 UID/GID 与容器内不一致导致无权限' \
-    'chown -R "$PUID":"$PGID" /app/data /app/downloads /app/playlists 2>/dev/null || true' \
+    'chown -R "$PUID":"$PGID" /app/data /app/downloads 2>/dev/null || true' \
     '' \
     'cd /app/backend' \
     'exec su "$USERNAME" -c "node server.js"' \
@@ -87,7 +87,6 @@ ENV DATA_DIR=/app/data
 ENV PLUGINS_DIR=/app/data/plugins
 ENV DOWNLOADS_DIR=/app/downloads
 ENV LOGS_DIR=/app/data/logs
-ENV PLAYLISTS_DIR=/app/playlists
 ENV NODE_ENV=production
 ENV PUID=1000
 ENV PGID=1000
