@@ -195,7 +195,7 @@ docker run -d \
 # lxserver
 - LX Music 数据同步服务端和Web 播放器。
 - 前台Web 播放器: http://localhost:9527
-- 后台: http://localhost:9527
+- 后台: http://localhost:9527/admin
 
 ```text
 docker run -d \
