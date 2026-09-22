@@ -48,7 +48,7 @@ ENV DOCKER_ENV=true
 
 # 复制构建产物
 COPY --from=builder /app/public ./public
-COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
+
 COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
 
 # 切换用户
