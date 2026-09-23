@@ -1,4 +1,4 @@
-name: Build OuonnkiTV Docker images
+name: Build EcoHub Docker images
 
 on:
   workflow_dispatch:
@@ -47,17 +47,17 @@ jobs:
         id: meta
         uses: docker/metadata-action@v6
         with:
-          images: ${{ env.REGISTRY }}/${{ github.actor }}/OuonnkiTV66
+          images: ${{ env.REGISTRY }}/${{ github.actor }}EcoHub66
           tags: |
             type=raw,value=latest
       - name: Clone Overleaf Gitlab Repo
         run: |
-          git clone --recurse-submodules https://github.com/sdf65tv/OuonnkiTV1.git app
+          git clone --recurse-submodules https://github.com/fe-spark/EcoHub.git app
 
       - name: "Copy userpatches to build folder"
         shell: bash
         run: |
-          rsync -av OuonnkiTV/. ./app    
+          rsync -av EcoHub/. ./app    
           
       - name: 构建并推送 Docker 镜像
         uses: docker/build-push-action@v7
