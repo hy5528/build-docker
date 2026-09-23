@@ -25,10 +25,10 @@ RUN pnpm install --frozen-lockfile
 COPY . .
 
 # 设置构建时环境变量
-ENV VITE_INITIAL_VIDEO_SOURCES=${VITE_INITIAL_VIDEO_SOURCES}
+# ENV VITE_INITIAL_VIDEO_SOURCES=${VITE_INITIAL_VIDEO_SOURCES}
 ENV VITE_DISABLE_ANALYTICS=${VITE_DISABLE_ANALYTICS:-true}
-# ENV VITE_INITIAL_VIDEO_SOURCES=[{"name":"无尽资源","url":"https://api.wujinapi.me/api.php/provide/vod","isEnabled":true},{"name":"茅台资源","url":"https://caiji.maotaizy.cc/api.php/provide/vod","isEnabled":true},{"name":"猫眼资源","url":"https://api.maoyanapi.top/api.php/provide/vod","isEnabled":true}]
-ADD --chmod=755 ./.env /.env
+ENV VITE_INITIAL_VIDEO_SOURCES=[{"name":"无尽资源","url":"https://api.wujinapi.me/api.php/provide/vod","isEnabled":true},{"name":"茅台资源","url":"https://caiji.maotaizy.cc/api.php/provide/vod","isEnabled":true},{"name":"猫眼资源","url":"https://api.maoyanapi.top/api.php/provide/vod","isEnabled":true}]
+# 
 # 构建应用
 RUN pnpm build
 
