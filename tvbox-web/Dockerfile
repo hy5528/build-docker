@@ -1,10 +1,10 @@
-FROM --platform=$BUILDPLATFORM node:22-alpine AS dependencies
+FROM --platform=$BUILDPLATFORM node:18-alpine AS dependencies
 WORKDIR /app
 RUN corepack enable
 COPY package.json package-lock.json ./
 RUN npm install --frozen-lockfile
 
-FROM --platform=$BUILDPLATFORM node:22-alpine AS builder
+FROM --platform=$BUILDPLATFORM node:18-alpine AS builder
 WORKDIR /app
 RUN corepack enable
 COPY --from=dependencies /app/node_modules ./node_modules
@@ -12,7 +12,7 @@ COPY . .
 ENV NEXT_TELEMETRY_DISABLED=1
 RUN npm run build
 
-FROM node:22-alpine AS runner
+FROM node:18-alpine AS runner
 WORKDIR /app
 ENV NODE_ENV=production
 ENV NEXT_TELEMETRY_DISABLED=1
