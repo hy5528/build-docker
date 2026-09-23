@@ -27,7 +27,7 @@ COPY . .
 # 设置构建时环境变量
 # ENV VITE_INITIAL_VIDEO_SOURCES=${VITE_INITIAL_VIDEO_SOURCES}
 # ENV VITE_DISABLE_ANALYTICS=${VITE_DISABLE_ANALYTICS:-true}
-cp .env.example .env
+COPY .env.example .env
 # 构建应用
 RUN pnpm build
 
