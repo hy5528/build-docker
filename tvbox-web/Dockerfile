@@ -1,5 +1,5 @@
 # ---- 第 1 阶段：安装依赖 ----
-FROM --platform=$BUILDPLATFORM node:20-alpine AS deps
+FROM --platform=$BUILDPLATFORM node:20-alpine AS builder
 
 
 WORKDIR /app
