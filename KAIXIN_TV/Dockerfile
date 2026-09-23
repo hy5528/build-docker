@@ -13,13 +13,13 @@ ARG VITE_DISABLE_ANALYTICS
 WORKDIR /app
 
 # 安装 pnpm
-RUN npm install -g pnpm@10.15.1 --registry=https://registry.npmmirror.com
+RUN npm install -g pnpm@10.15.1
 
 # 复制依赖声明及 .npmrc（确保私有源/registry 配置在安装时生效）
-COPY package.json pnpm-lock.yaml .npmrc ./
+COPY package.json pnpm-lock.yaml pnpm-workspace.yaml .npmrc ./
 
 # 安装依赖（使用 frozen-lockfile 保证与锁文件一致，不生成新锁）
-RUN npm run build
+RUN pnpm install --frozen-lockfile
 
 # 复制源代码
 COPY . .
