@@ -1,6 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  // output: 'standalone', // 仅 Docker 部署时启用，Vercel 部署需注释
+  output: 'standalone', // 仅 Docker 部署时启用，Vercel 部署需注释
   eslint: {
     // 构建时跳过 ESLint 检查（仅代码质量检查，不影响运行；避免依赖链中的类型解析问题导致构建失败）
     ignoreDuringBuilds: true,
