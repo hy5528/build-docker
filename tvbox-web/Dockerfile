@@ -24,17 +24,16 @@ WORKDIR /app
 
 # 设置环境变量
 ENV DOCKER_BUILD=true
-ENV NODE_ENV=production
-ENV NEXT_TELEMETRY_DISABLED=1
+
 
 # 创建非 root 用户
-RUN addgroup --system --gid 1001 nodejs
-RUN adduser --system --uid 1001 nextjs
+RUN addgroup -g 1001 -S nodejs && adduser -u 1001 -S nextjs -G nodejs
 
 # 复制构建产物
 COPY --from=builder /app/public ./public
 COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
 COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
+
 
 # 切换用户
 USER nextjs
