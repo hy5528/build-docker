@@ -1,5 +1,5 @@
 # ---- 第 1 阶段：安装依赖 ----
-FROM --platform=$BUILDPLATFORM node:22-alpine AS deps
+FROM --platform=$BUILDPLATFORM node:20-alpine AS deps
 
 # 启用 corepack 并激活 pnpm（Node20 默认提供 corepack）
 RUN corepack enable && corepack prepare pnpm@latest --activate
@@ -14,7 +14,7 @@ COPY package.json yarn.lock* package-lock.json* pnpm-lock.yaml* .npmrc* ./
 RUN npm install 
 
 # ---- 第 2 阶段：构建项目 ----
-FROM --platform=$BUILDPLATFORM node:22-alpine AS builder
+FROM --platform=$BUILDPLATFORM node:20-alpine AS builder
 # 安装构建工具以编译原生模块
 RUN apk add --no-cache python3 make g++
 
@@ -35,7 +35,7 @@ ENV DOCKER_BUILD=true
 RUN npm run build
 
 # ---- 第 3 阶段：生成运行时镜像 ----
-FROM node:22-alpine AS runner
+FROM node:20-alpine AS runner
 
 # 安装 CA 证书以支持 HTTPS 请求
 RUN apk add --no-cache ca-certificates \
