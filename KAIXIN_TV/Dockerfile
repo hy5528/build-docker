@@ -19,7 +19,7 @@ RUN npm install -g pnpm@10.15.1 --registry=https://registry.npmmirror.com
 COPY package.json pnpm-lock.yaml .npmrc ./
 
 # 安装依赖（使用 frozen-lockfile 保证与锁文件一致，不生成新锁）
-RUN pnpm install 
+RUN npm run build
 
 # 复制源代码
 COPY . .
