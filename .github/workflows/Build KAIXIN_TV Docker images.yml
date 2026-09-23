@@ -1,4 +1,4 @@
-name: Build KAIXIN_TVDocker images
+name: Build KAIXIN_TV Docker images
 
 on:
   workflow_dispatch:
