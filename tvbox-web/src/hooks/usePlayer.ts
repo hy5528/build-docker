@@ -7,7 +7,7 @@ import type { DanmakuItem } from '@/types'
 import { DanmakuManager, parseDanmaku } from '@/lib/danmaku'
 
 interface UsePlayerOptions {
-  container: HTMLElement | null
+  container: HTMLDivElement | null
   url: string
   type?: 'hls' | 'mp4' | 'm3u8'
   danmaku?: DanmakuItem[]
