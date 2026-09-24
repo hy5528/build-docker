@@ -1,4 +1,4 @@
--  ` /opt/` 目录下建立EcoHub目录。下载docker-compose.yml到EcoHub目录。
+-  ` /opt` 目录下建立EcoHub目录。下载docker-compose.yml到EcoHub目录。
 - 在 `/opt/EcoHub/` 目录下执行命令 `docker-compose up -d` 
 - 在浏览器中访问管理后台: http://xxx.xxx.xxx/manage  , 
 - 登录 默认 用户名 密码: `admin admin`
