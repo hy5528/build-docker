@@ -75,7 +75,7 @@ services:
       ACCESS_ANALYTICS_ENABLED: ${ACCESS_ANALYTICS_ENABLED:-false}
     ports:
       # 前台与管理后台（如需不对公网暴露裸端口，可写为 127.0.0.1:${WEB_PORT:-3000}:3000 配合反向代理）
-      - ${WEB_PORT:-3000}:3000
+      - ${WEB_PORT:-3030}:3000
       # 后端 API 直连（供 TVBox / 播放器直连；如无需直连可直接注释此行）
       - 0.0.0.0:${SERVER_PORT:-18080}:8080
     volumes:
