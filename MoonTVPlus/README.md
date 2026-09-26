@@ -5,7 +5,7 @@ kvrocks储存,（若指定kvrocks-data目录，需要将所挂载的数据目录
 ```text
 services:
   moontv-core:
-    image: ghcr.nju.edu.cn/moontvplus66:latest
+    image: ghcr.nju.edu.cn/hy5528/moontvplus66:latest
     container_name: moontv-core
     restart: always
     ports:
