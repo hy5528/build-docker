@@ -52,7 +52,7 @@ services:
 
   mysql:
     container_name: film_mysql
-    image: ghcr.nju.edu.cn/hy5528/mariadb:latest
+    image: dpvduncan/mariadb:latest
     restart: always
     ports:
     - 3610:3306
