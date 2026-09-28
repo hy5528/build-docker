@@ -3,6 +3,7 @@ export const SOURCE_IDS = [
   "ruyi",
   "vdzy",
   "360",
+  "jyzy",
   "niuniu",
   "yaya",
   "hongniu",
