@@ -18,8 +18,7 @@ RUN wget https://github.com/kungec/kunying-cms.git
 # 目录权限
 RUN mkdir -p data/cache data/upload data/license theme addon \
     && chmod -R 755 /var/www/html \
-    && chown -R www-data:www-data data theme addon \
-    && chmod +x docker/entrypoint.sh
+    && chown -R www-data:www-data data theme addon 
 
 WORKDIR /app
 ADD --chmod=755 ./entrypoint.sh /entrypoint.sh
