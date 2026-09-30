@@ -21,5 +21,8 @@ RUN mkdir -p data/cache data/upload data/license theme addon \
     && chown -R www-data:www-data data theme addon \
     && chmod +x docker/entrypoint.sh
 
+WORKDIR /app
+ADD --chmod=755 ./entrypoint.sh /entrypoint.sh
+
 EXPOSE 80
 CMD ["entrypoint.sh"]
