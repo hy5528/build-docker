@@ -12,7 +12,8 @@ RUN apk add --no-cache libpng-dev libjpeg-turbo-dev freetype-dev \
     || apk add --no-cache libpng libjpeg-turbo freetype
 
 WORKDIR /var/www/html
-COPY . /var/www/html/
+
+RUN wget https://github.com/kungec/kunying-cms.git
 
 # 目录权限
 RUN mkdir -p data/cache data/upload data/license theme addon \
@@ -21,4 +22,4 @@ RUN mkdir -p data/cache data/upload data/license theme addon \
     && chmod +x docker/entrypoint.sh
 
 EXPOSE 80
-CMD ["/docker/entrypoint.sh"]
+CMD ["entrypoint.sh"]
