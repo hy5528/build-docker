@@ -9,9 +9,9 @@ RUN apk add --no-cache libpng-dev libjpeg-turbo-dev freetype-dev \
     && docker-php-ext-configure gd --with-freetype --with-jpeg \
     && docker-php-ext-install -j$(nproc) gd \
     || apk add --no-cache libpng libjpeg-turbo freetype
-RUN wget -O maccms https://github.com/kungec/kunying-cms \
-    && mv maccms/* . \
-    && rm -rf maccms
+RUN wget https://github.com/kungec/kunying-cms \
+    && mv kunying-cms/* . \
+    && rm -rf kunying-cms
 RUN chmod -R 755 /var/www/html \
     && chown -R www-data:www-data /var/www/html
 
