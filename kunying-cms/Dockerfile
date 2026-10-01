@@ -18,8 +18,6 @@ RUN wget https://github.com/kungec/kunying-cms.git
 RUN chmod -R 755 /var/www/html \
     && chown -R www-data:www-data /var/www/html
 
-RUN mkdir -p /var/www/html/datas \
-    && chmod -R 777 /var/www/html/datas
 
 
 EXPOSE 80
