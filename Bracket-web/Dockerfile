@@ -1,6 +1,6 @@
 # ---- Base Stage ----
 FROM --platform=$BUILDPLATFORM node:20-alpine AS base
-
+ENV API_URL=http://127.0.0.1:3601
 # ---- Dependencies Stage ----
 FROM base AS deps
 RUN apk add --no-cache libc6-compat
