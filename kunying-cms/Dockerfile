@@ -6,4 +6,3 @@ RUN wget https://github.com/kungec/kunying-cms.git
 
 
 EXPOSE 80
-CMD ["php-fpm"]
