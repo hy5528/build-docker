@@ -15,10 +15,11 @@ WORKDIR /var/www/html
 RUN wget https://github.com/kungec/kunying-cms.git
 
 # 目录权限
-RUN mkdir -p data/cache data/upload data/license theme addon \
-    && chmod -R 755 /var/www/html \
-    && chown -R www-data:www-data data theme addon 
+RUN chmod -R 755 /var/www/html \
+    && chown -R www-data:www-data /var/www/html
 
+RUN mkdir -p /var/www/html/datas \
+    && chmod -R 777 /var/www/html/datas
 
 
 EXPOSE 80
