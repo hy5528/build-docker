@@ -6,10 +6,6 @@ services:
       - "3600:80"
     volumes:
       - /www/cms:/var/www/html
-      - /www/cms/kydata:/var/www/html/data
-      - /www/cms/kytheme:/var/www/html/theme
-      - /www/cms/kyaddon:/var/www/html/addon
-      - /www/cms/kyupload:/var/www/html/upload
     depends_on:
       - db
     restart: unless-stopped
