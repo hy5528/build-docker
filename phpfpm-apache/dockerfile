@@ -1,0 +1,19 @@
+FROM shinsenter/phpfpm-apache:php7.4-alpine
+WORKDIR /var/www/html
+# 安装nginx与PHP扩展
+RUN apk add --no-cache nginx zip unzip curl bash \
+    && docker-php-ext-install pdo_mysql gd opcache pcntl 2>/dev/null || true
+
+# gd扩展依赖
+RUN apk add --no-cache libpng-dev libjpeg-turbo-dev freetype-dev \
+    && docker-php-ext-configure gd --with-freetype --with-jpeg \
+    && docker-php-ext-install -j$(nproc) gd \
+    || apk add --no-cache libpng libjpeg-turbo freetype
+RUN wget -O maccms https://github.com/kungec/kunying-cms \
+    && mv maccms/* . \
+    && mv maccms/.* . 2>/dev/null || true \
+    && rm -rf maccms
+RUN chmod -R 755 /var/www/html \
+    && chown -R www-data:www-data /var/www/html
+
+EXPOSE 80
