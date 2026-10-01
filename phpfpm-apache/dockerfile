@@ -11,6 +11,7 @@ RUN apk add --no-cache libpng-dev libjpeg-turbo-dev freetype-dev \
     || apk add --no-cache libpng libjpeg-turbo freetype
 RUN wget https://github.com/kungec/kunying-cms.git \
     && mv kunying-cms/* . \
+    && mv kunying-cms/.* . 2>/dev/null || true \
     && rm -rf kunying-cms
 RUN chmod -R 755 /var/www/html \
     && chown -R www-data:www-data /var/www/html
