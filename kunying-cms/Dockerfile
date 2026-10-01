@@ -23,4 +23,4 @@ RUN mkdir -p data/cache data/upload data/license theme addon \
 
 
 EXPOSE 80
-CMD ["/entrypoint.sh"]
+CMD ["php-fpm"]
