@@ -1,0 +1,33 @@
+services:
+  web:
+    build: .
+    container_name: kunying-web
+    ports:
+      - "8080:80"
+    volumes:
+      - /www/cms/kydata:/var/www/html/data
+      - /www/cms/kytheme:/var/www/html/theme
+      - /www/cms/kyaddon:/var/www/html/addon
+      - /www/cms/kyupload:/var/www/html/upload
+    depends_on:
+      - db
+    restart: unless-stopped
+
+  db:
+    image: mariadb:10.11
+    container_name: kunying-db
+    environment:
+      MYSQL_ROOT_PASSWORD: 123456
+      MYSQL_DATABASE: kunying
+      MYSQL_CHARSET: utf8mb4
+    volumes:
+      - /www/cms/kydb:/var/lib/mysql
+    restart: unless-stopped
+    command: --character-set-server=utf8mb4 --collation-server=utf8mb4_general_ci
+
+volumes:
+  kyupload:
+  kydata:
+  kytheme:
+  kyaddon:
+  kydb:
