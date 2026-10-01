@@ -2,7 +2,7 @@
 FROM shinsenter/phpfpm-apache:php7.4-alpine
 
 
-RUN wget https://github.com/kungec/kunying-cms.git
-
+ENV REPO_URL https://github.com/kungec/kunying-cms.git
+VOLUME /var/www/html
 
 EXPOSE 80
