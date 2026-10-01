@@ -9,7 +9,7 @@ RUN apk add --no-cache libpng-dev libjpeg-turbo-dev freetype-dev \
     && docker-php-ext-configure gd --with-freetype --with-jpeg \
     && docker-php-ext-install -j$(nproc) gd \
     || apk add --no-cache libpng libjpeg-turbo freetype
-RUN wget https://github.com/kungec/kunying-cms.git \
+RUN git clone https://github.com/kungec/kunying-cms.git \
     && mv kunying-cms/* . \
     && mv kunying-cms/.* . 2>/dev/null || true \
     && rm -rf kunying-cms
