@@ -24,4 +24,4 @@ WORKDIR /app
 ADD --chmod=755 ./entrypoint.sh /entrypoint.sh
 
 EXPOSE 80
-CMD ["entrypoint.sh"]
+CMD ["/entrypoint.sh"]
