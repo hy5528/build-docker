@@ -10,8 +10,6 @@ RUN apk add --no-cache libpng-dev libjpeg-turbo-dev freetype-dev \
     && docker-php-ext-install -j$(nproc) gd \
     || apk add --no-cache libpng libjpeg-turbo freetype
 
-WORKDIR /var/www/html
-
 RUN wget https://github.com/kungec/kunying-cms.git
 
 # 目录权限
