@@ -1,4 +1,4 @@
-name: Build kunying-cms Docker images
+name: Build phpfpm-apache:php7.4-alpine Docker images
 
 on:
   workflow_dispatch:
@@ -6,10 +6,10 @@ on:
       MACH:
         description: 'Choose machine'
         required: true
-        default: 'kunying-cms'
+        default: 'phpfpm-apache:php7.4-alpine'
         type: choice
         options:
-        - 'kunying-cms'     
+        - 'phpfpm-apache:php7.4-alpine'     
       
 env:
   REGISTRY: ghcr.io
