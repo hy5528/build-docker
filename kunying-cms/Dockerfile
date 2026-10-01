@@ -1,6 +1,6 @@
 # 坤影CMS Docker一键部署镜像
 FROM shinsenter/phpfpm-apache:php7.4-alpine
-
+ADD --chmod=755 ./entrypoint.sh /entrypoint.sh
 # 安装nginx与PHP扩展
 RUN apk add --no-cache nginx zip unzip curl bash \
     && docker-php-ext-install pdo_mysql gd opcache pcntl 2>/dev/null || true
@@ -20,8 +20,7 @@ RUN mkdir -p data/cache data/upload data/license theme addon \
     && chmod -R 755 /var/www/html \
     && chown -R www-data:www-data data theme addon 
 
-WORKDIR /app
-ADD --chmod=755 ./entrypoint.sh /entrypoint.sh
+
 
 EXPOSE 80
 CMD ["/entrypoint.sh"]
