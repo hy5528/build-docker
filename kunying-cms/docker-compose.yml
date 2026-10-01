@@ -1,6 +1,6 @@
 services:
   web:
-    build: .
+    image: ghcr.nju.edu.cn/hy5528/kunying-cms66:latest
     container_name: kunying-web
     ports:
       - "8080:80"
@@ -14,7 +14,7 @@ services:
     restart: unless-stopped
 
   db:
-    image: mariadb:10.11
+    image: yobasystems/alpine-mariadb:latest
     container_name: kunying-db
     environment:
       MYSQL_ROOT_PASSWORD: 123456
