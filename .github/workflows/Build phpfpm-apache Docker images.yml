@@ -1,4 +1,4 @@
-name: Build phpfpm-apache-alpine Docker images
+name: Build phpfpm-apache Docker images
 
 on:
   workflow_dispatch:
@@ -6,10 +6,10 @@ on:
       MACH:
         description: 'Choose machine'
         required: true
-        default: 'phpfpm-apache-alpine'
+        default: 'phpfpm-apache'
         type: choice
         options:
-        - 'phpfpm-apache-alpine'     
+        - 'phpfpm-apache'     
       
 env:
   REGISTRY: ghcr.io
