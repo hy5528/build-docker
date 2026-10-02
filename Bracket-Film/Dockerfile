@@ -29,16 +29,11 @@ RUN go build -o main ./cmd/server/...
 # 2. 编译 Next.js 前端应用 (web)
 # ==========================================
 FROM --platform=$BUILDPLATFORM node:20-alpine AS web-deps
-
-# ---- Dependencies Stage ----
-FROM base AS deps
 RUN apk add --no-cache libc6-compat
 WORKDIR /app
 COPY web/package.json ./
-RUN --mount=type=cache,target=/root/.npm \
-    npm install
+RUN --mount=type=cache,target=/root/.npm npm install
 
-# ---- Builder Stage ----
 FROM --platform=$BUILDPLATFORM node:20-alpine AS web-builder
 WORKDIR /app
 COPY --from=web-deps /app/node_modules ./node_modules
@@ -48,9 +43,7 @@ ENV NEXT_TELEMETRY_DISABLED=1
 ARG API_URL=http://127.0.0.1:8080
 ENV API_URL=${API_URL}
 
-RUN --mount=type=cache,target=/app/.next/cache \
-    npm run build
-
+RUN --mount=type=cache,target=/app/.next/cache npm run build
 # ==========================================
 # 3. 运行环境 (Runner): 合并为一个镜像
 # ==========================================
