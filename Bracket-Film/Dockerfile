@@ -31,7 +31,7 @@ FROM --platform=$BUILDPLATFORM node:20-alpine AS web-deps
 FROM base AS deps
 RUN apk add --no-cache libc6-compat
 WORKDIR /app
-COPY web/package.json package-lock.json* ./
+COPY web/package.json ./
 RUN --mount=type=cache,target=/root/.npm \
     npm install
 
