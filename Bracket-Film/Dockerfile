@@ -5,20 +5,26 @@
 # ==========================================
 FROM --platform=$BUILDPLATFORM golang:1.24-alpine AS server-builder
 
+LABEL maintainer="spark"
+
 ENV GO111MODULE=on \
     CGO_ENABLED=0 \
     GOOS=linux \
+    GOARCH=amd64 \
     TZ=Asia/Shanghai
 
-ARG TARGETARCH
+RUN apk add --no-cache ca-certificates tzdata
 
 WORKDIR /src
-COPY server/go.mod server/go.sum ./
-RUN --mount=type=cache,target=/go/pkg/mod go mod download
 
-COPY server/ .
-RUN --mount=type=cache,target=/root/.cache/go-build \
-    GOARCH=$TARGETARCH go build -o /out/main ./cmd/server/...
+# 先复制依赖声明并下载（独立缓存层，代码变动不会重新下载）
+COPY ./server/go.mod ./server/go.sum ./
+RUN go mod download
+
+# 再复制源码并编译
+ADD ./server .
+
+RUN go build -o main ./cmd/server/...
 
 # ==========================================
 # 2. 编译 Next.js 前端应用 (web)
