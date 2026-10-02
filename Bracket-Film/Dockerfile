@@ -25,7 +25,7 @@ RUN --mount=type=cache,target=/root/.cache/go-build \
 # ==========================================
 # 2. 编译 Next.js 前端应用 (web)
 # ==========================================
-FROM --platform=$BUILDPLATFORM node:20-alpine AS base
+FROM --platform=$BUILDPLATFORM node:20-alpine AS web-deps
 
 # ---- Dependencies Stage ----
 FROM base AS deps
@@ -36,10 +36,10 @@ RUN --mount=type=cache,target=/root/.npm \
     npm install
 
 # ---- Builder Stage ----
-FROM base AS builder
+FROM --platform=$BUILDPLATFORM node:20-alpine AS web-builder
 WORKDIR /app
-COPY --from=deps /app/node_modules ./node_modules
-COPY . .
+COPY --from=web-deps /app/node_modules ./node_modules
+COPY web/ .
 
 ENV NEXT_TELEMETRY_DISABLED=1
 ARG API_URL=http://127.0.0.1:8080
