@@ -24,8 +24,7 @@ RUN go mod download
 ADD ./server .
 
 RUN --mount=type=cache,target=/root/.cache/go-build \
-    GOARCH=$TARGETARCH go build -o /out/main ./cmd/server/... && \
-    GOARCH=$TARGETARCH go build -o /out/migrate_match_keys ./cmd/tool/migrate_match_keys/...
+    GOARCH=$TARGETARCH go build -o /out/main ./cmd/server/... 
 
 # ==========================================
 # 2. 编译 Next.js 前端应用 (web)
