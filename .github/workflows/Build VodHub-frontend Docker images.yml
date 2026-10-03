@@ -47,7 +47,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@v6
         with:
-          images: ${{ env.REGISTRY }}/${{ github.actor }}/VodHub-frontend66
+          images: ${{ env.REGISTRY }}/${{ github.actor }}/vodhub-frontend66
           tags: |
             type=raw,value=latest
       - name: Clone Overleaf Gitlab Repo
