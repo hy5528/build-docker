@@ -50,12 +50,6 @@ LABEL org.opencontainers.image.title="Bracket All-in-One" \
       org.opencontainers.image.description="EcoHub All-in-One single image containing both Go server and Next.js web." \
       
 
-ENV NODE_ENV=production \
-    NEXT_TELEMETRY_DISABLED=1 \
-    TZ=Asia/Shanghai \
-    PORT=8080 \
-    API_URL=http://127.0.0.1:8080
-
 ENV NODE_ENV=production
 ENV NEXT_TELEMETRY_DISABLED=1
 ARG API_URL
