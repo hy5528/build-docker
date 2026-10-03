@@ -18,7 +18,7 @@ COPY . .
 RUN npm run build
 
 # 第二阶段：生产环境
-FROM nginx AS app
+FROM nginx:alpine AS app
 
 WORKDIR /app
 
