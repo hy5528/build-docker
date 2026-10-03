@@ -1,4 +1,4 @@
-name: Build Bismuth-Player Docker images
+name: Build VodHub-frontend Docker images
 
 on:
   workflow_dispatch:
@@ -47,22 +47,22 @@ jobs:
         id: meta
         uses: docker/metadata-action@v6
         with:
-          images: ${{ env.REGISTRY }}/${{ github.actor }}/Bismuth-Player66
+          images: ${{ env.REGISTRY }}/${{ github.actor }}/VodHub-frontend66
           tags: |
             type=raw,value=latest
       - name: Clone Overleaf Gitlab Repo
         run: |
-          git clone --recurse-submodules https://github.com/Eq52/Bismuth-Player.git app
+          git clone --recurse-submodules https://github.com/consistent-k/VodHub.git app
 
       - name: "Copy userpatches to build folder"
         shell: bash
         run: |
-          rsync -av Bismuth-Player/. ./app 
+          rsync -av VodHub/. ./app/apps/frontend
           
       - name: 构建并推送 Docker 镜像
         uses: docker/build-push-action@v7
         with:
-          context: ./app
+          context: ./app/apps/frontend
           platforms: linux/amd64,linux/arm64,linux/arm/v7
           push: true
           tags: ${{ steps.meta.outputs.tags }}
