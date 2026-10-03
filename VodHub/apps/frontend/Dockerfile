@@ -16,7 +16,7 @@ COPY --from=deps /app/node_modules ./node_modules
 COPY --from=deps /app/apps/frontend/node_modules ./apps/frontend/node_modules
 COPY /app/apps/frontend/package.json pnpm-workspace.yaml tsconfig.base.json ./
 COPY packages/ ./packages/
-COPY apps/frontend/ ./apps/frontend/
+COPY /app/apps/frontend/ ./apps/frontend/
 WORKDIR /app/apps/frontend
 RUN pnpm build
 
