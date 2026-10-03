@@ -1,4 +1,4 @@
-name: Build Bracket-web Docker images
+name: Build Bismuth-Player Docker images
 
 on:
   workflow_dispatch:
@@ -47,22 +47,22 @@ jobs:
         id: meta
         uses: docker/metadata-action@v6
         with:
-          images: ${{ env.REGISTRY }}/${{ github.actor }}/Bracket-web66
+          images: ${{ env.REGISTRY }}/${{ github.actor }}/Bismuth-Player66
           tags: |
             type=raw,value=latest
       - name: Clone Overleaf Gitlab Repo
         run: |
-          git clone --recurse-submodules https://github.com/wj5403293/Bracket-Film.git app
+          git clone --recurse-submodules https://github.com/Eq52/Bismuth-Player.git app
 
       - name: "Copy userpatches to build folder"
         shell: bash
         run: |
-          rsync -av Bracket-web/. ./app/web  
+          rsync -av Bismuth-Player/. ./app 
           
       - name: 构建并推送 Docker 镜像
         uses: docker/build-push-action@v7
         with:
-          context: ./app/web
+          context: ./app
           platforms: linux/amd64,linux/arm64,linux/arm/v7
           push: true
           tags: ${{ steps.meta.outputs.tags }}
