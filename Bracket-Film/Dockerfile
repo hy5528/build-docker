@@ -56,6 +56,11 @@ ENV NODE_ENV=production \
     PORT=8080 \
     API_URL=http://127.0.0.1:8080
 
+ENV NODE_ENV=production
+ENV NEXT_TELEMETRY_DISABLED=1
+ARG API_URL
+ENV API_URL=http://127.0.0.1:8080
+
 RUN apk add --no-cache ca-certificates tzdata supervisor
 
 WORKDIR /app
