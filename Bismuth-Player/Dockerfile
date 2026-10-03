@@ -1,13 +1,13 @@
 FROM --platform=$BUILDPLATFORM node:16.13.1-alpine AS build
 
+RUN apk add --no-cache python3 make g++ git 
 WORKDIR /app
 
+COPY package*.json ./
+RUN npm install
+    
 COPY . .
-
-RUN apk add --no-cache python3 make g++ git \
-    && yarn install --frozen-lockfile \
-    && yarn build
-
+RUN npm run build
 # app
 
 FROM nginx:1.29.3-alpine3.22-slim AS app
