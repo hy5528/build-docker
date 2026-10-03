@@ -36,7 +36,8 @@ COPY web/ .
 
 ENV NEXT_TELEMETRY_DISABLED=1
 ARG API_URL=http://127.0.0.1:8080
-ENV API_URL=${API_URL}
+ENV API_URL=http://127.0.0.1:8080
+
 
 RUN --mount=type=cache,target=/app/.next/cache npm run build
 
