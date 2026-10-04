@@ -3,7 +3,7 @@
 # ==========================================
 # 1. 编译 Go 后端服务 (server)
 # ==========================================
-FROM golang:tip-alpine3.23 AS server-builder
+FROM --platform=$BUILDPLATFORM golang:1.25-alpine AS server-builder
 
 ENV GO111MODULE=on \
     CGO_ENABLED=0 \
@@ -13,13 +13,14 @@ ENV GO111MODULE=on \
 ARG TARGETARCH
 
 WORKDIR /src
-COPY film/server/go.mod film/server/go.sum ./
+COPY server/go.mod server/go.sum ./
 RUN --mount=type=cache,target=/go/pkg/mod go mod download
 
-COPY film/server/ .
+COPY server/ .
 RUN --mount=type=cache,target=/root/.cache/go-build \
-    CGO_ENABLED=0 GOOS=linux \
-    go build -ldflags="-s -w" -o /build/gofilm ./main.go
+    GOARCH=$TARGETARCH go build -o /out/main ./cmd/server/... && \
+    GOARCH=$TARGETARCH go build -o /out/migrate_match_keys ./cmd/tool/migrate_match_keys/... && \
+    GOARCH=$TARGETARCH go build -o /out/migrate_slave_playlist_keys ./cmd/tool/migrate_slave_playlist_keys/...
 
 # ==========================================
 # 2. 编译 Next.js 前端应用 (web)
@@ -61,8 +62,15 @@ RUN apk add --no-cache ca-certificates tzdata supervisor
 WORKDIR /app
 
 # 拷贝 Go 服务二进制文件及迁移工具
-COPY --from=builder /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/
-COPY --from=builder /build/gofilm /gofilm
+COPY --from=server-builder /out/main /app/server/main
+COPY --from=server-builder /out/migrate_match_keys /usr/local/bin/migrate_match_keys
+COPY --from=server-builder /out/migrate_slave_playlist_keys /usr/local/bin/migrate_slave_playlist_keys
+RUN chmod +x /usr/local/bin/migrate_match_keys /usr/local/bin/migrate_slave_playlist_keys && \
+    ln -s /usr/local/bin/migrate_match_keys /app/migrate_match_keys && \
+    ln -s /usr/local/bin/migrate_match_keys /app/server/migrate_match_keys && \
+    ln -s /usr/local/bin/migrate_slave_playlist_keys /app/migrate_slave_playlist_keys && \
+    ln -s /usr/local/bin/migrate_slave_playlist_keys /app/server/migrate_slave_playlist_keys
+
 # 拷贝 Next.js 产物
 COPY --from=web-builder /app/public /app/web/public
 COPY --from=web-builder /app/.next/standalone /app/web/
