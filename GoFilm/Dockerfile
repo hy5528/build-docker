@@ -3,7 +3,7 @@
 # ==========================================
 # 1. 编译 Go 后端服务 (server)
 # ==========================================
-FROM --platform=$BUILDPLATFORM golang:1.24-alpine AS server-builder
+FROM golang:tip-alpine3.23 AS server-builder
 
 ENV GO111MODULE=on \
     CGO_ENABLED=0 \
