@@ -13,7 +13,7 @@ ENV GO111MODULE=on \
 ARG TARGETARCH
 
 WORKDIR /src
-COPY flim/server/go.mod film/server/go.sum ./
+COPY server/go.mod server/go.sum ./
 RUN --mount=type=cache,target=/go/pkg/mod go mod download
 
 COPY film/server/ .
