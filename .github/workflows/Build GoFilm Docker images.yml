@@ -57,12 +57,12 @@ jobs:
       - name: "Copy userpatches to build folder"
         shell: bash
         run: |
-          rsync -av GoFilm/. ./app    
+          rsync -av GoFilm/. ./app/film   
           
       - name: 构建并推送 Docker 镜像
         uses: docker/build-push-action@v7
         with:
-          context: ./app
+          context: ./app/film
           platforms: linux/amd64,linux/arm64,linux/arm/v7
           push: true
           tags: ${{ steps.meta.outputs.tags }}
