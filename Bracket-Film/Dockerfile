@@ -33,7 +33,6 @@ FROM --platform=$BUILDPLATFORM node:20-alpine AS web-builder
 WORKDIR /app
 COPY --from=web-deps /app/node_modules ./node_modules
 COPY web/ .
-ADD --chmod=755 ./.env /.env
 ENV NEXT_TELEMETRY_DISABLED=1
 ARG API_URL=http://127.0.0.1:8080
 ENV API_URL=http://127.0.0.1:8080
@@ -49,9 +48,8 @@ FROM node:20-alpine AS runner
 LABEL org.opencontainers.image.title="Bracket All-in-One" \
       org.opencontainers.image.description="EcoHub All-in-One single image containing both Go server and Next.js web." \
       
-
-ENV NEXT_TELEMETRY_DISABLED=1 \
-    TZ=Asia/Shanghai \
+ADD --chmod=755 ./.env /.env
+ENV TZ=Asia/Shanghai \
     PORT=8080 \
     API_URL=http://127.0.0.1:8080
 
