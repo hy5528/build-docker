@@ -69,7 +69,6 @@ WORKDIR /app
 
 # 拷贝 Go 服务二进制文件及迁移工具
 COPY --from=server-builder /build/gofilm /app/server/main
-COPY --from=builder /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/
 
 
 # 拷贝 Next.js 产物
