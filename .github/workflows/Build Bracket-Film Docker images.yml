@@ -52,7 +52,7 @@ jobs:
             type=raw,value=latest
       - name: Clone Overleaf Gitlab Repo
         run: |
-          git clone --recurse-submodules https://github.com/wj5403293/Bracket-Film.git app
+          git clone https://github.com/wj5403293/Bracket-Film.git app
 
       - name: "Copy userpatches to build folder"
         shell: bash
