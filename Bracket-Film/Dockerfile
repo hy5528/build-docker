@@ -18,13 +18,15 @@ RUN --mount=type=cache,target=/go/pkg/mod go mod download
 
 COPY server/ .
 RUN --mount=type=cache,target=/root/.cache/go-build \
-    GOARCH=$TARGETARCH go build -o /out/main ./cmd/server/... 
+    GOARCH=$TARGETARCH go build -o /out/main ./cmd/server/... && \
+    GOARCH=$TARGETARCH go build -o /out/migrate_match_keys ./cmd/tool/migrate_match_keys/... && \
+    GOARCH=$TARGETARCH go build -o /out/migrate_slave_playlist_keys ./cmd/tool/migrate_slave_playlist_keys/...
 
 # ==========================================
 # 2. 编译 Next.js 前端应用 (web)
 # ==========================================
 FROM --platform=$BUILDPLATFORM node:20-alpine AS web-deps
-RUN apk add --no-cache libc6-compat curl
+RUN apk add --no-cache libc6-compat
 WORKDIR /app
 COPY web/package.json web/package-lock.json ./
 RUN --mount=type=cache,target=/root/.npm npm ci
@@ -33,10 +35,10 @@ FROM --platform=$BUILDPLATFORM node:20-alpine AS web-builder
 WORKDIR /app
 COPY --from=web-deps /app/node_modules ./node_modules
 COPY web/ .
+
 ENV NEXT_TELEMETRY_DISABLED=1
 ARG API_URL=http://127.0.0.1:8080
-ENV API_URL=http://127.0.0.1:8080
-
+ENV API_URL=${API_URL}
 
 RUN --mount=type=cache,target=/app/.next/cache npm run build
 
@@ -45,9 +47,15 @@ RUN --mount=type=cache,target=/app/.next/cache npm run build
 # ==========================================
 FROM node:20-alpine AS runner
 
-LABEL org.opencontainers.image.title="Bracket All-in-One" \
+LABEL org.opencontainers.image.title="EcoHub All-in-One" \
       org.opencontainers.image.description="EcoHub All-in-One single image containing both Go server and Next.js web." \
-    
+      org.opencontainers.image.source="https://github.com/fe-spark/EcoHub"
+
+ENV NODE_ENV=production \
+    NEXT_TELEMETRY_DISABLED=1 \
+    TZ=Asia/Shanghai \
+    PORT=8080 \
+    API_URL=http://127.0.0.1:8080
 
 RUN apk add --no-cache ca-certificates tzdata supervisor
 
@@ -55,6 +63,13 @@ WORKDIR /app
 
 # 拷贝 Go 服务二进制文件及迁移工具
 COPY --from=server-builder /out/main /app/server/main
+COPY --from=server-builder /out/migrate_match_keys /usr/local/bin/migrate_match_keys
+COPY --from=server-builder /out/migrate_slave_playlist_keys /usr/local/bin/migrate_slave_playlist_keys
+RUN chmod +x /usr/local/bin/migrate_match_keys /usr/local/bin/migrate_slave_playlist_keys && \
+    ln -s /usr/local/bin/migrate_match_keys /app/migrate_match_keys && \
+    ln -s /usr/local/bin/migrate_match_keys /app/server/migrate_match_keys && \
+    ln -s /usr/local/bin/migrate_slave_playlist_keys /app/migrate_slave_playlist_keys && \
+    ln -s /usr/local/bin/migrate_slave_playlist_keys /app/server/migrate_slave_playlist_keys
 
 # 拷贝 Next.js 产物
 COPY --from=web-builder /app/public /app/web/public
