@@ -33,12 +33,12 @@ FROM scratch
 # ==========================================
 FROM --platform=$BUILDPLATFORM node:20-alpine AS web-deps
 RUN apk add --no-cache libc6-compat
-WORKDIR /app
+WORKDIR /app/film
 COPY web/package.json web/package-lock.json ./
 RUN --mount=type=cache,target=/root/.npm npm ci
 
 FROM --platform=$BUILDPLATFORM node:20-alpine AS web-builder
-WORKDIR /app
+WORKDIR /app/film
 COPY --from=web-deps /app/node_modules ./node_modules
 COPY web/ .
 
