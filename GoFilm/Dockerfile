@@ -63,9 +63,9 @@ RUN apk add --no-cache ca-certificates tzdata supervisor
 WORKDIR /app
 
 # 拷贝 Go 服务二进制文件及迁移工具
-COPY --from=server-builder /out/main /app/server/main
 
-
+COPY --from=builder /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/
+COPY --from=builder /build/gofilm /app/server/main
 # 拷贝 Next.js 产物
 COPY --from=web-builder /app/public /app/web/public
 COPY --from=web-builder /app/.next/standalone /app/web/
