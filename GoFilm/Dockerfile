@@ -3,22 +3,28 @@
 # ==========================================
 # 1. 编译 Go 后端服务 (server)
 # ==========================================
-FROM --platform=$BUILDPLATFORM golang:1.24-alpine AS server-builder
+FROM golang:tip-alpine3.23 AS builder
 
-ENV GO111MODULE=on \
-    CGO_ENABLED=0 \
-    GOOS=linux \
-    TZ=Asia/Shanghai
+RUN apk add --no-cache ca-certificates git build-base
 
-ARG TARGETARCH
 
-WORKDIR /src
-COPY server/go.mod server/go.sum ./
-RUN --mount=type=cache,target=/go/pkg/mod go mod download
 
-COPY server/ .
+WORKDIR /build
+
+COPY ./film/server/go.mod ./film/server/go.sum ./
+RUN --mount=type=cache,target=/go/pkg/mod \
+    go mod download
+
+
+COPY ./film/server .
+
+
 RUN --mount=type=cache,target=/root/.cache/go-build \
-    GOARCH=$TARGETARCH go build -o /out/main ./cmd/server/... 
+    CGO_ENABLED=0 GOOS=linux \
+    go build -ldflags="-s -w" -o /build/gofilm ./main.go
+
+
+FROM scratch
 
 # ==========================================
 # 2. 编译 Next.js 前端应用 (web)
