@@ -13,12 +13,14 @@ ENV GO111MODULE=on \
 ARG TARGETARCH
 
 WORKDIR /src
-COPY server/go.mod server/go.sum ./
+COPY film/server/go.mod film/server/go.sum ./
 RUN --mount=type=cache,target=/go/pkg/mod go mod download
 
-COPY server/ .
+COPY film/server/ .
 RUN --mount=type=cache,target=/root/.cache/go-build \
-    GOARCH=$TARGETARCH go build -o /out/main ./cmd/server/... 
+    CGO_ENABLED=0 GOOS=linux \
+    go build -ldflags="-s -w" -o /build/gofilm ./main.go
+
 # ==========================================
 # 2. 编译 Next.js 前端应用 (web)
 # ==========================================
@@ -59,8 +61,8 @@ RUN apk add --no-cache ca-certificates tzdata supervisor
 WORKDIR /app
 
 # 拷贝 Go 服务二进制文件及迁移工具
-COPY --from=server-builder /out/main /app/server/main
-
+COPY --from=builder /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/
+COPY --from=builder /build/gofilm /gofilm
 # 拷贝 Next.js 产物
 COPY --from=web-builder /app/public /app/web/public
 COPY --from=web-builder /app/.next/standalone /app/web/
