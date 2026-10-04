@@ -30,47 +30,36 @@ FROM scratch
 # 2. 编译 Next.js 前端应用 (web)
 # ==========================================
 FROM --platform=$BUILDPLATFORM node:20-alpine AS web-deps
-
 RUN apk add --no-cache libc6-compat
 WORKDIR /app
-COPY package.json package-lock.json* ./
-RUN --mount=type=cache,target=/root/.npm \
-    npm install
+COPY web/package.json web/package-lock.json ./
+RUN --mount=type=cache,target=/root/.npm npm ci
 
-# ---- Builder Stage ----
-FROM --platform=$BUILDPLATFORM node:20-alpine AS builder
+FROM --platform=$BUILDPLATFORM node:20-alpine AS web-builder
 WORKDIR /app
-COPY --from=deps /app/node_modules ./node_modules
-COPY . .
+COPY --from=web-deps /app/node_modules ./node_modules
+COPY web/ .
 
 ENV NEXT_TELEMETRY_DISABLED=1
-ARG API_URL
+ARG API_URL=http://127.0.0.1:8080
 ENV API_URL=${API_URL}
 
-RUN --mount=type=cache,target=/app/.next/cache \
-    npm run build
-
+RUN --mount=type=cache,target=/app/.next/cache npm run build
 
 # ==========================================
 # 3. 运行环境 (Runner): 合并为一个镜像
 # ==========================================
 FROM node:20-alpine AS runner
 
-LABEL org.opencontainers.image.title="GoFilm All-in-One" \
+LABEL org.opencontainers.image.title="EcoHub All-in-One" \
       org.opencontainers.image.description="EcoHub All-in-One single image containing both Go server and Next.js web." \
-      
+      org.opencontainers.image.source="https://github.com/fe-spark/EcoHub"
 
-WORKDIR /app
-
-ENV NODE_ENV=production
-ENV NEXT_TELEMETRY_DISABLED=1
-
-# 运行时需要传入 API_URL，供 SSR 服务端渲染调用后端接口
-ARG API_URL
-ENV API_URL=${API_URL}
-
-RUN addgroup --system --gid 1001 nodejs
-RUN adduser --system --uid 1001 nextjs
+ENV NODE_ENV=production \
+    NEXT_TELEMETRY_DISABLED=1 \
+    TZ=Asia/Shanghai \
+    PORT=8080 \
+    API_URL=http://127.0.0.1:8080
 
 RUN apk add --no-cache ca-certificates tzdata supervisor
 
