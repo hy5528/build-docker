@@ -49,8 +49,8 @@ RUN --mount=type=cache,target=/app/.next/cache npm run build
 FROM node:20-alpine AS runner
 
 LABEL org.opencontainers.image.title="Bracket-Film All-in-One" \
-      org.opencontainers.image.description="EcoHub All-in-One single image containing both Go server and Next.js web." \
-
+      org.opencontainers.image.description="EcoHub All-in-One single image containing both Go server and Next.js web." 
+      
 ENV NODE_ENV=production \
     NEXT_TELEMETRY_DISABLED=1 \
     TZ=Asia/Shanghai \
