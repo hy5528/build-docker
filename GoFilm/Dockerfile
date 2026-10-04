@@ -16,7 +16,7 @@ WORKDIR /src
 COPY server/go.mod server/go.sum ./
 RUN --mount=type=cache,target=/go/pkg/mod go mod download
 
-COPY film/server/ .
+COPY server/ .
 RUN --mount=type=cache,target=/root/.cache/go-build \
     GOARCH=$TARGETARCH go build -o /out/main ./cmd/server/... 
 
