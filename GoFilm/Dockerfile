@@ -9,7 +9,7 @@ RUN apk add --no-cache ca-certificates git build-base
 
 
 
-WORKDIR /build
+WORKDIR /src
 
 COPY ./film/server/go.mod ./film/server/go.sum ./
 RUN --mount=type=cache,target=/go/pkg/mod \
