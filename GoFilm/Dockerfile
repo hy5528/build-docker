@@ -38,9 +38,9 @@ COPY web/package.json web/package-lock.json ./
 RUN --mount=type=cache,target=/root/.npm npm ci
 
 FROM --platform=$BUILDPLATFORM node:20-alpine AS web-builder
-WORKDIR /app/film
+WORKDIR /app
 COPY --from=web-deps /app/node_modules ./node_modules
-COPY web/ .
+COPY /app/film/web/ .
 
 ENV NEXT_TELEMETRY_DISABLED=1
 ARG API_URL=http://127.0.0.1:8080
