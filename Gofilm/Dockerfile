@@ -1,21 +1,23 @@
 # ---- Base Stage ----
-FROM --platform=$BUILDPLATFORM node:20-alpine  AS base
+FROM --platform=$BUILDPLATFORM node:20-alpine AS build-base
 
 # ---- Dependencies Stage ----
-FROM base AS deps
+FROM build-base AS deps
 RUN apk add --no-cache libc6-compat
 WORKDIR /app
-COPY package.json package-lock.json* ./
+# package-lock.json 已入库，npm ci 严格按 lockfile 安装，杜绝依赖版本漂移
+COPY package.json package-lock.json ./
 RUN --mount=type=cache,target=/root/.npm \
     npm ci
 
 # ---- Builder Stage ----
-FROM base AS builder
+FROM build-base AS builder
 WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 
 ENV NEXT_TELEMETRY_DISABLED=1
+
 ARG API_URL=http://127.0.0.1:3601
 ENV API_URL=${API_URL}
 
@@ -23,8 +25,12 @@ RUN --mount=type=cache,target=/app/.next/cache \
     npm run build
 
 # ---- Runner Stage ----
-FROM base AS runner
+FROM node:20-alpine AS runner
 WORKDIR /app
+
+LABEL org.opencontainers.image.title="EcoHub Web" \
+      org.opencontainers.image.description="EcoHub Next.js frontend for the public site, login page, and management console." \
+      org.opencontainers.image.source="https://github.com/fe-spark/EcoHub"
 
 ENV NODE_ENV=production
 ENV NEXT_TELEMETRY_DISABLED=1
