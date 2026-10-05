@@ -9,7 +9,7 @@ docker-compose.yml
 services:
   mysql:
     container_name: Eco-mysql
-    image: ghcr.nju.edu.cn/hy5528/mariadb:latest
+    image: dpvduncan/mariadb:latest
     restart: always
     environment:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-ecohub}
