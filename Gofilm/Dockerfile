@@ -1,44 +1,50 @@
 FROM --platform=$BUILDPLATFORM node:20-alpine AS web-deps
+# ---- Base Stage ----
+FROM node:20-alpine AS base
+
+# ---- Dependencies Stage ----
+FROM base AS deps
 RUN apk add --no-cache libc6-compat
 WORKDIR /app
-COPY package.json package-lock.json ./
-RUN --mount=type=cache,target=/root/.npm npm ci
+COPY package.json package-lock.json* ./
+RUN --mount=type=cache,target=/root/.npm \
+    npm install
 
-FROM --platform=$BUILDPLATFORM node:20-alpine AS web-builder
+# ---- Builder Stage ----
+FROM base AS builder
 WORKDIR /app
-COPY --from=web-deps /app/node_modules ./node_modules
+COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 
 ENV NEXT_TELEMETRY_DISABLED=1
+ARG API_URL
+ENV API_URL=${API_URL}
+
+RUN --mount=type=cache,target=/app/.next/cache \
+    npm run build
+
+# ---- Runner Stage ----
+FROM base AS runner
+WORKDIR /app
+
+ENV NODE_ENV=production
+ENV NEXT_TELEMETRY_DISABLED=1
+
+# 运行时需要传入 API_URL，供 SSR 服务端渲染调用后端接口
 ARG API_URL=http://film:3601
 ENV API_URL=${API_URL}
 
-RUN --mount=type=cache,target=/app/.next/cache npm run build
+RUN addgroup --system --gid 1001 nodejs
+RUN adduser --system --uid 1001 nextjs
 
-# ==========================================
-# 3. 运行环境 (Runner): 合并为一个镜像
-# ==========================================
-FROM node:20-alpine AS runner
+COPY --from=builder /app/public ./public
+COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
+COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
 
-LABEL org.opencontainers.image.title="EcoHub All-in-One" \
-      org.opencontainers.image.description="EcoHub All-in-One single image containing both Go server and Next.js web." \
-      org.opencontainers.image.source="https://github.com/fe-spark/EcoHub"
+USER nextjs
 
+EXPOSE 3000
+ENV PORT=3000
+ENV HOSTNAME="0.0.0.0"
 
-
-RUN apk add --no-cache ca-certificates tzdata supervisor
-
-WORKDIR /app
-
-# 拷贝 Next.js 产物
-COPY --from=web-builder /app/public /app/web/public
-COPY --from=web-builder /app/.next/standalone /app/web/
-COPY --from=web-builder /app/.next/static /app/web/.next/static
-
-
-# Supervisord 进程配置
-COPY supervisord.conf /etc/supervisord.conf
-
-EXPOSE 3000 
-
-CMD ["/usr/bin/supervisord", "-c", "/etc/supervisord.conf"]
+CMD ["node", "server.js"]
