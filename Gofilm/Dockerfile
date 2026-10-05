@@ -1,49 +1,54 @@
-# ---- Base Stage ----
-FROM --platform=$BUILDPLATFORM node:20-alpine AS base
+# syntax=docker/dockerfile:1.7
 
-# ---- Dependencies Stage ----
-FROM base AS deps
+# ==========================================
+# 1. 编译 Go 后端服务 (server)
+# ==========================================
+FROM --platform=$BUILDPLATFORM golang:1.24-alpine AS server-builder
+# ==========================================
+# 1. 编译 Next.js 前端应用 (web)
+# ==========================================
+FROM --platform=$BUILDPLATFORM node:20-alpine AS web-deps
 RUN apk add --no-cache libc6-compat
 WORKDIR /app
-COPY package.json package-lock.json* ./
-RUN --mount=type=cache,target=/root/.npm \
-    npm install
+COPY web/package.json web/package-lock.json ./
+RUN --mount=type=cache,target=/root/.npm npm ci
 
-# ---- Builder Stage ----
-FROM base AS builder
+FROM --platform=$BUILDPLATFORM node:20-alpine AS web-builder
 WORKDIR /app
-COPY --from=deps /app/node_modules ./node_modules
-COPY . .
+COPY --from=web-deps /app/node_modules ./node_modules
+COPY web/ .
 
 ENV NEXT_TELEMETRY_DISABLED=1
-ARG API_URL
+ARG API_URL=http://127.0.0.1:8080
 ENV API_URL=${API_URL}
 
-RUN --mount=type=cache,target=/app/.next/cache \
-    npm run build
+RUN --mount=type=cache,target=/app/.next/cache npm run build
 
-# ---- Runner Stage ----
-FROM base AS runner
+# ==========================================
+# 3. 运行环境 (Runner): 合并为一个镜像
+# ==========================================
+FROM node:20-alpine AS runner
+
+LABEL org.opencontainers.image.title="EcoHub All-in-One" \
+      org.opencontainers.image.description="EcoHub All-in-One single image containing both Go server and Next.js web." \
+      org.opencontainers.image.source="https://github.com/fe-spark/EcoHub"
+
+ENV NODE_ENV=production \
+    NEXT_TELEMETRY_DISABLED=1 \
+    TZ=Asia/Shanghai \
+    PORT=8080 \
+    API_URL=http://127.0.0.1:8080
+
+RUN apk add --no-cache ca-certificates tzdata 
+
 WORKDIR /app
 
-ENV NODE_ENV=production
-ENV NEXT_TELEMETRY_DISABLED=1
+# 拷贝 Next.js 产物
+COPY --from=web-builder /app/public /app/web/public
+COPY --from=web-builder /app/.next/standalone /app/web/
+COPY --from=web-builder /app/.next/static /app/web/.next/static
 
-# 运行时需要传入 API_URL，供 SSR 服务端渲染调用后端接口
-ARG API_URL
-ENV API_URL=${API_URL}
 
-RUN addgroup --system --gid 1001 nodejs
-RUN adduser --system --uid 1001 nextjs
+EXPOSE 3000 8080
 
-COPY --from=builder /app/public ./public
-COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
-COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
-
-USER nextjs
-
-EXPOSE 3000
-ENV PORT=3000
-ENV HOSTNAME="0.0.0.0"
-
-CMD ["node", "server.js"]
+CMD ["/usr/bin/supervisord", "-c", "/etc/supervisord.conf"]
