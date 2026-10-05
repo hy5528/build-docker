@@ -51,4 +51,4 @@ COPY --from=web-builder /app/.next/static /app/web/.next/static
 
 EXPOSE 3000 8080
 
-CMD ["/usr/bin/supervisord", "-c", "/etc/supervisord.conf"]
+CMD ["node", "server.js"]
