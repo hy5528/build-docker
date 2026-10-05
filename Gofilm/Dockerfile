@@ -1,48 +1,49 @@
-# ==========================================
-# 1. 编译 Next.js 前端应用 (web)
-# ==========================================
-FROM --platform=$BUILDPLATFORM node:20-alpine AS web-deps
+# ---- Base Stage ----
+FROM --platform=$BUILDPLATFORM node:20-alpine AS base
+
+# ---- Dependencies Stage ----
+FROM base AS deps
 RUN apk add --no-cache libc6-compat
 WORKDIR /app
-COPY package.json package-lock.json ./
-RUN --mount=type=cache,target=/root/.npm npm ci
+COPY package.json package-lock.json* ./
+RUN --mount=type=cache,target=/root/.npm \
+    npm install
 
-FROM --platform=$BUILDPLATFORM node:20-alpine AS web-builder
+# ---- Builder Stage ----
+FROM base AS builder
 WORKDIR /app
-COPY --from=web-deps /app/node_modules ./node_modules
-COPY web/ .
+COPY --from=deps /app/node_modules ./node_modules
+COPY . .
 
 ENV NEXT_TELEMETRY_DISABLED=1
-ARG API_URL=http://127.0.0.1:8080
+ARG API_URL
 ENV API_URL=${API_URL}
 
-RUN --mount=type=cache,target=/app/.next/cache npm run build
+RUN --mount=type=cache,target=/app/.next/cache \
+    npm run build
 
-# ==========================================
-# 3. 运行环境 (Runner): 合并为一个镜像
-# ==========================================
-FROM node:20-alpine AS runner
-
-LABEL org.opencontainers.image.title="EcoHub All-in-One" \
-      org.opencontainers.image.description="EcoHub All-in-One single image containing both Go server and Next.js web." \
-      org.opencontainers.image.source="https://github.com/fe-spark/EcoHub"
-
-ENV NODE_ENV=production \
-    NEXT_TELEMETRY_DISABLED=1 \
-    TZ=Asia/Shanghai \
-    PORT=8080 \
-    API_URL=http://127.0.0.1:8080
-
-RUN apk add --no-cache ca-certificates tzdata 
-
+# ---- Runner Stage ----
+FROM base AS runner
 WORKDIR /app
 
-# 拷贝 Next.js 产物
-COPY --from=web-builder /app/public /app/web/public
-COPY --from=web-builder /app/.next/standalone /app/web/
-COPY --from=web-builder /app/.next/static /app/web/.next/static
+ENV NODE_ENV=production
+ENV NEXT_TELEMETRY_DISABLED=1
 
+# 运行时需要传入 API_URL，供 SSR 服务端渲染调用后端接口
+ARG API_URL
+ENV API_URL=${API_URL}
 
-EXPOSE 3000 8080
+RUN addgroup --system --gid 1001 nodejs
+RUN adduser --system --uid 1001 nextjs
+
+COPY --from=builder /app/public ./public
+COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
+COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
+
+USER nextjs
+
+EXPOSE 3000
+ENV PORT=3000
+ENV HOSTNAME="0.0.0.0"
 
 CMD ["node", "server.js"]
