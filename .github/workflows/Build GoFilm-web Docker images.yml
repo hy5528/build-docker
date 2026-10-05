@@ -1,4 +1,4 @@
-name: Build Bracket-Film Docker images
+name: Build GoFilm-web Docker images
 
 on:
   workflow_dispatch:
@@ -47,7 +47,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@v6
         with:
-          images: ${{ env.REGISTRY }}/${{ github.actor }}/Bracket-Film66
+          images: ${{ env.REGISTRY }}/${{ github.actor }}/GoFilm-web66
           tags: |
             type=raw,value=latest
       - name: Clone Overleaf Gitlab Repo
