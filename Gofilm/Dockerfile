@@ -18,7 +18,7 @@ COPY . .
 
 ENV NEXT_TELEMETRY_DISABLED=1
 
-ARG API_URL=http://gofilm:3601
+ARG API_URL=http://127.0.0.1:3601
 ENV API_URL=${API_URL}
 
 RUN --mount=type=cache,target=/app/.next/cache \
@@ -36,7 +36,7 @@ ENV NODE_ENV=production
 ENV NEXT_TELEMETRY_DISABLED=1
 
 # 运行时需要传入 API_URL，供 SSR 服务端渲染调用后端接口
-ARG API_URL=http://gofilm:3601
+ARG API_URL=http://127.0.0.1:3601
 ENV API_URL=${API_URL}
 
 RUN addgroup --system --gid 1001 nodejs
