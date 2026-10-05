@@ -39,8 +39,6 @@ COPY --from=web-builder /app/public /app/web/public
 COPY --from=web-builder /app/.next/standalone /app/web/
 COPY --from=web-builder /app/.next/static /app/web/.next/static
 
-# Supervisord 进程配置
-COPY supervisord.conf /etc/supervisord.conf
 
 EXPOSE 3000 8080
 CMD ["node", "server.js"]
