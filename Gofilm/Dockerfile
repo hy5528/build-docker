@@ -10,7 +10,7 @@ COPY --from=web-deps /app/node_modules ./node_modules
 COPY . .
 
 ENV NEXT_TELEMETRY_DISABLED=1
-ARG API_URL=http://127.0.0.1:8080
+ARG API_URL=http://127.0.0.1:3601
 ENV API_URL=${API_URL}
 
 RUN --mount=type=cache,target=/app/.next/cache npm run build
@@ -24,11 +24,7 @@ LABEL org.opencontainers.image.title="EcoHub All-in-One" \
       org.opencontainers.image.description="EcoHub All-in-One single image containing both Go server and Next.js web." \
       org.opencontainers.image.source="https://github.com/fe-spark/EcoHub"
 
-ENV NODE_ENV=production \
-    NEXT_TELEMETRY_DISABLED=1 \
-    TZ=Asia/Shanghai \
-    PORT=8080 \
-    API_URL=http://127.0.0.1:8080
+
 
 RUN apk add --no-cache ca-certificates tzdata supervisor
 
