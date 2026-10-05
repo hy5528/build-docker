@@ -1,6 +1,5 @@
-FROM --platform=$BUILDPLATFORM node:20-alpine AS web-deps
 # ---- Base Stage ----
-FROM node:20-alpine AS base
+FROM --platform=$BUILDPLATFORM node:20-alpine  AS base
 
 # ---- Dependencies Stage ----
 FROM base AS deps
