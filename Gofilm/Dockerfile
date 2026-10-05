@@ -1,16 +1,10 @@
-# syntax=docker/dockerfile:1.7
-
-# ==========================================
-# 1. 编译 Go 后端服务 (server)
-# ==========================================
-FROM --platform=$BUILDPLATFORM golang:1.24-alpine AS server-builder
 # ==========================================
 # 1. 编译 Next.js 前端应用 (web)
 # ==========================================
 FROM --platform=$BUILDPLATFORM node:20-alpine AS web-deps
 RUN apk add --no-cache libc6-compat
 WORKDIR /app
-COPY web/package.json web/package-lock.json ./
+COPY package.json package-lock.json ./
 RUN --mount=type=cache,target=/root/.npm npm ci
 
 FROM --platform=$BUILDPLATFORM node:20-alpine AS web-builder
