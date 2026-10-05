@@ -10,7 +10,7 @@ COPY --from=web-deps /app/node_modules ./node_modules
 COPY . .
 
 ENV NEXT_TELEMETRY_DISABLED=1
-ARG API_URL=http://127.0.0.1:3601
+ARG API_URL=http://film:3601
 ENV API_URL=${API_URL}
 
 RUN --mount=type=cache,target=/app/.next/cache npm run build
