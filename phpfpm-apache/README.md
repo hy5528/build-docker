@@ -1,11 +1,6 @@
-# kvideo
-- 现代化视频聚合播放平台
-- http://你的IP:3050
+# phpfpm-apache:php7.4-alpine
+
 ```text
-docker run -d \
-  --name kvideo \
-  --restart=always \
-  -p 3050:3000 \
-  ghcr.nju.edu.cn/hy5528/kvideo66:latest
+docker run -d --name film  --restart=always --user $(id -u):$(id -g) -v /www/cms:/var/www/html  -p 3600:80 -e ND_LOGLEVEL=info  ghcr.io/hy5528/phpfpm-apache:php7.4-alpine
 
 ```
