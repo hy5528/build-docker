@@ -34,7 +34,7 @@ services:
       - redis
 
   redis:
-    image: redis:alpine
+    image: ghcr.nju.edu.cn/hy5528/redis:alpine
     container_name: vod_redis
     restart: always
     volumes:
