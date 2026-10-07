@@ -23,7 +23,7 @@ services:
       - '8888:8888'
     environment:
       - NODE_ENV=production
-      - REDIS_URL=redis://redis:6378
+      - REDIS_URL=redis://redis:6379
       - CACHE_TTL=60
       - TMDB_ENABLED=${TMDB_ENABLED:-false}
       - TMDB_API_TOKEN=${TMDB_API_TOKEN:-}
@@ -40,6 +40,6 @@ services:
     volumes:
       - ./data/redis:/data
     ports:
-      - '6378:6379'
+      - '6379:6379'
 
 ```
