@@ -1,4 +1,4 @@
--  ` /opt` 目录下建立VodHub目录。下载docker-compose.yml到EcoHub目录。
+-  ` /opt` 目录下建立VodHub目录。下载docker-compose.yml到VodHub目录。
 - 在 `/opt/VodHub/` 目录下执行命令 `docker-compose up -d` 
 - 启动成功后访问 http://你的IP:3700/setting 进行配置
 - 
