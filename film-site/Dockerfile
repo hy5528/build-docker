@@ -28,7 +28,8 @@ RUN mkdir -p instance backups app/static/uploads/posters logs
 
 # 设置权限
 RUN chmod +x manage.py
-
+RUN python manage.py makemigrations videos
+RUN python manage.py migrate
 # 暴露端口
 EXPOSE 8000
 # 添加启动脚本
