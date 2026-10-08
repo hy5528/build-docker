@@ -1,5 +1,5 @@
 # 第一阶段：构建
-FROM python:3.11-slim as builder
+FROM python:3.12-slim as builder
 
 WORKDIR /app
 COPY requirements.txt .
@@ -10,7 +10,7 @@ COPY . .
 RUN python manage.py collectstatic --noinput || true
 
 # 第二阶段：生产
-FROM python:3.11-slim
+FROM python:3.12-slim
 
 WORKDIR /app
 
@@ -19,10 +19,10 @@ COPY --from=builder /install /usr/local
 
 # 复制代码
 COPY --from=builder /app /app
-
+ADD --chmod=755 ./entrypoint.sh /app/entrypoint.sh
 EXPOSE 8000
 
-CMD ["gunicorn", \
+CMD ["/app/entrypoint.sh", \
      "--worker-class", "sync", \
      "--workers", "2", \
      "--timeout", "120", \
