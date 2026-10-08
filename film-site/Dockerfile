@@ -28,12 +28,12 @@ RUN mkdir -p instance backups app/static/uploads/posters logs
 
 # 设置权限
 RUN chmod +x manage.py
-RUN python manage.py makemigrations videos
-RUN python manage.py migrate
 
 # 暴露端口
 EXPOSE 8000
-
+# 9. 添加启动脚本
+COPY entrypoint.sh /app/entrypoint.sh
+RUN chmod +x /app/entrypoint.sh
 
 # 启动命令
-CMD ["python manage.py runserver"]
+CMD ["/app/entrypoint.sh"]
