@@ -31,7 +31,4 @@ CMD ["gunicorn", \
      "--max-requests-jitter", "80", \
      "--keep-alive", "4", \
      "--preload", \
-     "--bind", "0.0.0.0:8000", \
-     "--access-logfile", "-", \
-     "--error-logfile", "-", \
-     "web_app:app"]
+     "--bind", "0.0.0.0:8000"]
