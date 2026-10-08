@@ -1,7 +1,7 @@
 FROM python:3.14.0-slim
 
 LABEL maintainer="CMS Movie"
-LABEL description="Flask-based video CMS with MacCMS10 collector"
+LABEL description="video CMS with MacCMS10 collector"
 
 # 设置工作目录
 WORKDIR /app
