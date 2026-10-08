@@ -1,29 +1,37 @@
 #!/bin/sh
 
-# 等待数据库就绪 (可选，如果使用了 docker-compose 依赖项，通常不需要复杂的等待逻辑，但加上更稳健)
-echo "Waiting for database..."
-# 这里可以添加简单的 nc 检查或 python 脚本检查数据库连接
+# 打印启动信息
+echo "🚀 Starting CMS Application..."
 
-# 执行数据库迁移
-echo "Running migrations..."
+# 1. 等待数据库就绪 (可选但推荐)
+# 简单重试机制，防止数据库启动慢导致连接失败
+until python manage.py check --database default; do
+    echo "⏳ Database is unavailable - sleeping for 2s..."
+    sleep 2
+done
+
+# 2. 执行数据库迁移
+echo "🔄 Applying database migrations..."
 python manage.py migrate --noinput
 
-# 收集静态文件 (如果在 Dockerfile 中未执行，或需要增量更新)
-# echo "Collecting static files..."
-# python manage.py collectstatic --noinput
-
-# 创建超级用户 (可选)
-# 注意：这会在每次容器重启时尝试创建，如果已存在则会报错并忽略，或者你可以编写更复杂的逻辑
-echo "Creating superuser if not exists..."
+# 3. 创建超级用户 (可选，仅首次启动或用户不存在时)
+# 建议通过环境变量传递密码，避免硬编码
+echo "👤 Checking superuser..."
 python manage.py shell << EOF
 from django.contrib.auth import get_user_model
 User = get_user_model()
 if not User.objects.filter(username='admin').exists():
-    User.objects.create_superuser('admin', 'admin@example.com', 'password')
-    print("Superuser created.")
+    import os
+    password = os.environ.get('DJANGO_SUPERUSER_PASSWORD', 'admin123')
+    email = os.environ.get('DJANGO_SUPERUSER_EMAIL', 'admin@example.com')
+    User.objects.create_superuser('admin', email, password)
+    print("✅ Superuser 'admin' created.")
 else:
-    print("Superuser already exists.")
+    print("ℹ️ Superuser already exists.")
 EOF
 
-# 执行传入的命令 (即 CMD 中的 gunicorn)
-exec "$@"
+# 4. 启动 Gunicorn (生产环境标准)
+# --workers: 建议设置为 (2 * CPU核心数) + 1
+# --bind: 绑定所有接口
+echo "🌐 Starting Gunicorn server..."
+exec gunicorn --bind 0.0.0.0:8000 --workers 3 --timeout 120 config.wsgi:application
