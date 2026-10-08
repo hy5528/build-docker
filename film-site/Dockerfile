@@ -31,7 +31,7 @@ RUN chmod +x manage.py
 
 # 暴露端口
 EXPOSE 8000
-# 9. 添加启动脚本
+# 添加启动脚本
 COPY entrypoint.sh /app/entrypoint.sh
 RUN chmod +x /app/entrypoint.sh
 
