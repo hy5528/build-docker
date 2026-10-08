@@ -12,6 +12,7 @@ done
 
 # 2. 执行数据库迁移
 echo "🔄 Applying database migrations..."
+python manage.py makemigrations videos
 python manage.py migrate --noinput
 
 # 3. 创建超级用户 (可选，仅首次启动或用户不存在时)
