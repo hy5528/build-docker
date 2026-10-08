@@ -1,4 +1,4 @@
-name: Build Win-box Docker images
+name: Build film-site Docker images
 
 on:
   workflow_dispatch:
@@ -47,17 +47,17 @@ jobs:
         id: meta
         uses: docker/metadata-action@v6
         with:
-          images: ${{ env.REGISTRY }}/${{ github.actor }}/Win-boxd66
+          images: ${{ env.REGISTRY }}/${{ github.actor }}/film-site66
           tags: |
             type=raw,value=latest
       - name: Clone Overleaf Gitlab Repo
         run: |
-          git clone --recurse-submodules https://github.com/yagami-hue/Win-box.git app
+          git clone --recurse-submodules https://github.com/jaraim/film-site.git app
 
       - name: "Copy userpatches to build folder"
         shell: bash
         run: |
-          rsync -av Win-box/. ./app
+          rsync -av film-site/. ./app
           
       - name: 构建并推送 Docker 镜像
         uses: docker/build-push-action@v7
