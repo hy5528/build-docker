@@ -30,5 +30,4 @@ CMD ["/app/entrypoint.sh", \
      "--max-requests", "800", \
      "--max-requests-jitter", "80", \
      "--keep-alive", "4", \
-     "--preload", \
-     "--bind", "0.0.0.0:8000"]
+     "--preload"]
