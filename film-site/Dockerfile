@@ -22,7 +22,16 @@ COPY --from=builder /app /app
 
 EXPOSE 8000
 
-COPY entrypoint.sh /app/entrypoint.sh
-RUN chmod +x /app/entrypoint.sh
-
-ENTRYPOINT ["/app/entrypoint.sh"]
+CMD ["gunicorn", \
+     "--worker-class", "sync", \
+     "--workers", "2", \
+     "--timeout", "120", \
+     "--graceful-timeout", "25", \
+     "--max-requests", "800", \
+     "--max-requests-jitter", "80", \
+     "--keep-alive", "4", \
+     "--preload", \
+     "--bind", "0.0.0.0:8000", \
+     "--access-logfile", "-", \
+     "--error-logfile", "-", \
+     "web_app:app"]
