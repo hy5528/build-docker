@@ -20,9 +20,6 @@ COPY --from=builder /install /usr/local
 # 复制代码
 COPY --from=builder /app /app
 
-# 创建目录
-RUN mkdir -p instance backups app/static/uploads/posters logs media
-
 EXPOSE 8000
 
 COPY entrypoint.sh /app/entrypoint.sh
