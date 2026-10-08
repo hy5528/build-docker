@@ -1,4 +1,4 @@
-name: Build VodHub-frontend Docker images
+name: Build Win-box Docker images
 
 on:
   workflow_dispatch:
@@ -47,17 +47,17 @@ jobs:
         id: meta
         uses: docker/metadata-action@v6
         with:
-          images: ${{ env.REGISTRY }}/${{ github.actor }}/vodhub-frontend66
+          images: ${{ env.REGISTRY }}/${{ github.actor }}/Win-boxd66
           tags: |
             type=raw,value=latest
       - name: Clone Overleaf Gitlab Repo
         run: |
-          git clone --recurse-submodules https://github.com/consistent-k/VodHub.git app
+          git clone --recurse-submodules https://github.com/yagami-hue/Win-box.git app
 
       - name: "Copy userpatches to build folder"
         shell: bash
         run: |
-          rsync -av VodHub-frontend/. ./app
+          rsync -av Win-box/. ./app
           
       - name: 构建并推送 Docker 镜像
         uses: docker/build-push-action@v7
