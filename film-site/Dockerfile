@@ -34,15 +34,6 @@ RUN python manage.py migrate
 # 暴露端口
 EXPOSE 8000
 
-# 创建启动脚本
-RUN echo '#!/bin/bash\n\
-python3 manage.py init 2>/dev/null || true\n\
-exec gunicorn -w 4 -b 0.0.0.0:8000 --access-logfile - --error-logfile - "app:create_app()"' > /app/entrypoint.sh \
-    && chmod +x /app/entrypoint.sh
-
-# 健康检查
-HEALTHCHECK --interval=30s --timeout=10s --start-period=40s --retries=3 \
-    CMD python -c "import requests; requests.get('http://localhost:8000/health', timeout=5)" || exit 1
 
 # 启动命令
-CMD ["/app/entrypoint.sh"]
+CMD ["python manage.py runserver 0.0.0.0:8000"]
