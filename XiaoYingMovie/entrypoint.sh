@@ -12,7 +12,7 @@ done
 
 # 2. 执行数据库迁移
 echo "🔄 Applying database migrations..."
-.venv\Scripts\python.exe manage.py migrate   
+python manage.py migrate --noinput  
 
 # 3. 创建超级用户 (可选，仅首次启动或用户不存在时)
 # 建议通过环境变量传递密码，避免硬编码
