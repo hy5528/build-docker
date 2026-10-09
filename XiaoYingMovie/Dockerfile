@@ -1,23 +1,32 @@
-# 第一阶段：构建
-FROM python:3.12-slim as builder
+FROM python:3.14.0-slim
 
+LABEL maintainer="CMS Movie"
+LABEL description="video CMS with MacCMS10 collector"
+
+# 设置工作目录
 WORKDIR /app
+
+# 安装系统依赖
+RUN apt-get update && apt-get install -y \
+    gcc \
+    libxml2-dev \
+    libxslt1-dev \
+    zlib1g-dev \
+    && rm -rf /var/lib/apt/lists/*
+
+# 复制依赖文件
 COPY requirements.txt .
-# 安装到指定前缀，方便复制
-RUN pip install --prefix=/install -r requirements.txt
+
+# 安装Python依赖
+RUN pip install --no-cache-dir -r requirements.txt
+
+
+# 複製專案所有檔案到工作目錄
 COPY . .
-RUN python manage.py collectstatic --noinput || true
 
-# 第二阶段：生产
-FROM python:3.12-slim
-
-WORKDIR /app
-
-# 从 builder 阶段复制依赖
-COPY --from=builder /install /usr/local
-
+# 宣告資料 Volume
+VOLUME /app/data
 # 复制代码
-COPY --from=builder /app /app
 ADD --chmod=755 ./entrypoint.sh /app/entrypoint.sh
 EXPOSE 8001
 
