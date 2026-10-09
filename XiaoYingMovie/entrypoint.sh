@@ -12,8 +12,7 @@ done
 
 # 2. 执行数据库迁移
 echo "🔄 Applying database migrations..."
-python manage.py makemigrations videos
-python manage.py migrate --noinput
+.venv\Scripts\python.exe manage.py migrate   
 
 # 3. 创建超级用户 (可选，仅首次启动或用户不存在时)
 # 建议通过环境变量传递密码，避免硬编码
@@ -35,4 +34,4 @@ EOF
 # --workers: 建议设置为 (2 * CPU核心数) + 1
 # --bind: 绑定所有接口
 echo "🌐 Starting Gunicorn server..."
-exec gunicorn --bind 0.0.0.0:8000 --workers 3 --timeout 120 config.wsgi:application
+exec gunicorn --bind 0.0.0.0:8001 --workers 3 --timeout 120 config.wsgi:application
