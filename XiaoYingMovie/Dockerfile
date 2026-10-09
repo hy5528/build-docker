@@ -20,7 +20,7 @@ COPY --from=builder /install /usr/local
 # 复制代码
 COPY --from=builder /app /app
 ADD --chmod=755 ./entrypoint.sh /app/entrypoint.sh
-EXPOSE 8000
+EXPOSE 8001
 
 CMD ["/app/entrypoint.sh", \
      "--worker-class", "sync", \
