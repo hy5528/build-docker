@@ -4,8 +4,7 @@ FROM python:3.12-slim as builder
 WORKDIR /app
 COPY requirements.txt .
 # 安装到指定前缀，方便复制
-RUN python3 -m venv .venv
-RUN .venv/bin/python -m pip install -r requirements.txt
+RUN pip install --prefix=/install -r requirements.txt
 COPY . .
 RUN python manage.py collectstatic --noinput || true
 
