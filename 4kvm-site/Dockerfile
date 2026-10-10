@@ -1,0 +1,48 @@
+FROM --platform=$BUILDPLATFORM node:22-alpine AS base
+WORKDIR /app
+
+FROM base AS deps
+COPY package.json package-lock.json ./
+RUN npm install
+
+FROM base AS builder
+WORKDIR /app
+COPY --from=deps /app/node_modules ./node_modules
+COPY . .
+
+ARG NEXT_PUBLIC_GATED_PIN
+ARG NEXT_PUBLIC_GATED_LOCKED_TYPES
+ARG NEXT_PUBLIC_GATED_LOCKED_TYPE_IDS
+ENV NEXT_PUBLIC_GATED_PIN=$NEXT_PUBLIC_GATED_PIN
+ENV NEXT_PUBLIC_GATED_LOCKED_TYPES=$NEXT_PUBLIC_GATED_LOCKED_TYPES
+ENV NEXT_PUBLIC_GATED_LOCKED_TYPE_IDS=$NEXT_PUBLIC_GATED_LOCKED_TYPE_IDS
+
+ENV NEXT_TELEMETRY_DISABLED=1
+ENV NODE_ENV=production
+
+RUN npm run build
+
+FROM base AS runner
+WORKDIR /app
+
+ENV NODE_ENV=production
+ENV NEXT_TELEMETRY_DISABLED=1
+ENV PORT=3028
+ENV HOSTNAME="0.0.0.0"
+
+RUN addgroup --system --gid 1001 nodejs &&     adduser --system --uid 1001 nextjs
+
+COPY --from=builder /app/public ./public
+RUN mkdir -p .next && chown nextjs:nodejs .next
+RUN mkdir -p data && chown -R nextjs:nodejs data
+
+COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
+COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
+COPY --from=builder --chown=nextjs:nodejs /app/data ./data
+COPY --from=builder --chown=nextjs:nodejs /app/scripts ./scripts
+
+USER nextjs
+
+EXPOSE 3028
+
+CMD ["node", "server.js"]
