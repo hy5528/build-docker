@@ -1,8 +1,0 @@
-lxml
-Django 
-gunicorn
-requests 
-pycryptodome
-python-dotenv 
-Pillow
-waitress
