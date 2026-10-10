@@ -1,4 +1,4 @@
-name: Build XiaoYingMovie Docker images
+name: Build cinex Docker images
 
 on:
   workflow_dispatch:
@@ -47,23 +47,23 @@ jobs:
         id: meta
         uses: docker/metadata-action@v6
         with:
-          images: ${{ env.REGISTRY }}/${{ github.actor }}/XiaoYingMovie66
+          images: ${{ env.REGISTRY }}/${{ github.actor }}/cinex66
           tags: |
             type=raw,value=latest
       - name: Clone Overleaf Gitlab Repo
         run: |
-          git clone https://github.com/DingZhiYingCloud/XiaoYingMovie.git app
+          git clone https://github.com/joltzeal/cinex.git app
 
       - name: "Copy userpatches to build folder"
         shell: bash
         run: |
-          rsync -av XiaoYingMovie/. ./app
+          rsync -av cinex/. ./app
           
       - name: 构建并推送 Docker 镜像
         uses: docker/build-push-action@v7
         with:
           context: ./app
-          platforms: linux/amd64,linux/arm64
+          platforms: linux/amd64,linux/arm64,linux/arm/v7
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
