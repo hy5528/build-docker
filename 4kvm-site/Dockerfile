@@ -9,7 +9,7 @@ FROM base AS builder
 WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
-ADD --chmod=755 ./.env /.env
+COPY .env.example .env
 ARG NEXT_PUBLIC_GATED_PIN
 ARG NEXT_PUBLIC_GATED_LOCKED_TYPES
 ARG NEXT_PUBLIC_GATED_LOCKED_TYPE_IDS
