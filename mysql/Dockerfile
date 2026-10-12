@@ -1,5 +1,5 @@
 # Changed from original - end: don't inherit from debian:jessie, because mysql-server-5.7 don't exist on debian:jessie arm apt-get repo
-FROM ubuntu:24.04-slim
+FROM ubuntu:22.04-slim
 # Changed from original - end
 # Changed from original - start: add one line to override the maintainer
 LABEL authors="<Dirk.Meihoefer@wago.com>,<Sergei.Ikkert@wago.com>"
