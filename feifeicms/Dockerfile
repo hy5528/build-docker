@@ -1,6 +1,6 @@
 FROM composer:2.8.12 AS composer
 
-FROM ghcr.io/hy5528/phpfpm-apache:php8.5-alpine
+FROM php:8.5.10-fpm-alpine3.23
 
 RUN apk add --no-cache \
         icu-libs libjpeg-turbo libpng libwebp libzip unzip \
