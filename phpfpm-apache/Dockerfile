@@ -1,4 +1,4 @@
-FROM shinsenter/phpfpm-apache:php8.5-alpine
+FROM shinsenter/phpfpm-apache:latest-alpine
 
 
 
