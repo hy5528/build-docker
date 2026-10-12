@@ -9,7 +9,8 @@ on:
         default: 'mariadb'
         type: choice
         options:
-        - 'mariadb'    
+        - 'mariadb'   
+        - 'mysql'  
       
 env:
   REGISTRY: ghcr.io
