@@ -10,7 +10,7 @@ on:
         type: choice
         options:
         - 'mariadb'   
-        - 'mysql'  
+   
       
 env:
   REGISTRY: ghcr.io
