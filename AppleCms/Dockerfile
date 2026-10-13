@@ -12,4 +12,4 @@ RUN apk add --no-cache libpng-dev libjpeg-turbo-dev freetype-dev \
     || apk add --no-cache libpng libjpeg-turbo freetype
 
 WORKDIR /var/www/html
-EXPOSE 8010
+EXPOSE 80
