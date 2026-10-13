@@ -11,4 +11,4 @@ COPY .env.example .env
 WORKDIR /var/www/html
 EXPOSE 8010
 
-CMD ["sh", "start.sh"]
+CMD ["sh", "docker/php/start.sh"]
