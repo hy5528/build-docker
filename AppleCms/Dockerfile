@@ -6,7 +6,7 @@ RUN apt-get update \
     && apt-get install -y --no-install-recommends libsqlite3-dev libzip-dev unzip git \
     && docker-php-ext-install pdo_sqlite pdo_mysql bcmath pcntl zip \
     && rm -rf /var/lib/apt/lists/*
-COPY ./start.sh /start.sh
+
 COPY .env.example .env
 WORKDIR /var/www/html
 EXPOSE 8010
