@@ -1,4 +1,4 @@
-name: Build AppleCms Docker images
+name: Build LeafCMS Docker images
 
 on:
   workflow_dispatch:
@@ -47,17 +47,17 @@ jobs:
         id: meta
         uses: docker/metadata-action@v6
         with:
-          images: ${{ env.REGISTRY }}/${{ github.actor }}/AppleCms66
+          images: ${{ env.REGISTRY }}/${{ github.actor }}/LeafCMS66
           tags: |
             type=raw,value=latest
       - name: Clone Overleaf Gitlab Repo
         run: |
-          git clone --recurse-submodules https://github.com/Sunshine-168/AppleCms.git app
+          git clone https://github.com/Sunshine-168/LeafCMS.git app
 
       - name: "Copy userpatches to build folder"
         shell: bash
         run: |
-          rsync -av AppleCms/. ./app 
+          rsync -av LeafCMS/. ./app 
           
       - name: 构建并推送 Docker 镜像
         uses: docker/build-push-action@v7
