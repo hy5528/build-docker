@@ -1,0 +1,12 @@
+services:
+  php:
+    container_name: applecms-php
+    image: ghcr.nju.edu.cn/hy5528/applecms-php66:latest
+    working_dir: /var/www/html
+    volumes:
+      - .:/var/www/html
+    environment:
+      APP_URL: http://127.0.0.1:8010
+    ports:
+      - "8010:8010"
+    command: ["sh", "docker/php/start.sh"]
