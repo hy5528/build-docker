@@ -1,4 +1,4 @@
-FROM bfren/mariadb:mariadb11.8-dev-alpine
+FROM dpvduncan/mariadb:latest
 
 
 EXPOSE 3306
