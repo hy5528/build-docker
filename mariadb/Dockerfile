@@ -1,21 +1,39 @@
 FROM webhippie/alpine:3.23
+# set version label
+ARG BUILD_DATE
+ARG VERSION
+ARG MARIADB_VERSION
+LABEL build_version="Linuxserver.io version:- ${VERSION} Build-date:- ${BUILD_DATE}"
+LABEL maintainer="thelamer,nemchik"
 
-VOLUME ["/var/lib/mysql", "/var/lib/backup", "/etc/mysql/conf.d", "/etc/mysql/init.d"]
+# environment variables
+ENV MYSQL_DIR="/config"
+ENV DATADIR="$MYSQL_DIR/databases"
+
+RUN \
+  echo "**** install runtime packages ****" && \
+  if [ -z ${MARIADB_VERSION+x} ]; then \
+    MARIADB_VERSION=$(curl -sL "http://dl-cdn.alpinelinux.org/alpine/v3.24/main/x86_64/APKINDEX.tar.gz" | tar -xz -C /tmp \
+    && awk '/^P:mariadb$/,/V:/' /tmp/APKINDEX | sed -n 2p | sed 's/^V://'); \
+  fi && \
+  apk add --no-cache \
+    gnupg \
+    logrotate \
+    mariadb==${MARIADB_VERSION} \
+    mariadb-backup==${MARIADB_VERSION} \
+    mariadb-client==${MARIADB_VERSION} \
+    mariadb-common==${MARIADB_VERSION} \
+    mariadb-server-utils==${MARIADB_VERSION} && \
+  printf "Linuxserver.io version: ${VERSION}\nBuild-date: ${BUILD_DATE}" > /build_version && \
+  echo "**** cleanup ****" && \
+  rm -rf \
+    /tmp/* \
+    $HOME/.cache
+
+# copy local files
+COPY root/ /
+
+# ports and volumes
 EXPOSE 3306
 
-WORKDIR /var/lib/mysql
-CMD ["/usr/bin/container"]
-
-RUN apk update && \
-  apk upgrade && \
-  mkdir -p /var/lib/mysql && \
-  groupadd -g 1000 mysql && \
-  useradd -u 1000 -d /var/lib/mysql -g mysql -s /bin/bash -m mysql && \
-  apk add mariadb mariadb-client mariadb-server-utils tzdata && \
-  rm -rf /var/cache/apk/* /etc/mysql/* /etc/my.cnf* /var/lib/mysql/*
-
-COPY ./overlay /
-
-RUN find /etc/container.d /etc/entrypoint.d -type f -name \*.sh -exec sed -i 's/\r$//' {} +; \
-  sed -i 's/\r$//' /usr/bin/backup /usr/bin/healthcheck /usr/bin/container && \
-  chmod +x /usr/bin/backup /usr/bin/healthcheck /usr/bin/container /etc/container.d/*.sh /etc/entrypoint.d/*.sh
+VOLUME /config
