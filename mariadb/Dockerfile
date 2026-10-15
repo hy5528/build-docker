@@ -1,4 +1,4 @@
-FROM webhippie/alpine:3.23
+FROM yobasystems/alpine:latest
 # set version label
 ARG BUILD_DATE
 ARG VERSION
