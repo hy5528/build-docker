@@ -1,4 +1,4 @@
-FROM yobasystems/alpine:latest
+FROM webhippie/alpine:3.23
 
 VOLUME ["/var/lib/mysql", "/var/lib/backup", "/etc/mysql/conf.d", "/etc/mysql/init.d"]
 EXPOSE 3306
