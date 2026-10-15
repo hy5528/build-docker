@@ -52,17 +52,17 @@ jobs:
             type=raw,value=alpine
       - name: Clone Overleaf Gitlab Repo
         run: |
-          git clone --recurse-submodules https://github.com/dockhippie/mariadb.git app
+          git clone --recurse-submodules https://github.com/linuxserver/docker-mariadb.git app
 
       - name: "Copy userpatches to build folder"
         shell: bash
         run: |
-          rsync -av mariadb/. ./app/latest    
+          rsync -av mariadb/. ./app   
           
       - name: 构建并推送 Docker 镜像
         uses: docker/build-push-action@v7
         with:
-          context: ./app/latest
+          context: ./app
           platforms: linux/amd64,linux/arm64,linux/arm/v7
           push: true
           tags: ${{ steps.meta.outputs.tags }}
