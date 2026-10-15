@@ -1,4 +1,4 @@
-FROM yobasystems/alpine-mariadb:latest
+FROM betothreeprod/mariadb
 
 
 
