@@ -1,226 +1,144 @@
-FROM webhippie/alpine:3.23
+# vim:set ft=dockerfile:
+FROM debian:bookworm-slim
 
-ARG MARIADB_VER
-ARG MARIADB_VER_MINOR
-ARG GALERA_VER
-ARG WSREP_VER
-ARG NPROC
+# add our user and group first to make sure their IDs get assigned consistently, regardless of whatever dependencies get added
+RUN groupadd -r mysql && useradd -r -g mysql mysql --home-dir /var/lib/mysql
 
-ENV MARIADB_VER="${MARIADB_VER}" \
-    GALERA_VER="${GALERA_VER}" \
-    BACKUPS_DIR="/mnt/backups"
+# add gosu for easy step-down from root
+# https://github.com/tianon/gosu/releases
+# gosu key is B42F6819007F00F88E364FD4036A9C25BF357DD4
+ENV GOSU_VERSION 1.19
 
-COPY patches /tmp/patches
+ARG GPG_KEYS=177F4010FE56CA3336300305F1656F24C74CD1D8
+# pub   rsa4096 2016-03-30 [SC]
+#         177F 4010 FE56 CA33 3630  0305 F165 6F24 C74C D1D8
+# uid           [ unknown] MariaDB Signing Key <signing-key@mariadb.org>
+# sub   rsa4096 2016-03-30 [E]
+# install "libjemalloc2" as it offers better performance in some cases. Use with LD_PRELOAD
+# install "libtcmalloc-minimal4" as it may improve performance and fix memory fragmentation issues. Use with LD_PRELOAD
+# install "pwgen" for randomizing passwords
+# install "tzdata" for /usr/share/zoneinfo/
+# install "xz-utils" for .sql.xz docker-entrypoint-initdb.d files
+# install "zstd" for .sql.zst docker-entrypoint-initdb.d files
+# hadolint ignore=SC2086
+RUN set -eux; \
+	apt-get update; \
+	DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
+		ca-certificates \
+		gpg \
+		gpgv \
+		libjemalloc2 \
+		libtcmalloc-minimal4 \
+		pwgen \
+		tzdata \
+		xz-utils \
+		zstd ; \
+	savedAptMark="$(apt-mark showmanual)"; \
+	apt-get install -y --no-install-recommends \
+		dirmngr \
+		gpg-agent \
+		wget; \
+	rm -rf /var/lib/apt/lists/*; \
+	dpkgArch="$(dpkg --print-architecture | awk -F- '{ print $NF }')"; \
+	wget -q -O /usr/local/bin/gosu "https://github.com/tianon/gosu/releases/download/$GOSU_VERSION/gosu-$dpkgArch"; \
+	wget -q -O /usr/local/bin/gosu.asc "https://github.com/tianon/gosu/releases/download/$GOSU_VERSION/gosu-$dpkgArch.asc"; \
+	GNUPGHOME="$(mktemp -d)"; \
+	export GNUPGHOME; \
+	gpg --batch --keyserver hkps://keys.openpgp.org --recv-keys B42F6819007F00F88E364FD4036A9C25BF357DD4; \
+	for key in $GPG_KEYS; do \
+		gpg --batch --keyserver keyserver.ubuntu.com --recv-keys "$key"; \
+	done; \
+	gpg --batch --export "$GPG_KEYS" > /etc/apt/trusted.gpg.d/mariadb.gpg; \
+	if command -v gpgconf >/dev/null; then \
+		gpgconf --kill all; \
+	fi; \
+	gpg --batch --verify /usr/local/bin/gosu.asc /usr/local/bin/gosu; \
+	gpgconf --kill all; \
+	rm -rf "$GNUPGHOME" /usr/local/bin/gosu.asc; \
+	apt-mark auto '.*' > /dev/null; \
+	[ -z "$savedAptMark" ] ||	apt-mark manual $savedAptMark >/dev/null; \
+	apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false; \
+	chmod +x /usr/local/bin/gosu; \
+	gosu --version; \
+	gosu nobody true
 
-RUN set -xe; \
-    \
-    addgroup -g 101 -S mysql; \
-    adduser -u 100 -D -S -s /bin/bash -G mysql mysql; \
-    echo "PS1='\w\$ '" >> /home/mysql/.bashrc; \
-    \
-    apk add --update --no-cache -t .mariadb-run-deps \
-        libaio \
-        libstdc++ \
-        libxml2 \
-        linux-pam \
-        make \
-        pcre2 \
-        pwgen \
-        sudo \
-        tzdata \
-        xz-libs \
-        zlib; \
-    \
-    apk add --update --no-cache -t .mariadb-build-deps \
-        attr \
-        autoconf \
-        bison \
-        build-base \
-        cmake \
-        coreutils \
-        gnupg \
-        libaio-dev \
-        linux-pam-dev \
-        openssl-dev \
-        linux-headers \
-        ncurses-dev \
-        patch \
-        pcre2-dev \
-        readline-dev \
-        xz-dev \
-        zlib-dev; \
-    \
-    mariadb_url="https://archive.mariadb.org/mariadb-${MARIADB_VER}/source/mariadb-${MARIADB_VER}.tar.gz"; \
-    curl -fSL "${mariadb_url}" -o /tmp/mariadb.tar.gz; \
-    curl -fSL "${mariadb_url}.asc" -o /tmp/mariadb.tar.gz.asc; \
-    GPG_KEYS="0xF1656F24C74CD1D8" gpg_verify /tmp/mariadb.tar.gz.asc /tmp/mariadb.tar.gz; \
-    \
-    tar zxf /tmp/mariadb.tar.gz -C /tmp; \
-    #
-    # Optional Galera Build/Install
-    #
-    if [ -n "${GALERA_VER}" ]; then \
-        apk add --update --no-cache -t .galera-run-deps \
-            boost-program_options \
-            rsync \
-            socat; \
-        apk add --update --no-cache -t .galera-build-deps \
-            boost-dev \
-            check-dev \
-            scons; \
-        galera_url="https://github.com/codership/galera/archive/release_${GALERA_VER}.tar.gz"; \
-        curl -fSL "${galera_url}" -o /tmp/galera.tar.gz; \
-        tar zxf /tmp/galera.tar.gz -C /tmp; \
-        rmdir "/tmp/galera-release_${GALERA_VER}/wsrep/src"; \
-        ln -s "/tmp/mariadb-${MARIADB_VER}/wsrep-lib/wsrep-API/v${WSREP_VER}" "/tmp/galera-release_${GALERA_VER}/wsrep/src"; \
-        \
-        cd "/tmp/galera-release_${GALERA_VER}"; \
-        for i in /tmp/patches/galera/"${GALERA_VER:0:4}"/*.patch; do patch -p1 -i "${i}"; done; \
-        RUN_TESTS=0 scripts/build.sh -j "${NPROC:-$(nproc)}"; \
-        apk del --purge .galera-build-deps; \
-        \
-        mkdir -p /usr/lib/galera; \
-        cp -a "/tmp/galera-release_${GALERA_VER}/libgalera_smm.so" /usr/lib/galera; \
-        chown -R mysql:mysql /usr/lib/galera; \
-        \
-        cp -a "/tmp/galera-release_${GALERA_VER}/garb/garbd" /usr/sbin; \
-    fi; \
-    \
-    #
-    # MariaDB Build
-    #
-    cd "/tmp/mariadb-${MARIADB_VER}"; \
-    # From alpine repository https://git.alpinelinux.org/cgit/aports/tree/main/mariadb?h=3.6-stable
-    for i in /tmp/patches/"${MARIADB_VER_MINOR}"/*.patch; do patch -p1 -i "${i}"; done; \
-    \
-    cmake . -DBUILD_CONFIG=mysql_release \
-    		-DCMAKE_BUILD_TYPE=MinSizeRel \
-    		-DCMAKE_INSTALL_PREFIX=/usr \
-    		-DSYSCONFDIR=/etc/mysql \
-    		-DMYSQL_DATADIR=/var/lib/mysql \
-    		-DMYSQL_UNIX_ADDR=/run/mysqld/mysqld.sock \
-		    -DDEFAULT_CHARSET=utf8mb4 \
-		    -DDEFAULT_COLLATION=utf8mb4_general_ci \
-    		-DENABLED_LOCAL_INFILE=ON \
-    		-DINSTALL_INFODIR=share/mysql/docs \
-    		-DINSTALL_MANDIR=share/man \
-    		-DINSTALL_PLUGINDIR=lib/mysql/plugin \
-    		-DINSTALL_SCRIPTDIR=bin \
-    		-DINSTALL_INCLUDEDIR=include/mysql \
-    		-DINSTALL_DOCREADMEDIR=share/mysql \
-    		-DINSTALL_SUPPORTFILESDIR=share/mysql \
-    		-DINSTALL_MYSQLSHAREDIR=share/mysql \
-    		-DINSTALL_DOCDIR=share/mysql/docs \
-    		-DINSTALL_SHAREDIR=share/mysql \
-    		-DCONNECT_WITH_MYSQL=ON \
-            -DCONNECT_WITH_LIBXML2=system \
-            -DCONNECT_WITH_ODBC=NO \
-            -DCONNECT_WITH_JDBC=NO \
-    		-DPLUGIN_ARCHIVE=YES \
-            -DPLUGIN_ARIA=YES \
-            -DPLUGIN_BLACKHOLE=YES \
-            -DPLUGIN_CASSANDRA=NO \
-            -DPLUGIN_CSV=YES \
-            -DPLUGIN_MYISAM=YES \
-            -DPLUGIN_MROONGA=NO \
-            -DPLUGIN_OQGRAPH=NO \
-            -DPLUGIN_PARTITION=YES \
-            -DPLUGIN_ROCKSDB=NO \
-            -DPLUGIN_SPHINX=NO \
-            -DPLUGIN_TOKUDB=NO \
-            -DPLUGIN_AUTH_GSSAPI=NO \
-            -DPLUGIN_AUTH_GSSAPI_CLIENT=OFF \
-            -DPLUGIN_CRACKLIB_PASSWORD_CHECK=NO \
-    		-DWITH_ASAN=OFF \
-            -DWITH_EMBEDDED_SERVER=ON \
-            -DWITH_EXTRA_CHARSETS=complex \
-            -DWITH_INNODB_BZIP2=OFF \
-            -DWITH_INNODB_LZ4=OFF \
-            -DWITH_INNODB_LZMA=ON \
-            -DWITH_INNODB_LZO=OFF \
-            -DWITH_INNODB_SNAPPY=OFF \
-            -DWITH_JEMALLOC=NO \
-            -DWITH_LIBARCHIVE=system \
-            -DWITH_LIBNUMA=NO \
-            -DWITH_LIBWRAP=OFF \
-            -DWITH_LIBWSEP=OFF \
-            -DWITH_MARIABACKUP=ON \
-            -DWITH_PCRE=system \
-            -DWITH_READLINE=ON \
-            -DWITH_SYSTEMD=no \
-            -DWITH_SSL=system \
-            -DWITH_VALGRIND=OFF \
-            -DWITH_ZLIB=system; \
-    \
-    make -j "${NPROC:-$(nproc)}"; \
-    make install; \
-    \
-    # Script to fix volumes permissions via sudo.
-    echo "chown mysql:mysql /var/lib/mysql ${BACKUPS_DIR}" > /usr/local/bin/init_volumes; \
-    chmod +x /usr/local/bin/init_volumes; \
-    echo 'mysql ALL=(root) NOPASSWD: /usr/local/bin/init_volumes' > /etc/sudoers.d/mysql; \
-    \
-    mkdir -p \
-        /var/run/mysqld \
-        /var/lib/mysql \
-        /etc/mysql/certificates \
-        /docker-entrypoint-initdb.d \
-        "${BACKUPS_DIR}"; \
-    \
-    chown -R mysql:mysql \
-        /var/run/mysqld \
-        /var/lib/mysql \
-        /usr/lib/mysql/plugin \
-        /etc/mysql \
-        /docker-entrypoint-initdb.d \
-        "${BACKUPS_DIR}"; \
-    \
-    # Remove dev, test, doc, benchmark related files.
-    rm -rf \
-        /usr/bin/mysql_client_test \
-        /usr/bin/mysql_client_test_embedded \
-        /usr/bin/mysql_config \
-        /usr/bin/mysqltest \
-        /usr/bin/mysqltest_embedded \
-        /usr/include/mysql \
-        /usr/lib/libmariadb.so* \
-        /usr/lib/libmariadbd.so.* \
-        /usr/lib/libmysqlclient.so* \
-        /usr/lib/libmysqlclient_r.so* \
-        /usr/lib/libmysqld.so.* \
-        /usr/mysql-test \
-        /usr/share/man \
-        /usr/sql-bench; \
-    \
-    find /usr/lib -name '*.a' -maxdepth 1 -print0 | xargs -0 rm; \
-    find /usr/lib -name '*.so' -type l -maxdepth 1 -print0 | xargs -0 rm; \
-    \
-    # Stripping binaries and .so files.
-    scanelf --symlink --recursive --nobanner --osabi --etype "ET_DYN,ET_EXEC" \
-        /usr/bin/* /usr/sbin/* /usr/lib/mysql/plugin/* /usr/lib/galera/* | while read type osabi filename; do \
-        ([ "$osabi" != "STANDALONE" ] && [ "${filename}" != "/usr/bin/strip" ]) || continue; \
-        XATTR=$(getfattr --match="" --dump "${filename}"); \
-        strip "${filename}"; \
-        if [ -n "$XATTR" ]; then \
-            echo "$XATTR" | setfattr --restore=-; \
-        fi; \
-    done; \
-    \
-    # Clean up.
-    apk del --purge .mariadb-build-deps; \
-    rm -rf /tmp/*; \
-    rm -rf /var/cache/apk/*
+RUN mkdir /docker-entrypoint-initdb.d
 
-USER mysql
+# Ensure the container exec commands handle range of utf8 characters based of
+# default locales in base image (https://github.com/docker-library/docs/blob/135b79cc8093ab02e55debb61fdb079ab2dbce87/ubuntu/README.md#locales)
+ENV LANG C.UTF-8
 
-COPY bin /usr/local/bin
-COPY templates /etc/gotpl/
-COPY docker-entrypoint.sh /
+# OCI annotations to image
+LABEL org.opencontainers.image.authors="MariaDB Community" \
+      org.opencontainers.image.title="MariaDB Database" \
+      org.opencontainers.image.description="MariaDB Database for relational SQL" \
+      org.opencontainers.image.documentation="https://hub.docker.com/_/mariadb/" \
+      org.opencontainers.image.base.name="docker.io/library/ubuntu:jammy" \
+      org.opencontainers.image.licenses="GPL-2.0" \
+      org.opencontainers.image.source="https://github.com/MariaDB/mariadb-docker" \
+      org.opencontainers.image.vendor="MariaDB Community" \
+      org.opencontainers.image.version="10.11.19" \
+      org.opencontainers.image.url="https://github.com/MariaDB/mariadb-docker"
 
-WORKDIR /var/lib/mysql
+# bashbrew-architectures: amd64 arm64v8 ppc64le s390x
+ARG MARIADB_VERSION=1:10.11.19+maria~ubu2204
+ENV MARIADB_VERSION $MARIADB_VERSION
+# release-status:Stable
+# release-support-type:Long Term Support
+# (https://downloads.mariadb.org/rest-api/mariadb/)
+
+# Allowing overriding of REPOSITORY, a URL that includes suite and component for testing and Enterprise Versions
+ARG REPOSITORY="http://archive.mariadb.org/mariadb-10.11.19/repo/ubuntu/ jammy main main/debug"
+
+RUN set -e;\
+	echo "deb ${REPOSITORY}" > /etc/apt/sources.list.d/mariadb.list; \
+	{ \
+		echo 'Package: *'; \
+		echo 'Pin: release o=MariaDB'; \
+		echo 'Pin-Priority: 999'; \
+	} > /etc/apt/preferences.d/mariadb
+# add repository pinning to make sure dependencies from this MariaDB repo are preferred over Debian dependencies
+#  libmariadbclient18 : Depends: libmysqlclient18 (= 5.5.42+maria-1~wheezy) but 5.5.43-0+deb7u1 is to be installed
+
+# the "/var/lib/mysql" stuff here is because the mysql-server postinst doesn't have an explicit way to disable the mysql_install_db codepath besides having a database already "configured" (ie, stuff in /var/lib/mysql/mysql)
+# also, we set debconf keys to make APT a little quieter
+# hadolint ignore=DL3015
+RUN set -ex; \
+	{ \
+		echo "mariadb-server" mysql-server/root_password password 'unused'; \
+		echo "mariadb-server" mysql-server/root_password_again password 'unused'; \
+	} | debconf-set-selections; \
+	apt-get update; \
+# postinst script creates a datadir, so avoid creating it by faking its existence.
+	mkdir -p /var/lib/mysql/mysql ; touch /var/lib/mysql/mysql/user.frm ; \
+# mariadb-backup is installed at the same time so that `mysql-common` is only installed once from just mariadb repos
+	apt-get install -y --no-install-recommends mariadb-server="$MARIADB_VERSION" mariadb-backup socat \
+	; \
+	rm -rf /var/lib/apt/lists/*; \
+# purge and re-create /var/lib/mysql with appropriate ownership
+	rm -rf /var/lib/mysql /etc/mysql/mariadb.conf.d/50-mysqld_safe.cnf; \
+	mkdir -p /var/lib/mysql /run/mysqld; \
+	chown -R mysql:mysql /var/lib/mysql /run/mysqld; \
+# ensure that /run/mysqld (used for socket and lock files) is writable regardless of the UID our mysqld instance ends up having at runtime
+	chmod 1777 /run/mysqld; \
+# comment out a few problematic configuration values
+	find /etc/mysql/ -name '*.cnf' -print0 \
+		| xargs -0 grep -lZE '^(bind-address|log|user\s)' \
+		| xargs -rt -0 sed -Ei 's/^(bind-address|log|user\s)/#&/'; \
+# don't reverse lookup hostnames, they are usually another container
+	printf "[mariadb]\nhost-cache-size=0\nskip-name-resolve\n" > /etc/mysql/mariadb.conf.d/05-skipcache.cnf; \
+# Issue #327 Correct order of reading directories /etc/mysql/mariadb.conf.d before /etc/mysql/conf.d (mount-point per documentation)
+	if [ -L /etc/mysql/my.cnf ]; then \
+# 10.5+
+		sed -i -e '/includedir/ {N;s/\(.*\)\n\(.*\)/\n\2\n\1/}' /etc/mysql/mariadb.cnf; \
+	fi
+
+
 VOLUME /var/lib/mysql
 
-EXPOSE 3306
+COPY healthcheck.sh /usr/local/bin/healthcheck.sh
+COPY docker-entrypoint.sh /usr/local/bin/
+ENTRYPOINT ["docker-entrypoint.sh"]
 
-ENTRYPOINT ["/docker-entrypoint.sh"]
+EXPOSE 3306
 CMD ["mariadbd"]
