@@ -1,5 +1,5 @@
 # vim:set ft=dockerfile:
-FROM debian:bookworm-slim
+FROM ubuntu:22.04-slim
 
 # add our user and group first to make sure their IDs get assigned consistently, regardless of whatever dependencies get added
 RUN groupadd -r mysql && useradd -r -g mysql mysql --home-dir /var/lib/mysql
