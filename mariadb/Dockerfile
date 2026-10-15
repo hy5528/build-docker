@@ -11,13 +11,7 @@ LABEL maintainer="thelamer,nemchik"
 ENV MYSQL_DIR="/config"
 ENV DATADIR="$MYSQL_DIR/databases"
 
-RUN \
-  echo "**** install runtime packages ****" && \
-  if [ -z ${MARIADB_VERSION+x} ]; then \
-    MARIADB_VERSION=$(curl -sL "http://dl-cdn.alpinelinux.org/alpine/v3.24/main/x86_64/APKINDEX.tar.gz" | tar -xz -C /tmp \
-    && awk '/^P:mariadb$/,/V:/' /tmp/APKINDEX | sed -n 2p | sed 's/^V://'); \
-  fi && \
-  apk add --no-cache \
+RUN apk add --no-cache \
     gnupg \
     logrotate \
     mariadb==${MARIADB_VERSION} \
