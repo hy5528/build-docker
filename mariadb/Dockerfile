@@ -1,4 +1,4 @@
-FROM alpine:latest
+FROM jitesoft/alpine:3.21.8
 
 VOLUME ["/var/lib/mysql", "/var/lib/backup", "/etc/mysql/conf.d", "/etc/mysql/init.d"]
 EXPOSE 3306
