@@ -1,4 +1,4 @@
-FROM yobasystems/alpine:latest
+FROM webhippie/alpine:3.23
 
 ARG MARIADB_VER
 ARG MARIADB_VER_MINOR
