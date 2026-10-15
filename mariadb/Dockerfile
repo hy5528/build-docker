@@ -1,4 +1,4 @@
-FROM betothreeprod/mariadb
+FROM betothreeprod/mariadb:latest
 
 
 
