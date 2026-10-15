@@ -1,4 +1,4 @@
-FROM snowdreamtech/alpine:3.23-20261014
+FROM yobasystems/alpine:latest
 
 VOLUME ["/var/lib/mysql", "/var/lib/backup", "/etc/mysql/conf.d", "/etc/mysql/init.d"]
 EXPOSE 3306
