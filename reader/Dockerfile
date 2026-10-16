@@ -1,32 +1,37 @@
+# ---- Build web frontend (npm deps layer cached) ----
 FROM node:16-alpine AS build-web
-ADD . /app
 WORKDIR /app/web
-# Build web
-RUN yarn install --ignore-engines && yarn build
+COPY web/package.json web/package-lock.json ./
+RUN npm ci
+COPY web/ ./
+RUN npm run build
 
-# Build jar
+# ---- Build jar (gradle deps layer cached) ----
 FROM gradle:7-jdk8 AS build-env
-ADD --chown=gradle:gradle . /app
-WORKDIR /app
-COPY --from=build-web /app/web/dist /app/src/main/resources/web
 ENV JAVA_TOOL_OPTIONS="-Dhttps.protocols=TLSv1,TLSv1.1,TLSv1.2,TLSv1.3"
+WORKDIR /app
+# 先复制构建脚本并预下载依赖，该层可被 docker 层缓存复用
+COPY --chown=gradle:gradle cli.gradle settings.gradle gradle ./
+RUN gradle -b cli.gradle dependencies --no-daemon -Dorg.gradle.vfs.watch=false || true
+# 复制源码与前端产物
+ADD --chown=gradle:gradle . /app
+COPY --from=build-web /app/web/dist /app/src/main/resources/web
 RUN \
     rm src/main/java/com/htmake/reader/ReaderUIApplication.kt; \
-    gradle -b cli.gradle assemble --info; \
+    gradle -b cli.gradle assemble --no-daemon -Dorg.gradle.vfs.watch=false; \
     mv ./build/libs/*.jar ./build/libs/reader.jar
 
-FROM snowdreamtech/openjdk:latest
-# Install base packages
+# ---- Runtime ----
+FROM jackkke/openjdk:8.492.09-jre-alpine
 RUN \
-    apt-get update; \
-    apt-get install -y --no-install-recommends ca-certificates tini tzdata; \
+    apk upgrade --no-cache; \
+    apk add --no-cache ca-certificates tini tzdata; \
     update-ca-certificates; \
-    rm -rf /var/lib/apt/lists/*;
+    rm -rf /var/cache/apk/*;
 
-# 时区
 ENV TZ=Asia/Shanghai
 
 EXPOSE 8080
-ENTRYPOINT ["/usr/bin/tini", "--"]
+ENTRYPOINT ["/sbin/tini", "--"]
 COPY --from=build-env /app/build/libs/reader.jar /app/bin/reader.jar
-CMD ["java", "-jar", "/app/bin/reader.jar" ]
+CMD ["java", "-jar", "/app/bin/reader.jar"]
