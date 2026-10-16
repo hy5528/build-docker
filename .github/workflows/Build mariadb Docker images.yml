@@ -1,4 +1,4 @@
-name: Build mariadb images
+name: Build mariadb Docker images
 
 on:
   workflow_dispatch:
