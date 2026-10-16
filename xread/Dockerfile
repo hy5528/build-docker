@@ -1,0 +1,29 @@
+FROM alpine:3.19
+
+RUN apk add --no-cache ca-certificates tzdata
+
+WORKDIR /app
+
+# Copy pre-built binary
+COPY target/x86_64-unknown-linux-musl/release/xread /app/reader-rust
+
+# Copy frontend dist
+COPY frontend/dist /app/web/dist
+
+# Create storage directory
+RUN mkdir -p /app/storage/assets
+
+# Environment defaults
+ENV SERVER_HOST=0.0.0.0
+ENV SERVER_PORT=7777
+ENV DATABASE_URL=sqlite:/app/storage/reader.db?mode=rwc
+ENV STORAGE_DIR=/app/storage
+ENV ASSETS_DIR=/app/storage/assets
+ENV WEB_ROOT=/app/web/dist
+ENV LOG_LEVEL=info
+
+EXPOSE 7777
+
+VOLUME ["/app/storage"]
+
+CMD ["./reader-rust"]
