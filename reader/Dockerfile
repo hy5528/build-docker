@@ -1,6 +1,7 @@
 FROM node:16-alpine AS build-web
 ADD . /app
 WORKDIR /app/web
+# Build web
 RUN yarn install --ignore-engines && yarn build
 
 # Build jar
@@ -14,39 +15,18 @@ RUN \
     gradle -b cli.gradle assemble --info; \
     mv ./build/libs/*.jar ./build/libs/reader.jar
 
-# Create minimal JRE with jlink
-FROM amazoncorretto:17-alpine AS jre-builder
-RUN apk add --no-cache binutils
-COPY --from=build-env /app/build/libs/reader.jar /tmp/reader.jar
-RUN \
-    jdeps --print-module-deps --ignore-missing-deps /tmp/reader.jar > /tmp/jdeps-modules.txt; \
-    echo "java.sql,java.naming,java.management,java.instrument,jdk.unsupported,java.security.jgss,java.desktop" | tr ',' '\n' >> /tmp/jdeps-modules.txt; \
-    MODULES=$(sort -u /tmp/jdeps-modules.txt | paste -sd, -); \
-    echo "Using modules: $MODULES"; \
-    jlink \
-        --compress=2 \
-        --no-header-files \
-        --no-man-pages \
-        --strip-debug \
-        --add-modules "$MODULES" \
-        --output /opt/jre-minimal
-
-FROM alpine:3.21
+FROM ibm-semeru-runtimes:open-8-jre
 # Install base packages
 RUN \
-    apk add --no-cache ca-certificates tini tzdata; \
+    apt-get update; \
+    apt-get install -y --no-install-recommends ca-certificates tini tzdata; \
     update-ca-certificates; \
-    rm -rf /var/cache/apk/*;
+    rm -rf /var/lib/apt/lists/*;
 
 # 时区
 ENV TZ=Asia/Shanghai
 
-COPY --from=jre-builder /opt/jre-minimal /opt/jre
-COPY --from=build-env /app/build/libs/reader.jar /app/bin/reader.jar
-
-ENV JAVA_HOME=/opt/jre
-ENV PATH="${JAVA_HOME}/bin:${PATH}"
-
 EXPOSE 8080
-ENTRYPOINT ["/sbin/tini", "--"]
-CMD ["java", "-jar", "/app/bin/reader.jar"]
+ENTRYPOINT ["/usr/bin/tini", "--"]
+COPY --from=build-env /app/build/libs/reader.jar /app/bin/reader.jar
+CMD ["java", "-jar", "/app/bin/reader.jar" ]
