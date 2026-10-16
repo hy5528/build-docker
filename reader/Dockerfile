@@ -1,37 +1,87 @@
-# ---- Build web frontend (npm deps layer cached) ----
-FROM node:16-alpine AS build-web
-WORKDIR /app/web
-COPY web/package.json web/package-lock.json ./
+# --- web client build stage ---------------------------------------------------
+# The H5 client is built here and baked into the server image, because serving it
+# from the same container is what keeps the deployment to a single command: the
+# reader opens http://<nas-ip>:5888 and gets the app, with no second container and
+# no CORS configuration to think about.
+#
+# `web` is optional. When the build context has no `web` directory the copy below
+# fails, so the client stage is gated behind a build arg and the runtime stage
+# tolerates an absent bundle. A server-only deployment stays possible.
+#
+# The base image is overridable because `docker.cnb.cool` is an authenticated
+# mirror: a plain `docker build` on a machine whose token has no pull rights on
+# it fails at the very first stage. Docker Hub is the default; pass the mirror
+# where it is reachable (CNB pipelines, or anywhere Hub is slow):
+#
+#   docker build . -f server/Dockerfile \
+#     --build-arg NODE_IMAGE=docker.cnb.cool/dockerhub/node:24-alpine
+
+FROM --platform=$BUILDPLATFORM node:22-alpine AS web
+WORKDIR /web
+COPY web/package.json web/package-lock.json* ./
 RUN npm ci
 COPY web/ ./
 RUN npm run build
 
-# ---- Build jar (gradle deps layer cached) ----
-FROM gradle:7-jdk8 AS build-env
-ENV JAVA_TOOL_OPTIONS="-Dhttps.protocols=TLSv1,TLSv1.1,TLSv1.2,TLSv1.3"
+# --- server build stage ------------------------------------------------------
+FROM --platform=$BUILDPLATFORM node:22-alpine AS build
 WORKDIR /app
-# 先复制构建脚本并预下载依赖，该层可被 docker 层缓存复用
-COPY --chown=gradle:gradle cli.gradle settings.gradle gradle ./
-RUN gradle -b cli.gradle dependencies --no-daemon -Dorg.gradle.vfs.watch=false || true
-# 复制源码与前端产物
-ADD --chown=gradle:gradle . /app
-COPY --from=build-web /app/web/dist /app/src/main/resources/web
-RUN \
-    rm src/main/java/com/htmake/reader/ReaderUIApplication.kt; \
-    gradle -b cli.gradle assemble --no-daemon -Dorg.gradle.vfs.watch=false; \
-    mv ./build/libs/*.jar ./build/libs/reader.jar
 
-# ---- Runtime ----
-FROM jackkke/openjdk:8-jdk-alpine
-RUN \
-    apk upgrade --no-cache; \
-    apk add --no-cache ca-certificates tini tzdata; \
-    update-ca-certificates; \
-    rm -rf /var/cache/apk/*;
+COPY server/package.json server/package-lock.json* ./
+# Dev dependencies included: the TypeScript toolchain is needed to compile.
+RUN npm ci --include=dev
 
-ENV TZ=Asia/Shanghai
+COPY server/tsconfig.json server/tsconfig.build.json ./
+COPY server/src ./src
+RUN npm run build
 
-EXPOSE 8080
-ENTRYPOINT ["/sbin/tini", "--"]
-COPY --from=build-env /app/build/libs/reader.jar /app/bin/reader.jar
-CMD ["java", "-jar", "/app/bin/reader.jar"]
+# Strip dev dependencies for the runtime image.
+RUN npm prune --omit=dev
+
+
+# --- runtime stage -----------------------------------------------------------
+FROM --platform=$BUILDPLATFORM node:22-alpine AS runtime
+WORKDIR /app
+
+ENV NODE_ENV=production \
+    BOOKS_DIR=/books \
+    DATA_DIR=/data \
+    PORT=5888 \
+    WEB_DIR=/app/web \
+    MEDIA_FFPROBE_PATH=/usr/bin/ffprobe
+
+# Run as an unprivileged user. The library mount is read-only, so this user only
+# ever needs write access to /data.
+#
+# `su-exec` is a ~10KB static helper that drops privileges from an entrypoint;
+# Alpine's busybox has no equivalent (`setpriv` lives in util-linux, which the
+# base image does not carry), and `su` there needs a password hash to be set up.
+# Alpine supplies ffprobe in ffmpeg; media scanning only invokes ffprobe.
+RUN apk add --no-cache su-exec chromium ffmpeg \
+ && ffprobe -version >/dev/null \
+ && addgroup -S reader && adduser -S reader -G reader \
+ && mkdir -p /data /books /app/public && chown -R reader:reader /data /books /app/public
+
+COPY --from=build --chown=reader:reader /app/node_modules ./node_modules
+COPY --from=build --chown=reader:reader /app/dist ./dist
+COPY --from=build --chown=reader:reader /app/package.json ./
+# The built H5 client, served by the same process at `/`.
+COPY --from=web --chown=reader:reader /web/dist ./web
+
+# The entrypoint starts as root purely to take ownership of the *mounted* /data
+# (a bind mount's uid/gid comes from the host and overrides the chown above),
+# then re-execs the server as `reader`. See the script for the full rationale.
+COPY --chown=root:root server/docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
+RUN sed -i 's/\r$//' /usr/local/bin/docker-entrypoint.sh \
+ && chmod 0755 /usr/local/bin/docker-entrypoint.sh
+
+EXPOSE 5888
+VOLUME ["/data"]
+
+# The healthcheck hits the unauthenticated endpoint so an orchestrator can tell
+# "server up but library unreadable" from "server down".
+HEALTHCHECK --interval=30s --timeout=5s --start-period=10s --retries=3 \
+  CMD node -e "fetch('http://127.0.0.1:'+(process.env.PORT||5888)+'/api/v1/health').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"
+
+ENTRYPOINT ["/usr/local/bin/docker-entrypoint.sh"]
+CMD ["node", "dist/main.js"]
