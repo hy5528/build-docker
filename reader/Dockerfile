@@ -15,7 +15,7 @@ RUN \
     gradle -b cli.gradle assemble --info; \
     mv ./build/libs/*.jar ./build/libs/reader.jar
 
-FROM ibm-semeru-runtimes:open-8-jre
+FROM snowdreamtech/openjdk:latest
 # Install base packages
 RUN \
     apt-get update; \
