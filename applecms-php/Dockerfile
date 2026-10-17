@@ -1,4 +1,4 @@
-FROM shinsenter/phpfpm-apache:latest
+FROM php:8.5.12RC1-fpm-trixie
 
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
