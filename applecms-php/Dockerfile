@@ -1,4 +1,4 @@
-FROM php:8.4-cli-bookworm
+FROM shinsenter/phpfpm-nginx:latest
 
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
@@ -8,3 +8,4 @@ RUN apt-get update \
     && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /var/www/html
+EXPOSE 8010
