@@ -1,4 +1,4 @@
-FROM shinsenter/php:8.5-fpm-apache
+FROM phpdockerio/php:8.4-fpm
 
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
