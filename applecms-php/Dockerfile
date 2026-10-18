@@ -9,4 +9,4 @@ RUN apt-get update \
     && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /var/www/html
-EXPOSE 9000
+EXPOSE 80
