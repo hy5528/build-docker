@@ -8,4 +8,4 @@ RUN apt-get update \
     && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /var/www/html
-EXPOSE 8010
+EXPOSE 80
