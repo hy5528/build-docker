@@ -1,4 +1,5 @@
-FROM shinsenter/php:8.4-fpm-nginx
+FROM shinsenter/phpfpm-apache
+
 
 # 1. 安装 Composer
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
