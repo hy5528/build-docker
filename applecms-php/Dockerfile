@@ -13,6 +13,7 @@ RUN apk add --no-cache \
     git \
     curl \
     bash \
+    libzip \
     libzip-dev \
     libpng-dev \
     libjpeg-turbo-dev \
@@ -23,7 +24,7 @@ RUN apk add --no-cache \
     && docker-php-ext-configure gd --with-freetype --with-jpeg \
     && docker-php-ext-install -j$(nproc) pdo_mysql gd opcache bcmath pcntl zip \
     # 3. 清理编译依赖以减小镜像体积，但保留运行时库
-    && apk del libpng-dev libjpeg-turbo-dev freetype-dev libzip-dev \
+    && apk del libzip-dev libpng-dev libjpeg-turbo-dev freetype-dev libzip-dev \
     && rm -rf /var/cache/apk/*
 
 WORKDIR /var/www/html
