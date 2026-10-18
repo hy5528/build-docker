@@ -1,4 +1,4 @@
-FROM pshinsenter/php:8.4-fpm-apache
+FROM shinsenter/php:8.4-fpm-apache
 
 
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
