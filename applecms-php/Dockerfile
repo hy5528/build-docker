@@ -27,4 +27,4 @@ RUN apk add --no-cache \
     && rm -rf /var/cache/apk/*
 
 WORKDIR /var/www/html
-
+COPY . /var/www/html/
