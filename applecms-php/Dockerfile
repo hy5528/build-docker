@@ -28,3 +28,5 @@ RUN apk add --no-cache \
 
 WORKDIR /var/www/html
 COPY . /var/www/html/
+EXPOSE 8010
+CMD ["sh","/var/www/html/docker/php/start.sh"]
