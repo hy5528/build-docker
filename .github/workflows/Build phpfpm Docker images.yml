@@ -40,7 +40,7 @@ jobs:
         with:
           images: ghcr.io/hy5528/${{github.event.inputs.MACH}}
           tags: |
-            type=raw,value=latest-alpine
+            type=raw,value=8.4-alpine
       
       
       - name: 构建并推送 Docker 镜像
