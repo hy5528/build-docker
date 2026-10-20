@@ -1,4 +1,4 @@
-name: Build php Docker images
+name: Build phpfpm Docker images
 
 on:
   workflow_dispatch:
@@ -6,10 +6,10 @@ on:
       MACH:
         description: 'Choose machine'
         required: true
-        default: 'php'
+        default: 'phpfpm'
         type: choice
         options:
-        - 'php'     
+        - 'phpfpm'     
       
 env:
   REGISTRY: ghcr.io
