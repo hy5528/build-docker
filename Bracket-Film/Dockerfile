@@ -38,6 +38,7 @@ ENV NEXT_TELEMETRY_DISABLED=1
 ARG API_URL=http://127.0.0.1:3000
 ENV API_URL=${API_URL}
 
+
 RUN --mount=type=cache,target=/app/.next/cache npm run build
 
 # ==========================================
@@ -46,11 +47,8 @@ RUN --mount=type=cache,target=/app/.next/cache npm run build
 FROM node:20-alpine AS runner
 
 
-ENV NODE_ENV=production \
-    NEXT_TELEMETRY_DISABLED=1 \
-    TZ=Asia/Shanghai \
-    PORT=8080 \
-    API_URL=http://127.0.0.1:8080
+ARG API_URL
+ENV API_URL=${API_URL}
 
 RUN apk add --no-cache ca-certificates tzdata supervisor
 
