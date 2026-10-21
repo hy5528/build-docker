@@ -38,7 +38,6 @@ RUN adduser --system --uid 1001 nextjs
 # 复制 standalone 输出目录
 # 注意：standalone 模式不会自动复制 public 和 static 文件，需要手动复制
 COPY --from=builder /app/public ./public
-COPY --from=builder --chown=nextjs:nodejs /app/.next/font ./
 COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
 
 USER nextjs
