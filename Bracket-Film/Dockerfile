@@ -67,6 +67,4 @@ COPY --from=web-builder /app/.next/static /app/web/.next/static
 COPY supervisord.conf /etc/supervisord.conf
 
 EXPOSE 3000 
-ENV PORT=3000
-ENV HOSTNAME="0.0.0.0"
 CMD ["/usr/bin/supervisord", "-c", "/etc/supervisord.conf"]
