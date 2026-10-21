@@ -49,8 +49,8 @@ FROM node:20-alpine AS runner
 ENV NODE_ENV=production \
     NEXT_TELEMETRY_DISABLED=1 \
     TZ=Asia/Shanghai \
-    PORT=3000 \
-    LISTENER_PORT=3000 \
+    PORT=8080 \
+    LISTENER_PORT=8080 \
     HOSTNAME="0.0.0.0"
 
 RUN apk add --no-cache ca-certificates tzdata supervisor
