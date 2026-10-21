@@ -3,7 +3,7 @@
 # ==========================================
 # 1. 编译 Go 后端服务 (server)
 # ==========================================
-FROM --platform=$BUILDPLATFORM golang:1.25-alpine AS server-builder
+FROM --platform=$BUILDPLATFORM golang:1.24-alpine AS server-builder
 
 ENV GO111MODULE=on \
     CGO_ENABLED=0 \
@@ -26,8 +26,8 @@ RUN --mount=type=cache,target=/root/.cache/go-build \
 FROM --platform=$BUILDPLATFORM node:20-alpine AS web-deps
 RUN apk add --no-cache libc6-compat
 WORKDIR /app
-COPY web/package.json ./
-RUN --mount=type=cache,target=/root/.npm npm install 
+COPY web/package.json web/package-lock.json* ./
+RUN --mount=type=cache,target=/root/.npm npm install
 
 FROM --platform=$BUILDPLATFORM node:20-alpine AS web-builder
 WORKDIR /app
@@ -44,10 +44,13 @@ RUN --mount=type=cache,target=/app/.next/cache npm run build
 # 3. 运行环境 (Runner): 合并为一个镜像
 # ==========================================
 FROM node:20-alpine AS runner
+
+
 ENV NODE_ENV=production \
     NEXT_TELEMETRY_DISABLED=1 \
     TZ=Asia/Shanghai \
-    PORT=3000 
+    PORT=8080 \
+    API_URL=http://127.0.0.1:8080
 
 RUN apk add --no-cache ca-certificates tzdata supervisor
 
@@ -65,6 +68,7 @@ COPY --from=web-builder /app/.next/static /app/web/.next/static
 # Supervisord 进程配置
 COPY supervisord.conf /etc/supervisord.conf
 
-EXPOSE 3000
-
+EXPOSE 3000 
+ENV PORT=3000
+ENV HOSTNAME="0.0.0.0"
 CMD ["/usr/bin/supervisord", "-c", "/etc/supervisord.conf"]
