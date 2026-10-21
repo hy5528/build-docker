@@ -35,7 +35,7 @@ COPY --from=web-deps /app/node_modules ./node_modules
 COPY web/ .
 
 ENV NEXT_TELEMETRY_DISABLED=1
-ARG API_URL=http://127.0.0.1:3000
+ARG API_URL
 ENV API_URL=${API_URL}
 
 
