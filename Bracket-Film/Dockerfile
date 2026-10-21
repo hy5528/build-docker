@@ -3,7 +3,7 @@
 # ==========================================
 # 1. 编译 Go 后端服务 (server)
 # ==========================================
-FROM --platform=$BUILDPLATFORM golang:1.24-alpine AS server-builder
+FROM --platform=$BUILDPLATFORM golang:1.25-alpine AS server-builder
 
 ENV GO111MODULE=on \
     CGO_ENABLED=0 \
@@ -28,7 +28,7 @@ RUN --mount=type=cache,target=/root/.cache/go-build \
 FROM --platform=$BUILDPLATFORM node:20-alpine AS web-deps
 RUN apk add --no-cache libc6-compat
 WORKDIR /app
-COPY web/package.json web/package-lock.json ./
+COPY web/package.json ./
 RUN --mount=type=cache,target=/root/.npm npm ci
 
 FROM --platform=$BUILDPLATFORM node:20-alpine AS web-builder
@@ -47,9 +47,6 @@ RUN --mount=type=cache,target=/app/.next/cache npm run build
 # ==========================================
 FROM node:20-alpine AS runner
 
-LABEL org.opencontainers.image.title="EcoHub All-in-One" \
-      org.opencontainers.image.description="EcoHub All-in-One single image containing both Go server and Next.js web." \
-      org.opencontainers.image.source="https://github.com/fe-spark/EcoHub"
 
 ENV NODE_ENV=production \
     NEXT_TELEMETRY_DISABLED=1 \
