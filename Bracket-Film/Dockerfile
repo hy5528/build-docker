@@ -44,7 +44,11 @@ RUN --mount=type=cache,target=/app/.next/cache npm run build
 # 3. 运行环境 (Runner): 合并为一个镜像
 # ==========================================
 FROM node:20-alpine AS runner
-
+ENV NODE_ENV=production \
+    NEXT_TELEMETRY_DISABLED=1 \
+    TZ=Asia/Shanghai \
+    PORT=3000 \
+    API_URL=http://127.0.0.1:3000
 
 RUN apk add --no-cache ca-certificates tzdata supervisor
 
