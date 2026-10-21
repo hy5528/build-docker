@@ -47,8 +47,7 @@ FROM node:20-alpine AS runner
 ENV NODE_ENV=production \
     NEXT_TELEMETRY_DISABLED=1 \
     TZ=Asia/Shanghai \
-    PORT=3000 \
-    API_URL=http://127.0.0.1:3000
+    PORT=3000 
 
 RUN apk add --no-cache ca-certificates tzdata supervisor
 
