@@ -23,7 +23,7 @@ RUN --mount=type=cache,target=/root/.cache/go-build \
 # ==========================================
 # 2. 编译 Next.js 前端应用 (web)
 # ==========================================
-FROM --platform=$BUILDPLATFORM node:20-alpine AS web-deps
+FROM --platform=$BUILDPLATFORM node:22-alpine AS web-deps
 RUN apk add --no-cache libc6-compat python3 git make g++
 WORKDIR /app
 COPY client/package.json ./
@@ -44,7 +44,7 @@ RUN --mount=type=cache,target=/app/.next/cache npm run build
 # ==========================================
 # 3. 运行环境 (Runner): 合并为一个镜像
 # ==========================================
-FROM node:20-alpine AS runner
+FROM node:22-alpine AS runner
 
 ENV NODE_ENV=production \
     NEXT_TELEMETRY_DISABLED=1 \
