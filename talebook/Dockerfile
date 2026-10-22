@@ -1,1 +1,1 @@
-ghcr.io/talebook/talebook
+FROM ghcr.io/talebook/talebook
