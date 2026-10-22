@@ -3,7 +3,7 @@
 # ==========================================
 # 1. 编译 Go 后端服务 (server)
 # ==========================================
-FROM --platform=$BUILDPLATFORM golang:1.25-alpine AS server-builder
+FROM --platform=$BUILDPLATFORM golang:tip-alpine3.23 AS server-builder
 
 ENV GO111MODULE=on \
     CGO_ENABLED=0 \
@@ -18,7 +18,8 @@ RUN --mount=type=cache,target=/go/pkg/mod go mod download
 
 COPY server/ .
 RUN --mount=type=cache,target=/root/.cache/go-build \
-    GOARCH=$TARGETARCH go build -o /build/gofilm ./main.go
+    CGO_ENABLED=0 GOOS=linux \
+    go build -ldflags="-s -w" -o /build/gofilm ./main.go
 # ==========================================
 # 2. 编译 Next.js 前端应用 (web)
 # ==========================================
