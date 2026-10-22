@@ -39,7 +39,7 @@ ARG API_URL=http://127.0.0.1:8080
 ENV API_URL=${API_URL}
 
 
-RUN --mount=type=cache, npm run build
+RUN npm run build
 
 # ==========================================
 # 3. 运行环境 (Runner): 合并为一个镜像
