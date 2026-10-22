@@ -27,7 +27,7 @@ FROM --platform=$BUILDPLATFORM node:20-alpine AS web-deps
 RUN apk add --no-cache libc6-compat python3 git make g++
 WORKDIR /app
 COPY client/package.json ./
-RUN --mount=type=cache,target=/root/.npm npm install
+RUN npm ci --prefer-offline --no-audit
 
 FROM --platform=$BUILDPLATFORM node:20-alpine AS web-builder
 WORKDIR /app
