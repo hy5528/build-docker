@@ -10,9 +10,9 @@ services:
     image: ghcr.nju.edu.cn/hy5528/talebook66:latest
     volumes:
       # 持久化配置、用户数据库和书库；可在 .env 中用 TALEBOOK_DATA_DIR 指定已有目录
-      - "${TALEBOOK_DATA_DIR:-./data}:/data"
+      - "/opt/talebook/data:/data"
     ports:
-      - "8080:80"
+      - "8580:80"
       - "8443:443"
     environment:
       # 如果需要上传ssl证书，请将PUID与PGID设置为0（root用户）
