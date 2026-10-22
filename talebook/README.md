@@ -7,7 +7,7 @@ services:
   # main service
   talebook:
     restart: always
-    image: ghcr.io/talebook/talebook
+    image: ghcr.nju.edu.cn/hy5528/talebook66:latest
     volumes:
       # 持久化配置、用户数据库和书库；可在 .env 中用 TALEBOOK_DATA_DIR 指定已有目录
       - "${TALEBOOK_DATA_DIR:-./data}:/data"
