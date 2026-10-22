@@ -9,7 +9,8 @@ on:
         default: 'mopidy'
         type: choice
         options:
-        - 'mopidy'     
+        - 'mopidy'
+        - 'talebook'
       
 env:
   REGISTRY: ghcr.io
