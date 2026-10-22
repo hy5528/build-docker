@@ -72,8 +72,6 @@ services:
      - 0.0.0.0:${SERVER_PORT:-19880}:8080
    volumes:
      - /opt/Bracket-Film/data/uploads:/app/static/upload
-     # 后台「立即升级」通过 socket 拉 latest 并重建本容器
-     - /var/run/docker.sock:/var/run/docker.sock
    networks:
      - bkfilm-network
    extra_hosts:
