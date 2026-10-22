@@ -27,7 +27,7 @@ FROM --platform=$BUILDPLATFORM node:20-alpine AS web-deps
 RUN apk add --no-cache libc6-compat
 WORKDIR /app
 COPY client/package.json ./
-RUN --mount=type=cache,target=/root/.npm npm install
+RUN npm install
 
 FROM --platform=$BUILDPLATFORM node:20-alpine AS web-builder
 WORKDIR /app
