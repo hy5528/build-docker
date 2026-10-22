@@ -3,7 +3,7 @@
 # ==========================================
 # 1. 编译 Go 后端服务 (server)
 # ==========================================
-FROM --platform=$BUILDPLATFORM golang:tip-alpine3.23 AS server-builder
+FROM --platform=$BUILDPLATFORM golang:1.25-alpine AS server-builder
 
 ENV GO111MODULE=on \
     CGO_ENABLED=0 \
@@ -18,8 +18,8 @@ RUN --mount=type=cache,target=/go/pkg/mod go mod download
 
 COPY server/ .
 RUN --mount=type=cache,target=/root/.cache/go-build \
-    CGO_ENABLED=0 GOOS=linux \
-    go build -ldflags="-s -w" -o /build/gofilm ./main.go
+    GOARCH=$TARGETARCH go build -o /build/gofilm ./main.go
+
 # ==========================================
 # 2. 编译 Next.js 前端应用 (web)
 # ==========================================
@@ -35,8 +35,9 @@ COPY --from=web-deps /app/node_modules ./node_modules
 COPY client/ .
 
 ENV NEXT_TELEMETRY_DISABLED=1
-ARG API_URL=http://127.0.0.1:3601
+ARG API_URL=http://127.0.0.1:8080
 ENV API_URL=${API_URL}
+
 
 RUN --mount=type=cache,target=/app/.next/cache npm run build
 
@@ -45,19 +46,19 @@ RUN --mount=type=cache,target=/app/.next/cache npm run build
 # ==========================================
 FROM node:20-alpine AS runner
 
-
 ENV NODE_ENV=production \
     NEXT_TELEMETRY_DISABLED=1 \
     TZ=Asia/Shanghai \
-    PORT=3601 \
-    API_URL=http://127.0.0.1:3601
+    PORT=8080 \
+    LISTENER_PORT=8080 \
+    HOSTNAME="0.0.0.0"
 
 RUN apk add --no-cache ca-certificates tzdata supervisor
 
 WORKDIR /app
 
 # 拷贝 Go 服务二进制文件及迁移工具
-COPY --from=server-builder /build/gofilm /app/server/main
+COPY --from=server-builder /out/main /app/server/main
 
 
 # 拷贝 Next.js 产物
@@ -68,6 +69,5 @@ COPY --from=web-builder /app/.next/static /app/web/.next/static
 # Supervisord 进程配置
 COPY supervisord.conf /etc/supervisord.conf
 
-EXPOSE 3600 3601
-
+EXPOSE 3000 
 CMD ["/usr/bin/supervisord", "-c", "/etc/supervisord.conf"]
