@@ -24,10 +24,10 @@ RUN --mount=type=cache,target=/root/.cache/go-build \
 # 2. 编译 Next.js 前端应用 (web)
 # ==========================================
 FROM --platform=$BUILDPLATFORM node:20-alpine AS web-deps
-RUN apk add --no-cache libc6-compat
+RUN apk add --no-cache libc6-compat python3 git
 WORKDIR /app
 COPY client/package.json ./
-RUN --mount=type=cache,target=/root/.npm npm ci
+RUN --mount=type=cache,target=/root/.npm npm install
 
 FROM --platform=$BUILDPLATFORM node:20-alpine AS web-builder
 WORKDIR /app
