@@ -34,7 +34,7 @@ COPY --from=web-deps /app/node_modules ./node_modules
 COPY web/ .
 
 ENV NEXT_TELEMETRY_DISABLED=1
-ARG API_URL=http://127.0.0.1:8080
+ARG API_URL=http://127.0.0.1:3601
 ENV API_URL=${API_URL}
 
 RUN --mount=type=cache,target=/app/.next/cache npm run build
@@ -48,8 +48,8 @@ FROM node:20-alpine AS runner
 ENV NODE_ENV=production \
     NEXT_TELEMETRY_DISABLED=1 \
     TZ=Asia/Shanghai \
-    PORT=8080 \
-    API_URL=http://127.0.0.1:8080
+    PORT=3601 \
+    API_URL=http://127.0.0.1:3601
 
 RUN apk add --no-cache ca-certificates tzdata supervisor
 
@@ -67,6 +67,6 @@ COPY --from=web-builder /app/.next/static /app/web/.next/static
 # Supervisord 进程配置
 COPY supervisord.conf /etc/supervisord.conf
 
-EXPOSE 3600 8080
+EXPOSE 3600 3601
 
 CMD ["/usr/bin/supervisord", "-c", "/etc/supervisord.conf"]
