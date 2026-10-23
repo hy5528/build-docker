@@ -6,7 +6,6 @@ RUN corepack enable && corepack prepare pnpm@latest --activate
 
 WORKDIR /app
 
-
 # 仅复制依赖清单，提高构建缓存利用率
 COPY package.json pnpm-lock.yaml ./
 
@@ -48,8 +47,8 @@ RUN addgroup -g 1001 -S nodejs && adduser -u 1001 -S nextjs -G nodejs
 
 WORKDIR /app
 
-# 创建视频缓存目录并设置权限
-RUN mkdir -p /app/video-cache && chown -R nextjs:nodejs /app/video-cache
+# 创建视频缓存目录和数据目录并设置权限
+RUN mkdir -p /app/video-cache /app/data && chown -R nextjs:nodejs /app/video-cache /app/data
 ENV NODE_ENV=production
 ENV HOSTNAME=0.0.0.0
 ENV PORT=3000
