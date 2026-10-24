@@ -144,7 +144,7 @@ journalctl --vacuum-time=1h #保留一小时之内的日志，其余删除。
 
 journalctl --verify
 
-
+wget -qO- https://ghfast.top/https://github.com/docker/docker-install/blob/master/install.sh |  sudo sh
 
 
 
