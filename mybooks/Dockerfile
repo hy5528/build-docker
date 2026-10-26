@@ -25,7 +25,7 @@ RUN mkdir -p /app-static/ && \
 
 # ----------------------------------------
 # 测试阶段 (--break-system-packages)
-FROM poxenstudio/mybooks_base:latest AS test
+FROM talebook/talebook-base:slim-v8.5.0 AS test
 RUN pip install flake8 pytest --break-system-packages
 COPY requirements_release.txt /tmp/requirements.txt
 RUN pip install --no-cache-dir --no-compile -r /tmp/requirements.txt --break-system-packages && \
@@ -44,7 +44,7 @@ CMD ["pytest", "/var/www/mybooks/tests"]
 
 # ----------------------------------------
 # 生产环境
-FROM poxenstudio/mybooks_base:latest AS production
+FROM talebook/talebook-base:slim-v8.5.0 AS production
 ARG BUILD_COUNTRY="CN"
 ARG GIT_VERSION=""
 
