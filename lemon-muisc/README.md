@@ -1,39 +1,24 @@
-如何正确挂载/修改配置（推荐做法）
-由于许多 Docker 镜像默认不加载 php.ini（显示为 none），直接修改容器内的文件在重启后会丢失。最佳实践是‌从宿主机挂载‌。
-
-准备配置文件‌：
-在宿主机上创建一个 php.ini 文件。你可以从容器内复制默认模板出来修改：
-
-bash
-# 从容器复制生产环境模板到宿主机当前目录
-docker cp <容器ID>:/usr/local/etc/php/php.ini-production ./php.ini
-修改配置‌：
-编辑宿主机的 php.ini，例如修改执行时间：
-
-ini
-max_execution_time = 300
-memory_limit = 256M
-挂载到容器‌：
-在 docker-compose.yml 或 docker run 中挂载该文件：
-
-Docker Compose 示例：‌
-
-yaml
+# 柠檬音乐 · Lemon Music
+- 面向飞牛 NAS、Docker 与自托管的 Web 音乐工具：本地音乐库、标签整理、试听播放，并兼容落雪（LX Music）、澜音、MusicFree、BakaMusic 音源插件。
+- http://你的IP:7983
+```text
 services:
-  php:
-    image: php:8.2-fpm
+  lemon-music: # 服务名，一般不用改
+    image: ghcr.nju.edu.cn/hy5528/lemon-muisc66:latest
+    container_name: lemon-music # 容器名
+    ports:
+      - "7983:7983" # 宿主机端口:容器端口，改左边即可
+    restart: unless-stopped # 异常退出后自动重启
+    environment:
+      PORT: "7983" # 容器内监听端口，需与上面 ports 右侧一致
+      DOWNLOAD_PATH: /downloads # 容器内下载目录
+      CONFIG_PATH: /config # 容器内配置与数据库目录
+      # MUSIC_HOST_PATH: /volume1/music # 可选，界面展示用的宿主机音乐路径
+      # DOWNLOADS_HOST_PATH: /volume1/downloads # 可选，界面展示用的宿主机下载路径
+      # LEMON_PUBLIC_URL: http://192.168.1.8:7983 # 可选，DLNA 投屏拉流地址
     volumes:
-      # 将宿主机的 php.ini 挂载到容器内的默认加载路径
-      - ./php.ini:/usr/local/etc/php/php.ini
-      # 如果是 FPM，可能还需要挂载 pool 配置
-      - ./www.conf:/usr/local/etc/php-fpm.d/www.conf
-重启容器‌：
+      - ./data/music:/music # 音乐库：左边改成你的歌曲目录
+      - ./data/downloads:/downloads # 下载保存目录
+      - ./data/config:/config # 配置与数据库，
 
-bash
-docker-compose up -d php
-总结排查步骤
-总结排查步骤
-先执行 docker exec -it <容器> php --ini。
-看 Loaded Configuration File 是否为 (none)。
-如果是 (none)，说明你需要手动挂载一个 php.ini 文件到 /usr/local/etc/php/php.ini（或其他 Configuration File Path 指示的目录）。
-如果是 Web 业务，务必通过 phpinfo() 再次确认 Web SAPI 加载的是同一个文件，因为 FPM 和 CLI 可能配置分离。
+```
