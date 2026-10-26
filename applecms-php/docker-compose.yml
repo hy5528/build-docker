@@ -6,7 +6,6 @@ services:
     working_dir: /var/www/html
     volumes:
       - .:/var/www/html
-      - ./php.ini:/usr/local/etc/php/php.ini
     environment:
       APP_URL: http://127.0.0.1:8010
       DB_CONNECTION: sqlite
