@@ -44,7 +44,7 @@ CMD ["pytest", "/var/www/mybooks/tests"]
 
 # ----------------------------------------
 # 生产环境
-FROM docker.1ms.run/poxenstudio/mybooks_base:latest AS production
+FROM poxenstudio/mybooks_base:latest AS production
 ARG BUILD_COUNTRY="CN"
 ARG GIT_VERSION=""
 
