@@ -25,7 +25,7 @@ RUN mkdir -p /app-static/ && \
 
 # ----------------------------------------
 # 测试阶段 (--break-system-packages)
-FROM docker.1ms.run/poxenstudio/mybooks_base:latest AS test
+FROM poxenstudio/mybooks_base:latest AS test
 RUN pip install flake8 pytest --break-system-packages
 COPY requirements_release.txt /tmp/requirements.txt
 RUN pip install --no-cache-dir --no-compile -r /tmp/requirements.txt --break-system-packages && \
