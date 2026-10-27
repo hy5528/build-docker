@@ -1,0 +1,40 @@
+# syntax=docker/dockerfile:1
+# 柠檬音乐 · 自托管 / 服务器 Docker 镜像（与飞牛原生 FPK 独立）
+# builder / prod-deps 在 BUILDPLATFORM 执行，避免 arm64 经 QEMU 跑 npm 触发 Illegal instruction
+
+FROM --platform=$BUILDPLATFORM node:22-alpine AS builder
+WORKDIR /app
+RUN apk add --no-cache python3 make g++
+COPY package.json package-lock.json ./
+RUN npm ci
+COPY . .
+RUN npm run build
+
+FROM --platform=$BUILDPLATFORM node:22-alpine AS prod-deps
+ARG TARGETARCH
+WORKDIR /app
+RUN apk add --no-cache python3 make g++
+COPY package.json package-lock.json ./
+# 在宿主机架构上拉取 linux/$TARGETARCH 依赖（含 better-sqlite3 预编译包），不进 QEMU
+RUN npm ci \
+    && npm cache clean --force
+
+FROM node:22-alpine
+WORKDIR /app
+RUN apk add --no-cache tini
+COPY package.json package-lock.json ./
+COPY --from=prod-deps /app/node_modules ./node_modules
+COPY --from=builder /app/dist ./dist
+COPY --from=builder /app/server ./server
+COPY --from=builder /app/scripts ./scripts
+
+ENV PORT=7983 \
+    DOWNLOAD_PATH=/downloads \
+    CONFIG_PATH=/config \
+    NODE_ENV=production
+
+EXPOSE 7983
+VOLUME ["/music", "/downloads", "/config"]
+
+ENTRYPOINT ["tini", "--"]
+CMD ["node", "server/index.js"]
