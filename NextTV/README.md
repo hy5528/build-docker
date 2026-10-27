@@ -5,7 +5,16 @@ http://你的IP:5500
 
 ```text
 
-docker run -d --name NextTV --restart=always -p 5500:3000 ghcr.nju.edu.cn/hy5528/nexttv66:latest
+services:
+  NextTV:
+    container_name: NextTV
+    image: ghcr.nju.edu.cn/seqcrafter/nexttv:latest # 建议替换为具体版本号
+    restart: always
+    environment:
+      - SESSION_SECRET=9014ac793e43b59f8b10d77bd3c26410
+      - PASSWORD=ww123456 # 从 .env 文件读取
+    ports:
+      - "5500:3000"
 
 ```
 
