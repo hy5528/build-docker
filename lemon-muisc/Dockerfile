@@ -15,11 +15,11 @@ ARG TARGETARCH
 WORKDIR /app
 RUN apk update && apk add --no-cache tini python3 make g++ sqlite-dev
 COPY package.json ./
-# 构建时安装生产依赖并重新编译原生模块（better-sqlite3）
+# 构建时安装生产依赖并重新编译原生模块（sqlite3）
 ENV npm_config_build_from_source=true
 RUN npm install --omit=dev \
-    && npm rebuild better-sqlite3 \
-    && node -e "require('better-sqlite3'); console.log('[build] better-sqlite3 校验通过')" \
+    && npm rebuild sqlite3 \
+    && node -e "require('sqlite3'); console.log('[build] sqlite3 校验通过')" \
     && npm cache clean --force
 
 FROM node:22-alpine
