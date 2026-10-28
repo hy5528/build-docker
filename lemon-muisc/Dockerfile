@@ -17,10 +17,10 @@ RUN apk add --no-cache python3 make g++
 COPY package.json package-lock.json ./
 # 构建时安装生产依赖并重新编译原生模块（better-sqlite3）
 ENV npm_config_build_from_source=true
-RUN npm rebuild better-sqlite3  \
-    && node -e "require('better-sqlite3'); console.log('[OK] better-sqlite3 native module verified')" \
-    && apk del python3 make g++  \
-    && rm -rf /tmp/* /var/cache/apk/*
+RUN npm install --omit=dev \
+    && npm rebuild better-sqlite3 \
+    && node -e "require('better-sqlite3'); console.log('[build] better-sqlite3 校验通过')" \
+    && npm cache clean --force
 
 FROM node:22-alpine
 WORKDIR /app
