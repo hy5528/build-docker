@@ -7,11 +7,17 @@ FROM --platform=$BUILDPLATFORM node:22-alpine AS hls-build
 
 # Alpine 原生编译依赖，适配 musl libc
 RUN apk update && apk add --no-cache \
-    build-base \
-    pkgconfig \
-    patch \
-    ca-certificates \
-    python3 \
+      chromium \
+      nss \
+      nss-tools \
+      freetype \
+      harfbuzz \
+      ca-certificates \
+      ttf-freefont \
+      python3 \
+      openssl \
+    && ./node_modules/.bin/playwright install --with-deps --only-shell chromium \
+    && chmod -R a+rX /ms-playwright \
     && rm -rf /var/cache/apk/*
 
 WORKDIR /build
