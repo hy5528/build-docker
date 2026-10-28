@@ -13,7 +13,7 @@ RUN npm run build
 FROM --platform=$BUILDPLATFORM node:22-alpine AS prod-deps
 ARG TARGETARCH
 WORKDIR /app
-RUN apk add --no-cache python3 make g++ sqlite-libs
+RUN apk add --no-cache python3 make g++ libsqlite3-dev
 COPY package.json package-lock.json ./
 # 构建时安装生产依赖并重新编译原生模块（sqlite3 6.x）
 ENV npm_config_build_from_source=true \
