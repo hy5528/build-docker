@@ -16,9 +16,8 @@ WORKDIR /app
 RUN apk add --no-cache python3 make g++
 COPY package.json package-lock.json ./
 # 构建时安装生产依赖并重新编译原生模块（sqlite3 6.x）
-ENV npm_config_build_from_source=true \
-    npm_config_disturl=https://registry.npmmirror.com/-/binary/node
-RUN npm ci --omit=dev \
+ENV npm_config_build_from_source=true 
+RUN npm install --omit=dev \
     && npm rebuild sqlite3 \
     && node -e "require('sqlite3'); console.log('[build] sqlite3 校验通过')" \
     && npm cache clean --force
