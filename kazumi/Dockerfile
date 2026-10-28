@@ -103,19 +103,12 @@ COPY --from=production-dependencies --chown=node:node /app/node_modules ./node_m
 RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.aliyun.com/g' /etc/apk/repositories \
     && apk update \
     && apk add --no-cache \
-        chromium \
-        nss \
-        nss-tools \
-        freetype \
-        harfbuzz \
+        build-base \
+        python3 \
+        pkgconfig \
+        patch \
         ca-certificates \
-        ttf-freefont \
-        openssl \
-    && echo "✅ 系统依赖安装完成" \
-    && ./node_modules/.bin/playwright install --with-deps --only-shell chromium \
-    && echo "✅ Playwright Chromium 安装完成" \
-    && chmod -R a+rX /ms-playwright \
-    && rm -rf /var/cache/apk/* /tmp/* /root/.npm
+    && rm -rf /var/cache/apk/*
 
 # 3. 复制前端构建产物
 COPY --from=build --chown=node:node /app/dist ./dist
