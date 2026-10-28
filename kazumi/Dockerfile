@@ -6,13 +6,7 @@
 FROM --platform=$BUILDPLATFORM node:22-alpine AS hls-build
 
 # Alpine 原生编译依赖
-RUN apk update && apk add --no-cache \
-    build-base \
-    pkgconfig \
-    patch \
-    ca-certificates \
-    python3 \
-    && rm -rf /var/cache/apk/*
+RUN apk add --no-cache python3 make g++
 
 WORKDIR /build
 COPY native/hls ./native/hls
