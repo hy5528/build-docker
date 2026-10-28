@@ -13,13 +13,13 @@ RUN npm run build
 FROM --platform=$BUILDPLATFORM node:22-alpine AS prod-deps
 ARG TARGETARCH
 WORKDIR /app
-RUN apk add --no-cache python3 make g++ libsqlite3-dev
+RUN apk add --no-cache python3 make g++ 
 COPY package.json package-lock.json ./
 # 构建时安装生产依赖并重新编译原生模块（sqlite3 6.x）
 ENV npm_config_build_from_source=true
-RUN npm rebuild better-sqlite3 sqlite3 \
+RUN npm rebuild better-sqlite3  \
     && node -e "require('better-sqlite3'); console.log('[OK] better-sqlite3 native module verified')" \
-    && apk del python3 make g++ libsqlite3-dev \
+    && apk del python3 make g++  \
     && rm -rf /tmp/* /var/cache/apk/*
 
 FROM node:22-alpine
