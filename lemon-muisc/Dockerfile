@@ -16,6 +16,7 @@ WORKDIR /app
 RUN apk add --no-cache python3 make g++
 COPY package.json package-lock.json ./
 # 在宿主机架构上拉取 linux/$TARGETARCH 依赖（含 better-sqlite3 预编译包），不进 QEMU
+ENV npm_config_build_from_source=true
 RUN npm ci --omit=dev \
     && npm rebuild sqlite3 \
     && node -e "require('sqlite3'); console.log('[build] sqlite3 校验通过')" \
