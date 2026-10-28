@@ -1,4 +1,3 @@
-
 # syntax=docker/dockerfile:1
 
 # ==============================================================================
@@ -23,7 +22,7 @@ RUN npm run build
 
 # ==============================================================================
 # Stage 2: Prod-Dependencies (生产依赖准备)
-# 仅安装依赖，不在此阶段编译原生模块，避免跨架构二进制不兼容
+# 仅安装纯 JS 依赖，不在此阶段处理原生模块，避免跨架构二进制不兼容
 # ==============================================================================
 FROM --platform=$BUILDPLATFORM node:22-alpine AS prod-deps
 
@@ -35,8 +34,9 @@ COPY package.json package-lock.json ./
 ENV npm_config_disturl=https://registry.npmmirror.com/-/binary/node
 
 # 仅安装生产依赖，跳过 devDependencies
-# 注意：此处不编译 better-sqlite3，因为架构可能不匹配
-RUN npm install
+# 注意：此时 better-sqlite3 的二进制文件可能不匹配目标架构，稍后会在 Stage 3 重建
+RUN npm install --omit=dev --registry=https://registry.npmmirror.com \
+    && npm cache clean --force
 
 # ==============================================================================
 # Stage 3: Final Runtime (最终运行镜像)
@@ -53,7 +53,7 @@ WORKDIR /app
 # 2. 安装运行时必要工具
 # tini: 进程初始化系统，处理信号转发
 # python3 make g++ sqlite-dev: 用于在目标架构下重新编译 better-sqlite3
-# 修正点：Alpine 中包名为 sqlite-dev 而非 libsqlite3-dev
+# 修正点：Alpine 中 SQLite 开发库包名为 sqlite-dev
 RUN apk update && apk add --no-cache tini python3 make g++ sqlite-dev
 
 # 3. 复制生产依赖
