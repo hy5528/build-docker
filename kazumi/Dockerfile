@@ -1,5 +1,5 @@
 # syntax=docker/dockerfile:1
-FROM node:22-bookworm-slim AS hls-build
+FROM node:24-bookworm-slim AS hls-build
 RUN apt-get update && apt-get install -y --no-install-recommends \
     build-essential pkg-config patch ca-certificates \
     && rm -rf /var/lib/apt/lists/*
@@ -13,7 +13,7 @@ WORKDIR /build
 COPY native/ech/ ./
 RUN CGO_ENABLED=0 go build -trimpath -ldflags="-s -w" -o /out/kazumi-ech .
 
-FROM node:22-bookworm-slim AS dependencies
+FROM node:24-bookworm-slim AS dependencies
 WORKDIR /app
 COPY package.json package-lock.json ./
 RUN npm ci
@@ -24,12 +24,12 @@ COPY src ./src
 COPY shared ./shared
 RUN npm run build
 
-FROM node:22-bookworm-slim AS production-dependencies
+FROM node:24-bookworm-slim AS production-dependencies
 WORKDIR /app
 COPY package.json package-lock.json ./
 RUN npm ci --omit=dev && npm cache clean --force
 
-FROM node:22-bookworm-slim AS runtime
+FROM node:24-bookworm-slim AS runtime
 ENV NODE_ENV=production HOST=0.0.0.0 PORT=3000 DATA_DIR=/app/data PLAYWRIGHT_BROWSERS_PATH=/ms-playwright
 ENV NODE_EXTRA_CA_CERTS=/app/server/certificates/sslcom-tls-issuing-rsa-r1.crt
 WORKDIR /app
