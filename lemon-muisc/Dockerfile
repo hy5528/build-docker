@@ -5,7 +5,7 @@
 FROM --platform=$BUILDPLATFORM node:22-alpine AS builder
 WORKDIR /app
 RUN apk add --no-cache python3 make g++ 
-COPY package.json package-lock.json ./
+COPY package.json ./
 RUN npm install
 COPY . .
 RUN npm run build
@@ -14,7 +14,7 @@ FROM --platform=$BUILDPLATFORM node:22-alpine AS prod-deps
 ARG TARGETARCH
 WORKDIR /app
 RUN apk update && apk add --no-cache tini python3 make g++ sqlite-dev
-COPY package.json package-lock.json ./
+COPY package.json ./
 # 构建时安装生产依赖并重新编译原生模块（better-sqlite3）
 ENV npm_config_build_from_source=true
 RUN npm install --omit=dev \
@@ -25,7 +25,7 @@ RUN npm install --omit=dev \
 FROM node:22-alpine
 WORKDIR /app
 RUN apk add --no-cache tini
-COPY package.json package-lock.json ./
+COPY package.json ./
 COPY --from=prod-deps /app/node_modules ./node_modules
 COPY --from=builder /app/dist ./dist
 COPY --from=builder /app/server ./server
