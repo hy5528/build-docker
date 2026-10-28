@@ -40,9 +40,7 @@ WORKDIR /app/backend
 #   2) npm_config_disturl             —— node-gyp 拉取 Node 头文件走国内镜像，避免连 nodejs.org 失败
 #   3) 编译后立刻 require('sqlite3') 校验，加载失败则让镜像构建直接报错（fail-fast），
 #      杜绝“镜像构建‘成功’却带着坏的 sqlite3 发出去”的情况。
-ENV npm_config_build_from_source=true \
-    npm_config_disturl=https://registry.npmmirror.com/-/binary/node
-RUN npm install --omit=dev --registry=https://registry.npmmirror.com \
+RUN npm install --omit=dev \
     && npm rebuild sqlite3 \
     && node -e "require('sqlite3'); console.log('[build] sqlite3 校验通过')" \
     && npm cache clean --force
