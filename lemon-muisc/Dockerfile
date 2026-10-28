@@ -35,7 +35,7 @@ ENV npm_config_disturl=https://registry.npmmirror.com/-/binary/node
 
 # 仅安装生产依赖，跳过 devDependencies
 # 注意：此时 better-sqlite3 的二进制文件可能不匹配目标架构，稍后会在 Stage 3 重建
-RUN npm ci --omit=dev --registry=https://registry.npmmirror.com \
+RUN npm install --omit=dev \
     && npm cache clean --force
 
 # ==============================================================================
