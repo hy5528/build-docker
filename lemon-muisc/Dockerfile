@@ -36,7 +36,7 @@ ENV npm_config_disturl=https://registry.npmmirror.com/-/binary/node
 
 # 仅安装生产依赖，跳过 devDependencies
 # 注意：此处不编译 better-sqlite3，因为架构可能不匹配
-RUN npm install --omit=dev 
+RUN npm install
 
 # ==============================================================================
 # Stage 3: Final Runtime (最终运行镜像)
