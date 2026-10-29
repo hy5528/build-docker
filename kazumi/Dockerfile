@@ -35,7 +35,7 @@ WORKDIR /app
 COPY package.json package-lock.json ./
 RUN npm ci --omit=dev && npm cache clean --force
 
-FROM node:22-alpine AS runtime
+FROM --platform=$BUILDPLATFORM node:22-alpine AS runtime
 ENV NODE_ENV=production HOST=0.0.0.0 PORT=3000 DATA_DIR=/app/data PLAYWRIGHT_BROWSERS_PATH=/ms-playwright
 ENV NODE_EXTRA_CA_CERTS=/app/server/certificates/sslcom-tls-issuing-rsa-r1.crt
 WORKDIR /app
