@@ -14,7 +14,7 @@ COPY native/hls ./native/hls
 COPY scripts/build-hls.mjs ./scripts/build-hls.mjs
 RUN node scripts/build-hls.mjs
 
-FROM golang:1.26-bookworm AS ech-build
+FROM --platform=$BUILDPLATFORM golang:1.25-alpine  AS ech-build
 WORKDIR /build
 COPY native/ech/ ./
 RUN CGO_ENABLED=0 go build -trimpath -ldflags="-s -w" -o /out/kazumi-ech .
