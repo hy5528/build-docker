@@ -1,80 +1,67 @@
-# ============================================
-# 番剧播放器 Docker 镜像
-# 使用外部 C++ CEF Sniffer 服务进行视频解析
-# ============================================
+# KazumiWeb 容器化部署（Linux + xvfb 虚拟显示）
+#
+# Flutter 桌面与 webkitgtk WebView（视频源解析的硬依赖）都需要显示环境，
+# 容器内用 xvfb 提供虚拟 X display——这是 Flutter 桌面应用容器化的标准解法。
+#
+#   docker build -t kazumi-web .
+#   docker run -d --network host -v kazumi-data:/data kazumi-web
+#
+# 详见 docs/deployment.md（含 --network host 与端口映射的取舍）。
 
-# 阶段 1: 依赖安装
-FROM node:20-slim AS deps
+# ---- 构建阶段：Flutter SDK + Linux 桌面工具链 ----
+FROM ghcr.io/cirruslabs/flutter:3.44.0 AS build
 
-WORKDIR /app
+RUN apt-get update && apt-get install -y --no-install-recommends \
+      clang cmake ninja-build pkg-config \
+      libgtk-3-dev libwebkit2gtk-4.1-dev libayatana-appindicator3-dev \
+    && rm -rf /var/lib/apt/lists/*
 
-# 复制 package 文件
-COPY package.json package-lock.json* ./
-
-# 安装依赖 (包括 devDependencies 用于构建)
-RUN npm ci
-
-# 安装 sharp 用于图片优化
-RUN npm install sharp
-
-# ============================================
-# 阶段 2: 构建
-FROM --platform=$BUILDPLATFORM node:20-slim AS builder
-
-WORKDIR /app
-
-# 复制依赖
-COPY --from=deps /app/node_modules ./node_modules
-
-# 复制源代码
+WORKDIR /src
+COPY pubspec.yaml pubspec.lock ./
+RUN flutter pub get
 COPY . .
 
-# 设置环境变量
-ENV NEXT_TELEMETRY_DISABLED=1
-ENV NODE_ENV=production
+# 弹幕（dandanplay）与 Bangumi 镜像检索凭证，缺省时对应功能不可用、其余不受影响：
+#   docker build --build-arg DANDANAPI_APPID=... --build-arg DANDANAPI_KEY=... .
+ARG DANDANAPI_APPID=
+ARG DANDANAPI_KEY=
+ARG KAZUMI_APPID=
+ARG KAZUMI_KEY=
+RUN flutter config --enable-linux-desktop \
+    && flutter build linux --release \
+         --dart-define=DANDANAPI_APPID="${DANDANAPI_APPID}" \
+         --dart-define=DANDANAPI_KEY="${DANDANAPI_KEY}" \
+         --dart-define=KAZUMI_APPID="${KAZUMI_APPID}" \
+         --dart-define=KAZUMI_KEY="${KAZUMI_KEY}" \
+    && mv build/linux/*/release/bundle /bundle
 
-# 构建应用
-RUN npm run build
+# ---- 运行阶段：最小运行时 + xvfb ----
+# 必须与构建镜像同发行版（cirruslabs/flutter 基于 Ubuntu 24.04），否则 glib 等 ABI 不匹配
+FROM ubuntu:24.04
 
-# ============================================
-# 阶段 3: 生产运行
-FROM node:20-slim AS runner
+RUN apt-get update && apt-get install -y --no-install-recommends \
+      libgtk-3-0t64 libwebkit2gtk-4.1-0 libayatana-appindicator3-1 \
+      xvfb xauth tini \
+      fonts-noto-cjk \
+      ca-certificates curl \
+    && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
+COPY --from=build /bundle/ /app/
+# web/ 静态资源需在可执行文件旁（发行布局约定）
+COPY --from=build /src/web/ /app/web/
 
-# 字体支持 (可选，如需中文字体可取消注释)
-# RUN apt-get update && apt-get install -y fonts-noto-cjk --no-install-recommends && rm -rf /var/lib/apt/lists/*
+# XDG_DATA_HOME 决定 getApplicationSupportDirectory 的落点 → 挂卷持久化
+ENV KAZUMI_WEB_HEADLESS=1 \
+    KAZUMI_WEB_PORT=8333 \
+    XDG_DATA_HOME=/data
 
-# 创建非 root 用户
-RUN groupadd --gid 1001 nodejs && \
-    useradd --uid 1001 --gid nodejs --shell /bin/bash --create-home nextjs
+VOLUME /data
+EXPOSE 8333
 
-# 设置运行时环境变量
-ENV NODE_ENV=production
-ENV NEXT_TELEMETRY_DISABLED=1
-ENV PORT=3000
-ENV HOSTNAME="0.0.0.0"
-# C++ Sniffer 服务地址 (可通过环境变量覆盖)
-ENV SNIFFER_SERVICE_URL="http://localhost:9527"
+HEALTHCHECK --interval=30s --timeout=5s --start-period=20s \
+  CMD curl -fs "http://127.0.0.1:${KAZUMI_WEB_PORT}/api/about" || exit 1
 
-# 复制构建产物
-COPY --from=builder /app/public ./public
-COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
-COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
-
-# 安装 sharp (生产环境需要)
-COPY --from=deps /app/node_modules/sharp ./node_modules/sharp
-COPY --from=deps /app/node_modules/@img ./node_modules/@img
-
-# 切换到非 root 用户
-USER nextjs
-
-# 暴露端口
-EXPOSE 3000
-
-# 健康检查
-HEALTHCHECK --interval=30s --timeout=10s --start-period=60s --retries=3 \
-    CMD node -e "const http = require('http'); http.get('http://localhost:3000/api/bangumi/calendar', (r) => process.exit(r.statusCode === 200 ? 0 : 1)).on('error', () => process.exit(1))"
-
-# 启动命令
-CMD ["node", "server.js"]
+# xvfb-run -a：自动挑选空闲 display，虚拟屏幕供 Flutter/webkitgtk 渲染
+# tini 作 PID 1：xvfb-run 当 PID 1 时收不到 Xvfb 的就绪信号会永久挂起
+ENTRYPOINT ["tini", "--", "xvfb-run", "-a", "-s", "-screen 0 1280x720x24", "/app/kazumi_web"]
