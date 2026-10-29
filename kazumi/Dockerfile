@@ -1,5 +1,5 @@
 # syntax=docker/dockerfile:1
-FROM --platform=$BUILDPLATFORM node:22-alpine AS hls-build
+FROM node:24-alpine AS hls-build
 
 RUN apk update \
     && apk add --no-cache \
@@ -14,12 +14,12 @@ COPY native/hls ./native/hls
 COPY scripts/build-hls.mjs ./scripts/build-hls.mjs
 RUN node scripts/build-hls.mjs
 
-FROM --platform=$BUILDPLATFORM golang:1.25-alpine  AS ech-build
+FROM golang:1.25-alpine  AS ech-build
 WORKDIR /build
 COPY native/ech/ ./
 RUN CGO_ENABLED=0 go build -trimpath -ldflags="-s -w" -o /out/kazumi-ech .
 
-FROM node:22-alpine AS dependencies
+FROM node:24-alpine AS dependencies
 WORKDIR /app
 COPY package.json package-lock.json ./
 RUN npm ci
@@ -30,12 +30,12 @@ COPY src ./src
 COPY shared ./shared
 RUN npm run build
 
-FROM --platform=$BUILDPLATFORM node:22-alpine AS production-dependencies
+FROM node:24-alpine AS production-dependencies
 WORKDIR /app
 COPY package.json package-lock.json ./
 RUN npm ci --omit=dev && npm cache clean --force
 
-FROM --platform=$BUILDPLATFORM node:22-alpine AS runtime
+FROM node:24-alpine AS runtime
 ENV NODE_ENV=production HOST=0.0.0.0 PORT=3000 DATA_DIR=/app/data PLAYWRIGHT_BROWSERS_PATH=/ms-playwright
 ENV NODE_EXTRA_CA_CERTS=/app/server/certificates/sslcom-tls-issuing-rsa-r1.crt
 WORKDIR /app
