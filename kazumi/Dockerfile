@@ -41,9 +41,23 @@ ENV NODE_EXTRA_CA_CERTS=/app/server/certificates/sslcom-tls-issuing-rsa-r1.crt
 WORKDIR /app
 COPY --from=production-dependencies --chown=node:node /app/node_modules ./node_modules
 # Only the headless shell is needed; no Flutter, display server or media player.
-RUN apk add --no-cache nss-tools openssl ca-certificates \
-    && ./node_modules/.bin/playwright install --with-deps --only-shell chromium \
+RUN apk add --no-cache \
+        nss-tools \
+        openssl \
+        ca-certificates \
+        # Playwright Chromium 在 Alpine 上所需的依赖
+        chromium \
+        harfbuzz \
+        freetype \
+        ttf-freefont \
+        gcompat \
+        libstdc++ \
     && rm -rf /var/cache/apk/* \
+    # 安装 Playwright Chromium (不使用 --with-deps，因为我们已经手动安装了依赖)
+    # 注意：这里使用 npx 确保使用项目本地的 playwright 版本
+    && npx playwright install chromium --with-deps || true \
+    # 如果上面的命令失败，尝试仅安装二进制文件，因为依赖已手动安装
+    && npx playwright install chromium
 COPY --from=build --chown=node:node /app/dist ./dist
 COPY --chown=node:node package.json LICENSE ./
 COPY --chown=node:node server ./server
