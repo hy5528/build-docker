@@ -1,8 +1,7 @@
 # syntax=docker/dockerfile:1
 FROM --platform=$BUILDPLATFORM node:22-alpine AS hls-build
 
-RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.aliyun.com/g' /etc/apk/repositories \
-    && apk update \
+RUN apk update \
     && apk add --no-cache \
         build-base \
         python3 \
