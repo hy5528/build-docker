@@ -19,7 +19,7 @@ WORKDIR /build
 COPY native/ech/ ./
 RUN CGO_ENABLED=0 go build -trimpath -ldflags="-s -w" -o /out/kazumi-ech .
 
-FROM node:24-bookworm-slim AS dependencies
+FROM node:22-alpine AS dependencies
 WORKDIR /app
 COPY package.json package-lock.json ./
 RUN npm ci
