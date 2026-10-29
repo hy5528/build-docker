@@ -41,15 +41,9 @@ ENV NODE_EXTRA_CA_CERTS=/app/server/certificates/sslcom-tls-issuing-rsa-r1.crt
 WORKDIR /app
 COPY --from=production-dependencies --chown=node:node /app/node_modules ./node_modules
 # Only the headless shell is needed; no Flutter, display server or media player.
-RUN ./node_modules/.bin/playwright install --with-deps --only-shell chromium \
-     && apk update \
-    && apk add --no-cache \
-        build-base \
-        python3 \
-        pkgconfig \
-        patch \
-        ca-certificates \
-    && rm -rf /var/cache/apk/*
+RUN apk add --no-cache nss-tools openssl ca-certificates \
+    && ./node_modules/.bin/playwright install --with-deps --only-shell chromium \
+    && rm -rf /var/cache/apk/* \
 COPY --from=build --chown=node:node /app/dist ./dist
 COPY --chown=node:node package.json LICENSE ./
 COPY --chown=node:node server ./server
