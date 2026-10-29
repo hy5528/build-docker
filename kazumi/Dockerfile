@@ -52,12 +52,7 @@ RUN apk add --no-cache \
         ttf-freefont \
         gcompat \
         libstdc++ \
-    && rm -rf /var/cache/apk/* \
-    # 安装 Playwright Chromium (不使用 --with-deps，因为我们已经手动安装了依赖)
-    # 注意：这里使用 npx 确保使用项目本地的 playwright 版本
-    && npx playwright install chromium --with-deps || true \
-    # 如果上面的命令失败，尝试仅安装二进制文件，因为依赖已手动安装
-    && npx playwright install chromium
+    && rm -rf /var/cache/apk/* 
 COPY --from=build --chown=node:node /app/dist ./dist
 COPY --chown=node:node package.json LICENSE ./
 COPY --chown=node:node server ./server
