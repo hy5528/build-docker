@@ -30,7 +30,7 @@ COPY src ./src
 COPY shared ./shared
 RUN npm run build
 
-FROM node:22-alpine AS production-dependencies
+FROM --platform=$BUILDPLATFORM node:22-alpine AS production-dependencies
 WORKDIR /app
 COPY package.json package-lock.json ./
 RUN npm ci --omit=dev && npm cache clean --force
