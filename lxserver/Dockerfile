@@ -1,4 +1,4 @@
-FROM --platform=$BUILDPLATFORMnode:22-alpine AS base
+FROM --platform=$BUILDPLATFORM node:22-alpine AS base
 
 FROM base AS builder
 WORKDIR /source-code
