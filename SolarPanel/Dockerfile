@@ -20,8 +20,7 @@ RUN node scripts/build-themes.js \
 # ===== Stage 2: Go builder =====
 FROM golang:1.25-alpine AS builder
 
-ENV GO111MODULE=on \
-    CGO_ENABLED=0 \
+ENV CGO_ENABLED=0 \
     GOOS=linux \
     TZ=Asia/Shanghai
 
