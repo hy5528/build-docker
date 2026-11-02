@@ -18,7 +18,7 @@ RUN node scripts/build-themes.js \
  && node scripts/build-frontend.js
 
 # ===== Stage 2: Go builder =====
-FROM golang:1.25-alpine AS builder
+FROM --platform=$BUILDPLATFORM golang:1.25-alpine AS builder
 
 ENV CGO_ENABLED=0 \
     GOOS=linux \
