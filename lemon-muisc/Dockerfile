@@ -13,7 +13,7 @@ RUN npm run build
 FROM --platform=$BUILDPLATFORM node:22-alpine AS prod-deps
 ARG TARGETARCH
 WORKDIR /app
-RUN apk add --no-cache python3 make g++ better-sqlite3
+RUN apk add --no-cache tini python3 make g++
 COPY package.json package-lock.json ./
 RUN npm ci --omit=dev \
     && npm cache clean --force
