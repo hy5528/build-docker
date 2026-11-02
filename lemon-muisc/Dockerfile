@@ -15,7 +15,6 @@ ARG TARGETARCH
 WORKDIR /app
 RUN apk add --no-cache python3 make g++ better-sqlite3
 COPY package.json package-lock.json ./
-# 在宿主机架构上拉取 linux/$TARGETARCH 依赖（含 better-sqlite3 预编译包），不进 QEMU
 RUN npm ci --omit=dev \
     && npm cache clean --force
 
