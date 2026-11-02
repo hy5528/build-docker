@@ -6,7 +6,7 @@ ARG BUILDPLATFORM
 # 彻底消除硬约束 3.1（18 处手动同步）+ 3.2（主题双端注册）
 # 前端产物与 CPU 架构无关，锁死在构建机原生平台执行一次即可，
 # 同时避开 node:24-alpine 缺少 linux/arm/v7 变种的问题。
-FROM --platform=$BUILDPLATFORM node:24-alpine AS frontend-builder
+FROM --platform=$BUILDPLATFORM node:22-alpine AS frontend-builder
 
 WORKDIR /build
 
