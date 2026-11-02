@@ -1,6 +1,6 @@
 # solarpanel
 - 轻量自托管导航面板。
-- 启动后访问 http://服务器IP:3100。
+- 启动后访问 http://服务器IP:10086。
 ```text
 docker run -d \
   --name solarpanel \
