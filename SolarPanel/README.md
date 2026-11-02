@@ -6,7 +6,7 @@ docker run -d \
   --name solarpanel \
   --restart unless-stopped \
   -p 10086:10086 \
-  -v $(pwd)/data:/app/data \
+  -v /opt/solarpanel/data:/app/data \
   -v /:/host:ro \
   -v /var/run/docker.sock:/var/run/docker.sock \
   -e SERVER_PORT=10086 \
