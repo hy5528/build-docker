@@ -20,10 +20,12 @@ RUN node scripts/build-themes.js \
 # ===== Stage 2: Go builder =====
 FROM golang:1.25-alpine AS builder
 
-ENV CGO_ENABLED=0
-ENV GOOS=linux
+ENV GO111MODULE=on \
+    CGO_ENABLED=0 \
+    GOOS=linux \
+    TZ=Asia/Shanghai
+
 ARG TARGETARCH
-ENV GOARCH=${TARGETARCH}
 
 WORKDIR /build
 
