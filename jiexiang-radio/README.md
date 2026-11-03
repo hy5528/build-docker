@@ -1,11 +1,18 @@
-# kvideo
-- 现代化视频聚合播放平台
-- http://你的IP:3050
+# jiexiang-radio 杰翔电台
+- 一个能真正播放的在线电台 Web 播放器
+- http://你的IP:8081
 ```text
-docker run -d \
-  --name kvideo \
-  --restart=always \
-  -p 3050:3000 \
-  ghcr.nju.edu.cn/hy5528/kvideo66:latest
+services:
+  jiexiang-radio:
+    image: ghcr.nju.edu.cn/hy5528/radio66:latest
+    container_name: jiexiang-radio
+    restart: unless-stopped
+    ports:
+      - "8081:8080"
+    volumes:
+      - ./data:/data
+    environment:
+      - TZ=Asia/Shanghai
+      - UPSTREAM_TIMEOUT=15000
 
 ```
