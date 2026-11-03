@@ -10,8 +10,8 @@ on:
         type: choice
         options:
         - 'mopidy'
-
-      
+        - 'SolarPanel'
+  
 env:
   REGISTRY: ghcr.io
   IMAGE_NAME: ${{ github.repository }}
