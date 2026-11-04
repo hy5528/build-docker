@@ -11,6 +11,7 @@ on:
         options:
         - 'mopidy'
         - 'SolarPanel'
+        - 'simple-cors'
   
 env:
   REGISTRY: ghcr.io
