@@ -21,3 +21,5 @@
 -GitHub 加速下载代理 1、 https://www.moretools.app/zh-CN/github-proxy 2、https://gh-proxy.com 3、https://ghproxy.net 4、https://gh.jasonzeng.dev
 
 -http://43.138.212.149:8866/api.json
+
+-HTTP 请求代理，CORS 跨域请求.1. https://seep.eu.org/   2.https://corsmirror.com/v1?url=
