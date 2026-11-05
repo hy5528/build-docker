@@ -1,5 +1,5 @@
 # 第一阶段：构建阶段 (Builder)
-FROM node:18-alpine AS builder
+FROM --platform=$BUILDPLATFORM node:18-alpine AS builder
 
 # 设置工作目录
 WORKDIR /app
