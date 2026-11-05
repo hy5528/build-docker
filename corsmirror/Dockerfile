@@ -1,6 +1,9 @@
 # 第一阶段：构建阶段 (Builder)
 FROM --platform=$BUILDPLATFORM node:18-alpine AS builder
 
+# 安装 git 和其他必要工具
+RUN apk add --no-cache git python3 make g++
+
 # 设置工作目录
 WORKDIR /app
 
