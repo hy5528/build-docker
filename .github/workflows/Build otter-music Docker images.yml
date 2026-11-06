@@ -1,4 +1,4 @@
-name: Build corsmirror Docker images
+name: Build otter-music Docker images
 
 on:
   workflow_dispatch:
@@ -47,17 +47,17 @@ jobs:
         id: meta
         uses: docker/metadata-action@v6
         with:
-          images: ${{ env.REGISTRY }}/${{ github.actor }}/corsmirror66
+          images: ${{ env.REGISTRY }}/${{ github.actor }}/otter-music66
           tags: |
             type=raw,value=latest
       - name: Clone Overleaf Gitlab Repo
         run: |
-          git clone https://github.com/corsmirror/corsmirror-cf.git app
+          git clone https://github.com/DJChanahCJD/otter-music.git app
 
       - name: "Copy userpatches to build folder"
         shell: bash
         run: |
-          rsync -av corsmirror/. ./app    
+          rsync -av otter-music/. ./app    
           
       - name: 构建并推送 Docker 镜像
         uses: docker/build-push-action@v7
