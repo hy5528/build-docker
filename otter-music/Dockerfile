@@ -9,11 +9,9 @@ COPY package*.json ./
 COPY shared/package*.json ./shared/
 COPY functions/package*.json ./functions/
 
-# 2. 【关键】设置镜像源并安装依赖
-# --registry: 使用国内高速镜像
+# 2. 
 # --no-audit --no-fund: 跳过安全检查和控制台广告，显著减少网络请求和耗时
-RUN npm config set registry https://registry.npmmirror.com \
-    && npm ci --no-audit --no-fund
+RUN npm npm install --no-audit --no-fund
 
 # 3. 复制源代码
 COPY . .
