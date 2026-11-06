@@ -4,6 +4,9 @@
 # 使用符合 Vite 7 要求的 Node.js LTS 版本 (推荐 20, 22 或 24)
 FROM node:20-alpine AS builder
 
+RUN apk add --no-cache python3 make g++
+
+
 # 设置工作目录
 WORKDIR /app
 
