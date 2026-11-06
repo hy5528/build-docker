@@ -4,7 +4,7 @@ RUN apk add --no-cache python3 make g++
 WORKDIR /app
 
 # 1. 复制 package 文件
-COPY package*.json ./
+COPY package.json ./
 # 如果有 workspace，也需要复制子项目的 package.json
 COPY shared/package*.json ./shared/
 COPY functions/package*.json ./functions/
