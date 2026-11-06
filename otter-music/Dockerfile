@@ -38,7 +38,7 @@ FROM nginx:alpine
 COPY --from=builder /app/dist /usr/share/nginx/html
 
 # 复制自定义 Nginx 配置 (解决 SPA 路由刷新 404 问题)
-ADD --chmod=755 ./nginx.conf /etc/nginx/conf.d/default.conf
+COPY nginx.conf /etc/nginx/conf.d/default.conf
 
 # 暴露 80 端口
 EXPOSE 80
