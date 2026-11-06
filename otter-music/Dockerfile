@@ -2,7 +2,7 @@
 # 阶段 1: 构建应用 (Builder)
 # ==========================
 # 使用符合 Vite 7 要求的 Node.js LTS 版本 (推荐 20, 22 或 24)
-FROM node:20-alpine AS builder
+FROM --platform=$BUILDPLATFORM node:20-alpine AS builder
 
 RUN apk add --no-cache python3 make g++
 
