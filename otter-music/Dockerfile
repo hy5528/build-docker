@@ -11,7 +11,7 @@ COPY functions/package*.json ./functions/
 
 # 2. 
 
-RUN npm npm install 
+RUN npm install 
 
 # 3. 复制源代码
 COPY . .
