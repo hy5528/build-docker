@@ -1,24 +1,33 @@
-# ================= 第一阶段：构建 =================
-# 使用官方 Node.js LTS 版本的 Alpine 镜像，体积小且兼容性好
-FROM --platform=$BUILDPLATFORM node:18-alpine AS builder
+# ==========================
+# 阶段 1: 构建应用 (Builder)
+# ==========================
+# 使用符合 Vite 7 要求的 Node.js LTS 版本 (推荐 20, 22 或 24)
+FROM node:20-alpine AS builder
 
 # 设置工作目录
 WORKDIR /app
 
-# 1. 复制依赖配置文件（利用缓存：只要 package.json 不变，npm install 就不会重新执行）
+# 复制 package.json 和 lock 文件 (利用 Docker 缓存层，若依赖未变则跳过安装)
 COPY package*.json ./
 
-# 2. 安装依赖
-# 如果是生产环境，建议使用 npm ci --production 或根据项目需求调整
+# 安装依赖
+# 如果使用 npm:
 RUN npm install
+# 如果使用 bun:
+# RUN npm install -g bun && bun install
+# 如果使用 pnpm:
+# RUN npm install -g pnpm && pnpm install --frozen-lockfile
 
-# 3. 复制所有源代码
+# 复制所有源代码
 COPY . .
 
-# 4. 执行构建命令
-# 确保你的 package.json 中定义了 "build": "vite build" 或类似命令
+# 执行构建命令，生成 dist 目录
+# 确保 vite.config.ts 中的 base 路径配置正确
 RUN npm run build
 
+# ==========================
+# 阶段 2: 运行应用 (Production)
+# ==========================
 # 使用轻量级的 Nginx Alpine 镜像
 FROM nginx:alpine
 
