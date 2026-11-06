@@ -6,7 +6,7 @@ RUN apk add --no-cache python3 make g++
 WORKDIR /app
 
 # 1. 复制依赖文件
-COPY package*.json ./
+COPY package.json ./
 
 # 2. 配置国内镜像源并安装依赖
 # --no-audit --no-fund 可以显著减少网络请求，提高构建速度和稳定性
