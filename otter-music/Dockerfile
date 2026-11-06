@@ -10,8 +10,8 @@ COPY shared/package*.json ./shared/
 COPY functions/package*.json ./functions/
 
 # 2. 
-# --no-audit --no-fund: 跳过安全检查和控制台广告，显著减少网络请求和耗时
-RUN npm npm install --no-audit --no-fund
+
+RUN npm npm install 
 
 # 3. 复制源代码
 COPY . .
