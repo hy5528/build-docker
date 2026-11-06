@@ -1,6 +1,6 @@
 # 阶段 1: 构建
 FROM --platform=$BUILDPLATFORM node:22-alpine AS builder
-
+RUN apk add --no-cache python3 make g++
 WORKDIR /app
 
 # 1. 复制 package 文件
