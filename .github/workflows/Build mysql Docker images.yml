@@ -1,4 +1,4 @@
-name: Build mariadb Docker images
+name: Build mysql Docker images
 
 on:
   workflow_dispatch:
@@ -6,10 +6,10 @@ on:
       MACH:
         description: 'Choose machine'
         required: true
-        default: 'mariadb'
+        default: 'mysql'
         type: choice
         options:
-        - 'mariadb'   
+        - 'mysql'   
    
       
 env:
