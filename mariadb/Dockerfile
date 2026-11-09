@@ -1,4 +1,4 @@
-FROM yobasystems/alpine-mariadb:latest
+FROM dpvduncan/mariadb:latest
 
 EXPOSE 3306
 
