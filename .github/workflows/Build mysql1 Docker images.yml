@@ -1,4 +1,4 @@
-name: Build mysql Docker images
+name: Build mysql1 Docker images
 
 on:
   workflow_dispatch:
