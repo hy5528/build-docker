@@ -12,6 +12,7 @@ on:
         - 'mopidy'
         - 'SolarPanel'
         - 'simple-cors'
+        - 'mysql'
   
 env:
   REGISTRY: ghcr.io
