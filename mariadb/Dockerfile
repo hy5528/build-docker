@@ -1,0 +1,21 @@
+FROM yobasystems/alpine:3.23.2-armhf
+
+VOLUME ["/var/lib/mysql", "/var/lib/backup", "/etc/mysql/conf.d", "/etc/mysql/init.d"]
+EXPOSE 3306
+
+WORKDIR /var/lib/mysql
+CMD ["/usr/bin/container"]
+
+RUN apk update && \
+  apk upgrade && \
+  mkdir -p /var/lib/mysql && \
+  groupadd -g 1000 mysql && \
+  useradd -u 1000 -d /var/lib/mysql -g mysql -s /bin/bash -m mysql && \
+  apk add mariadb mariadb-client mariadb-server-utils tzdata && \
+  rm -rf /var/cache/apk/* /etc/mysql/* /etc/my.cnf* /var/lib/mysql/*
+
+COPY ./overlay /
+
+RUN find /etc/container.d /etc/entrypoint.d -type f -name \*.sh -exec sed -i 's/\r$//' {} +; \
+  sed -i 's/\r$//' /usr/bin/backup /usr/bin/healthcheck /usr/bin/container && \
+  chmod +x /usr/bin/backup /usr/bin/healthcheck /usr/bin/container /etc/container.d/*.sh /etc/entrypoint.d/*.sh
