@@ -11,10 +11,10 @@ LABEL maintainer="Dominic Taylor <dominic@yoba.systems>" \
     org.opencontainers.image.description="MariaDB Container image running on Alpine Linux" \
     org.opencontainers.image.authors="Dominic Taylor <dominic@yoba.systems>" \
     org.opencontainers.image.vendor="Yoba Systems" \
-    org.opencontainers.image.version="11.4.9" \
+    org.opencontainers.image.version="11.8.9" \
     org.opencontainers.image.url="https://hub.docker.com/r/yobasystems/alpine-mariadb/" \
     org.opencontainers.image.source="https://github.com/yobasystems/alpine-mariadb" \
-    org.opencontainers.image.base.name="docker.io/yobasystems/alpine:3.23.2" \
+    org.opencontainers.image.base.name="docker.io/yobasystems/alpine:3.24.1" \
     org.opencontainers.image.revision=$VCS_REF \
     org.opencontainers.image.created=$BUILD_DATE
 
