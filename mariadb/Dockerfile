@@ -1,4 +1,4 @@
-FROM redhat/%%SUITE%%
+FROM ubi9/ubi-minimal
 
 RUN sed -i -e '/\[ evp_properties \]/a default_properties = fips=yes'  -e '/opensslcnf.config/a .include = /etc/crypto-policies/back-ends/openssl_fips.config' -e '/\[provider_sect\]/a fips = fips_sect' /etc/pki/tls/openssl.cnf
 
