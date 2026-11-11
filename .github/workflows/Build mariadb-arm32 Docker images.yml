@@ -57,12 +57,12 @@ jobs:
       - name: "Copy userpatches to build folder"
         shell: bash
         run: |
-          rsync -av mariadb/. ./app/13.1  
+          rsync -av mariadb/. ./app/11.8
           
       - name: 构建并推送 Docker 镜像
         uses: docker/build-push-action@v7
         with:
-          context: ./app/13.1
+          context: ./app/11.8
           platforms: linux/arm/v7
           push: true
           tags: ${{ steps.meta.outputs.tags }}
