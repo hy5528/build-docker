@@ -3,7 +3,7 @@
 # ==========================================
 # 1. 编译 Go 后端服务 (server)
 # ==========================================
-FROM --platform=$BUILDPLATFORM golang:1.27-alpine AS server-builder
+FROM --platform=$BUILDPLATFORM golang:1.25-alpine AS server-builder
 
 ENV GO111MODULE=on \
     CGO_ENABLED=0 \
@@ -18,7 +18,7 @@ RUN --mount=type=cache,target=/go/pkg/mod go mod download
 
 COPY server/ .
 RUN --mount=type=cache,target=/root/.cache/go-build \
-    GOARCH=$TARGETARCH go build -o /out/main ./cmd/server/...
+    GOARCH=$TARGETARCH go build -o /out/main ./cmd/server/... 
 
 # ==========================================
 # 2. 编译 Next.js 前端应用 (web)
@@ -26,9 +26,8 @@ RUN --mount=type=cache,target=/root/.cache/go-build \
 FROM --platform=$BUILDPLATFORM node:20-alpine AS web-deps
 RUN apk add --no-cache libc6-compat
 WORKDIR /app
-COPY web/package.json web/package-lock.json ./
-COPY web/patches ./patches
-RUN --mount=type=cache,target=/root/.npm npm ci
+COPY web/package.json web/package-lock.json* ./
+RUN --mount=type=cache,target=/root/.npm npm install
 
 FROM --platform=$BUILDPLATFORM node:20-alpine AS web-builder
 WORKDIR /app
@@ -39,6 +38,7 @@ ENV NEXT_TELEMETRY_DISABLED=1
 ARG API_URL=http://127.0.0.1:8080
 ENV API_URL=${API_URL}
 
+
 RUN --mount=type=cache,target=/app/.next/cache npm run build
 
 # ==========================================
@@ -46,23 +46,20 @@ RUN --mount=type=cache,target=/app/.next/cache npm run build
 # ==========================================
 FROM node:20-alpine AS runner
 
-LABEL org.opencontainers.image.title="EcoHub All-in-One" \
-      org.opencontainers.image.description="EcoHub All-in-One single image containing both Go server and Next.js web." \
-      org.opencontainers.image.source="https://github.com/fe-spark/EcoHub"
-
 ENV NODE_ENV=production \
-    GIN_MODE=release \
     NEXT_TELEMETRY_DISABLED=1 \
     TZ=Asia/Shanghai \
     PORT=8080 \
-    API_URL=http://127.0.0.1:8080
+    LISTENER_PORT=8080 \
+    HOSTNAME="0.0.0.0"
 
 RUN apk add --no-cache ca-certificates tzdata supervisor
 
 WORKDIR /app
 
-# 拷贝 Go 服务二进制文件
+# 拷贝 Go 服务二进制文件及迁移工具
 COPY --from=server-builder /out/main /app/server/main
+
 
 # 拷贝 Next.js 产物
 COPY --from=web-builder /app/public /app/web/public
@@ -72,6 +69,5 @@ COPY --from=web-builder /app/.next/static /app/web/.next/static
 # Supervisord 进程配置
 COPY supervisord.conf /etc/supervisord.conf
 
-EXPOSE 3000 8080
-
+EXPOSE 3000 
 CMD ["/usr/bin/supervisord", "-c", "/etc/supervisord.conf"]
