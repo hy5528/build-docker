@@ -18,8 +18,7 @@ COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 
 ENV NEXT_TELEMETRY_DISABLED=1
-
-ARG API_URL
+ARG API_URL=http://127.0.0.1:8080
 ENV API_URL=${API_URL}
 
 RUN --mount=type=cache,target=/app/.next/cache \
@@ -33,12 +32,12 @@ LABEL org.opencontainers.image.title="EcoHub Web" \
       org.opencontainers.image.description="EcoHub Next.js frontend for the public site, login page, and management console." \
       org.opencontainers.image.source="https://github.com/fe-spark/EcoHub"
 
-ENV NODE_ENV=production
-ENV NEXT_TELEMETRY_DISABLED=1
-
-# 运行时需要传入 API_URL，供 SSR 服务端渲染调用后端接口
-ARG API_URL
-ENV API_URL=${API_URL}
+ENV NODE_ENV=production \
+    NEXT_TELEMETRY_DISABLED=1 \
+    TZ=Asia/Shanghai \
+    PORT=8080 \
+    LISTENER_PORT=8080 \
+    HOSTNAME="0.0.0.0"
 
 RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 nextjs
