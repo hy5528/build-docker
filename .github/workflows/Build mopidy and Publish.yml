@@ -12,7 +12,7 @@ on:
         - 'mopidy'
         - 'SolarPanel'
         - 'simple-cors'
-        - 'mysql'
+        - 'mariadb'
   
 env:
   REGISTRY: ghcr.io
