@@ -18,7 +18,7 @@ COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 
 ENV NEXT_TELEMETRY_DISABLED=1
-ARG API_URL=http://127.0.0.1:8080
+ARG API_URL=http://127.0.0.1:3601
 ENV API_URL=${API_URL}
 
 RUN --mount=type=cache,target=/app/.next/cache \
@@ -32,8 +32,8 @@ WORKDIR /app
 ENV NODE_ENV=production \
     NEXT_TELEMETRY_DISABLED=1 \
     TZ=Asia/Shanghai \
-    PORT=8080 \
-    LISTENER_PORT=8080 \
+    PORT=3301 \
+    LISTENER_PORT=3601 \
     HOSTNAME="0.0.0.0"
 
 RUN addgroup --system --gid 1001 nodejs
