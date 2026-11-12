@@ -1,0 +1,438 @@
+package access
+
+import (
+	"encoding/json"
+	"strconv"
+	"strings"
+	"time"
+
+	"server/internal/infra/db"
+	"server/internal/infra/syslog"
+)
+
+func resolveClassifyMember(evt *AccessEvent) string {
+	if evt == nil {
+		return ""
+	}
+	// 1. 分类浏览 / 筛选行为
+	if evt.Action == ActionClassify {
+		res := strings.TrimSpace(evt.Resource)
+		if res != "" && res != "list" && res != "config" {
+			if _, ok := parseFilmID(res); ok {
+				return res
+			}
+			if catId, found := resolveCategoryIDByName(res); found {
+				return strconv.FormatInt(catId, 10)
+			}
+			return res
+		}
+		if evt.ResourceCat != "" {
+			trimmedCat := strings.TrimSpace(evt.ResourceCat)
+			if catId, found := resolveCategoryIDByName(trimmedCat); found {
+				return strconv.FormatInt(catId, 10)
+			}
+			return trimmedCat
+		}
+		return ""
+	}
+
+	// 2. 影视点播行为：根据影片分类反哺分类热度
+	if evt.Action == ActionPlay || evt.playMember != "" {
+		cat := strings.TrimSpace(evt.ResourceCat)
+		if cat == "" && evt.playMember != "" {
+			if id, ok := parseFilmID(evt.playMember); ok {
+				if meta, found := getFilmMetaFromMemory(id); found && meta.Category != "" {
+					cat = strings.TrimSpace(meta.Category)
+				}
+			}
+		}
+		if cat != "" {
+			if catId, found := resolveCategoryIDByName(cat); found {
+				return strconv.FormatInt(catId, 10)
+			}
+			return cat
+		}
+	}
+	return ""
+}
+
+func writeEvent(evt *AccessEvent) {
+	if evt == nil || db.Rdb == nil {
+		return
+	}
+	snapshotAccessEvent(evt)
+	if evt.Method == "PAGE" {
+		writePageView(evt)
+		return
+	}
+	if !IsProvide(evt) {
+		return
+	}
+	ctx := db.Cxt
+	ts := evt.Ts
+	if ts.IsZero() {
+		ts = time.Now()
+	}
+	ts = ts.In(time.Local)
+	day := ts.Format("20060102")
+	pipe := db.Rdb.Pipeline()
+
+	mk := minKey(ts)
+	dk := dayAggKey(day)
+	if IsProvide(evt) {
+		pipe.HIncrBy(ctx, mk, "provide_pv", 1)
+		pipe.HIncrBy(ctx, dk, "provide_pv", 1)
+		tpk := tvboxPVKey(day)
+		pipe.Incr(ctx, tpk)
+		pipe.ExpireNX(ctx, tpk, ttlDay)
+
+		uvIdentity := eventUVIdentity(evt)
+
+		if uvIdentity != "" {
+			tuk := tvboxUVKey(day)
+			pipe.PFAdd(ctx, tuk, uvIdentity)
+			pipe.ExpireNX(ctx, tuk, ttlDay)
+
+			uk := uvKey(day)
+			pipe.PFAdd(ctx, uk, uvIdentity)
+			pipe.ExpireNX(ctx, uk, ttlDay)
+		}
+
+		if evt.Status >= 500 {
+			pipe.HIncrBy(ctx, mk, "provide_err5", 1)
+			pipe.HIncrBy(ctx, dk, "provide_err5", 1)
+		} else if evt.Status >= 400 {
+			pipe.HIncrBy(ctx, mk, "provide_err4", 1)
+			pipe.HIncrBy(ctx, dk, "provide_err4", 1)
+		}
+		ck := clientKey(day)
+		pipe.HIncrBy(ctx, ck, "tvbox", 1)
+		pipe.ExpireNX(ctx, ck, ttlDay)
+		ak := actionKey(day)
+		pipe.HIncrBy(ctx, ak, "provide", 1)
+		if evt.Action != "" && evt.Action != "provide" {
+			pipe.HIncrBy(ctx, ak, evt.Action, 1)
+		}
+		pipe.ExpireNX(ctx, ak, ttlDay)
+		tvak := tvboxActionKey(day)
+		pipe.HIncrBy(ctx, tvak, evt.Action, 1)
+		pipe.ExpireNX(ctx, tvak, ttlDay)
+
+		// 记录 TVBox 专属流水（严格保留 100 条）
+		payload, err := json.Marshal(evt)
+		if err == nil {
+			trkDay := tvboxRecentDayKey(day)
+			pipe.LPush(ctx, trkDay, payload)
+			pipe.LTrim(ctx, trkDay, 0, 99)
+			pipe.Expire(ctx, trkDay, ttlDay)
+		}
+
+		// TVBox 搜索词记入热搜
+		if evt.Resource != "" && (evt.Action == ActionSearch || strings.Contains(evt.Query, "ac=search") || strings.Contains(evt.Query, "wd=")) {
+			sk := topSearchKey(day)
+			pipe.ZIncrBy(ctx, sk, 1, evt.Resource)
+			pipe.ZRemRangeByRank(ctx, sk, 0, int64(-zsetKeep-1))
+			pipe.ExpireNX(ctx, sk, ttlDay)
+
+			tvsk := tvboxTopSearchKey(day)
+			pipe.ZIncrBy(ctx, tvsk, 1, evt.Resource)
+			pipe.ZRemRangeByRank(ctx, tvsk, 0, int64(-zsetKeep-1))
+			pipe.ExpireNX(ctx, tvsk, ttlDay)
+		}
+
+		if evt.playMember != "" {
+			plk := topPlayKey(day)
+			pipe.ZIncrBy(ctx, plk, 1, evt.playMember)
+			pipe.ZRemRangeByRank(ctx, plk, 0, int64(-zsetKeep-1))
+			pipe.ExpireNX(ctx, plk, ttlDay)
+
+			tvplk := tvboxTopPlayKey(day)
+			pipe.ZIncrBy(ctx, tvplk, 1, evt.playMember)
+			pipe.ZRemRangeByRank(ctx, tvplk, 0, int64(-zsetKeep-1))
+			pipe.ExpireNX(ctx, tvplk, ttlDay)
+		}
+		tvboxClassifyMember := resolveClassifyMember(evt)
+		if tvboxClassifyMember != "" {
+			tck := topClassifyKey(day)
+			pipe.ZIncrBy(ctx, tck, 1, tvboxClassifyMember)
+			pipe.ZRemRangeByRank(ctx, tck, 0, int64(-zsetKeep-1))
+			pipe.ExpireNX(ctx, tck, ttlDay)
+
+			tvck := tvboxTopClassifyKey(day)
+			pipe.ZIncrBy(ctx, tvck, 1, tvboxClassifyMember)
+			pipe.ZRemRangeByRank(ctx, tvck, 0, int64(-zsetKeep-1))
+			pipe.ExpireNX(ctx, tvck, ttlDay)
+		}
+	}
+	pipe.ExpireNX(ctx, mk, ttlMinute)
+	pipe.ExpireNX(ctx, dk, ttlDay)
+
+	if n := takeUnsyncedDropped(); n > 0 {
+		dk := droppedKey()
+		pipe.IncrBy(ctx, dk, n)
+		pipe.ExpireNX(ctx, dk, ttlDay)
+
+		dkDay := droppedDayKey(day)
+		pipe.IncrBy(ctx, dkDay, n)
+		pipe.ExpireNX(ctx, dkDay, ttlDay)
+	}
+
+	if _, err := pipe.Exec(ctx); err != nil {
+		syslog.Errorf("[Access] Redis 写入失败: %v", err)
+	}
+}
+
+func writePageView(evt *AccessEvent) {
+	ctx := db.Cxt
+	ts := evt.Ts
+	if ts.IsZero() {
+		ts = time.Now()
+	}
+	ts = ts.In(time.Local)
+	day := ts.Format("20060102")
+	pipe := db.Rdb.Pipeline()
+	mk := minKey(ts)
+	dk := dayAggKey(day)
+	pipe.HIncrBy(ctx, mk, "pv", 1)
+	pipe.ExpireNX(ctx, mk, ttlMinute)
+	pipe.HIncrBy(ctx, dk, "pv", 1)
+	pipe.ExpireNX(ctx, dk, ttlDay)
+
+	ck := clientKey(day)
+	client := evt.ClientType
+	if client == "" {
+		client = "web"
+	}
+	pipe.HIncrBy(ctx, ck, client, 1)
+	pipe.ExpireNX(ctx, ck, ttlDay)
+
+	ak := actionKey(day)
+	pipe.HIncrBy(ctx, ak, evt.Action, 1)
+	pipe.ExpireNX(ctx, ak, ttlDay)
+
+	pageTarget := evt.Page
+	if pageTarget == "" {
+		pageTarget = evt.Path
+	}
+	if pageTarget == "" {
+		pageTarget = evt.Action
+	}
+
+	uvIdentity := eventUVIdentity(evt)
+
+	// 记录真实页面热度
+	pk := topPathKey(day)
+	pipe.ZIncrBy(ctx, pk, 1, pageTarget)
+	pipe.ZRemRangeByRank(ctx, pk, 0, int64(-zsetKeep-1))
+	pipe.ExpireNX(ctx, pk, ttlDay)
+
+	// 分端统计 (Web vs App)
+	isWeb := client == "web"
+	if isWeb {
+		pipe.HIncrBy(ctx, mk, "web_pv", 1)
+		wpk := webPVKey(day)
+		pipe.Incr(ctx, wpk)
+		pipe.ExpireNX(ctx, wpk, ttlDay)
+
+		if uvIdentity != "" {
+			wuk := webUVKey(day)
+			pipe.PFAdd(ctx, wuk, uvIdentity)
+			pipe.ExpireNX(ctx, wuk, ttlDay)
+		}
+
+		wtpk := webTopPageKey(day)
+		pipe.ZIncrBy(ctx, wtpk, 1, pageTarget)
+		pipe.ZRemRangeByRank(ctx, wtpk, 0, int64(-zsetKeep-1))
+		pipe.ExpireNX(ctx, wtpk, ttlDay)
+
+		browser := evt.UAFamily
+		if browser == "" || browser == "web" {
+			browser = "other"
+		}
+		wbk := webBrowsersKey(day)
+		pipe.HIncrBy(ctx, wbk, browser, 1)
+		pipe.ExpireNX(ctx, wbk, ttlDay)
+
+		if evt.OS != "" {
+			wok := webOSKey(day)
+			pipe.HIncrBy(ctx, wok, evt.OS, 1)
+			pipe.ExpireNX(ctx, wok, ttlDay)
+		}
+
+		wak := webActionKey(day)
+		pipe.HIncrBy(ctx, wak, evt.Action, 1)
+		pipe.ExpireNX(ctx, wak, ttlDay)
+
+		if evt.Action == ActionSearch && evt.Resource != "" {
+			wsk := webTopSearchKey(day)
+			pipe.ZIncrBy(ctx, wsk, 1, evt.Resource)
+			pipe.ZRemRangeByRank(ctx, wsk, 0, int64(-zsetKeep-1))
+			pipe.ExpireNX(ctx, wsk, ttlDay)
+		}
+		if evt.playMember != "" {
+			wplk := webTopPlayKey(day)
+			pipe.ZIncrBy(ctx, wplk, 1, evt.playMember)
+			pipe.ZRemRangeByRank(ctx, wplk, 0, int64(-zsetKeep-1))
+			pipe.ExpireNX(ctx, wplk, ttlDay)
+		}
+		classifyMember := resolveClassifyMember(evt)
+		if classifyMember != "" {
+			wck := webTopClassifyKey(day)
+			pipe.ZIncrBy(ctx, wck, 1, classifyMember)
+			pipe.ZRemRangeByRank(ctx, wck, 0, int64(-zsetKeep-1))
+			pipe.ExpireNX(ctx, wck, ttlDay)
+		}
+	} else {
+		pipe.HIncrBy(ctx, mk, "app_pv", 1)
+		platform := client
+		if platform != "android" && platform != "harmony" && platform != "ios" {
+			platform = "android"
+		}
+		pipe.HIncrBy(ctx, mk, "app_pv_"+platform, 1)
+
+		aak := appActionKey(day)
+		pipe.HIncrBy(ctx, aak, evt.Action, 1)
+		pipe.ExpireNX(ctx, aak, ttlDay)
+
+		apak := appPlatformActionKey(platform, day)
+		pipe.HIncrBy(ctx, apak, evt.Action, 1)
+		pipe.ExpireNX(ctx, apak, ttlDay)
+
+		// 单平台 PV / UV / 热门页面 / 版本
+		appPlatformPV := appPVKey(platform, day)
+		pipe.Incr(ctx, appPlatformPV)
+		pipe.ExpireNX(ctx, appPlatformPV, ttlDay)
+
+		if uvIdentity != "" {
+			appPlatformUV := appUVKey(platform, day)
+			pipe.PFAdd(ctx, appPlatformUV, uvIdentity)
+			pipe.ExpireNX(ctx, appPlatformUV, ttlDay)
+		}
+
+		appPlatformTop := appTopPageKey(platform, day)
+		pipe.ZIncrBy(ctx, appPlatformTop, 1, pageTarget)
+		pipe.ZRemRangeByRank(ctx, appPlatformTop, 0, int64(-zsetKeep-1))
+		pipe.ExpireNX(ctx, appPlatformTop, ttlDay)
+
+		if evt.AppVersion != "" {
+			appVerKey := appVersionKey(platform, day)
+			pipe.HIncrBy(ctx, appVerKey, evt.AppVersion, 1)
+			pipe.ExpireNX(ctx, appVerKey, ttlDay)
+		}
+
+		if evt.DeviceModel != "" {
+			amk := appModelsKey(day)
+			pipe.HIncrBy(ctx, amk, evt.DeviceModel, 1)
+			pipe.ExpireNX(ctx, amk, ttlDay)
+		}
+
+		// App 全端聚合 (All)
+		appAllPV := appAllPVKey(day)
+		pipe.Incr(ctx, appAllPV)
+		pipe.ExpireNX(ctx, appAllPV, ttlDay)
+
+		if uvIdentity != "" {
+			appAllUV := appAllUVKey(day)
+			pipe.PFAdd(ctx, appAllUV, uvIdentity)
+			pipe.ExpireNX(ctx, appAllUV, ttlDay)
+		}
+
+		appAllTop := appAllTopPageKey(day)
+		pipe.ZIncrBy(ctx, appAllTop, 1, pageTarget)
+		pipe.ZRemRangeByRank(ctx, appAllTop, 0, int64(-zsetKeep-1))
+		pipe.ExpireNX(ctx, appAllTop, ttlDay)
+
+		appPlatKey := appPlatformsKey(day)
+		pipe.HIncrBy(ctx, appPlatKey, platform, 1)
+		pipe.ExpireNX(ctx, appPlatKey, ttlDay)
+
+		if evt.Action == ActionSearch && evt.Resource != "" {
+			ask := appAllTopSearchKey(day)
+			pipe.ZIncrBy(ctx, ask, 1, evt.Resource)
+			pipe.ZRemRangeByRank(ctx, ask, 0, int64(-zsetKeep-1))
+			pipe.ExpireNX(ctx, ask, ttlDay)
+
+			apsk := appTopSearchKey(platform, day)
+			pipe.ZIncrBy(ctx, apsk, 1, evt.Resource)
+			pipe.ZRemRangeByRank(ctx, apsk, 0, int64(-zsetKeep-1))
+			pipe.ExpireNX(ctx, apsk, ttlDay)
+		}
+		if evt.playMember != "" {
+			aplk := appAllTopPlayKey(day)
+			pipe.ZIncrBy(ctx, aplk, 1, evt.playMember)
+			pipe.ZRemRangeByRank(ctx, aplk, 0, int64(-zsetKeep-1))
+			pipe.ExpireNX(ctx, aplk, ttlDay)
+
+			applk := appTopPlayKey(platform, day)
+			pipe.ZIncrBy(ctx, applk, 1, evt.playMember)
+			pipe.ZRemRangeByRank(ctx, applk, 0, int64(-zsetKeep-1))
+			pipe.ExpireNX(ctx, applk, ttlDay)
+		}
+		classifyMember := resolveClassifyMember(evt)
+		if classifyMember != "" {
+			ack := appAllTopClassifyKey(day)
+			pipe.ZIncrBy(ctx, ack, 1, classifyMember)
+			pipe.ZRemRangeByRank(ctx, ack, 0, int64(-zsetKeep-1))
+			pipe.ExpireNX(ctx, ack, ttlDay)
+
+			apck := appTopClassifyKey(platform, day)
+			pipe.ZIncrBy(ctx, apck, 1, classifyMember)
+			pipe.ZRemRangeByRank(ctx, apck, 0, int64(-zsetKeep-1))
+			pipe.ExpireNX(ctx, apck, ttlDay)
+		}
+	}
+
+	if evt.Action == ActionSearch && evt.Resource != "" {
+		sk := topSearchKey(day)
+		pipe.ZIncrBy(ctx, sk, 1, evt.Resource)
+		pipe.ZRemRangeByRank(ctx, sk, 0, int64(-zsetKeep-1))
+		pipe.ExpireNX(ctx, sk, ttlDay)
+	}
+	if evt.playMember != "" {
+		plk := topPlayKey(day)
+		pipe.ZIncrBy(ctx, plk, 1, evt.playMember)
+		pipe.ZRemRangeByRank(ctx, plk, 0, int64(-zsetKeep-1))
+		pipe.ExpireNX(ctx, plk, ttlDay)
+	}
+	globalClassifyMember := resolveClassifyMember(evt)
+	if globalClassifyMember != "" {
+		tck := topClassifyKey(day)
+		pipe.ZIncrBy(ctx, tck, 1, globalClassifyMember)
+		pipe.ZRemRangeByRank(ctx, tck, 0, int64(-zsetKeep-1))
+		pipe.ExpireNX(ctx, tck, ttlDay)
+	}
+
+	// 分端流水（按端单写，保留 100 条）
+	payload, err := json.Marshal(evt)
+	if err == nil {
+		if isWeb {
+			wrkDay := webRecentDayKey(day)
+			pipe.LPush(ctx, wrkDay, payload)
+			pipe.LTrim(ctx, wrkDay, 0, 99)
+			pipe.Expire(ctx, wrkDay, ttlDay)
+		} else {
+			arkDay := appRecentDayKey(day)
+			pipe.LPush(ctx, arkDay, payload)
+			pipe.LTrim(ctx, arkDay, 0, 99)
+			pipe.Expire(ctx, arkDay, ttlDay)
+		}
+	}
+
+	if uvIdentity != "" {
+		uk := uvKey(day)
+		pipe.PFAdd(ctx, uk, uvIdentity)
+		pipe.ExpireNX(ctx, uk, ttlDay)
+	}
+	if n := takeUnsyncedDropped(); n > 0 {
+		dk := droppedKey()
+		pipe.IncrBy(ctx, dk, n)
+		pipe.ExpireNX(ctx, dk, ttlDay)
+
+		dkDay := droppedDayKey(day)
+		pipe.IncrBy(ctx, dkDay, n)
+		pipe.ExpireNX(ctx, dkDay, ttlDay)
+	}
+	if _, err := pipe.Exec(ctx); err != nil {
+		syslog.Errorf("[Access] 页面埋点写入失败: %v", err)
+	}
+}
