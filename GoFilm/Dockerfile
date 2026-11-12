@@ -34,7 +34,7 @@ COPY --from=web-deps /app/node_modules ./node_modules
 COPY web/ .
 
 ENV NEXT_TELEMETRY_DISABLED=1
-ARG API_URL=http://127.0.0.1:3601
+ARG API_URL=http://127.0.0.1:8080
 ENV API_URL=${API_URL}
 
 
@@ -48,8 +48,8 @@ FROM node:20-alpine AS runner
 ENV NODE_ENV=production \
     NEXT_TELEMETRY_DISABLED=1 \
     TZ=Asia/Shanghai \
-    PORT=3601 \
-    LISTENER_PORT=3601 \
+    PORT=8080 \
+    LISTENER_PORT=8080 \
     HOSTNAME="0.0.0.0"
 
 RUN apk add --no-cache ca-certificates tzdata supervisor
