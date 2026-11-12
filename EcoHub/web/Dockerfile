@@ -18,8 +18,9 @@ COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 
 ENV NEXT_TELEMETRY_DISABLED=1
-ARG API_URL=http://127.0.0.1:3601
-ENV API_URL=${API_URL}
+
+ARG API_URL
+ENV API_URL=http://127.0.0.1:3601
 
 RUN --mount=type=cache,target=/app/.next/cache \
     npm run build
@@ -29,12 +30,12 @@ FROM node:20-alpine AS runner
 WORKDIR /app
 
 
-ENV NODE_ENV=production \
-    NEXT_TELEMETRY_DISABLED=1 \
-    TZ=Asia/Shanghai \
-    PORT=3301 \
-    LISTENER_PORT=3601 \
-    HOSTNAME="0.0.0.0"
+ENV NODE_ENV=production
+ENV NEXT_TELEMETRY_DISABLED=1
+
+# 运行时需要传入 API_URL，供 SSR 服务端渲染调用后端接口
+ARG API_URL
+ENV API_URL=http://127.0.0.1:3601
 
 RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 nextjs
