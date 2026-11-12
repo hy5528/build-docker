@@ -17,7 +17,7 @@ COPY server/go.mod server/go.sum ./
 RUN --mount=type=cache,target=/go/pkg/mod go mod download
 
 COPY server/ .
-RUN --mount=type=cache,target=/root/.cache/go-build GOARCH=$TARGETARCH go build -ldflags="-s -w" -o /build/gofilm ./cmd/server/...
+RUN --mount=type=cache,target=/root/.cache/go-build GOARCH=$TARGETARCH go build -ldflags="-s -w" -o /build/gofilm ./main.go
 
 # ==========================================
 # 2. 编译 Next.js 前端应用 (web)
