@@ -24,33 +24,10 @@ COPY . .
 
 RUN npm run build
 
-# 第二阶段：生产运行阶段
-
-FROM node:18-alpine
-
-# 设置工作目录
-
-WORKDIR /app
-
-# 复制构建产物和必要的 node_modules
-
-# 注意：如果项目是纯静态前端由 Nginx 托管，此阶段应使用 nginx 镜像
-
-# 这里假设是一个 Node.js 后端服务或 SSR 应用
-
-COPY --from=builder /app/dist ./dist
-COPY --from=builder /app/node_modules ./node_modules
-COPY --from=builder /app/package*.json ./
-
-# 创建非 root 用户以提高安全性
-
-RUN addgroup -S appgroup && adduser -S appuser -G appgroup
-USER appuser
-
-# 声明端口
-
+# 阶段 2: 使用 Nginx 托管静态文件
+FROM nginx:alpine
+# 将构建好的 dist 内容复制到 Nginx 默认 html 目录
+COPY --from=builder /app/dist /usr/share/nginx/html
+# 如果需要自定义 Nginx 配置以支持 History 模式路由，可以在此处 COPY nginx.conf
 EXPOSE 3600
-
-# 启动命令
-
-CMD ["node", "dist/index.js"]
+CMD ["nginx", "-g", "daemon off;"]
