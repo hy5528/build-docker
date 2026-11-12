@@ -17,7 +17,7 @@ COPY server/go.mod server/go.sum ./
 RUN --mount=type=cache,target=/go/pkg/mod go mod download
 
 COPY server/ .
-RUN --mount=type=cache,target=/root/.cache/go-build GOARCH=$TARGETARCH go build -o /out/main ./cmd/server/...
+RUN --mount=type=cache,target=/root/.cache/go-build GOARCH=$TARGETARCH go build -o /build/gofilm ./cmd/server/...
 
 # ==========================================
 # 2. 编译 Next.js 前端应用 (web)
@@ -34,7 +34,7 @@ COPY --from=web-deps /app/node_modules ./node_modules
 COPY web/ .
 
 ENV NEXT_TELEMETRY_DISABLED=1
-ARG API_URL=http://127.0.0.1:8080
+ARG API_URL=http://127.0.0.1:3601
 ENV API_URL=${API_URL}
 
 
@@ -48,8 +48,8 @@ FROM node:20-alpine AS runner
 ENV NODE_ENV=production \
     NEXT_TELEMETRY_DISABLED=1 \
     TZ=Asia/Shanghai \
-    PORT=8080 \
-    LISTENER_PORT=8080 \
+    PORT=3601 \
+    LISTENER_PORT=3601 \
     HOSTNAME="0.0.0.0"
 
 RUN apk add --no-cache ca-certificates tzdata supervisor
@@ -57,7 +57,7 @@ RUN apk add --no-cache ca-certificates tzdata supervisor
 WORKDIR /app
 
 # 拷贝 Go 服务二进制文件及迁移工具
-COPY --from=server-builder /out/main /app/server/main
+COPY --from=server-builder /build/gofilm /app/server/main
 
 
 # 拷贝 Next.js 产物
