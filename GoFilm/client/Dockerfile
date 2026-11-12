@@ -49,7 +49,7 @@ USER appuser
 
 # 声明端口
 
-EXPOSE 3000
+EXPOSE 3600
 
 # 启动命令
 
