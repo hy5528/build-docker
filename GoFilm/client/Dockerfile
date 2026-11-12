@@ -29,5 +29,5 @@ FROM nginx:alpine
 # 将构建好的 dist 内容复制到 Nginx 默认 html 目录
 COPY --from=builder /app/dist /usr/share/nginx/html
 # 如果需要自定义 Nginx 配置以支持 History 模式路由，可以在此处 COPY nginx.conf
-EXPOSE 3600
+EXPOSE 80
 CMD ["nginx", "-g", "daemon off;"]
