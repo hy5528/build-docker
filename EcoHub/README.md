@@ -54,7 +54,7 @@ services:
     image: ghcr.nju.edu.cn/hy5528/ecohub66:latest
     restart: always
     environment:
-      JWT_SECRET: 9014ac793e43b59f8b10d77bd3c26368
+      JWT_SECRET: ${JWT_SECRET:-ecohub_2026!local@dev_secret$$001}
       MYSQL_HOST: ${MYSQL_HOST:-mysql}
       MYSQL_PORT: ${MYSQL_PORT:-3306}
       MYSQL_USER: ${MYSQL_USER:-eco}
