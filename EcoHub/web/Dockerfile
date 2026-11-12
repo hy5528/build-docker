@@ -20,7 +20,7 @@ COPY . .
 ENV NEXT_TELEMETRY_DISABLED=1
 
 ARG API_URL
-ENV API_URL=http://127.0.0.1:3601
+ENV API_URL=${API_URL}
 
 RUN --mount=type=cache,target=/app/.next/cache \
     npm run build
@@ -35,7 +35,7 @@ ENV NEXT_TELEMETRY_DISABLED=1
 
 # 运行时需要传入 API_URL，供 SSR 服务端渲染调用后端接口
 ARG API_URL
-ENV API_URL=http://127.0.0.1:3601
+ENV API_URL=${API_URL}
 
 RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 nextjs
