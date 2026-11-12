@@ -14,7 +14,7 @@ COPY package*.json ./
 
 # 安装所有依赖（包括 devDependencies，因为构建需要）
 
-RUN npm ci
+RUN npm isntall
 
 # 复制源代码
 
