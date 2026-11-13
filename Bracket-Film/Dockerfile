@@ -26,9 +26,9 @@ RUN --mount=type=cache,target=/root/.cache/go-build \
 FROM --platform=$BUILDPLATFORM node:20-alpine AS web-deps
 RUN apk add --no-cache libc6-compat
 WORKDIR /app
-COPY web/package.json web/package-lock.json ./
-COPY web/patches ./patches
-RUN --mount=type=cache,target=/root/.npm npm ci
+COPY web/package.json web/package-lock.json* ./
+
+RUN --mount=type=cache,target=/root/.npm npm install
 
 FROM --platform=$BUILDPLATFORM node:20-alpine AS web-builder
 WORKDIR /app
