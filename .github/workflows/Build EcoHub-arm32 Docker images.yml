@@ -1,4 +1,4 @@
-name: Build EcoHubarm32 Docker images
+name: Build EcoHub-arm32 Docker images
 
 on:
   workflow_dispatch:
@@ -47,7 +47,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@v6
         with:
-          images: ${{ env.REGISTRY }}/${{ github.actor }}/EcoHubarm32
+          images: ${{ env.REGISTRY }}/${{ github.actor }}/EcoHub-arm32
           tags: |
             type=raw,value=latest
       - name: Clone Overleaf Gitlab Repo
