@@ -1,4 +1,4 @@
-FROM --platform=$BUILDPLATFORM golang:1.24-alpine
+FROM --platform=$BUILDPLATFORM golang:1.26-alpine
 RUN apk add --no-cache ca-certificates git build-base
 LABEL maintainer="spark"
 
