@@ -5,6 +5,100 @@
 - 使用后台功能中的采集管理功能进行影视数据采集。
 - 
 docker-compose.yml
+- amd64,arm64用的
+
+ ```text
+services:
+  mysql:
+    container_name: Eco-mysql
+    image: ghcr.nju.edu.cn/hy5528/mysql:latest
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-ecohub}
+      MYSQL_DATABASE: ${MYSQL_DBNAME:-eco}
+      MYSQL_USER: ${MYSQL_USER:-eco}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD:-ecohub}
+    volumes:
+      - ./data/mysql:/var/lib/mysql
+    networks:
+      - Eco-network
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "mysqladmin ping -h 127.0.0.1 -uroot -p$$MYSQL_ROOT_PASSWORD --silent",
+        ]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 30s
+
+  redis:
+    container_name: Eco-redis
+    image: ghcr.nju.edu.cn/hy5528/redis:alpine
+    restart: always
+    environment:
+      REDIS_PASSWORD: ${REDIS_PASSWORD:-ecohub}
+    command: ["redis-server", "--requirepass", "${REDIS_PASSWORD:-ecohub}"]
+    volumes:
+      - ./data/redis:/data
+    networks:
+      - Eco-network
+    healthcheck:
+      test: ["CMD-SHELL", "redis-cli -a $${REDIS_PASSWORD} ping | grep PONG"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 10s
+
+  ecohub:
+    container_name: Eco-hub
+    image: ghcr.nju.edu.cn/hy5528/ecohub66:latest
+    restart: always
+    environment:
+      JWT_SECRET: ${JWT_SECRET:-ecohub_2026!local@dev_secret$$001}
+      MYSQL_HOST: ${MYSQL_HOST:-mysql}
+      MYSQL_PORT: ${MYSQL_PORT:-3306}
+      MYSQL_USER: ${MYSQL_USER:-eco}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD:-ecohub}
+      MYSQL_DBNAME: ${MYSQL_DBNAME:-eco}
+      REDIS_HOST: ${REDIS_HOST:-redis}
+      REDIS_PORT: ${REDIS_PORT:-6379}
+      REDIS_PASSWORD: ${REDIS_PASSWORD:-ecohub}
+      REDIS_DB: ${REDIS_DB:-0}
+      ECOHUB_ADMIN_PASSWORD: ${ECOHUB_ADMIN_PASSWORD:-admin}
+    ports:
+      # 前台与管理后台（如需不对公网暴露裸端口，可写为 127.0.0.1:${WEB_PORT:-3000}:3000 配合反向代理）
+      - 3030:3000
+      # 后端 API 直连（供 TVBox / 播放器直连；如无需直连可直接注释此行）
+      - 0.0.0.0:18080:8080
+    volumes:
+      - ./data/uploads:/app/static/upload
+      # 后台「立即升级」通过 socket 拉 latest 并重建本容器
+      - /var/run/docker.sock:/var/run/docker.sock
+    networks:
+      - Eco-network
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    depends_on:
+      mysql:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    healthcheck:
+      test:
+        ["CMD-SHELL", "wget -q -O /dev/null http://localhost:8080/api/config/basic"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+
+networks:
+  Eco-network:
+    driver: bridge
+```
+- arm32用的
+
  ```text
 services:
   mysql:
