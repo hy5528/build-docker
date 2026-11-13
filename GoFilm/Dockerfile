@@ -4,24 +4,28 @@ RUN apk add --no-cache ca-certificates git build-base
 
 
 
-WORKDIR /build
+FROM --platform=$BUILDPLATFORM golang:1.24-alpine
 
-COPY ./server/go.mod ./server/go.sum ./
-RUN --mount=type=cache,target=/go/pkg/mod \
-    go mod download
+LABEL maintainer="spark"
 
+ENV GO111MODULE=on \
+    CGO_ENABLED=0 \
+    GOOS=linux \
+    TZ=Asia/Shanghai
 
-COPY ./server .
+RUN apk add --no-cache ca-certificates tzdata
 
+WORKDIR /app
 
-RUN --mount=type=cache,target=/root/.cache/go-build \
-    CGO_ENABLED=0 GOOS=linux \
-    go build -ldflags="-s -w" -o /build/gofilm ./main.go
+# 先复制依赖声明并下载（独立缓存层，代码变动不会重新下载）
+COPY ./go.mod ./go.sum ./
+RUN go mod download
 
+# 再复制源码并编译
+ADD ./server .
 
-FROM scratch
+RUN go build -o main ./cmd/...
 
-COPY --from=builder /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/
-COPY --from=builder /build/gofilm /gofilm
+EXPOSE 3601
 
-ENTRYPOINT ["/gofilm"]
+CMD ["./main"]
