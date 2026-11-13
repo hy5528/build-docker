@@ -16,7 +16,7 @@ COPY ./go.mod ./go.sum ./
 RUN go mod download
 
 # 再复制源码并编译
-ADD ./ .
+ADD . .
 
 RUN go build -o main ./cmd/...
 
