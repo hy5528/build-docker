@@ -1,11 +1,5 @@
-FROM --platform=$BUILDPLATFORM golang:1.24-alpine AS server-builder
-
-RUN apk add --no-cache ca-certificates git build-base
-
-
-
 FROM --platform=$BUILDPLATFORM golang:1.24-alpine
-
+RUN apk add --no-cache ca-certificates git build-base
 LABEL maintainer="spark"
 
 ENV GO111MODULE=on \
