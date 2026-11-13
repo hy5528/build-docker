@@ -17,7 +17,7 @@ COPY server/go.mod server/go.sum ./
 RUN --mount=type=cache,target=/go/pkg/mod go mod download
 
 COPY server/ .
-RUN --mount=type=cache,target=/root/.cache/go-build GOARCH=$TARGETARCH go build -o /out/main ./cmd/server/...
+RUN --mount=type=cache,target=/root/.cache/go-build GOARCH=$TARGETARCH go build -ldflags="-s -w" -o /build/gofilm ./main.go
 
 # ==========================================
 # 2. 编译 Next.js 前端应用 (web)
@@ -57,7 +57,7 @@ RUN apk add --no-cache ca-certificates tzdata supervisor
 WORKDIR /app
 
 # 拷贝 Go 服务二进制文件及迁移工具
-COPY --from=server-builder /out/main /app/server/main
+COPY --from=server-builder /build/gofilm /app/server/main
 
 
 # 拷贝 Next.js 产物
