@@ -1,4 +1,4 @@
-FROM golang:tip-alpine3.23 AS builder
+FROM --platform=$BUILDPLATFORM golang:1.24-alpine AS server-builder
 
 RUN apk add --no-cache ca-certificates git build-base
 
