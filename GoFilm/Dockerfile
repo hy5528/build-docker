@@ -15,7 +15,7 @@ COPY ./server .
 
 
 RUN --mount=type=cache,target=/root/.cache/go-build \
-    CGO_ENABLED=0 GOOS=linux GOARCH=amd64 \
+    CGO_ENABLED=0 GOOS=linux \
     go build -ldflags="-s -w" -o /build/gofilm ./main.go
 
 
