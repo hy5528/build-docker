@@ -11,7 +11,7 @@ docker-compose.yml
 services:
   mysql:
     container_name: Eco-mysql
-    image: ghcr.nju.edu.cn/hy5528/mariadb:latest
+    image: ghcr.nju.edu.cn/hy5528/mysql:latest
     restart: always
     environment:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-ecohub}
@@ -103,7 +103,7 @@ networks:
 services:
   mysql:
     container_name: Eco-mysql
-    image: ghcr.nju.edu.cn/hy5528/mysql:latest
+    image: ghcr.nju.edu.cn/hy5528/mariadb:latest
     restart: always
     environment:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-ecohub}
@@ -145,7 +145,7 @@ services:
 
   ecohub:
     container_name: Eco-hub
-    image: ghcr.nju.edu.cn/hy5528/ecohub66:latest
+    image: ghcr.nju.edu.cn/hy5528/ecohub-arm32:latest
     restart: always
     environment:
       JWT_SECRET: ${JWT_SECRET:-ecohub_2026!local@dev_secret$$001}
