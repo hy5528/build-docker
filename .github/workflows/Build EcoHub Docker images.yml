@@ -52,7 +52,7 @@ jobs:
             type=raw,value=latest
       - name: Clone Overleaf Gitlab Repo
         run: |
-          git clone --recurse-submodules https://github.com/hy5528/EcoHub.git app
+          git clone --recurse-submodules https://github.com/fe-spark/EcoHub.git app
 
       - name: "Copy userpatches to build folder"
         shell: bash
@@ -63,7 +63,7 @@ jobs:
         uses: docker/build-push-action@v7
         with:
           context: ./app
-          platforms: linux/amd64,linux/arm64,linux/arm/v7
+          platforms: linux/amd64,linux/arm64
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
