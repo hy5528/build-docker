@@ -1,7 +1,7 @@
 # syntax=docker/dockerfile:1
 # trixie 而不是 bookworm：Debian 13 自带 ffmpeg 7.1.x，才有 H.266/VVC 解码器（红果 360P–720P 档），
 # bookworm 的 ffmpeg 5.1 没有 VVC 解码，转码那几档会直接失败。
-FROM node:22-trixie-slim
+FROM --platform=$BUILDPLATFORM node:22-trixie-slim
 
 # ffmpeg 只用于「VVC 档位服务端转码成 H.264」这一条链路，浏览器自己解不了 VVC。
 RUN apt-get update \
