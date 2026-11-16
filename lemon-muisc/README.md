@@ -4,7 +4,7 @@
 ```text
 services:
   lemon-music: # 服务名，一般不用改
-    image: ghcr.io/jia070310/lemon-muisc:latest # 镜像；国内可改 ghcr.1ms.run/jia070310/lemon-muisc:latest
+    image: ghcr.nju.edu.cn/hy5528/lemon-muisc66:latest # 镜像；国内可改 ghcr.1ms.run/jia070310/lemon-muisc:latest
     container_name: lemon-music # 容器名
     ports:
       - "7983:7983" # 宿主机端口:容器端口，改左边即可
