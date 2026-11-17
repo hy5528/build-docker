@@ -3,7 +3,7 @@ version: '3.8'
 services:
   # 主应用服务
   app:
-    image: mysql:8.0
+    image: ghcr.nju.edu.cn/hy5528/orange-tv66:latest
     container_name: orange-tv
     restart: unless-stopped
     ports:
