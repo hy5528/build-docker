@@ -19,7 +19,7 @@ COPY . .
 
 # 构建应用
 ARG VERSION=1.0.0
-RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build \
+RUN CGO_ENABLED=0 GOOS=linux go build \
     -ldflags="-s -w -X github.com/ilaziness/orange-tv/cmd.version=${VERSION}" \
     -o orange-tv .
 
