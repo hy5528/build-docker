@@ -3,11 +3,7 @@ version: '3.8'
 services:
   # 主应用服务
   app:
-    build:
-      context: .
-      dockerfile: Dockerfile
-      args:
-        VERSION: ${VERSION:-1.0.0}
+    image: mysql:8.0
     container_name: orange-tv
     restart: unless-stopped
     ports:
@@ -53,7 +49,7 @@ services:
 
   # MySQL 数据库（开发默认）
   mysql:
-    image: mysql:8.0
+    image: ghcr.nju.edu.cn/hy5528/mysql:latest
     container_name: app-mysql
     restart: unless-stopped
     environment:
@@ -79,35 +75,11 @@ services:
           cpus: '0.5'
           memory: 512M
 
-  # PostgreSQL 数据库（可选）
-  postgres:
-    image: postgres:15-alpine
-    container_name: app-postgres
-    restart: unless-stopped
-    environment:
-      - POSTGRES_DB=${POSTGRES_DB:-myapp}
-      - POSTGRES_USER=${POSTGRES_USER:-myapp}
-      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-app_password}
-    ports:
-      - "${POSTGRES_PORT:-5432}:5432"
-    volumes:
-      - postgres-data:/var/lib/postgresql/data
-    networks:
-      - app-network
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-myapp}"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
-    deploy:
-      resources:
-        limits:
-          cpus: '0.5'
-          memory: 512M
+  
 
   # Redis 缓存（可选）
   redis:
-    image: redis:7-alpine
+    image: ghcr.nju.edu.cn/hy5528/redis:alpine
     container_name: app-redis
     restart: unless-stopped
     ports:
