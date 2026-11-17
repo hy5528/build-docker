@@ -7,7 +7,7 @@ services:
     container_name: orange-tv
     restart: unless-stopped
     ports:
-      - "${HTTP_PORT:-8080}:8080"
+      - 8980:8080"
     volumes:
       - ./configs:/app/configs:ro
       - app-data:/app/data
