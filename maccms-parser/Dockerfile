@@ -22,7 +22,7 @@ COPY requirements.txt .
 
 # 安装Python依赖
 RUN pip install --upgrade pip setuptools wheel && \
-    pip install --no-cache-dir --no-binary psycopg2 -r requirements.txt
+    pip install --no-cache-dir --no-binary -r requirements.txt
 
 
 
