@@ -28,7 +28,6 @@ RUN apt-get update && \
     apt-get install -y --no-install-recommends \
         build-essential \
         python3-dev \
-        libpq-dev \
     && rm -rf /var/lib/apt/lists/*
     
 # 运行时暴露给 /healthz，方便升级/回滚后核对容器里跑的是哪个构建
