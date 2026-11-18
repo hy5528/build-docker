@@ -8,7 +8,7 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
     LC_ALL=C.UTF-8
 
 RUN apt-get update \
- && apt-get install -y --no-install-recommends gcc libxml2-dev libxslt1-dev curl python3-dev libffi-dev \
+ && apt-get install -y --no-install-recommends gcc libxml2-dev libxslt1-dev curl build-essential \
  && rm -rf /var/lib/apt/lists/*
 
 RUN groupadd -r app && useradd -r -g app -d /app -s /usr/sbin/nologin app
