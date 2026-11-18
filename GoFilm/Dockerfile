@@ -41,45 +41,14 @@ ENV PATH="/opt/venv/bin:$PATH"
 RUN pip install --upgrade pip setuptools wheel && \
     pip install --no-cache-dir -r requirements.txt
 
-# 第二阶段：运行时镜像
-FROM python:3.12-slim
-
-ENV PYTHONDONTWRITEBYTECODE=1 \
-    PYTHONUNBUFFERED=1 \
-    LANG=C.UTF-8 \
-    LC_ALL=C.UTF-8 \
-    PATH="/opt/venv/bin:$PATH"
-
-# 安装运行时必要的系统库 (不需要 -dev 包)
-# libxml2 和 libxslt1.1 是 lxml 运行时需要的
-# curl 用于健康检查
-RUN apt-get update && apt-get install -y --no-install-recommends \
-    libxml2 \
-    libxslt1.1 \
-    curl \
-    && rm -rf /var/lib/apt/lists/*
-
-# 创建非 root 用户
-RUN groupadd -r app && useradd -r -g app -d /app -s /usr/sbin/nologin app
-
-WORKDIR /app
-
-# 从构建阶段复制虚拟环境
-COPY --from=builder /opt/venv /opt/venv
-
-# 复制应用代码
 COPY . ./
 
-# 设置权限
 RUN chown -R app:app /app
 USER app
 
 EXPOSE 8000
 
-# 健康检查
 HEALTHCHECK --interval=30s --timeout=5s --retries=3 \
     CMD curl -fsS http://127.0.0.1:8000/health || exit 1
 
-# 启动命令
-# 注意：uvicorn[standard] 已经在 requirements.txt 中安装，这里直接运行
 CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
