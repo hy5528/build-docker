@@ -16,9 +16,9 @@ RUN groupadd -r app && useradd -r -g app -d /app -s /usr/sbin/nologin app
 WORKDIR /app
 
 COPY requirements.txt ./
-RUN pip install --no-cache-dir -r requirements.txt \
- && apt-get purge -y gcc libxml2-dev libxslt1-dev \
- && apt-get autoremove -y
+RUN pip install --upgrade pip setuptools wheel && \
+    pip install --no-cache-dir -r requirements.txt
+
 
 COPY . ./
 
