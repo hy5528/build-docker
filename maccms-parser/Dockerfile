@@ -12,8 +12,10 @@ RUN apt-get update && apt-get install -y \
     libxml2-dev \
     libxslt1-dev \
     zlib1g-dev \
+    build-essential \
     python3-dev \
-    libffi-dev \  
+    libpq-dev \
+    libffi-dev \ 
     && rm -rf /var/lib/apt/lists/*
 
 # 复制依赖文件
