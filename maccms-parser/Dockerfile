@@ -14,7 +14,6 @@ RUN apt-get update && apt-get install -y \
     zlib1g-dev \
     build-essential \
     python3-dev \
-    libpq-dev \
     libffi-dev \ 
     && rm -rf /var/lib/apt/lists/*
 
