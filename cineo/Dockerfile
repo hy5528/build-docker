@@ -54,14 +54,9 @@ RUN flutter pub get
 COPY . .
 
 # 8. 构建 Web 应用
-# 使用 --dart-define 注入环境变量，避免文件路径问题
-# 如果必须使用文件，请确保 .dockerignore 中保留了 config.json
-ARG API_BASE_URL=https://api.default.com
-ARG APP_ENV=production
+
 
 RUN flutter build web --release \
-    --dart-define=API_BASE_URL=$API_BASE_URL \
-    --dart-define=APP_ENV=$APP_ENV \
     --output=./build/web
 
 # -----------------------------------------------------------------------------
