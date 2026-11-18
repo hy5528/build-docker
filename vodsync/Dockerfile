@@ -19,13 +19,29 @@ LABEL org.opencontainers.image.title="VodSync" \
       org.opencontainers.image.description="影视数据同步服务：MacCMS 源站采集 + 统一视频 API" \
       org.opencontainers.image.version="${APP_VERSION}" \
       org.opencontainers.image.revision="${APP_REVISION}"
-
+# 【修改点 1】在安装 pip 依赖前，安装编译所需的系统库
+# build-essential: gcc/g++/make
+# libffi-dev & libssl-dev: cryptography 等库编译必需
+# cargo: 如果依赖包含 Rust 代码（如 cryptography >= 3.4 或 maturin 构建的包），可能需要 rustc/cargo
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends \
+        build-essential \
+        libffi-dev \
+        libssl-dev \
+        pkg-config \
+        # 如果报错涉及 Rust/cargo，取消下面这行的注释并安装 rustup 或 cargo
+        # cargo \ 
+    && rm -rf /var/lib/apt/lists/*
+    
 # 运行时暴露给 /healthz，方便升级/回滚后核对容器里跑的是哪个构建
 ENV VODSYNC_BUILD_SHA=${APP_REVISION}
 
-# 先装依赖（利用 Docker 层缓存）
+# 先装依赖
 COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
+
+# 【修改点 2】升级 pip/setuptools/wheel 以提高兼容性
+RUN pip install --upgrade pip setuptools wheel && \
+    pip install --no-cache-dir -r requirements.txt
 
 # 再拷贝代码
 COPY app ./app
