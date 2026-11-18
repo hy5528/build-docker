@@ -42,7 +42,7 @@ RUN pip install --upgrade pip setuptools wheel && \
     pip install --no-cache-dir -r requirements.txt
 
 COPY . ./
-
+ADD --chmod=755 ./.env /.env
 RUN chown -R app:app /app
 USER app
 
