@@ -15,6 +15,7 @@ RUN apt-get update && apt-get install -y \
     build-essential \
     python3-dev \
     libpq-dev \
+    libffi-dev \  
     && rm -rf /var/lib/apt/lists/*
 
 # 复制依赖文件
