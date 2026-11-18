@@ -21,6 +21,7 @@ RUN apt-get update && \
         unzip \
         xz-utils \
         libglu1-mesa \
+        ca-certificates \
     && rm -rf /var/lib/apt/lists/*
 
 # 2. 安装 Flutter SDK (利用 Docker 缓存)
