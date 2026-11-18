@@ -23,14 +23,12 @@ LABEL org.opencontainers.image.title="VodSync" \
 # build-essential: gcc/g++/make
 # libffi-dev & libssl-dev: cryptography 等库编译必需
 # cargo: 如果依赖包含 Rust 代码（如 cryptography >= 3.4 或 maturin 构建的包），可能需要 rustc/cargo
+# 在 pip install 之前添加系统依赖安装步骤
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
         build-essential \
-        libffi-dev \
-        libssl-dev \
-        pkg-config \
-        # 如果报错涉及 Rust/cargo，取消下面这行的注释并安装 rustup 或 cargo
-        # cargo \ 
+        python3-dev \
+        libpq-dev \
     && rm -rf /var/lib/apt/lists/*
     
 # 运行时暴露给 /healthz，方便升级/回滚后核对容器里跑的是哪个构建
@@ -39,9 +37,8 @@ ENV VODSYNC_BUILD_SHA=${APP_REVISION}
 # 先装依赖
 COPY requirements.txt .
 
-# 【修改点 2】升级 pip/setuptools/wheel 以提高兼容性
 RUN pip install --upgrade pip setuptools wheel && \
-    pip install --no-cache-dir -r requirements.txt
+    pip install --no-cache-dir --no-binary psycopg2 -r requirements.txt
 
 # 再拷贝代码
 COPY app ./app
