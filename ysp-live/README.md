@@ -3,16 +3,25 @@
 - http://IP:8767/all.m3u
 ```text
 services:
-  hd-iptv:
-    image: ghcr.nju.edu.cn/hy5528/kvideo66:latest
+  ysp-live:
+    image: ghcr.nju.edu.cn/hy5528/ysp-live66:latest
     container_name: ysp-live
     restart: unless-stopped
-    ports:
-      - "${HOST_PORT:-9797}:9797"
+    network_mode: host
+    dns:
+      - 223.5.5.5
+      - 119.29.29.29
+      - 1.1.1.1
     volumes:
-      - /opt/ysp-live/data:/app/data
+      - ./data:/app/data
     environment:
-      TZ: ${TZ:-Asia/Shanghai}
-  
-
+      - TZ=Asia/Shanghai
+      - PYTHONUNBUFFERED=1
+      - YSP_DATA_DIR=/app/data
+      - NODE_OPTIONS=--max-old-space-size=256 --optimize-for-size
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
 ```
