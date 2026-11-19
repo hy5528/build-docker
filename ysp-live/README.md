@@ -1,11 +1,18 @@
-# kvideo
-- 现代化视频聚合播放平台
-- http://你的IP:3050
+# ysp-live
+- IPTV稳定高清快速
+- http://IP:8767/all.m3u
 ```text
-docker run -d \
-  --name kvideo \
-  --restart=always \
-  -p 3050:3000 \
-  ghcr.nju.edu.cn/hy5528/kvideo66:latest
+services:
+  hd-iptv:
+    image: ghcr.nju.edu.cn/hy5528/kvideo66:latest
+    container_name: ysp-live
+    restart: unless-stopped
+    ports:
+      - "${HOST_PORT:-9797}:9797"
+    volumes:
+      - /opt/ysp-live/data:/app/data
+    environment:
+      TZ: ${TZ:-Asia/Shanghai}
+  
 
 ```
