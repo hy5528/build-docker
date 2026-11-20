@@ -32,7 +32,7 @@
     
     "ruyi": {
       "name": "🎬如意资源",
-      "api": "https://bycj.rytvapi.com//api.php/provide/vod",
+      "api": "https://bycj.rytvapi.com/api.php/provide/vod/from/rym3u8",
       "detail": "https://www.ryzyw.com"
     },
     "zy360": {
