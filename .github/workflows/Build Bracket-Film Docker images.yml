@@ -52,13 +52,12 @@ jobs:
             type=raw,value=latest
       - name: Clone Overleaf Gitlab Repo
         run: |
-          git clone --recurse-submodules https://github.com/fede0429/ecohub.git app
+          git clone --recurse-submodules https://github.com/wj5403293/Bracket-Film.git app
 
       - name: "Copy userpatches to build folder"
         shell: bash
         run: |
-          rm -rf ./app/server
-          rsync -av Bracket/. ./app    
+          rsync -av Bracket-Film/. ./app    
           
       - name: 构建并推送 Docker 镜像
         uses: docker/build-push-action@v7
