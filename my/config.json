@@ -1,0 +1,74 @@
+{
+  "cache_time": 7200,
+  "api_site": {
+      "ffapi": {
+      "name": "🎬非凡资源",
+      "api": "http://api.ffzyapi.com/api.php/provide/vod/from/ffm3u8",
+      "detail": "https://cj.ffzyapi.com"
+    },
+      "kgzy": {
+      "name": "聚合资源",
+      "api": "https://vod.7na7.com/",
+      "is_adult": false
+    },
+
+      "kgzy2": {
+      "name": "聚合资源2",
+      "api": "https://api.vodfa.com/api/vod/",
+      "is_adult": false
+    },
+     
+    "caijidb": {
+      "name": "🎬豆瓣资源",
+      "api": "https://caiji.dbzy5.com/api.php/provide/vod",
+      "detail": "dbzy.tv"
+    },
+    
+    "lzi": {
+      "name": "🎬量子影视",
+      "api": "https://lzzyapi.com/api.php/provide/vod/from/lzm3u8",
+      "detail": "https://lzizy.net"
+    },
+    
+    "ruyi": {
+      "name": "🎬如意资源",
+      "api": "https://bycj.rytvapi.com//api.php/provide/vod",
+      "detail": "https://www.ryzyw.com"
+    },
+    "zy360": {
+      "name": "🎬360资源",
+      "api": "https://360zyzz.com/api.php/provide/vod",
+      "detail": "https://360zy.com"
+    },
+    
+    "mdzy": {
+      "name": "🎬魔都资源",
+      "api": "https://www.mdzyapi.com/api.php/provide/vod",
+      "detail": "https://www.moduzy.net"
+    },
+
+    "bfzy": {
+      "name": "🎬暴风资源",
+      "api": "https://bfzyapi.com/api.php/provide/vod",
+      "detail": "https://bfzy.tv"
+    },
+    "zuid": {
+      "name": "🎬最大资源",
+      "api": "https://api.zuidapi.com/api.php/provide/vod",
+      "detail": "zuida.xyz"
+    },
+    
+    
+    "hhzyapi": {
+      "name": "🎬豪华资源",
+      "api": "https://hhzyapi.com/api.php/provide/vod",
+      "detail": "https://www.haohuazy.com"
+    },
+    
+    "modu": {
+      "name": "🎬金鹰资源",
+      "api": "https://jyzyapi.com/provide/vod/from/jinyingm3u8/at/json",
+      "detail": "https://jinyingzy.com"
+     }
+  }
+}
