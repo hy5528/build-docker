@@ -53,7 +53,7 @@ services:
 
   ecohub:
     container_name: Eco-hub
-    image: ghcr.nju.edu.cn/hy5528/ecohub66:latest
+    image: ghcr.nju.edu.cn/hy5528/ecohub:latest
     restart: always
     environment:
       JWT_SECRET: ${JWT_SECRET:-ecohub_2026!local@dev_secret$$001}
