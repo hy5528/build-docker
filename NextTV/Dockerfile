@@ -1,6 +1,6 @@
 # 使用 Node.js 官方 LTS 版本的 Alpine 镜像作为基础
 # Alpine 体积小，适合生产环境
-FROM --platform=$BUILDPLATFORM node:20-alpine AS base
+FROM node:22-alpine AS base
 
 WORKDIR /app
 
