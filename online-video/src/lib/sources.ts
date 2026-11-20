@@ -4,12 +4,12 @@ export const SOURCES: readonly SourceDefinition[] = [
   {
     id: "liangzi",
     name: "量子",
-    baseUrl: "https://cj.lziapi.com/api.php/provide/vod/",
+    baseUrl: "https://lzzyapi.com/api.php/provide/vod/from/lzm3u8",
   },
   {
     id: "ruyi",
     name: "如意",
-    baseUrl: "https://cj.rycjapi.com/api.php/provide/vod/",
+    baseUrl: "https://bycj.rytvapi.com/api.php/provide/vod/from/rym3u8",
   },
   {
     id: "vdzy",
@@ -49,7 +49,7 @@ export const SOURCES: readonly SourceDefinition[] = [
   {
     id: "ffzy",
     name: "非凡",
-    baseUrl: "http://api.ffzyapi.com/api.php/provide/vod/",
+    baseUrl: "http://api.ffzyapi.com/api.php/provide/vod/from/ffm3u8",
   },
 ] as const;
 
