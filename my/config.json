@@ -67,7 +67,7 @@
     
     "modu": {
       "name": "🎬金鹰资源",
-      "api": "https://jyzyapi.com/provide/vod/from/jinyingm3u8/at/json",
+      "api": "https://jinyingzy.com/api.php/provide/vod",
       "detail": "https://jinyingzy.com"
      }
   }
