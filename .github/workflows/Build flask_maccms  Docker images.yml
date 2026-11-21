@@ -1,4 +1,4 @@
-name: Build cineo Docker images
+name: Build flask_maccms Docker images
 
 on:
   workflow_dispatch:
@@ -47,17 +47,17 @@ jobs:
         id: meta
         uses: docker/metadata-action@v6
         with:
-          images: ${{ env.REGISTRY }}/${{ github.actor }}/cineo66
+          images: ${{ env.REGISTRY }}/${{ github.actor }}/flask_maccms66
           tags: |
             type=raw,value=latest
       - name: Clone Overleaf Gitlab Repo
         run: |
-          git clone https://github.com/benson-singapore/cineo-flutter.git app
+          git clone https://github.com/my-bug/Flask_MacCMS.git app
 
       - name: "Copy userpatches to build folder"
         shell: bash
         run: |
-          rsync -av cineo/. ./app    
+          rsync -av flask_maccms/. ./app    
           
       - name: 构建并推送 Docker 镜像
         uses: docker/build-push-action@v7
