@@ -1,4 +1,4 @@
-name: Build hongguo-web Docker images
+name: Build ppplayer Docker images
 
 on:
   workflow_dispatch:
@@ -47,17 +47,17 @@ jobs:
         id: meta
         uses: docker/metadata-action@v6
         with:
-          images: ${{ env.REGISTRY }}/${{ github.actor }}/hongguo-web66
+          images: ${{ env.REGISTRY }}/${{ github.actor }}/ppplayer66
           tags: |
             type=raw,value=latest
       - name: Clone Overleaf Gitlab Repo
         run: |
-          git clone  https://github.com/Askia00/hongguo-web.git app
+          git clone  https://github.com/ccysb/PPPlayer.git app
 
       - name: "Copy userpatches to build folder"
         shell: bash
         run: |
-          rsync -av hongguo-web/. ./app    
+          rsync -av ppplayer/. ./app    
           
       - name: 构建并推送 Docker 镜像
         uses: docker/build-push-action@v7
