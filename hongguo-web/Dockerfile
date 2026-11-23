@@ -11,8 +11,8 @@ WORKDIR /app
 # 零依赖：只需要拷源码，没有 npm install
 COPY package.json ./
 COPY server ./server
-COPY public ./public
-COPY start.mjs ./
+COPY web/app.js ./
+
 
 # 缓存目录需要可写（容器里以 node 用户运行）
 RUN mkdir -p /app/data/media && chown -R node:node /app
@@ -26,4 +26,4 @@ USER node
 
 VOLUME ["/app/data"]
 
-CMD ["node", "server/index.js"]
+CMD ["node", "server/src/main.js"]
