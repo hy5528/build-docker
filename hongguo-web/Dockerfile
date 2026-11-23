@@ -24,7 +24,7 @@ COPY . .
 
 # 暴露端口
 
-EXPOSE 8630
+EXPOSE 8000
 
 # 启动命令
 
