@@ -1,30 +1,15 @@
-FROM python:3.14.0-slim
+# 使用官方 Python 映像檔作為基礎
+FROM python:3.11-alpine
 
-LABEL maintainer="CMS Movie"
-LABEL description="video CMS with MacCMS10 collector"
+# 安裝 curl（用於健康檢查）
+RUN apk add --no-cache ca-certificates tzdata curl
 
-# 设置工作目录
+# 設定工作目錄
 WORKDIR /app
 
-# 安装系统依赖
-RUN apt-get update && apt-get install -y \
-    gcc \
-    libxml2-dev \
-    libxslt1-dev \
-    zlib1g-dev \
-    build-essential \
-    python3-dev \
-    libffi-dev \ 
-    && rm -rf /var/lib/apt/lists/*
-
-# 复制依赖文件
+# 複製依賴檔案並安裝
 COPY requirements.txt .
-
-# 安装Python依赖
-RUN pip install --upgrade pip setuptools wheel && \
-    pip install --no-cache-dir -r requirements.txt
-
-
+RUN pip install --no-cache-dir -r requirements.txt
 
 # 複製專案所有檔案到工作目錄
 COPY . .
