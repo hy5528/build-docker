@@ -38,4 +38,4 @@ USER node
 
 VOLUME ["/app/data"]
 
-CMD ["node", "webapp/start.sh"]
+CMD ["node", "app/webapp/server.js"]
