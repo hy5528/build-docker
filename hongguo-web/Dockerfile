@@ -1,29 +1,29 @@
-# 第一阶段：构建基础环境（可选，若需编译原生模块则使用，本项目零依赖可直接跳过此步或使用轻量镜像）
-# 由于项目声明“零第三方依赖”，我们可以直接使用 node:18-alpine 作为基础镜像并复制代码
+# 只跑 Node，不需要浏览器与 FFmpeg
+FROM --platform=$BUILDPLATFORM node:22-alpine
 
-FROM --platform=$BUILDPLATFORM node:18-alpine
+ENV NODE_ENV=production \
+    PORT=5178 \
+    HOST=0.0.0.0 \
+    HG_CACHE_DIR=/app/data/media
 
-# 设置工作目录为 /app
 WORKDIR /app
 
-# 复制 package.json 和 package-lock.json (如果有)
-COPY package*.json ./
-
-# 安装依赖 (虽然该项目无依赖，但保留此步骤以防万一)
-RUN npm ci --only=production || npm install --only=production
-
-# 复制所有源代码到 /app
-# 关键点：确保 server 文件夹在 /app/server 下
+# 零依赖：只需要拷源码，没有 npm install
+COPY package.json ./
 COPY server ./server
-COPY web ./web
+COPY public ./public
+COPY start.mjs ./
 
-# 暴露端口
-EXPOSE 8000
+# 缓存目录需要可写（容器里以 node 用户运行）
+RUN mkdir -p /app/data/media && chown -R node:node /app
 
-# 设置环境变量
-ENV NODE_ENV=production
-ENV TZ=Asia/Shanghai
+EXPOSE 5178
 
-# 启动应用
-# 注意：这里使用相对路径或基于 WORKDIR 的路径
-CMD ["node", "web/app.js","server/src/main.js"]
+HEALTHCHECK --interval=30s --timeout=5s --start-period=15s --retries=3 \
+  CMD node -e "fetch('http://127.0.0.1:'+(process.env.PORT||5178)+'/api/health').then(r=>r.json()).then(j=>process.exit(j.ok?0:1)).catch(()=>process.exit(1))"
+
+USER node
+
+VOLUME ["/app/data"]
+
+CMD ["node", "server/index.js"]
