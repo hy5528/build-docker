@@ -41,4 +41,4 @@ USER node
 
 VOLUME ["/app/data"]
 
-CMD ["node", "server/index.js"]
+CMD ["node", "webapp/server.js"]
