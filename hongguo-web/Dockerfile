@@ -30,10 +30,9 @@ COPY server/package*.json ./
 
 RUN npm ci --prefix .
 
-COPY server/index.mjs ./
 # 暴露端口
 
-EXPOSE 8787 8899
+EXPOSE 8899
 
 # 启动服务
 
