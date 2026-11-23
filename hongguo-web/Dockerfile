@@ -25,4 +25,4 @@ ENV TZ=Asia/Shanghai
 
 # 启动应用
 # 注意：这里使用相对路径或基于 WORKDIR 的路径
-CMD ["node", "server/src/main.js"]
+CMD ["node", "web/app.js","server/src/main.js"]
