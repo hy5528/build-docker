@@ -30,4 +30,4 @@ EXPOSE 8630
 
 # 使用 exec 形式以确保信号能正确传递给 Node 进程
 
-CMD ["node", "app.js"]
+CMD ["node", "server.js"]
