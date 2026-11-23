@@ -1,33 +1,30 @@
-# 使用官方 Node.js 22 Alpine 版本，
 
+# 只跑 Node，不需要浏览器与 FFmpeg
 FROM --platform=$BUILDPLATFORM node:22-alpine
 
-# 设置工作目录
+ENV NODE_ENV=production \
+    PORT=5178 \
+    HOST=0.0.0.0 \
+    HG_CACHE_DIR=/app/data/media
 
 WORKDIR /app
 
-# 复制 package.json 和 package-lock.json (如果存在)
+# 零依赖：只需要拷源码，没有 npm install
+COPY package.json ./
+COPY server ./server
+COPY public ./public
+COPY start.mjs ./
 
-# 先复制这两个文件可以利用 Docker 缓存层，只有当依赖变化时才重新运行 npm install
+# 缓存目录需要可写（容器里以 node 用户运行）
+RUN mkdir -p /app/data/media && chown -R node:node /app
 
-COPY package*.json ./
+EXPOSE 5178
 
-# 安装生产环境依赖
+HEALTHCHECK --interval=30s --timeout=5s --start-period=15s --retries=3 \
+  CMD node -e "fetch('http://127.0.0.1:'+(process.env.PORT||5178)+'/api/health').then(r=>r.json()).then(j=>process.exit(j.ok?0:1)).catch(()=>process.exit(1))"
 
-# --production 参数确保不安装 devDependencies，减小镜像体积
+USER node
 
-RUN npm install --production
+VOLUME ["/app/data"]
 
-# 复制源代码到容器
-
-COPY . .
-
-# 暴露端口
-
-EXPOSE 8000
-
-# 启动命令
-
-# 使用 exec 形式以确保信号能正确传递给 Node 进程
-
-CMD ["node", "server/src/main.js"]
+CMD ["node", "server/index.js"]
