@@ -8,6 +8,8 @@ FROM --platform=$BUILDPLATFORM node:22-alpine
 RUN apk add --no-cache \
     ffmpeg \
     libva \
+    supervisor \
+    python3 \
     libva-intel-driver \
     intel-media-driver \
     v4l-utils
@@ -16,22 +18,33 @@ RUN apk add --no-cache \
 RUN ffmpeg -decoders | grep hevc
 
 
-ENV NODE_ENV=production \
-    PORT=5178 \
-    HOST=0.0.0.0 \
-    HG_CACHE_DIR=/app/data/media
+# 设置工作目录
 
 WORKDIR /app
 
-# 零依赖：只需要拷源码，没有 npm install
-COPY package.json ./
+# 复制项目文件
 
+COPY server ./server
+COPY webapp ./webapp
 
-EXPOSE 5178
+# 安装依赖
 
+RUN cd server && npm ci --production && \
+    cd ../webapp && npm ci --production
 
-USER node
+# 创建日志目录
 
-VOLUME ["/app/data"]
+RUN mkdir -p /var/log/supervisor
 
-CMD ["node", "webapp/server.js"]
+# 复制 supervisor 配置文件
+
+COPY supervisord.conf /etc/supervisord.conf
+
+# 暴露端口
+
+EXPOSE 8787 8899
+
+# 启动 supervisord
+
+CMD ["/usr/bin/supervisord", "-c", "/etc/supervisord.conf"]
+
