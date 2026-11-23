@@ -17,7 +17,7 @@ RUN npm ci --only=production || npm install --only=production
 COPY . .
 
 # 暴露端口
-EXPOSE 8787
+EXPOSE 8000
 
 # 设置环境变量
 ENV NODE_ENV=production
