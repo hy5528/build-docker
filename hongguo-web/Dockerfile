@@ -8,7 +8,6 @@ FROM --platform=$BUILDPLATFORM node:22-alpine
 RUN apk add --no-cache \
     ffmpeg \
     libva \
-    python3 \
     libva-intel-driver \
     intel-media-driver \
     v4l-utils
