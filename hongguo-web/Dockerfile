@@ -22,29 +22,21 @@ RUN ffmpeg -decoders | grep hevc
 
 WORKDIR /app
 
-# 复制项目文件
 
-COPY server ./server
-COPY webapp ./webapp
+# 复制 package.json 和 lock 文件以利用缓存
+
+COPY server/package*.json ./
 
 # 安装依赖
 
-RUN cd server && npm ci --production && \
-    cd ../webapp && npm ci --production
+RUN npm ci --prefix .
 
-# 创建日志目录
-
-RUN mkdir -p /var/log/supervisor
-
-# 复制 supervisor 配置文件
-
-COPY supervisord.conf /etc/supervisord.conf
 
 # 暴露端口
 
 EXPOSE 8787 8899
 
-# 启动 supervisord
+# 启动服务
 
-CMD ["/usr/bin/supervisord", "-c", "/etc/supervisord.conf"]
+CMD ["node", "server/index.mjs","webapp/server.js"]
 
