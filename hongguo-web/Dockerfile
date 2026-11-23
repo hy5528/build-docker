@@ -14,7 +14,8 @@ RUN npm ci --only=production || npm install --only=production
 
 # 复制所有源代码到 /app
 # 关键点：确保 server 文件夹在 /app/server 下
-COPY . .
+COPY server ./server
+COPY web ./web
 
 # 暴露端口
 EXPOSE 8000
