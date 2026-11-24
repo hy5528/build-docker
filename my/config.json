@@ -14,7 +14,7 @@
 
       "kgzy2": {
       "name": "聚合资源2",
-      "api": "https://api.vodfa.com/api/vod/",
+      "api": "https://api.vodfa.com/api/vod",
       "is_adult": false
     },
      
