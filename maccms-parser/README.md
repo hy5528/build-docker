@@ -5,30 +5,6 @@
 ```text
 services:
   maccms_parser:
-    image: ghcr.nju.edu.cn/hy5528/maccms-parserarm32:latest
-    container_name: maccms_parser
-    ports:
-      - "5900:5000"
-    volumes:
-      - ./data:/app/data
-    restart: unless-stopped
-    
-    healthcheck:
-      test: [ "CMD", "curl", "-f", "http://localhost:5000/api/health" ]
-      interval: 30s
-      timeout: 10s
-      retries: 3
-      start_period: 40s
-    # 環境變量
-    environment:
-      - PYTHONUNBUFFERED=1
-      - MAX_CONCURRENT_REQUESTS=10
-      - TZ=Asia/Taipei
-```
-arm/v7
-```text
-services:
-  maccms_parser:
     image: ghcr.nju.edu.cn/hy5528/maccms-parser66:latest
     container_name: maccms_parser
     ports:
@@ -45,6 +21,29 @@ services:
         reservations:
           cpus: '0.25'
           memory: 200M
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:5000/api/health" ]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    # 環境變量
+    environment:
+      - PYTHONUNBUFFERED=1
+      - MAX_CONCURRENT_REQUESTS=10
+      - TZ=Asia/Taipei
+```
+arm/v7
+```text
+services:
+  maccms_parser:
+    image: ghcr.nju.edu.cn/hy5528/maccms-parserarm32:latest
+    container_name: maccms_parser
+    ports:
+      - "5900:5000"
+    volumes:
+      - ./data:/app/data
+    restart: unless-stopped
     healthcheck:
       test: [ "CMD", "curl", "-f", "http://localhost:5000/api/health" ]
       interval: 30s
