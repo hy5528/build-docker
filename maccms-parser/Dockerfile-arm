@@ -1,15 +1,21 @@
 # 使用官方 Python 映像檔作為基礎
 FROM python:3.11-alpine
 
-# 安裝 curl（用於健康檢查）
-RUN apk add --no-cache curl
+# 安装 ARMv7 架构下编译 C/C++ 扩展必需的系统依赖
+# 包含 g++ 编译器、Python 开发头文件、musl libc 开发库等核心编译组件
+RUN apk add --no-cache curl g++ gcc musl-dev python3-dev libffi-dev curl
+
 
 # 設定工作目錄
 WORKDIR /app
 
+# 升级基础构建工具链，避免 setuptools/wheel 版本不兼容导致的编译失败
+RUN pip install --upgrade pip setuptools wheel
+
 # 複製依賴檔案並安裝
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
+
 
 # 複製專案所有檔案到工作目錄
 COPY . .
