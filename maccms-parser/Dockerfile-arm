@@ -3,7 +3,8 @@ FROM python:3.11-alpine
 
 # 安装 ARMv7 架构下编译 C/C++ 扩展必需的系统依赖
 RUN apk add --no-cache \
-    build-base 
+    build-base \
+    libffi-dev
 
 
 
