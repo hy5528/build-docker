@@ -46,7 +46,7 @@ services:
           cpus: '0.25'
           memory: 200M
     healthcheck:
-      test: [ "CMD", "curl", "-f", "http://localhost:5900/api/health" ]
+      test: [ "CMD", "curl", "-f", "http://localhost:5000/api/health" ]
       interval: 30s
       timeout: 10s
       retries: 3
