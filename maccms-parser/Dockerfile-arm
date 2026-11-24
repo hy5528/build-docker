@@ -3,13 +3,14 @@ FROM python:3.11-alpine
 
 # 安装 ARMv7 架构下编译 C/C++ 扩展必需的系统依赖
 RUN apk add --no-cache \
-    gcc \
-    musl-dev \
+    build-base \
     linux-headers \
-    libffi-dev \
     openssl-dev \
-    libev-dev \
-    python3-dev
+    libffi-dev \
+    postgresql-dev \
+    jpeg-dev \
+    zlib-dev \
+    freetype-dev
 
 
 # 設定工作目錄
@@ -20,7 +21,8 @@ RUN pip install --upgrade pip setuptools wheel
 
 # 複製依賴檔案並安裝
 COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
+RUN pip install --no-cache-dir --upgrade pip && \
+    pip install --no-cache-dir -r requirements.txt
 
 
 # 複製專案所有檔案到工作目錄
