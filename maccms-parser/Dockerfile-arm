@@ -5,9 +5,8 @@ FROM python:3.11-alpine
 RUN apk add --no-cache \
     build-base \
     linux-headers \
-    openssl-dev \
-    libffi-dev \
-    postgresql-dev 
+    libffi-dev 
+
 
 
 # 設定工作目錄
