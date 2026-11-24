@@ -1,7 +1,7 @@
 # maccms-parser
 - 一個通用的 MacCMS 解析 / 播放網頁工具
 - http://你的IP:5900
-- amd64,arm64
+amd64,arm64
 ```text
 services:
   maccms_parser:
