@@ -5,5 +5,5 @@
 docker run -d --name ppplayer -p 19527:19527 \
   -v /opt/PPPlayer/ppplayer-data:/app/data \
   --restart unless-stopped \
-  ghcr.io/hy5528/ppplayer66:latest
+  ghcr.nju.edu.cn/hy5528/ppplayer66:latest
 ```
