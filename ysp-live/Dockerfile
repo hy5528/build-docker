@@ -1,16 +1,24 @@
-FROM docker.m.daocloud.io/library/python:3.12-alpine
-ENV TZ=Asia/Shanghai \
-    PYTHONUNBUFFERED=1 \
-    YSP_DATA_DIR=/app/data
-RUN apk add --no-cache nodejs ffmpeg tzdata ca-certificates && \
-    cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime && \
-    echo "Asia/Shanghai" > /etc/timezone && \
-    mkdir -p /app /app/data
+FROM python:3.12-alpine
+
+LABEL org.opencontainers.image.title="ysp-live"
+
 WORKDIR /app
-COPY ysp-live-v20261125.py /app/ysp-live-v20261125.py
-COPY ysp-engine.js /app/ysp-engine.js
-COPY check_v20261125_startup.py /app/check_v20261125_startup.py
-RUN ln -sf /app/ysp-live-v20261125.py /app/ysp-live.py
-EXPOSE 8767
-VOLUME ["/app/data"]
-CMD ["sh", "-c", "mkdir -p /app/data && chmod -R 777 /app/data 2>/dev/null || true; exec python3 /app/ysp-live-v20261125.py 8767"]
+
+COPY ysp-live.py /app/ysp-live.py
+
+ENV PYTHONUNBUFFERED=1 \
+    PYTHONDONTWRITEBYTECODE=1 \
+    TZ=Asia/Shanghai \
+    PORT=8766 \
+    YSP_DATA_DIR=/data
+
+RUN mkdir -p /data
+
+VOLUME ["/data"]
+
+EXPOSE 8766
+
+HEALTHCHECK --interval=30s --timeout=5s --start-period=5s --retries=3 \
+    CMD wget -q -O - "http://127.0.0.1:${PORT}/health" || exit 1
+
+CMD ["sh", "-c", "python -u /app/ysp-live.py ${PORT:-8766} --bind 0.0.0.0"]
