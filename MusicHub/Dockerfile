@@ -8,7 +8,10 @@ FROM thingsboard/node:22.23.4-bookworm-slim
 
 
 # 安装编译原生模块所需的工具（sqlite3 需要 gcc/make/python3）
-RUN apt-get update && apt-get install -y python3 make g++ libsqlite3-dev && rm -rf /var/lib/apt/lists/*
+RUN apt-get update && apt-get install -y \
+    build-essential \
+    python3 \
+    && rm -rf /var/lib/apt/lists/*
 
 
 WORKDIR /app
@@ -24,8 +27,9 @@ COPY backend/package.json /app/backend/
 WORKDIR /app/backend
 
 # 构建时安装生产依赖并重新编译原生模块（sqlite3 6.x）
-
-RUN npm install --omit=dev \
+ENV npm_config_build_from_source=true \
+    npm_config_disturl=https://registry.npmmirror.com/-/binary/node
+RUN npm install --omit=dev --registry=https://registry.npmmirror.com \
     && npm rebuild sqlite3 \
     && node -e "require('sqlite3'); console.log('[build] sqlite3 校验通过')" \
     && npm cache clean --force
