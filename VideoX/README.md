@@ -9,7 +9,7 @@ docker run -d \
   --name videox \
   --restart=always \
   -p 3100:3100 \
-  -v /www/videox-data:/app/backend/data \
-  -v /www/media:/media \
+  -v /www/videox/videox-data:/app/backend/data \
+  -v /www/videox/media:/media \
   ghcr.nju.edu.cn/hy5528/videox66:latest
 ```
