@@ -9,6 +9,7 @@ services:
     restart: unless-stopped
     network_mode: host
     dns:
+      - 202.103.225.68
       - 223.5.5.5
       - 119.29.29.29
       - 1.1.1.1
