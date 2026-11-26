@@ -6,10 +6,6 @@
 #   - sqlite3 为原生模块，需 gcc/make/python3 编译，构建阶段安装后打包进镜像。
 FROM thingsboard/node:22.23.4-bookworm-slim
 
-# 使用国内 apt 镜像源（容器内 CA 可能缺失，用 http 源避免证书校验失败）
-RUN echo "deb http://mirrors.tuna.tsinghua.edu.cn/debian bookworm main contrib non-free" > /etc/apt/sources.list \
-    && echo "deb http://mirrors.tuna.tsinghua.edu.cn/debian-security bookworm-security main contrib non-free" >> /etc/apt/sources.list \
-    && rm -f /etc/apt/sources.list.d/debian.sources
 
 # 安装编译原生模块所需的工具（sqlite3 需要 gcc/make/python3）
 RUN apt-get update && apt-get install -y \
@@ -26,23 +22,12 @@ RUN mkdir -p /app/data/plugins /app/data/uploads /app/data/cache /app/data/logs 
 
 # 先复制依赖清单，利用 Docker 层缓存
 # 注意：这里【不复制 package-lock.json】。sqlite3 已升级到 6.x（N-API 重写，支持 Node 22），
-# 若保留旧 lock 会把 sqlite3 锁死在 5.1.6（其捆绑的 node-gyp 8.4.1 无法编译 Node 22），导致构建失败。
-# 故仅用 package.json 按 ^6.0.1 解析安装，保证始终拉到兼容 Node 22 的版本。
 COPY backend/package.json /app/backend/
 WORKDIR /app/backend
 
-# 构建时安装生产依赖并重新编译原生模块（sqlite3 6.x），使用国内 npm 镜像加速
-# sqlite3 6.x 已用 N-API 重写：install 脚本为「prebuild-install -r napi || node-gyp rebuild」，
-# 优先用跨 Node 版本的 N-API 预编译二进制，失败再退回 node-gyp 12 源码编译（node-gyp 12 支持 Node 22，
-# 而老版本 5.1.6 捆绑的 node-gyp 8.4.1 不支持 Node 22，正是之前 gyp 失败的根因）。
-# 关键配置（适配国内网络、保证构建可复现）：
-#   1) npm_config_build_from_source=true —— 让 prebuild-install 跳过 GitHub 预编译下载，直接走 node-gyp 12 源码编译
-#   2) npm_config_disturl             —— node-gyp 拉取 Node 头文件走国内镜像，避免连 nodejs.org 失败
-#   3) 编译后立刻 require('sqlite3') 校验，加载失败则让镜像构建直接报错（fail-fast），
-#      杜绝“镜像构建‘成功’却带着坏的 sqlite3 发出去”的情况。
-ENV npm_config_build_from_source=true \
-    npm_config_disturl=https://registry.npmmirror.com/-/binary/node
-RUN npm install --omit=dev --registry=https://registry.npmmirror.com \
+# 构建时安装生产依赖并重新编译原生模块（sqlite3 6.x）
+
+RUN npm install --omit=dev \
     && npm rebuild sqlite3 \
     && node -e "require('sqlite3'); console.log('[build] sqlite3 校验通过')" \
     && npm cache clean --force
