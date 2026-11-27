@@ -1,67 +1,75 @@
-FROM --platform=$BUILDPLATFORM node:22-alpine AS base
+# ---- 第 1 阶段：安装依赖 ----
+FROM --platform=$BUILDPLATFORM node:22-alpine AS deps
 
-# Install dependencies only when needed
-FROM base AS deps
-# Check https://github.com/nodejs/docker-node/tree/b4117f9333da4138b03a546ec926ef50a31506c3#nodealpine to understand why libc6-compat might be needed.
-RUN apk add --no-cache libc6-compat
+# 启用 corepack 并激活 pnpm（Node20 默认提供 corepack）
+RUN corepack enable && corepack prepare pnpm@latest --activate
+
 WORKDIR /app
 
-# Install dependencies based on the preferred package manager
+
+# 仅复制依赖清单，提高构建缓存利用率
 COPY package.json yarn.lock* package-lock.json* pnpm-lock.yaml* .npmrc* ./
-RUN \
-  if [ -f yarn.lock ]; then yarn --frozen-lockfile; \
-  elif [ -f package-lock.json ]; then npm ci; \
-  elif [ -f pnpm-lock.yaml ]; then corepack enable pnpm && pnpm i --frozen-lockfile; \
-  else echo "Lockfile not found." && exit 1; \
-  fi
 
-# Rebuild the source code only when needed
-FROM base AS builder
+# 清理任何潜在的缓存并安装所有依赖（包括可选的原生模块）
+RUN npm install 
+
+# ---- 第 2 阶段：构建项目 ----
+FROM --platform=$BUILDPLATFORM node:22-alpine AS builder
+# 安装构建工具以编译原生模块
+RUN apk add --no-cache python3 make g++
+
 WORKDIR /app
+
+# 复制package files先，确保依赖版本一致
+COPY package.json package-lock.json* ./
+# 复制依赖
 COPY --from=deps /app/node_modules ./node_modules
+
+# 复制全部源代码
 COPY . .
 
-ENV NEXT_TELEMETRY_DISABLED=1
+# 在构建阶段设置 DOCKER_BUILD，启用 standalone 输出
+ENV DOCKER_BUILD=true
 
-# Build Next.js application
-RUN set -ex && \
-  if [ -f yarn.lock ]; then \
-    echo "Building with Yarn..." && yarn run build 2>&1; \
-  elif [ -f package-lock.json ]; then \
-    echo "Building with NPM..." && npm run build 2>&1; \
-  elif [ -f pnpm-lock.yaml ]; then \
-    echo "Building with PNPM..." && corepack enable pnpm && pnpm run build 2>&1; \
-  else \
-    echo "ERROR: Lockfile not found." && exit 1; \
-  fi
+# 生成生产构建
+RUN npm run build
 
-# Production image, copy all the files and run next
-FROM base AS runner
+# ---- 第 3 阶段：生成运行时镜像 ----
+FROM node:22-alpine AS runner
+
+# 安装 CA 证书以支持 HTTPS 请求
+RUN apk add --no-cache ca-certificates \
+    && rm -rf /var/cache/apk/* \
+    && rm -rf /tmp/*
+
+# 创建非 root 用户
+RUN addgroup -g 1001 -S nodejs && adduser -u 1001 -S nextjs -G nodejs
+
 WORKDIR /app
 
+# 创建视频缓存目录并设置权限
+RUN mkdir -p /app/video-cache && chown -R nextjs:nodejs /app/video-cache
 ENV NODE_ENV=production
-ENV NEXT_TELEMETRY_DISABLED=1
-
-RUN addgroup --system --gid 1001 nodejs && \
-  adduser --system --uid 1001 nextjs
+ENV HOSTNAME=0.0.0.0
+ENV PORT=3000
+ENV DOCKER_BUILD=true
+# Puppeteer 配置：使用系统安装的 Chromium（已禁用）
+# ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true
+# ENV PUPPETEER_EXECUTABLE_PATH=/usr/bin/chromium-browser
+ENV SUBSCRIPTION_SOURCES='https://gh-proxy.org/https://github.com/hy5528/build-docker/blob/main/KVideo/config.json'
+ENV IPTV_SOURCES='[{"name":"咪咕直播","url":"https://gh-proxy.org/https://raw.githubusercontent.com/alantang1977/alan/main/proxy/mg.m3u"},{"name":"广西移动","url":"https://gh-proxy.org/https://github.com/Healer-sys/Home/blob/main/iptv/gx.m3u"}]'
 
 COPY --from=builder /app/public ./public
-
-# Set the correct permission for prerender cache
-RUN mkdir .next && \
-  chown nextjs:nodejs .next
 
 # Automatically leverage output traces to reduce image size
 # https://nextjs.org/docs/advanced-features/output-file-tracing
 COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
 COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
 
+# 切换到非特权用户
 USER nextjs
 
 EXPOSE 3000
 
-ENV PORT=3000
-# Bind the standalone server to all container interfaces.
-ENV HOSTNAME="0.0.0.0"
-
+# 使用自定义启动脚本，先预加载配置再启动服务器
 CMD ["node", "server.js"]
