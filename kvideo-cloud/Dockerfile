@@ -30,7 +30,7 @@ COPY --from=builder /app/dist /usr/share/nginx/html
 
 # 复制自定义 Nginx 配置 (可选，用于处理 SPA 路由)
 # 如果没有 custom.conf，可以注释掉下一行，使用默认配置
-COPY nginx.conf /etc/nginx/conf.d/default.conf
+# COPY nginx.conf /etc/nginx/conf.d/default.conf
 
 EXPOSE 80
 
