@@ -21,4 +21,4 @@ COPY . .
 EXPOSE 8787 5173 3000
 
 # 默认命令：可以根据需要修改为 npm run dev:local 或 npm run dev:worker
-CMD ["npm", "run", "dev:local"]
+CMD ["npm", "run", "npm run dev:local"]
