@@ -1,37 +1,24 @@
-# -------------------------
-# 阶段 1: 构建阶段
-# -------------------------
-FROM --platform=$BUILDPLATFORM node:22-alpine AS builder
+FROM node:24-bookworm
 
 WORKDIR /app
+
+# 安装 Wrangler 所需的系统依赖 (如果需要 puppeteer 等)
+# RUN apt-get update && apt-get install -y chromium
 
 # 复制依赖文件
 COPY package*.json ./
 
-# 安装依赖
-# 使用 npm ci 确保严格安装 package-lock.json 中的版本
+# 安装所有依赖 (包括 devDependencies)
 RUN npm ci
 
 # 复制源代码
 COPY . .
 
-# 执行构建
-# 对应 scripts 中的 "build": "vite build"
-RUN npm run build
+# 暴露端口
+# 8787: Wrangler Dev Server
+# 5173: Vite Dev Server (如果使用 npm run dev)
+# 3000: 自定义 dev-server.mjs (如果使用 npm run dev:local)
+EXPOSE 8787 5173 3000
 
-# -------------------------
-# 阶段 2: 生产服务阶段 (Nginx)
-# -------------------------
-FROM nginx:alpine-slim
-
-# 复制构建产物到 Nginx 默认目录
-# Vite 默认输出目录为 dist/
-COPY --from=builder /app/dist /usr/share/nginx/html
-
-# 复制自定义 Nginx 配置 (可选，用于处理 SPA 路由)
-# 如果没有 custom.conf，可以注释掉下一行，使用默认配置
-# COPY nginx.conf /etc/nginx/conf.d/default.conf
-
-EXPOSE 8787
-
-CMD ["nginx", "-g", "daemon off;"]
+# 默认命令：可以根据需要修改为 npm run dev:local 或 npm run dev:worker
+CMD ["npm", "run", "npm run dev:local"]
