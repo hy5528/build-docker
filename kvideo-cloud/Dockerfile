@@ -1,4 +1,4 @@
-FROM node:24-bookworm
+FROM node:22-bookworm
 
 WORKDIR /app
 
@@ -21,4 +21,4 @@ COPY . .
 EXPOSE 8787 5173 3000
 
 # 默认命令：可以根据需要修改为 npm run dev:local 或 npm run dev:worker
-CMD ["npm", "run", "npm run dev:local"]
+CMD ["npm", "run", "dev:local"]
