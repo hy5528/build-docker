@@ -1,5 +1,5 @@
 # 使用 Node.js 24 以符合 package.json engines 要求
-FROM node:24-bookworm
+FROM node:22-slim
 
 WORKDIR /app
 
