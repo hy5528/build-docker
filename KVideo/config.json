@@ -2,7 +2,7 @@
      {
     "id": "ruyi",
     "name": "如意资源",
-    "baseUrl": "https://cj.rycjapi.com/api.php/provide/vod",
+    "baseUrl": "http://api.ffzyapi.com/api.php/provide/vod/from/ffm3u8",
     "group": "normal",
     "priority": 2
   },
@@ -23,22 +23,22 @@
   {
     "id": "lezi",
     "name": "量子资源",
-    "baseUrl": "https://cj.lzcaiji.com/api.php/provide/vod",
+    "baseUrl": "https://lzzyapi.com/api.php/provide/vod/from/lzm3u8",
     "group": "normal",
-    "priority": 2
+    "priority": 3
   },
   {
         "id": "baofeng",
-        "name": "暴风资源",
-        "baseUrl": "https://bfzyapi.com/api.php/provide/vod",
+        "name": "金鹰资源",
+        "baseUrl": "https://jinyingzy.com/api.php/provide/vod",
         "group": "normal",
         "enabled": true,
         "priority": 5
     },
    {
         "id": "feifanapi",
-        "name": "非凡API",
-        "baseUrl": "https://api.ffzyapi.com/api.php/provide/vod",
+        "name": "非凡资源",
+        "baseUrl": "http://api.ffzyapi.com/api.php/provide/vod/from/ffm3u8",
         "group": "normal",
         "enabled": true,
         "priority": 25
@@ -50,13 +50,6 @@
         "group": "normal",
         "enabled": true,
         "priority": 5
-    },
-  {
-        "id": "wangwang",
-        "name": "旺旺资源",
-        "baseUrl": "https://api.wwzy.tv/api.php/provide/vod",
-        "group": "normal",
-        "enabled": true,
-        "priority": 13
     }
+  
  ]
