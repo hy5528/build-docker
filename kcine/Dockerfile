@@ -56,7 +56,7 @@ ENV DOCKER_BUILD=true
 # Puppeteer 配置：使用系统安装的 Chromium（已禁用）
 # ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true
 # ENV PUPPETEER_EXECUTABLE_PATH=/usr/bin/chromium-browser
-ENV SUBSCRIPTION_SOURCES='https://gh-proxy.org/https://github.com/hy5528/build-docker/blob/main/KVideo/config.json'
+ENV SUBSCRIPTION_SOURCES='https://gh-proxy.org/https://github.com/hy5528/build-docker/blob/main/kcine/config.json'
 ENV IPTV_SOURCES='[{"name":"咪咕直播","url":"https://gh-proxy.org/https://raw.githubusercontent.com/alantang1977/alan/main/proxy/mg.m3u"},{"name":"广西移动","url":"https://gh-proxy.org/https://github.com/Healer-sys/Home/blob/main/iptv/gx.m3u"}]'
 
 COPY --from=builder /app/public ./public
