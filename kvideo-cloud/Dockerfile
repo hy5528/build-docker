@@ -24,7 +24,7 @@ COPY . .
 # 8787: Wrangler Dev Server (如果运行 dev:worker)
 # 5173: Vite Dev Server (如果运行 dev)
 # 3000: 自定义 dev-server.mjs (如果运行 dev:local)
-EXPOSE 8787 5173 3000
+EXPOSE 8787
 
 # 启动命令
 # 修正了之前的语法错误，正确调用 npm script
