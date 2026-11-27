@@ -6,7 +6,7 @@
 services:
   kcine:
     container_name: kcine
-    image: vespeng/kcine:latest
+    image: ghcr.nju.edu.cn/hy5528/kcine66:latest
     restart: always
     ports:
       - 3051:3000
