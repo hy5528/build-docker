@@ -37,8 +37,8 @@
     },
    {
         "id": "feifanapi",
-        "name": "非凡API",
-        "baseUrl": "https://api.ffzyapi.com/api.php/provide/vod",
+        "name": "非凡资源",
+        "baseUrl": "http://api.ffzyapi.com/api.php/provide/vod/from/ffm3u8",
         "group": "normal",
         "enabled": true,
         "priority": 25
